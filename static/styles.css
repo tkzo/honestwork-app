@@ -66,3 +66,7 @@ a:visited {
 .link {
 	cursor: pointer;
 }
+
+.link:hover {
+	color: var(--color-primary);
+}

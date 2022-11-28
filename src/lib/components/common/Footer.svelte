@@ -18,6 +18,10 @@
 
 	<div class="sitemap-section">
 		<a href="/">
+			<p class="light-40 ">faq</p>
+		</a>
+		<div style="width:8px" />
+		<a href="/">
 			<p class="light-40 ">terms</p>
 		</a>
 		<div style="width:8px" />

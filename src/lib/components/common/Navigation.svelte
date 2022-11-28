@@ -13,11 +13,13 @@
 	</div>
 	<div class="menu-section">
 		<a href="/jobs">
-			<p class={$page.route.id == '/jobs' ? 'yellow semibold' : 'light-40'}>jobs</p>
+			<p class={$page.route.id == '/jobs' ? 'yellow semibold link' : 'light-40 link'}>jobs</p>
 		</a>
 		<div style="width:8px" />
 		<a href="/creators">
-			<p class={$page.route.id == '/creators' ? 'yellow semibold' : 'light-40'}>creators</p>
+			<p class={$page.route.id == '/creators' ? 'yellow semibold link' : 'light-40 link'}>
+				creators
+			</p>
 		</a>
 	</div>
 	<div class="wallet-section">
@@ -60,8 +62,13 @@
 		box-sizing: border-box;
 	}
 	.menu-section {
+		position: absolute;
 		display: flex;
 		flex-direction: row;
+		transform: translate(-50%, 0);
+		left: 50%;
+		align-items: center;
+		justify-content: center;
 	}
 	.wallet-section {
 		height: 32px;
