@@ -17,19 +17,19 @@
 	</div>
 
 	<div class="sitemap-section">
-		<a href="/about">
+		<a href="/">
 			<p class="light-40 ">terms</p>
 		</a>
 		<div style="width:8px" />
-		<a href="/about">
+		<a href="/">
 			<p class="light-40 ">privacy</p>
 		</a>
 		<div style="width:8px" />
-		<a href="/about">
+		<a href="/">
 			<p class="light-40 ">docs</p>
 		</a>
 		<div style="width:8px" />
-		<a href="/contact">
+		<a href="/">
 			<p class="light-40 ">contact</p>
 		</a>
 	</div>

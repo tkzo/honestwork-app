@@ -31,7 +31,7 @@
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	<title>HonestWork</title>
 	<meta name="description" content="HonestWork" />
 </svelte:head>
 
