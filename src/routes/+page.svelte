@@ -35,14 +35,78 @@
 	<meta name="description" content="HonestWork" />
 </svelte:head>
 
-<section />
+<section>
+	{#if !$userConnected}
+		<div class="gm">
+			<div class="gm-inner">
+				<img src="icons/heart.svg" alt="Heart" />
+				<div style="width:8px" />
+				<p>gm fren (<span class="yellow">1/2</span>)</p>
+			</div>
+		</div>
+		<div class="gm">
+			<p class="light-60">
+				to be able to create a profile or create job listings; you need to connect your wallet.
+			</p>
+		</div>
+		<div class="gm link" on:click={connectWallet} on:keydown>
+			<p class="yellow">connect wallet</p>
+		</div>
+		<div class="gm">
+			<p>skip for now</p>
+		</div>
+	{:else}
+		<div class="gm">
+			<div class="gm-inner">
+				<img src="icons/heart.svg" alt="Heart" />
+				<div style="width:8px" />
+				<p>gm fren (<span class="yellow">2/2</span>)</p>
+			</div>
+		</div>
+		<div class="gm">
+			<p class="light-40">just so we can call you by your preferred name;</p>
+			<div style="height:8px" />
+			<input type="text" placeholder="<enter name>(must)" />
+			<div style="height:16px" />
+
+			<p class="light-40">or if you want to receive email notifications;</p>
+			<div style="height:8px" />
+			<input class="passive-input" type="text" placeholder="<enter email>(optional)" />
+		</div>
+		<div class="gm">
+			<p class="yellow">create account</p>
+		</div>
+		<div class="gm"><p>skip for now</p></div>
+	{/if}
+</section>
 
 <style>
 	section {
+		width: 258px;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		background-color: var(--color-dark);
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--color-light-20);
+		box-sizing: border-box;
+	}
+	.gm {
+		border-width: 0px 0px 1px 0px;
+		border-style: solid;
+		border-color: var(--color-light-20);
+		padding: 12px;
+		display: flex;
+		flex-direction: column;
 		align-items: center;
-		flex: 0.6;
+		text-align: center;
+	}
+	.gm-inner {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+	input {
+		width: 234px;
 	}
 </style>

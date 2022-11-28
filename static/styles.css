@@ -25,6 +25,7 @@ body {
 	min-height: 100vh;
 	margin: 0;
 	background-color: var(--color-dark);
+	background-image: url('assets/bg.webp');
 	background-size: 100vw 100vh;
 	border-width: 0px 1px;
 	border-style: solid;
@@ -62,6 +63,9 @@ a:visited {
 .light-40 {
 	color: var(--color-light-40);
 }
+.light-60 {
+	color: var(--color-light-60);
+}
 
 .link {
 	cursor: pointer;
@@ -69,4 +73,39 @@ a:visited {
 
 .link:hover {
 	color: var(--color-primary);
+}
+
+input {
+	outline: none;
+	border: none;
+	background-image: none;
+	background-color: transparent;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+input {
+	background-color: var(--color-dark);
+	font-family: 'Proto Mono', monospace;
+	color: var(--color-light);
+	padding: 8px;
+	box-sizing: border-box;
+	border-width: 1px;
+	border-style: solid;
+	border-color: var(--color-light-20);
+	font-size: 11px;
+	line-height: 12px;
+	text-align: center;
+}
+
+input:focus {
+	border: none;
+	border-width: 1px;
+	border-style: solid;
+	border-color: var(--color-primary);
+}
+
+::placeholder {
+	color: var(--color-light-20);
 }
