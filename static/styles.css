@@ -1,0 +1,68 @@
+@font-face {
+	font-family: 'Proto Mono';
+	src: url('fonts/ProtoMono-Light.otf') format('otf'),
+		url('fonts/ProtoMono-LightShadow.otf') format('otf'),
+		url('fonts/ProtoMono-Medium.otf') format('otf'),
+		url('fonts/ProtoMono-MediumShadow.otf') format('otf'),
+		url('fonts/ProtoMono-SemiBold.otf') format('otf'),
+		url('fonts/ProtoMono-SemiBoldShadow.otf') format('otf');
+	font-weight: 400, 500, 600, 700;
+}
+
+:root {
+	--color-dark: #0c0c0c;
+	--color-light: #ffffff;
+	--color-light-80: rgba(255, 255, 255, 0.8);
+	--color-light-60: rgba(255, 255, 255, 0.6);
+	--color-light-40: rgba(255, 255, 255, 0.4);
+	--color-light-20: rgba(255, 255, 255, 0.2);
+	--color-primary: #fcef50;
+	font-family: 'Proto Mono', monospace;
+	color: var(--color-light);
+}
+
+body {
+	min-height: 100vh;
+	margin: 0;
+	background-color: var(--color-dark);
+	background-size: 100vw 100vh;
+	border-width: 0px 1px;
+	border-style: solid;
+	border-color: var(--color-light-20);
+	box-sizing: border-box;
+}
+
+p {
+	font-style: normal;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 16px;
+	margin: 0px;
+}
+
+a {
+	font-weight: 600;
+	color: var(--color-primary);
+	text-decoration: none;
+	cursor: pointer;
+}
+
+a:visited {
+	text-decoration: none;
+}
+
+.semibold {
+	font-weight: 600;
+}
+
+.yellow {
+	color: var(--color-primary);
+}
+
+.light-40 {
+	color: var(--color-light-40);
+}
+
+.link {
+	cursor: pointer;
+}

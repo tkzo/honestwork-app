@@ -35,15 +35,7 @@
 	<meta name="description" content="HonestWork" />
 </svelte:head>
 
-<section>
-	{#if !$userConnected}
-		<div on:click={connectWallet} on:keydown>Connect</div>
-	{:else}
-		{$userAddress}
-		chainid:{$chainID}
-		<div on:click={newPost} on:keydown>Post</div>
-	{/if}
-</section>
+<section />
 
 <style>
 	section {
