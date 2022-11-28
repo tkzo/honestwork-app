@@ -1,5 +1,11 @@
 <script>
-	import { userAddress, userConnected, connectWallet } from '$lib/stores/Network';
+	let pages = [
+		{ name: 'faq', path: '/faq' },
+		{ name: 'terms', path: '/terms' },
+		{ name: 'privacy', path: '/privacy' },
+		{ name: 'docs', path: '/docs' },
+		{ name: 'contact', path: '/contact' }
+	];
 </script>
 
 <main>
@@ -17,25 +23,12 @@
 	</div>
 
 	<div class="sitemap-section">
-		<a href="/">
-			<p class="light-40 ">faq</p>
-		</a>
-		<div style="width:8px" />
-		<a href="/">
-			<p class="light-40 ">terms</p>
-		</a>
-		<div style="width:8px" />
-		<a href="/">
-			<p class="light-40 ">privacy</p>
-		</a>
-		<div style="width:8px" />
-		<a href="/">
-			<p class="light-40 ">docs</p>
-		</a>
-		<div style="width:8px" />
-		<a href="/">
-			<p class="light-40 ">contact</p>
-		</a>
+		{#each pages as page}
+			<a href={page.path}>
+				<p class="light-40 link">{page.name}</p>
+			</a>
+			<div style="width:8px" />
+		{/each}
 	</div>
 </main>
 
