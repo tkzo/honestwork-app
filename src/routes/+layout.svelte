@@ -1,10 +1,12 @@
 <script lang="ts">
 	import Navigation from '$lib/components/common/Navigation.svelte';
 	import Footer from '$lib/components/common/Footer.svelte';
+	import Notification from '$lib/components/common/Notification.svelte';
 </script>
 
 <main>
 	<Navigation />
+	<Notification />
 	<div class="content">
 		<slot />
 	</div>

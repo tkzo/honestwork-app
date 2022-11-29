@@ -1,11 +1,11 @@
 @font-face {
 	font-family: 'Proto Mono';
-	src: url('fonts/ProtoMono-Light.otf') format('otf'),
-		url('fonts/ProtoMono-LightShadow.otf') format('otf'),
-		url('fonts/ProtoMono-Medium.otf') format('otf'),
-		url('fonts/ProtoMono-MediumShadow.otf') format('otf'),
-		url('fonts/ProtoMono-SemiBold.otf') format('otf'),
-		url('fonts/ProtoMono-SemiBoldShadow.otf') format('otf');
+	src: url('../fonts/ProtoMono-Light.otf') format('otf'),
+		url('../fonts/ProtoMono-LightShadow.otf') format('otf'),
+		url('../fonts/ProtoMono-Medium.otf') format('otf'),
+		url('../fonts/ProtoMono-MediumShadow.otf') format('otf'),
+		url('../fonts/ProtoMono-SemiBold.otf') format('otf'),
+		url('../fonts/ProtoMono-SemiBoldShadow.otf') format('otf');
 	font-weight: 400, 500, 600, 700;
 }
 
@@ -25,7 +25,7 @@ body {
 	min-height: 100vh;
 	margin: 0;
 	background-color: var(--color-dark);
-	background-image: url('assets/bg.webp');
+	/* background-image: url('assets/bg.webp'); */
 	background-size: 100vw 100vh;
 	border-width: 0px 1px;
 	border-style: solid;
@@ -108,4 +108,30 @@ input:focus {
 
 ::placeholder {
 	color: var(--color-light-20);
+}
+
+::-moz-selection {
+	color: var(--color-dark);
+	background: var(--color-primary);
+}
+
+::selection {
+	color: var(--color-dark);
+	background: var(--color-primary);
+}
+
+button,
+button:focus {
+	outline: none;
+	background: transparent;
+	border: 1px solid transparent;
+	font-family: 'Proto Mono', monospace;
+	cursor: pointer;
+	padding: 0px;
+}
+
+button:active {
+	outline: none;
+	background: transparent;
+	border: 1px solid grey;
 }

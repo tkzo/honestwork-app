@@ -4,8 +4,28 @@
 		networkSigner,
 		userAddress,
 		userConnected,
-		connectWallet
+		connectWallet,
+		token_abi,
+		userState
 	} from '$lib/stores/Network';
+	import { ethers } from 'ethers';
+	import { goto } from '$app/navigation';
+
+	let token_address = '0x32058e2CCdAA0b4615994362d44cC64dFFd3340A';
+	let state;
+
+	$: if ($userConnected) {
+		fetchUserState();
+	}
+	const fetchUserState = async () => {
+		const contract = new ethers.Contract(token_address, token_abi, $networkSigner);
+		state = parseFloat(await contract.getUserState($userAddress));
+		userState.set(state);
+		console.log(state);
+		if (state == 2 || state == 0) {
+			goto('/jobs');
+		}
+	};
 
 	const newPost = async () => {
 		const signature = await $networkSigner.signMessage('post');
@@ -28,6 +48,29 @@
 			alert('HTTP-Error: ' + response.status);
 		}
 	};
+
+	const checkUserAvailable = async () => {
+		const url = `http://localhost:3002/users/${$userAddress}`;
+		let response = await fetch(url);
+		if (response.ok) {
+			let json = await response.json();
+			console.log(json);
+		} else {
+			alert('HTTP-Error: ' + response.status);
+		}
+	};
+
+	async function add() {
+		const response = await fetch('/api/add', {
+			method: 'POST',
+			body: JSON.stringify({ a, b }),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+
+		total = await response.json();
+	}
 </script>
 
 <svelte:head>
@@ -55,7 +98,7 @@
 		<div class="gm">
 			<p>skip for now</p>
 		</div>
-	{:else}
+	{:else if state == 1}
 		<div class="gm">
 			<div class="gm-inner">
 				<img src="icons/heart.svg" alt="Heart" />
@@ -63,19 +106,23 @@
 				<p>gm fren (<span class="yellow">2/2</span>)</p>
 			</div>
 		</div>
-		<div class="gm">
-			<p class="light-40">just so we can call you by your preferred name;</p>
-			<div style="height:8px" />
-			<input type="text" placeholder="<enter name>(must)" />
-			<div style="height:16px" />
+		<form method="POST">
+			<div class="gm">
+				<p class="light-40">just so we can call you by your preferred name;</p>
+				<div style="height:8px" />
+				<input type="text" placeholder="<enter name>(must)" />
+				<div style="height:16px" />
 
-			<p class="light-40">or if you want to receive email notifications;</p>
-			<div style="height:8px" />
-			<input class="passive-input" type="text" placeholder="<enter email>(optional)" />
-		</div>
-		<div class="gm">
-			<p class="yellow">create account</p>
-		</div>
+				<p class="light-40">or if you want to receive email notifications;</p>
+				<div style="height:8px" />
+				<input class="passive-input" type="text" placeholder="<enter email>(optional)" />
+			</div>
+			<button>
+				<div class="gm">
+					<p class="yellow">create account</p>
+				</div>
+			</button>
+		</form>
 		<div class="gm"><p>skip for now</p></div>
 	{/if}
 </section>
@@ -108,5 +155,8 @@
 	}
 	input {
 		width: 234px;
+	}
+	button {
+		width: 100%;
 	}
 </style>

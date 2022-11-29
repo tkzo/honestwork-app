@@ -1,0 +1,39 @@
+<script lang="ts">
+	import { userState, userConnected } from '$lib/stores/Network';
+</script>
+
+<main>
+	{#if !$userConnected || $userState == 0}
+		<div class="bar">
+			<p class="light-40">you're in guest mode</p>
+			<div style="width:8px" />
+			<p>😱</p>
+			<div style="width:8px" />
+
+			<p class="light-40">-></p>
+			<div style="width:8px" />
+
+			<p class="yellow">mint your pass now</p>
+		</div>
+	{/if}
+</main>
+
+<style>
+	main {
+		width: 100vw;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.bar {
+		width: 520px;
+		border-width: 0px 1px 1px 1px;
+		border-style: solid;
+		border-color: var(--color-light-20);
+		padding: 8px;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+</style>
