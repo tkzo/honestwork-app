@@ -12,25 +12,11 @@
 	import { goto } from '$app/navigation';
 
 	let token_address = '0x32058e2CCdAA0b4615994362d44cC64dFFd3340A';
-	let state;
-
-	$: if ($userConnected) {
-		fetchUserState();
-	}
-	const fetchUserState = async () => {
-		const contract = new ethers.Contract(token_address, token_abi, $networkSigner);
-		state = parseFloat(await contract.getUserState($userAddress));
-		userState.set(state);
-		console.log(state);
-		if (state == 2 || state == 0) {
-			goto('/jobs');
-		}
-	};
+	let state, name, email;
 
 	const newPost = async () => {
 		const signature = await $networkSigner.signMessage('post');
 		const url = `http://localhost:3001/posts/new/${$userAddress}/${signature}`;
-
 		let response = await fetch(url, {
 			method: 'POST',
 			body: JSON.stringify({
@@ -49,9 +35,24 @@
 		}
 	};
 
-	const checkUserAvailable = async () => {
-		const url = `http://localhost:3002/users/${$userAddress}`;
-		let response = await fetch(url);
+	const soulboundApiCall = async () => {
+		// const url = `/api?address=${$userAddress}&hash=${'0xcCcC'}&name=${name}&email=${email}`;
+		// let response = await fetch(url);
+		// if (response.ok) {
+		// 	console.log(response.status);
+		// } else {
+		// 	alert('HTTP-Error: ' + response.status);
+		// }
+		const post_url = `http://localhost:3002/users/new/`;
+		let response = await fetch(post_url, {
+			method: 'POST',
+			body: JSON.stringify({
+				address: $userAddress,
+				hash: '0xcCcC',
+				name: name,
+				email: email
+			})
+		});
 		if (response.ok) {
 			let json = await response.json();
 			console.log(json);
@@ -60,17 +61,21 @@
 		}
 	};
 
-	async function add() {
-		const response = await fetch('/api/add', {
-			method: 'POST',
-			body: JSON.stringify({ a, b }),
-			headers: {
-				'content-type': 'application/json'
-			}
-		});
+	const soulbound = async () => {
+		try {
+			const contract = new ethers.Contract(token_address, token_abi, $networkSigner);
+			const tx = await contract.soulbound();
+			const receipt = await tx.wait();
+			soulboundApiCall(receipt);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
-		total = await response.json();
-	}
+	const connectHandler = async () => {
+		await connectWallet();
+		goto('/');
+	};
 </script>
 
 <svelte:head>
@@ -78,8 +83,8 @@
 	<meta name="description" content="HonestWork" />
 </svelte:head>
 
-<section>
-	{#if !$userConnected}
+{#if !$userConnected}
+	<section>
 		<div class="gm">
 			<div class="gm-inner">
 				<img src="icons/heart.svg" alt="Heart" />
@@ -92,13 +97,15 @@
 				to be able to create a profile or create job listings; you need to connect your wallet.
 			</p>
 		</div>
-		<div class="gm link" on:click={connectWallet} on:keydown>
+		<div class="gm link" on:click={connectHandler} on:keydown>
 			<p class="yellow">connect wallet</p>
 		</div>
 		<div class="gm">
 			<p>skip for now</p>
 		</div>
-	{:else if state == 1}
+	</section>
+{:else if userState == 1}
+	<section>
 		<div class="gm">
 			<div class="gm-inner">
 				<img src="icons/heart.svg" alt="Heart" />
@@ -106,26 +113,28 @@
 				<p>gm fren (<span class="yellow">2/2</span>)</p>
 			</div>
 		</div>
-		<form method="POST">
+		<div class="gm">
+			<p class="light-40">just so we can call you by your preferred name;</p>
+			<div style="height:8px" />
+			<input type="text" placeholder="<enter name>(must)" bind:value={name} />
+			<div style="height:16px" />
+			<p class="light-40">or if you want to receive email notifications;</p>
+			<div style="height:8px" />
+			<input
+				class="passive-input"
+				type="text"
+				placeholder="<enter email>(optional)"
+				bind:value={email}
+			/>
+		</div>
+		<button action="submit">
 			<div class="gm">
-				<p class="light-40">just so we can call you by your preferred name;</p>
-				<div style="height:8px" />
-				<input type="text" placeholder="<enter name>(must)" />
-				<div style="height:16px" />
-
-				<p class="light-40">or if you want to receive email notifications;</p>
-				<div style="height:8px" />
-				<input class="passive-input" type="text" placeholder="<enter email>(optional)" />
+				<p class="yellow" on:click={soulboundApiCall} on:keydown>create account</p>
 			</div>
-			<button>
-				<div class="gm">
-					<p class="yellow">create account</p>
-				</div>
-			</button>
-		</form>
+		</button>
 		<div class="gm"><p>skip for now</p></div>
-	{/if}
-</section>
+	</section>
+{/if}
 
 <style>
 	section {

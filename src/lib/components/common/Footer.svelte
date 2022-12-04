@@ -1,10 +1,10 @@
 <script>
 	let pages = [
-		{ name: 'faq', path: '/faq' },
-		{ name: 'terms', path: '/terms' },
-		{ name: 'privacy', path: '/privacy' },
-		{ name: 'docs', path: '/docs' },
-		{ name: 'contact', path: '/contact' }
+		{ name: 'faq', path: '/' },
+		{ name: 'terms', path: '/' },
+		{ name: 'privacy', path: '/' },
+		{ name: 'docs', path: '/' },
+		{ name: 'contact', path: '/' }
 	];
 </script>
 

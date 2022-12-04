@@ -4,9 +4,8 @@ import { ethers } from 'ethers';
 export let userConnected = writable(false);
 export let userAddress = writable('');
 export let networkProvider = writable('');
-export let networkSigner = writable('');
+export let networkSigner = writable();
 export let chainID = writable('');
-
 export let userState = writable(0);
 
 export const connectWallet = async () => {
@@ -16,11 +15,27 @@ export const connectWallet = async () => {
 		const signer = provider.getSigner();
 		networkProvider.set(provider);
 		networkSigner.set(signer);
-		userAddress.set(await signer.getAddress());
+		let addr = await signer.getAddress();
+		userAddress.set(addr);
 		chainID.set(await signer.getChainId());
 		userConnected.set(true);
+		await fetchUserState(signer, addr);
 	} catch (err) {
 		console.log('error:', err);
+	}
+};
+
+const fetchUserState = async (signer, addr) => {
+	try {
+		const contract = new ethers.Contract(
+			'0x32058e2CCdAA0b4615994362d44cC64dFFd3340A',
+			token_abi,
+			signer
+		);
+		let state = await contract.getUserState(addr);
+		userState.set(state);
+	} catch (err) {
+		console.log(err);
 	}
 };
 
@@ -154,6 +169,13 @@ export const token_abi = [
 		type: 'function'
 	},
 	{
+		inputs: [],
+		name: 'bind',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
 		inputs: [
 			{
 				internalType: 'uint256',
@@ -213,13 +235,6 @@ export const token_abi = [
 			}
 		],
 		stateMutability: 'view',
-		type: 'function'
-	},
-	{
-		inputs: [],
-		name: 'makeSoulbound',
-		outputs: [],
-		stateMutability: 'nonpayable',
 		type: 'function'
 	},
 	{
@@ -360,6 +375,13 @@ export const token_abi = [
 			}
 		],
 		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'tier',
+		outputs: [],
+		stateMutability: 'nonpayable',
 		type: 'function'
 	},
 	{

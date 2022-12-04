@@ -73,6 +73,7 @@ a:visited {
 
 .link:hover {
 	color: var(--color-primary);
+	text-shadow: 0px 0px 10px var(--color-primary);
 }
 
 input {

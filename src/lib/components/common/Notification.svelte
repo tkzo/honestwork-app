@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { userState, userConnected } from '$lib/stores/Network';
+	import { page } from '$app/stores';
 </script>
 
 <main>
-	{#if !$userConnected || $userState == 0}
+	{#if (!$userConnected || $userState == 0 || $userState == 1) && $page.route.id != '/connect_wallet'}
 		<div class="bar">
 			<p class="light-40">you're in guest mode</p>
 			<div style="width:8px" />
@@ -13,7 +14,7 @@
 			<p class="light-40">-></p>
 			<div style="width:8px" />
 
-			<p class="yellow">mint your pass now</p>
+			<p class="yellow semibold link">mint your pass now</p>
 		</div>
 	{/if}
 </main>

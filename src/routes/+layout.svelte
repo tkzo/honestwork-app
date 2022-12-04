@@ -2,6 +2,12 @@
 	import Navigation from '$lib/components/common/Navigation.svelte';
 	import Footer from '$lib/components/common/Footer.svelte';
 	import Notification from '$lib/components/common/Notification.svelte';
+	import { connectWallet } from '$lib/stores/Network';
+	import { onMount } from 'svelte';
+
+	onMount(async () => {
+		await connectWallet();
+	});
 </script>
 
 <main>

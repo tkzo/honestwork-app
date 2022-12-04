@@ -30,7 +30,7 @@
 				{$userAddress.substring(0, 6)}...{$userAddress.substring($userAddress.length - 4)}
 			</p>
 			<div style="width:8px" />
-			<a href="/profile">
+			<a href={`/api/auth?address=${$userAddress}`}>
 				<p class="yellow semibold">takez0_o</p>
 			</a>
 		{/if}
