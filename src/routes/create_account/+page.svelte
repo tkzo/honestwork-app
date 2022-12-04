@@ -68,6 +68,7 @@
 			</div>
 		</div>
 		<form method="POST" bind:this={myform} on:submit|preventDefault={signUp}>
+			<input type="hidden" name="address" value={$userAddress} />
 			<input type="hidden" name="salt" value={salt} />
 			<input type="hidden" name="signature" value={signature} />
 			<button>

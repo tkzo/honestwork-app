@@ -95,9 +95,9 @@ input {
 	border-width: 1px;
 	border-style: solid;
 	border-color: var(--color-light-20);
-	font-size: 11px;
-	line-height: 12px;
-	text-align: center;
+	font-size: 12px;
+	line-height: 16px;
+	/* text-align: center; */
 }
 
 input:focus {
@@ -108,7 +108,7 @@ input:focus {
 }
 
 ::placeholder {
-	color: var(--color-light-20);
+	color: var(--color-light);
 }
 
 ::-moz-selection {
