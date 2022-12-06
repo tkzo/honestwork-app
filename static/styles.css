@@ -100,6 +100,20 @@ input {
 	/* text-align: center; */
 }
 
+textarea {
+	background-color: var(--color-dark);
+	font-family: 'Proto Mono', monospace;
+	color: var(--color-light);
+	padding: 8px;
+	box-sizing: border-box;
+	border-width: 1px;
+	border-style: solid;
+	border-color: var(--color-light-20);
+	font-size: 12px;
+	line-height: 16px;
+	/* text-align: center; */
+}
+
 input:focus {
 	border: none;
 	border-width: 1px;

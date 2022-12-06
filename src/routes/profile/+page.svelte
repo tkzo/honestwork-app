@@ -1,12 +1,18 @@
 <script lang="ts">
 	import type { PageServerData } from '../$types';
+
 	export let data: PageServerData;
 	let myform: HTMLFormElement;
-	let chosenTab = 'profile'; // 'profile' or 'skills'
+	let chosenTab = 'profile';
 	const toggle = (tab: string) => {
 		chosenTab = tab;
 	};
-	let username: string;
+
+	let username: string = data.user.username;
+	let title: string = data.user.title;
+	let email: string = data.user.email;
+	let nft_id: number = data.user.nft_id;
+	let nft_address: string = data.user.nft_address;
 </script>
 
 <svelte:head>
@@ -15,51 +21,130 @@
 </svelte:head>
 
 <main>
-	<!-- username {data.username}
-	show_ens {data.show_ens}
-	title {data.title}
-	image_url {data.image_url}
-	show_nft {data.show_nft}
-	nft_address {data.nft_address}
-	nft_id {data.nft_id} -->
-	<!-- {data.user.username} -->
-	<div style="height: 12px" />
-	<section class="bar">
-		<div class="tabs">
-			<p
-				class={`tab link ${chosenTab == 'profile' ? 'yellow' : ''}`}
-				on:click={() => toggle('profile')}
-				on:keydown
-			>
-				profile
-			</p>
-			<p
-				class={`tab link ${chosenTab == 'skills' ? 'yellow' : ''}`}
-				on:click={() => toggle('skills')}
-				on:keydown
-			>
-				skills
-			</p>
-		</div>
-		<p class="yellow semibold link">save changes</p>
-	</section>
-	<div style="height: 12px" />
-	<div class="info">
-		<section>
-			<img src={data.user.image_url} alt="Profile" />
+	<form method="POST" bind:this={myform}>
+		<div style="height: 12px" />
+		<section class="bar">
+			<div class="tabs">
+				<p
+					class={`tab link ${chosenTab == 'profile' ? 'yellow' : ''}`}
+					on:click={() => toggle('profile')}
+					on:keydown
+				>
+					profile
+				</p>
+				<p
+					class={`tab link ${chosenTab == 'skills' ? 'yellow' : ''}`}
+					on:click={() => toggle('skills')}
+					on:keydown
+				>
+					skills
+				</p>
+				<p
+					class={`tab link ${chosenTab == 'jobs' ? 'yellow' : ''}`}
+					on:click={() => toggle('jobs')}
+					on:keydown
+				>
+					jobs
+				</p>
+			</div>
+			<p class="yellow semibold link">save changes</p>
 		</section>
-		<div style="width: 12px" />
-		<div class="placeholder">
-			<p class="light-40">username</p>
+		<div style="height: 12px" />
+		<div class="info">
+			<section>
+				<img src={data.user.image_url} alt="Profile" />
+			</section>
+			<div style="width: 12px" />
+			<div class="input-fields">
+				<div class="input-field">
+					<div class="placeholder">
+						<p class="light-40">username</p>
+					</div>
+					<input
+						class="flex-input"
+						type="text"
+						bind:value={username}
+						placeholder={data.user.username}
+					/>
+				</div>
+				<div style="height: 8px" />
+				<div class="input-field">
+					<div class="placeholder">
+						<p class="light-40">title</p>
+					</div>
+					<input class="flex-input" type="text" bind:value={title} placeholder={data.user.title} />
+				</div>
+				<div style="height: 8px" />
+				<div class="input-field">
+					<div class="placeholder">
+						<p class="light-40">email</p>
+					</div>
+					<input class="flex-input" type="text" bind:value={email} placeholder={data.user.email} />
+				</div>
+				<div style="height: 8px" />
+				<div class="input-field">
+					<div class="placeholder">
+						<p class="light-40">nft address</p>
+					</div>
+					<input
+						class="flex-input"
+						type="text"
+						bind:value={nft_address}
+						placeholder={data.user.nft_address}
+					/>
+				</div>
+				<div style="height: 8px" />
+				<div class="input-field">
+					<div class="placeholder">
+						<p class="light-40">nft id</p>
+					</div>
+					<input
+						class="flex-input"
+						type="number"
+						bind:value={nft_id}
+						placeholder={data.user.nft_id}
+					/>
+				</div>
+			</div>
 		</div>
-		<input class="username" type="text" bind:value={username} placeholder={data.user.username} />
-	</div>
-	<div style="height: 12px" />
+		<div style="height: 16px" />
+		<div class="links">
+			{#each data.user.links as link, i}
+				<div class="input-field">
+					<div class="placeholder">
+						<p class="light-40">link</p>
+					</div>
+					<input class="flex-input" type="text" placeholder={link} />
+				</div>
+				{#if i < data.user.links.length - 1}
+					<div style="height: 8px" />
+				{/if}
+			{/each}
+		</div>
+		<div style="height: 16px" />
+		<div class="bio">
+			<textarea rows="17" size="520px" bind:value={data.user.bio} />
+		</div>
+	</form>
 </main>
 
 <style>
+	textarea {
+		width: 100%;
+	}
 	img {
 		width: 188px;
+	}
+	.input-fields {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+	}
+	.input-field {
+		display: flex;
+		flex-direction: row;
+		min-width: 320px;
+		flex: 1;
 	}
 	.placeholder {
 		height: 32px;
@@ -112,8 +197,8 @@
 		border-color: rgba(255, 255, 255, 0.2);
 		box-sizing: border-box;
 	}
-	.username {
+	.flex-input {
 		height: 32px;
-		width: 320px;
+		flex: 1;
 	}
 </style>
