@@ -8,6 +8,8 @@ export let networkSigner = writable();
 export let chainID = writable('');
 export let userState = writable(0);
 
+export let connecting = writable(false);
+
 export const connectWallet = async () => {
 	try {
 		const provider = new ethers.providers.Web3Provider(window.ethereum);

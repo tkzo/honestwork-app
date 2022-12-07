@@ -16,6 +16,7 @@
 	--color-light-60: rgba(255, 255, 255, 0.6);
 	--color-light-40: rgba(255, 255, 255, 0.4);
 	--color-light-20: rgba(255, 255, 255, 0.2);
+	--color-light-2: rgba(255, 255, 255, 0.02);
 	--color-primary: #fcef50;
 	font-family: 'Proto Mono', monospace;
 	color: var(--color-light);
@@ -23,11 +24,42 @@
 
 body {
 	min-height: 100vh;
+	min-width: 100vw;
 	margin: 0;
 	background-color: var(--color-dark);
 	/* background-image: url('assets/bg.webp'); */
 	background-size: 100vw 100vh;
 	border-width: 0px 1px;
+	border-style: solid;
+	border-color: var(--color-light-20);
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+section {
+	display: flex;
+	background-color: var(--color-dark);
+	border-width: 1px;
+	border-style: solid;
+	border-color: var(--color-light-20);
+	box-sizing: border-box;
+}
+
+.border-all {
+	display: flex;
+	background-color: var(--color-dark);
+	border-width: 1px;
+	border-style: solid;
+	border-color: var(--color-light-20);
+	box-sizing: border-box;
+}
+
+.border-bottom {
+	display: flex;
+	background-color: var(--color-dark);
+	border-width: 0px 0px 1px 0px;
 	border-style: solid;
 	border-color: var(--color-light-20);
 	box-sizing: border-box;

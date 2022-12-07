@@ -26,6 +26,7 @@ const validateSignature = async (address: string, userSignature: string, userSal
 		return json;
 	} else {
 		console.log('HTTP-Error: ' + response.status);
+		return response.status;
 	}
 };
 

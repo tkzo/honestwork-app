@@ -20,15 +20,19 @@
 			<div style="width:8px" />
 			<img src="icons/discord.svg" alt="Discord" />
 		</div>
+		<div class="sitemap-section">
+			{#each pages as page}
+				<a href={page.path}>
+					<p class="light-40 link">{page.name}</p>
+				</a>
+				<div style="width:8px" />
+			{/each}
+		</div>
 	</div>
-
-	<div class="sitemap-section">
-		{#each pages as page}
-			<a href={page.path}>
-				<p class="light-40 link">{page.name}</p>
-			</a>
-			<div style="width:8px" />
-		{/each}
+	<div class="right-container">
+		<div class="network-section">
+			<p class="light-40 semibold">mainnet</p>
+		</div>
 	</div>
 </main>
 
@@ -66,6 +70,18 @@
 		box-sizing: border-box;
 	}
 	.sitemap-section {
+		height: 32px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-end;
+		padding: 8px 12px;
+		border-width: 0px 1px 0px 0px;
+		border-style: solid;
+		border-color: rgba(255, 255, 255, 0.2);
+		box-sizing: border-box;
+	}
+	.network-section {
 		height: 32px;
 		display: flex;
 		flex-direction: row;

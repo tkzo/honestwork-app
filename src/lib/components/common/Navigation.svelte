@@ -1,5 +1,5 @@
 <script>
-	import { userAddress, userConnected, connectWallet } from '$lib/stores/Network';
+	import { userAddress, userConnected, connectWallet, connecting } from '$lib/stores/Network';
 	import { page } from '$app/stores';
 </script>
 
@@ -24,6 +24,10 @@
 	</div>
 	<div class="wallet-section">
 		{#if !$userConnected}
+			{#if $connecting}
+				<img src="icons/loader.svg" alt="loading" class="rotating" />
+			{/if}
+			<div style="width:4px" />
 			<p class="yellow semibold link" on:click={connectWallet} on:keydown>connect</p>
 		{:else}
 			<p class="light-40">
@@ -81,5 +85,17 @@
 		border-style: solid;
 		border-color: rgba(255, 255, 255, 0.2);
 		box-sizing: border-box;
+	}
+	@-webkit-keyframes rotating {
+		from {
+			-webkit-transform: rotate(0deg);
+		}
+		to {
+			-webkit-transform: rotate(360deg);
+		}
+	}
+
+	.rotating {
+		-webkit-animation: rotating 3s linear infinite;
 	}
 </style>
