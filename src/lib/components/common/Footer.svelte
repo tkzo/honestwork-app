@@ -2,9 +2,7 @@
 	let pages = [
 		{ name: 'faq', path: '/' },
 		{ name: 'terms', path: '/' },
-		{ name: 'privacy', path: '/' },
-		{ name: 'docs', path: '/' },
-		{ name: 'contact', path: '/' }
+		{ name: 'privacy', path: '/' }
 	];
 </script>
 
@@ -13,13 +11,7 @@
 		<div class="brand-section">
 			<p class="light-40 semibold">ⓒ 2022 decoded-labs</p>
 		</div>
-		<div class="social-section">
-			<img src="icons/github.svg" alt="Github" />
-			<div style="width:8px" />
-			<img src="icons/twitter.svg" alt="Twitter" />
-			<div style="width:8px" />
-			<img src="icons/discord.svg" alt="Discord" />
-		</div>
+
 		<div class="sitemap-section">
 			{#each pages as page}
 				<a href={page.path}>
@@ -27,6 +19,13 @@
 				</a>
 				<div style="width:8px" />
 			{/each}
+		</div>
+		<div class="social-section">
+			<img src="icons/github.svg" alt="Github" />
+			<div style="width:8px" />
+			<img src="icons/twitter.svg" alt="Twitter" />
+			<div style="width:8px" />
+			<img src="icons/discord.svg" alt="Discord" />
 		</div>
 	</div>
 	<div class="right-container">

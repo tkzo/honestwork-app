@@ -13,11 +13,11 @@
 	</div>
 	<div class="menu-section">
 		<a href="/jobs">
-			<p class={$page.route.id == '/jobs' ? 'yellow semibold link' : 'light-40 link'}>jobs</p>
+			<p class={$page.route.id == '/jobs' ? 'yellow semibold link' : 'light-60 link'}>jobs</p>
 		</a>
 		<div style="width:8px" />
 		<a href="/creators">
-			<p class={$page.route.id == '/creators' ? 'yellow semibold link' : 'light-40 link'}>
+			<p class={$page.route.id == '/creators' ? 'yellow semibold link' : 'light-60 link'}>
 				creators
 			</p>
 		</a>

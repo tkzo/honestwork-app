@@ -1,20 +1,48 @@
 <script lang="ts">
 	import Skill from '$lib/components/cards/Skill.svelte';
-	import type { PageServerData } from '../$types';
+	import { userAddress, userConnected } from '$lib/stores/Network';
+	import { onMount } from 'svelte';
 
-	// todo: type declaration
+	//todo: add non-gateway image resolver
+	//todo: add wrong account, switch to correct account
+	//todo: type declaration
 	export let data: any;
+
+	let placeholder_image = 'assets/xcopy.gif';
+
 	let myform: HTMLFormElement;
 	let chosenTab = 'profile';
-	const toggle = (tab: string) => {
-		chosenTab = tab;
-	};
-
+	let nft_image: string = placeholder_image;
+	let is_owner: boolean;
 	let username: string = data.user.username;
 	let title: string = data.user.title;
 	let email: string = data.user.email;
 	let nft_id: number = data.user.nft_id;
 	let nft_address: string = data.user.nft_address;
+	let fetching_image = true;
+
+	onMount(async () => {
+		await getNft();
+	});
+
+	$: if (fetching_image) {
+		nft_image = placeholder_image;
+	}
+
+	const toggle = (tab: string) => {
+		chosenTab = tab;
+	};
+
+	const getNft = async () => {
+		fetching_image = true;
+		const response = await fetch(`api/alchemy/${nft_address}/${nft_id}`);
+		if (response.ok) {
+			const data = await response.json();
+			fetching_image = false;
+			nft_image = data.image;
+			is_owner = data.owners.includes($userAddress.toLowerCase());
+		}
+	};
 </script>
 
 <svelte:head>
@@ -42,11 +70,11 @@
 					skills
 				</p>
 				<p
-					class={`tab link ${chosenTab == 'jobs' ? 'yellow' : ''}`}
-					on:click={() => toggle('jobs')}
+					class={`tab link ${chosenTab == 'past jobs' ? 'yellow' : ''}`}
+					on:click={() => toggle('past jobs')}
 					on:keydown
 				>
-					jobs
+					past jobs
 				</p>
 			</div>
 			<p class="yellow semibold link">save changes</p>
@@ -56,7 +84,7 @@
 		{#if chosenTab == 'profile'}
 			<div class="info">
 				<section>
-					<img src={data.user.image_url} alt="Profile" />
+					<img src={nft_image} alt="Profile" />
 				</section>
 				<div style="width: 12px" />
 				<div class="input-fields">
@@ -113,10 +141,13 @@
 							<p class="light-40">nft id</p>
 						</div>
 						<input
-							class="flex-input"
+							class={`flex-input no-spinner ${
+								!fetching_image ? (is_owner ? 'success' : 'error') : ''
+							}`}
 							type="number"
 							bind:value={nft_id}
 							placeholder={data.user.nft_id}
+							on:change={() => getNft()}
 						/>
 					</div>
 				</div>
@@ -137,7 +168,13 @@
 			</div>
 			<div style="height: 16px" />
 			<div class="bio">
-				<textarea rows="17" size="520" bind:value={data.user.bio} />
+				<textarea
+					rows="17"
+					size="520"
+					maxlength="1000"
+					placeholder="enter bio here..."
+					bind:value={data.user.bio}
+				/>
 			</div>
 		{:else if chosenTab == 'skills'}
 			{#each data.user.skills as skill, i}
@@ -159,6 +196,7 @@
 <style>
 	textarea {
 		width: 100%;
+		resize: none;
 	}
 	img {
 		width: 188px;
@@ -220,5 +258,11 @@
 	.flex-input {
 		height: 32px;
 		flex: 1;
+	}
+	.error {
+		border-color: var(--color-error);
+	}
+	.success:focus {
+		border-color: var(--color-success);
 	}
 </style>
