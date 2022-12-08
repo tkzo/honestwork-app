@@ -1,7 +1,41 @@
 <script lang="ts">
 	import Skill from '$lib/components/cards/Skill.svelte';
-	import { userAddress, userConnected } from '$lib/stores/Network';
+	import { connectWallet, userAddress, userConnected } from '$lib/stores/Network';
 	import { onMount } from 'svelte';
+
+	/*
+	 * General utils for managing cookies in Typescript.
+	 */
+	export function setCookie(name: string, val: string) {
+		const date = new Date();
+		const value = val;
+
+		// Set it expire in 7 days
+		date.setTime(date.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+		// Set it
+		document.cookie = name + '=' + value + '; expires=' + date.toUTCString() + '; path=/';
+	}
+
+	export function getCookie(name: string) {
+		const value = '; ' + document.cookie;
+		console.log('Value:', value);
+		const parts = value.split('; ' + name + '=');
+
+		if (parts.length == 2) {
+			return parts.pop()?.split(';').shift();
+		}
+	}
+
+	export function deleteCookie(name: string) {
+		const date = new Date();
+
+		// Set it expire in -1 days
+		date.setTime(date.getTime() + -1 * 24 * 60 * 60 * 1000);
+
+		// Set it
+		document.cookie = name + '=; expires=' + date.toUTCString() + '; path=/';
+	}
 
 	//todo: add non-gateway image resolver
 	//todo: add wrong account, switch to correct account
@@ -10,9 +44,9 @@
 
 	export let data: any;
 	let placeholder_image = 'assets/xcopy.gif';
+	let correct_address: boolean;
 
 	let links: string[] = data.user.links;
-
 	let myform: HTMLFormElement;
 	let chosenTab = 'profile';
 	let nft_image: string = placeholder_image;
@@ -39,7 +73,9 @@
 	};
 
 	onMount(async () => {
+		await connectWallet();
 		await getNft();
+		correct_address = $userAddress.toLowerCase() == data.user.address.toLowerCase();
 	});
 
 	$: if (fetching_image) {
@@ -52,20 +88,26 @@
 	const getNft = async () => {
 		fetching_image = true;
 		infobox_show = false;
-		const response = await fetch(`api/alchemy/${nft_address}/${nft_id}`);
-		if (response.ok) {
-			const data = await response.json();
-			fetching_image = false;
-			nft_image = data.image;
-			is_owner = data.owners.includes($userAddress.toLowerCase());
-			if (!is_owner && inputSettings.title == 'nft_id') {
-				infobox_previous_content = inputSettings.infobox_content;
-				inputSettings.infobox_content = "you don't own this nft.";
-				infobox_show = true;
-			} else if (is_owner && inputSettings.title == 'nft_id') {
-				inputSettings.infobox_content =
-					'your nft address will be used to identify you on the platform.';
-				infobox_show = true;
+		if (nft_address && nft_id) {
+			try {
+				const response = await fetch(`api/alchemy/${nft_address}/${nft_id}`);
+				if (response.ok) {
+					const data = await response.json();
+					fetching_image = false;
+					nft_image = data.image;
+					is_owner = data.owners.includes($userAddress.toLowerCase());
+					if (!is_owner && inputSettings.title == 'nft_id') {
+						infobox_previous_content = inputSettings.infobox_content;
+						inputSettings.infobox_content = "you don't own this nft.";
+						infobox_show = true;
+					} else if (is_owner && inputSettings.title == 'nft_id') {
+						inputSettings.infobox_content =
+							'your nft address will be used to identify you on the platform.';
+						infobox_show = true;
+					}
+				}
+			} catch (err) {
+				console.log(err);
 			}
 		}
 	};
@@ -123,176 +165,182 @@
 </svelte:head>
 
 <main>
-	<form method="POST" bind:this={myform}>
-		<div style="height: 12px" />
-		<section class="bar">
-			<div class="tabs">
-				<p
-					class={`tab link semibold ${chosenTab == 'profile' ? 'yellow' : 'light-60'}`}
-					on:click={() => toggle('profile')}
-					on:keydown
-				>
-					profile
-				</p>
-				<p
-					class={`tab link semibold ${chosenTab == 'skills' ? 'yellow' : 'light-60'}`}
-					on:click={() => toggle('skills')}
-					on:keydown
-				>
-					skills
-				</p>
-				<p
-					class={`tab link semibold ${chosenTab == 'past jobs' ? 'yellow' : 'light-60'}`}
-					on:click={() => toggle('past jobs')}
-					on:keydown
-				>
-					past jobs
-				</p>
-			</div>
-			<p class="yellow semibold link">save changes</p>
-		</section>
-		<div style="height: 12px" />
-		{#if chosenTab == 'profile'}
-			<section
-				class="infobox"
-				style={`margin-top:${inputSettings.infobox_distance}px; opacity:${
-					infobox_show ? '1' : '0'
-				}; `}
-			>
-				<p
-					class="light-60"
-					style={`color:${
-						!is_owner && inputSettings.title == 'nft_id' && !fetching_image ? 'red' : ''
-					}`}
-				>
-					{inputSettings.infobox_content}
-				</p>
+	{#if correct_address}
+		<form method="POST" bind:this={myform}>
+			<div style="height: 12px" />
+			<section class="bar">
+				<div class="tabs">
+					<p
+						class={`tab link semibold ${chosenTab == 'profile' ? 'yellow' : 'light-60'}`}
+						on:click={() => toggle('profile')}
+						on:keydown
+					>
+						profile
+					</p>
+					<p
+						class={`tab link semibold ${chosenTab == 'skills' ? 'yellow' : 'light-60'}`}
+						on:click={() => toggle('skills')}
+						on:keydown
+					>
+						skills
+					</p>
+					<p
+						class={`tab link semibold ${chosenTab == 'past jobs' ? 'yellow' : 'light-60'}`}
+						on:click={() => toggle('past jobs')}
+						on:keydown
+					>
+						past jobs
+					</p>
+				</div>
+				<p class="yellow semibold link">save changes</p>
 			</section>
-			<div class="info">
-				<section>
-					<img src={nft_image} alt="Profile" />
+			<div style="height: 12px" />
+			{#if chosenTab == 'profile'}
+				<section
+					class="infobox"
+					style={`margin-top:${inputSettings.infobox_distance}px; opacity:${
+						infobox_show ? '1' : '0'
+					}; `}
+				>
+					<p
+						class="light-60"
+						style={`color:${
+							!is_owner && inputSettings.title == 'nft_id' && !fetching_image ? 'red' : ''
+						}`}
+					>
+						{inputSettings.infobox_content}
+					</p>
 				</section>
-				<div style="width: 12px" />
-				<div class="input-fields">
-					<div class="input-field">
-						<div class="placeholder">
-							<p class="light-40">username</p>
+				<div class="info">
+					<section>
+						<img src={nft_image} alt="Profile" />
+					</section>
+					<div style="width: 12px" />
+					<div class="input-fields">
+						<div class="input-field">
+							<div class="placeholder">
+								<p class="light-40">username</p>
+							</div>
+							<input
+								class="flex-input"
+								type="text"
+								bind:value={username}
+								placeholder={data.user.username}
+								on:focus={() => focusInput('username')}
+								on:focusout={() => deFocusInput()}
+							/>
 						</div>
-						<input
-							class="flex-input"
-							type="text"
-							bind:value={username}
-							placeholder={data.user.username}
-							on:focus={() => focusInput('username')}
-							on:focusout={() => deFocusInput()}
-						/>
-					</div>
-					<div style="height: 8px" />
-					<div class="input-field">
-						<div class="placeholder">
-							<p class="light-40">title</p>
+						<div style="height: 8px" />
+						<div class="input-field">
+							<div class="placeholder">
+								<p class="light-40">title</p>
+							</div>
+							<input
+								class="flex-input"
+								type="text"
+								bind:value={title}
+								placeholder={data.user.title}
+								on:focus={() => focusInput('title')}
+								on:focusout={() => deFocusInput()}
+							/>
 						</div>
-						<input
-							class="flex-input"
-							type="text"
-							bind:value={title}
-							placeholder={data.user.title}
-							on:focus={() => focusInput('title')}
-							on:focusout={() => deFocusInput()}
-						/>
-					</div>
-					<div style="height: 8px" />
-					<div class="input-field">
-						<div class="placeholder">
-							<p class="light-40">email</p>
+						<div style="height: 8px" />
+						<div class="input-field">
+							<div class="placeholder">
+								<p class="light-40">email</p>
+							</div>
+							<input
+								class="flex-input"
+								type="text"
+								bind:value={email}
+								placeholder={data.user.email}
+								on:focus={() => focusInput('email')}
+								on:focusout={() => deFocusInput()}
+							/>
 						</div>
-						<input
-							class="flex-input"
-							type="text"
-							bind:value={email}
-							placeholder={data.user.email}
-							on:focus={() => focusInput('email')}
-							on:focusout={() => deFocusInput()}
-						/>
-					</div>
-					<div style="height: 8px" />
-					<div class="input-field">
-						<div class="placeholder">
-							<p class="light-40">nft address</p>
+						<div style="height: 8px" />
+						<div class="input-field">
+							<div class="placeholder">
+								<p class="light-40">nft address</p>
+							</div>
+							<input
+								class="flex-input"
+								type="text"
+								bind:value={nft_address}
+								placeholder={data.user.nft_address}
+								on:focus={() => focusInput('nft_address')}
+								on:focusout={() => deFocusInput()}
+							/>
 						</div>
-						<input
-							class="flex-input"
-							type="text"
-							bind:value={nft_address}
-							placeholder={data.user.nft_address}
-							on:focus={() => focusInput('nft_address')}
-							on:focusout={() => deFocusInput()}
-						/>
-					</div>
-					<div style="height: 8px" />
-					<div class="input-field">
-						<div class="placeholder">
-							<p class="light-40">nft id</p>
+						<div style="height: 8px" />
+						<div class="input-field">
+							<div class="placeholder">
+								<p class="light-40">nft id</p>
+							</div>
+							<input
+								class={`flex-input no-spinner ${
+									!fetching_image ? (is_owner ? 'success' : 'error') : ''
+								}`}
+								type="number"
+								bind:value={nft_id}
+								placeholder={data.user.nft_id}
+								on:input={() => getNft()}
+								on:focus={() => focusInput('nft_id')}
+								on:focusout={() => deFocusInput()}
+							/>
 						</div>
-						<input
-							class={`flex-input no-spinner ${
-								!fetching_image ? (is_owner ? 'success' : 'error') : ''
-							}`}
-							type="number"
-							bind:value={nft_id}
-							placeholder={data.user.nft_id}
-							on:input={() => getNft()}
-							on:focus={() => focusInput('nft_id')}
-							on:focusout={() => deFocusInput()}
-						/>
 					</div>
 				</div>
-			</div>
-			<div style="height: 16px" />
-			<div class="links">
-				{#each data.user.links as link, i}
-					<div class="input-field">
-						<div class="placeholder">
-							<p class="light-40">link</p>
+				<div style="height: 16px" />
+				{#if data.user.links}
+					<div class="links">
+						{#each data.user.links as link, i}
+							<div class="input-field">
+								<div class="placeholder">
+									<p class="light-40">link</p>
+								</div>
+								<input class="flex-input" type="text" placeholder={link} bind:value={links[i]} />
+							</div>
+							{#if i < data.user.links.length - 1}
+								<div style="height: 8px" />
+							{/if}
+						{/each}
+					</div>
+				{/if}
+				<div style="height: 16px" />
+				<div class="bio">
+					<textarea
+						rows="17"
+						size="520"
+						maxlength="1000"
+						placeholder="enter bio here..."
+						bind:value={data.user.bio}
+					/>
+				</div>
+			{:else if chosenTab == 'skills'}
+				{#if chosen_skill_slot == -1}
+					{#each data.user.skills as skill, i}
+						<div on:click={() => (chosen_skill_slot = i)} on:keydown>
+							<Skill
+								slot={skill.slot}
+								title={skill.title}
+								description={skill.description}
+								image_urls={skill.image_urls}
+								minimum_price={skill.minimum_price}
+							/>
 						</div>
-						<input class="flex-input" type="text" placeholder={link} bind:value={links[i]} />
-					</div>
-					{#if i < data.user.links.length - 1}
-						<div style="height: 8px" />
-					{/if}
-				{/each}
-			</div>
-			<div style="height: 16px" />
-			<div class="bio">
-				<textarea
-					rows="17"
-					size="520"
-					maxlength="1000"
-					placeholder="enter bio here..."
-					bind:value={data.user.bio}
-				/>
-			</div>
-		{:else if chosenTab == 'skills'}
-			{#if chosen_skill_slot == -1}
-				{#each data.user.skills as skill, i}
-					<div on:click={() => (chosen_skill_slot = i)} on:keydown>
-						<Skill
-							slot={skill.slot}
-							title={skill.title}
-							description={skill.description}
-							image_urls={skill.image_urls}
-							minimum_price={skill.minimum_price}
-						/>
-					</div>
-					{#if i < data.user.skills.length - 1}
-						<div style="height: 12px" />
-					{/if}
-				{/each}
-			{:else}
-				<p>skill edit</p>
+						{#if i < data.user.skills?.length - 1}
+							<div style="height: 12px" />
+						{/if}
+					{/each}
+				{:else}
+					<p>skill edit</p>
+				{/if}
 			{/if}
-		{/if}
-	</form>
+		</form>
+	{:else}
+		<p>Wrong account</p>
+	{/if}
 </main>
 
 <style>

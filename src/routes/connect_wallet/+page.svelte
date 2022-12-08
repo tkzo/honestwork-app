@@ -11,7 +11,7 @@
 	import { ethers } from 'ethers';
 	import { goto } from '$app/navigation';
 
-	let token_address = '0x32058e2CCdAA0b4615994362d44cC64dFFd3340A';
+	let token_address = '0x2FF8bcE87314356276D5582Ebd204392B16f0941';
 	let state, name, email;
 
 	const newPost = async () => {
