@@ -8,28 +8,6 @@
 	} from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 
-	// const newPost = async () => {
-	// 	const signature = await $networkSigner.signMessage('post');
-	// 	const url = `http://localhost:3001/posts/new/${$userAddress}/${signature}`;
-
-	// 	let response = await fetch(url, {
-	// 		method: 'POST',
-	// 		body: JSON.stringify({
-	// 			address: '0xfB1C2FF46962B452C1731d44F0789bFb3607e63f',
-	// 			title: "I'll convert your PNG into JPEG",
-	// 			text: 'This is a nice text right here.',
-	// 			formats: ['PNG', 'JPG'],
-	// 			images: ['url.com/pic1.png', 'url.com/pic2.jpg']
-	// 		})
-	// 	});
-	// 	if (response.ok) {
-	// 		let json = await response.json();
-	// 		console.log(json);
-	// 	} else {
-	// 		alert('HTTP-Error: ' + response.status);
-	// 	}
-	// };
-
 	// const checkUserAvailable = async () => {
 	// 	const url = `http://localhost:3002/users/${$userAddress}`;
 	// 	let response = await fetch(url);

@@ -1,4 +1,4 @@
-import { redirect } from '@sveltejs/kit';
+import { json, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import type { Actions } from './$types';
 
@@ -20,10 +20,12 @@ const validateSignature = async (address: string, userSignature: string, userSal
 	let response = await fetch(url);
 	if (response.ok) {
 		let json = await response.json();
-		if (json.salt != userSalt || json.signature != userSignature) {
-			throw 404;
+		if (json.signature) {
+			if (json.salt != userSalt || json.signature != userSignature) {
+				throw 404;
+			}
+			return json;
 		}
-		return json;
 	} else {
 		console.log('HTTP-Error: ' + response.status);
 		return response.status;

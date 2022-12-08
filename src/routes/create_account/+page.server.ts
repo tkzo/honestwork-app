@@ -13,15 +13,23 @@ export const load: PageServerLoad = ({ cookies }) => {
 };
 
 export const actions: Actions = {
-	default: async ({ cookies, request }) => {
+	default: async ({ cookies, request, fetch }) => {
 		const data = await request.formData();
 		const address = data.get('address');
 		const salt = data.get('salt');
 		const signature = data.get('signature');
 		if (salt && signature && address) {
-			cookies.set('address', address.toString());
-			cookies.set('salt', salt.toString());
-			cookies.set('signature', signature.toString());
+			const url = `http://localhost:3000/api/v1/users/${address}/${salt}/${signature}`;
+			let response = await fetch(url, {
+				method: 'POST'
+			});
+			//todo: fix api returns
+			let text = await response.text();
+			if (text != `"User doesn't have NFT."`) {
+				cookies.set('address', address.toString());
+				cookies.set('salt', salt.toString());
+				cookies.set('signature', signature.toString());
+			}
 		}
 	}
 };
