@@ -24,8 +24,6 @@
 	let infobox_show: boolean = false;
 	let infobox_previous_content: string;
 
-	$: console.log(is_owner, inputSettings.title);
-
 	type InputSettings = {
 		title: string;
 		infobox_distance: number;
@@ -50,19 +48,21 @@
 	};
 	const getNft = async () => {
 		fetching_image = true;
+		infobox_show = false;
 		const response = await fetch(`api/alchemy/${nft_address}/${nft_id}`);
 		if (response.ok) {
 			const data = await response.json();
 			fetching_image = false;
 			nft_image = data.image;
 			is_owner = data.owners.includes($userAddress.toLowerCase());
-			if (!is_owner) {
+			if (!is_owner && inputSettings.title == 'nft_id') {
 				infobox_previous_content = inputSettings.infobox_content;
 				inputSettings.infobox_content = "you don't own this nft.";
-			} else {
-				if (infobox_previous_content) {
-					inputSettings.infobox_content = infobox_previous_content;
-				}
+				infobox_show = true;
+			} else if (is_owner && inputSettings.title == 'nft_id') {
+				inputSettings.infobox_content =
+					'your nft address will be used to identify you on the platform.';
+				infobox_show = true;
 			}
 		}
 	};

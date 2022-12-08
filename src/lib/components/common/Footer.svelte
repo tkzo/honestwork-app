@@ -46,6 +46,9 @@
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
+		position: fixed;
+		bottom: 0px;
+		width: 100%;
 	}
 	.brand-section {
 		height: 32px;

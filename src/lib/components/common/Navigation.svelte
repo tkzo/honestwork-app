@@ -52,6 +52,8 @@
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
+		position: fixed;
+		width: 100%;
 	}
 	.logo-section {
 		height: 32px;

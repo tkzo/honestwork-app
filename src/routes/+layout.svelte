@@ -12,8 +12,20 @@
 	});
 </script>
 
-<Navigation />
-<Notification />
-<slot />
-<div style="min-height: 32px; flex:1;" />
-<Footer />
+<main>
+	<Navigation />
+	<div style="height: 32px;" />
+	<Notification />
+	<slot />
+	<div style="height: 32px; flex:1; margin-bottom: auto;" />
+	<Footer />
+</main>
+
+<style>
+	main {
+		width: 100%;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+	}
+</style>

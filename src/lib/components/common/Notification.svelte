@@ -10,10 +10,8 @@
 			<div style="width:8px" />
 			<p>😱</p>
 			<div style="width:8px" />
-
 			<p class="light-80">-></p>
 			<div style="width:8px" />
-
 			<p class="yellow semibold link">mint your pass now</p>
 		</div>
 	{/if}
