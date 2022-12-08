@@ -11,6 +11,8 @@
 	export let data: any;
 	let placeholder_image = 'assets/xcopy.gif';
 
+	let links: string[] = data.user.links;
+
 	let myform: HTMLFormElement;
 	let chosenTab = 'profile';
 	let nft_image: string = placeholder_image;
@@ -23,6 +25,7 @@
 	let fetching_image = true;
 	let infobox_show: boolean = false;
 	let infobox_previous_content: string;
+	let chosen_skill_slot: number = -1;
 
 	type InputSettings = {
 		title: string;
@@ -125,21 +128,21 @@
 		<section class="bar">
 			<div class="tabs">
 				<p
-					class={`tab link ${chosenTab == 'profile' ? 'yellow' : 'light-60'}`}
+					class={`tab link semibold ${chosenTab == 'profile' ? 'yellow' : 'light-60'}`}
 					on:click={() => toggle('profile')}
 					on:keydown
 				>
 					profile
 				</p>
 				<p
-					class={`tab link ${chosenTab == 'skills' ? 'yellow' : 'light-60'}`}
+					class={`tab link semibold ${chosenTab == 'skills' ? 'yellow' : 'light-60'}`}
 					on:click={() => toggle('skills')}
 					on:keydown
 				>
 					skills
 				</p>
 				<p
-					class={`tab link ${chosenTab == 'past jobs' ? 'yellow' : 'light-60'}`}
+					class={`tab link semibold ${chosenTab == 'past jobs' ? 'yellow' : 'light-60'}`}
 					on:click={() => toggle('past jobs')}
 					on:keydown
 				>
@@ -149,7 +152,6 @@
 			<p class="yellow semibold link">save changes</p>
 		</section>
 		<div style="height: 12px" />
-
 		{#if chosenTab == 'profile'}
 			<section
 				class="infobox"
@@ -253,7 +255,7 @@
 						<div class="placeholder">
 							<p class="light-40">link</p>
 						</div>
-						<input class="flex-input" type="text" placeholder={link} />
+						<input class="flex-input" type="text" placeholder={link} bind:value={links[i]} />
 					</div>
 					{#if i < data.user.links.length - 1}
 						<div style="height: 8px" />
@@ -271,18 +273,24 @@
 				/>
 			</div>
 		{:else if chosenTab == 'skills'}
-			{#each data.user.skills as skill, i}
-				<Skill
-					slot={skill.slot}
-					title={skill.title}
-					description={skill.description}
-					image_urls={skill.image_urls}
-					minimum_price={skill.minimum_price}
-				/>
-				{#if i < data.user.skills.length - 1}
-					<div style="height: 12px" />
-				{/if}
-			{/each}
+			{#if chosen_skill_slot == -1}
+				{#each data.user.skills as skill, i}
+					<div on:click={() => (chosen_skill_slot = i)} on:keydown>
+						<Skill
+							slot={skill.slot}
+							title={skill.title}
+							description={skill.description}
+							image_urls={skill.image_urls}
+							minimum_price={skill.minimum_price}
+						/>
+					</div>
+					{#if i < data.user.skills.length - 1}
+						<div style="height: 12px" />
+					{/if}
+				{/each}
+			{:else}
+				<p>skill edit</p>
+			{/if}
 		{/if}
 	</form>
 </main>
@@ -346,7 +354,7 @@
 		padding: 8px 12px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: rgba(255, 255, 255, 0.2);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 	}
 	.flex-input {

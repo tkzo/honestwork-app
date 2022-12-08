@@ -28,7 +28,7 @@
 		<div class="tags">
 			{#each tags as tag}
 				<div class="tag border-all">
-					<p class="light-40">{tag}</p>
+					<p class="light-40 link">{tag}</p>
 				</div>
 				{#if tag != tags[tags.length - 1]}
 					<div style="width: 4px" />
@@ -98,6 +98,6 @@
 		padding: 4px 8px;
 	}
 	.tag:hover {
-		background-color: var(--color-light-20);
+		background-color: var(--color-primary);
 	}
 </style>

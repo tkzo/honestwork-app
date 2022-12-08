@@ -1,38 +1,53 @@
 @font-face {
 	font-family: 'Proto Mono';
-	src: url('../fonts/ProtoMono-Light.otf') format('otf'),
-		url('../fonts/ProtoMono-LightShadow.otf') format('otf'),
-		url('../fonts/ProtoMono-Medium.otf') format('otf'),
-		url('../fonts/ProtoMono-MediumShadow.otf') format('otf'),
-		url('../fonts/ProtoMono-SemiBold.otf') format('otf'),
-		url('../fonts/ProtoMono-SemiBoldShadow.otf') format('otf');
+	font-style: normal;
 	font-weight: 400, 500, 600, 700;
+	src: local(''), url('fonts/ProtoMono-Light.otf') format('otf'),
+		url('fonts/ProtoMono-LightShadow.otf') format('otf'),
+		url('fonts/ProtoMono-Medium.otf') format('otf'),
+		url('fonts/ProtoMono-MediumShadow.otf') format('otf'),
+		url('fonts/ProtoMono-SemiBold.otf') format('otf'),
+		url('fonts/ProtoMono-SemiBoldShadow.otf') format('otf');
 }
 
 :root {
-	--color-dark: #070707;
+	--color-dark: #0c0c0c;
 	--color-light: #ffffff;
 	--color-light-80: rgba(255, 255, 255, 0.8);
 	--color-light-60: rgba(255, 255, 255, 0.6);
 	--color-light-40: rgba(255, 255, 255, 0.4);
 	--color-light-20: rgba(255, 255, 255, 0.2);
 	--color-light-2: rgba(255, 255, 255, 0.02);
-	--color-primary: #fcef50;
+	--color-primary: #ffd369;
+	--color-error: red;
+	--color-success: green;
+	font-family: 'Proto Mono';
+	color: var(--color-light);
+}
+
+/* :root {
+	--color-dark: #dddddd;
+	--color-light: #000000;
+	--color-light-80: rgba(0, 0, 0, 0.8);
+	--color-light-60: rgba(0, 0, 0, 0.6);
+	--color-light-40: rgba(0, 0, 0, 0.4);
+	--color-light-20: rgba(0, 0, 0, 0.2);
+	--color-light-2: rgba(0, 0, 0, 0.02);
+	--color-primary: #ff4c29;
 	--color-error: red;
 	--color-success: green;
 	font-family: 'Proto Mono', monospace;
 	color: var(--color-light);
-}
+} */
 
 body {
 	min-height: 100vh;
 	min-width: 100vw;
 	margin: 0;
 	background-color: var(--color-dark);
-	/* background-image: url('assets/bg.webp'); */
+	/* background-image: url('assets/groovepaper.png');
+	background-repeat: repeat; */
 	background-size: 100vw 100vh;
-	/* border-width: 0px 1px; */
-	/* border-style: solid; */
 	border-color: var(--color-light-20);
 	box-sizing: border-box;
 	display: flex;
@@ -109,8 +124,8 @@ a:visited {
 }
 
 .link:hover {
-	color: var(--color-primary);
-	text-shadow: 0px 0px 10px var(--color-primary);
+	background-color: var(--color-primary);
+	color: var(--color-dark);
 }
 
 input {
@@ -134,7 +149,6 @@ input {
 	border-color: var(--color-light-20);
 	font-size: 12px;
 	line-height: 16px;
-	/* text-align: center; */
 }
 
 textarea {
@@ -148,10 +162,16 @@ textarea {
 	border-color: var(--color-light-20);
 	font-size: 12px;
 	line-height: 16px;
-	/* text-align: center; */
 }
 
 input:focus {
+	border: none;
+	border-width: 1px;
+	border-style: solid;
+	border-color: var(--color-primary);
+}
+
+textarea:focus {
 	border: none;
 	border-width: 1px;
 	border-style: solid;

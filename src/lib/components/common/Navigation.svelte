@@ -6,19 +6,31 @@
 <main>
 	<div class="logo-section">
 		<a href="/">
-			<p class="yellow semibold">honestwork</p>
+			<p class="yellow semibold link">honestwork</p>
 		</a>
 		<div style="width:8px" />
-		<p class="light-40 ">v0.10</p>
+		<p class="light-40">v0.10</p>
 	</div>
 	<div class="menu-section">
 		<a href="/jobs">
-			<p class={$page.route.id == '/jobs' ? 'yellow semibold link' : 'light-60 link'}>jobs</p>
+			<p class={$page.route.id == '/jobs' ? 'yellow semibold link' : 'light-60 semibold link'}>
+				jobs
+			</p>
 		</a>
 		<div style="width:8px" />
+		<p class="light-60">/</p>
+		<div style="width:8px" />
 		<a href="/creators">
-			<p class={$page.route.id == '/creators' ? 'yellow semibold link' : 'light-60 link'}>
+			<p class={$page.route.id == '/creators' ? 'yellow semibold link' : 'light-60 semibold link'}>
 				creators
+			</p>
+		</a>
+		<div style="width:8px" />
+		<p class="light-60">/</p>
+		<div style="width:8px" />
+		<a href="/projects">
+			<p class={$page.route.id == '/projects' ? 'yellow semibold link' : 'light-60 semibold link'}>
+				projects
 			</p>
 		</a>
 	</div>
@@ -35,7 +47,7 @@
 			</p>
 			<div style="width:8px" />
 			<a href={`/api/auth?address=${$userAddress}`}>
-				<p class="yellow semibold">takez0_o</p>
+				<p class="yellow semibold link">takez0_o</p>
 			</a>
 		{/if}
 	</div>
@@ -46,7 +58,7 @@
 		background: var(--color-dark);
 		border-width: 1px 0px;
 		border-style: solid;
-		border-color: rgba(255, 255, 255, 0.2);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: row;
@@ -64,7 +76,7 @@
 		padding: 8px 12px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: rgba(255, 255, 255, 0.2);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 	}
 	.menu-section {
@@ -85,10 +97,10 @@
 		padding: 8px 12px;
 		border-width: 0px 0px 0px 1px;
 		border-style: solid;
-		border-color: rgba(255, 255, 255, 0.2);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 	}
-	@-webkit-keyframes rotating {
+	@keyframes rotating {
 		from {
 			-webkit-transform: rotate(0deg);
 		}
@@ -99,5 +111,6 @@
 
 	.rotating {
 		-webkit-animation: rotating 3s linear infinite;
+		animation: rotating 3s linear infinite;
 	}
 </style>
