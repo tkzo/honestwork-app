@@ -140,7 +140,7 @@ input {
 textarea {
 	background-color: var(--color-dark);
 	font-family: 'Proto Mono', monospace;
-	color: var(--color-light);
+	color: var(--color-light-80);
 	padding: 8px;
 	box-sizing: border-box;
 	border-width: 1px;

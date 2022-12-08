@@ -5,9 +5,10 @@
 
 	//todo: add non-gateway image resolver
 	//todo: add wrong account, switch to correct account
-	//todo: type declaration
-	export let data: any;
+	//todo: type declaration of data
+	//todo: refactor input fields into a component
 
+	export let data: any;
 	let placeholder_image = 'assets/xcopy.gif';
 
 	let myform: HTMLFormElement;
@@ -20,6 +21,21 @@
 	let nft_id: number = data.user.nft_id;
 	let nft_address: string = data.user.nft_address;
 	let fetching_image = true;
+	let infobox_show: boolean = false;
+	let infobox_previous_content: string;
+
+	$: console.log(is_owner, inputSettings.title);
+
+	type InputSettings = {
+		title: string;
+		infobox_distance: number;
+		infobox_content: string;
+	};
+	let inputSettings: InputSettings = {
+		title: 'username',
+		infobox_distance: 0,
+		infobox_content: 'your username will be used to identify you on the platform.'
+	};
 
 	onMount(async () => {
 		await getNft();
@@ -32,7 +48,6 @@
 	const toggle = (tab: string) => {
 		chosenTab = tab;
 	};
-
 	const getNft = async () => {
 		fetching_image = true;
 		const response = await fetch(`api/alchemy/${nft_address}/${nft_id}`);
@@ -41,7 +56,61 @@
 			fetching_image = false;
 			nft_image = data.image;
 			is_owner = data.owners.includes($userAddress.toLowerCase());
+			if (!is_owner) {
+				infobox_previous_content = inputSettings.infobox_content;
+				inputSettings.infobox_content = "you don't own this nft.";
+			} else {
+				if (infobox_previous_content) {
+					inputSettings.infobox_content = infobox_previous_content;
+				}
+			}
 		}
+	};
+	const focusInput = (input: string) => {
+		infobox_show = true;
+		switch (input) {
+			case 'username':
+				inputSettings = {
+					title: 'username',
+					infobox_distance: 0,
+					infobox_content: 'your username will be used to identify you on the platform.'
+				};
+				break;
+			case 'title':
+				inputSettings = {
+					title: 'title',
+					infobox_distance: 40,
+					infobox_content: 'your title will be used to identify you on the platform.'
+				};
+				break;
+			case 'email':
+				inputSettings = {
+					title: 'email',
+					infobox_distance: 80,
+					infobox_content: 'your email will only be used to protocol level notifications.'
+				};
+				break;
+			case 'nft_address':
+				inputSettings = {
+					title: 'nft_address',
+					infobox_distance: 120,
+					infobox_content: 'your nft address will be used to identify you on the platform.'
+				};
+				break;
+			case 'nft_id':
+				if (fetching_image || is_owner) {
+					inputSettings.infobox_content =
+						'your nft id will be used to identify you on the platform.';
+				} else if (!is_owner) {
+					inputSettings.infobox_content = "you don't own this nft.";
+				}
+				inputSettings.title = 'nft_id';
+				inputSettings.infobox_distance = 160;
+				break;
+		}
+	};
+	const deFocusInput = () => {
+		infobox_show = false;
 	};
 </script>
 
@@ -56,21 +125,21 @@
 		<section class="bar">
 			<div class="tabs">
 				<p
-					class={`tab link ${chosenTab == 'profile' ? 'yellow' : ''}`}
+					class={`tab link ${chosenTab == 'profile' ? 'yellow' : 'light-60'}`}
 					on:click={() => toggle('profile')}
 					on:keydown
 				>
 					profile
 				</p>
 				<p
-					class={`tab link ${chosenTab == 'skills' ? 'yellow' : ''}`}
+					class={`tab link ${chosenTab == 'skills' ? 'yellow' : 'light-60'}`}
 					on:click={() => toggle('skills')}
 					on:keydown
 				>
 					skills
 				</p>
 				<p
-					class={`tab link ${chosenTab == 'past jobs' ? 'yellow' : ''}`}
+					class={`tab link ${chosenTab == 'past jobs' ? 'yellow' : 'light-60'}`}
 					on:click={() => toggle('past jobs')}
 					on:keydown
 				>
@@ -82,6 +151,21 @@
 		<div style="height: 12px" />
 
 		{#if chosenTab == 'profile'}
+			<section
+				class="infobox"
+				style={`margin-top:${inputSettings.infobox_distance}px; opacity:${
+					infobox_show ? '1' : '0'
+				}; `}
+			>
+				<p
+					class="light-60"
+					style={`color:${
+						!is_owner && inputSettings.title == 'nft_id' && !fetching_image ? 'red' : ''
+					}`}
+				>
+					{inputSettings.infobox_content}
+				</p>
+			</section>
 			<div class="info">
 				<section>
 					<img src={nft_image} alt="Profile" />
@@ -97,6 +181,8 @@
 							type="text"
 							bind:value={username}
 							placeholder={data.user.username}
+							on:focus={() => focusInput('username')}
+							on:focusout={() => deFocusInput()}
 						/>
 					</div>
 					<div style="height: 8px" />
@@ -109,6 +195,8 @@
 							type="text"
 							bind:value={title}
 							placeholder={data.user.title}
+							on:focus={() => focusInput('title')}
+							on:focusout={() => deFocusInput()}
 						/>
 					</div>
 					<div style="height: 8px" />
@@ -121,6 +209,8 @@
 							type="text"
 							bind:value={email}
 							placeholder={data.user.email}
+							on:focus={() => focusInput('email')}
+							on:focusout={() => deFocusInput()}
 						/>
 					</div>
 					<div style="height: 8px" />
@@ -133,6 +223,8 @@
 							type="text"
 							bind:value={nft_address}
 							placeholder={data.user.nft_address}
+							on:focus={() => focusInput('nft_address')}
+							on:focusout={() => deFocusInput()}
 						/>
 					</div>
 					<div style="height: 8px" />
@@ -147,7 +239,9 @@
 							type="number"
 							bind:value={nft_id}
 							placeholder={data.user.nft_id}
-							on:change={() => getNft()}
+							on:input={() => getNft()}
+							on:focus={() => focusInput('nft_id')}
+							on:focusout={() => deFocusInput()}
 						/>
 					</div>
 				</div>
@@ -264,5 +358,11 @@
 	}
 	.success:focus {
 		border-color: var(--color-success);
+	}
+	.infobox {
+		width: 240px;
+		padding: 8px;
+		position: absolute;
+		margin-left: 532px;
 	}
 </style>
