@@ -338,8 +338,18 @@
 				{/if}
 			{/if}
 		</form>
-	{:else}
-		<p>Wrong account</p>
+	{:else if $userConnected}
+		<div style="height: 16px" />
+		<section style="width:520px">
+			<div class="gm">
+				<div class="gm-inner">
+					<p class="yellow">wrong account</p>
+				</div>
+			</div>
+			<div class="gm">
+				<p>switch to <span class="yellow">{data.user.address}</span> to see this page.</p>
+			</div>
+		</section>
 	{/if}
 </main>
 
@@ -350,6 +360,7 @@
 	}
 	img {
 		width: 188px;
+		height: 188px;
 	}
 	.input-fields {
 		display: flex;
@@ -420,5 +431,20 @@
 		padding: 8px;
 		position: absolute;
 		margin-left: 532px;
+	}
+	.gm {
+		border-width: 0px 0px 1px 0px;
+		border-style: solid;
+		border-color: var(--color-light-20);
+		padding: 12px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+	.gm-inner {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
 	}
 </style>

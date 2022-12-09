@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Navigation from '$lib/components/common/Navigation.svelte';
 	import Footer from '$lib/components/common/Footer.svelte';
-	// import Notification from '$lib/components/common/Notification.svelte';
-	import { connectWallet, connecting } from '$lib/stores/Network';
+	import Notification from '$lib/components/common/Notification.svelte';
+	import { connectWallet, connecting, networkProvider } from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 
 	onMount(async () => {
@@ -22,7 +22,7 @@
 <main>
 	<Navigation />
 	<div style="height: 32px;" />
-	<!-- <Notification /> -->
+	<Notification />
 	<slot />
 	<div style="height: 64px;" />
 	<Footer />
@@ -34,5 +34,6 @@
 		position: relative;
 		display: flex;
 		flex-direction: column;
+		align-items: center;
 	}
 </style>

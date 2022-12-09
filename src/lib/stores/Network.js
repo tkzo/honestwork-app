@@ -3,17 +3,20 @@ import { ethers } from 'ethers';
 
 export let userConnected = writable(false);
 export let userAddress = writable('');
-export let networkProvider = writable('');
+export let networkProvider = writable();
 export let networkSigner = writable();
 export let chainID = writable('');
 export let userState = writable(0);
-
 export let connecting = writable(false);
 
+export let token_address = '0x2FF8bcE87314356276D5582Ebd204392B16f0941';
+
 export const connectWallet = async () => {
+	connecting.set(true);
 	try {
 		const provider = new ethers.providers.Web3Provider(window.ethereum);
 		await provider.send('eth_requestAccounts', []);
+		console.log('Received accounts.');
 		const signer = provider.getSigner();
 		networkProvider.set(provider);
 		networkSigner.set(signer);
@@ -21,19 +24,26 @@ export const connectWallet = async () => {
 		userAddress.set(addr);
 		chainID.set(await signer.getChainId());
 		userConnected.set(true);
+		console.log('States set.');
 		await fetchUserState(signer, addr);
+		console.log('NFT state fetched.');
+		window.ethereum.on('accountsChanged', function () {
+			console.log('Account changed!');
+			window.location.reload();
+		});
+		window.ethereum.on('chainChanged', function () {
+			console.log('Chain changed!');
+			window.location.reload();
+		});
 	} catch (err) {
 		console.log('error:', err);
 	}
+	connecting.set(false);
 };
 
 const fetchUserState = async (signer, addr) => {
 	try {
-		const contract = new ethers.Contract(
-			'0x32058e2CCdAA0b4615994362d44cC64dFFd3340A',
-			token_abi,
-			signer
-		);
+		const contract = new ethers.Contract(token_address, token_abi, signer);
 		let state = await contract.getUserState(addr);
 		userState.set(state);
 	} catch (err) {
