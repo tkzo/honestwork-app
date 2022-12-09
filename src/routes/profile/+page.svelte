@@ -1,7 +1,18 @@
 <script lang="ts">
 	import Skill from '$lib/components/cards/Skill.svelte';
-	import { connectWallet, userAddress, userConnected, userState } from '$lib/stores/Network';
+	import {
+		connectWallet,
+		userAddress,
+		userConnected,
+		userState,
+		token_abi,
+		token_address,
+		networkSigner
+	} from '$lib/stores/Network';
 	import { onMount } from 'svelte';
+	import { ethers } from 'ethers';
+	import { redirect } from '@sveltejs/kit';
+	import { goto } from '$app/navigation';
 
 	/*
 	 * General utils for managing cookies in Typescript.
@@ -76,6 +87,8 @@
 		await connectWallet();
 		await getNft();
 		correct_address = $userAddress.toLowerCase() == data.user.address.toLowerCase();
+		console.log('Wallet address:', $userAddress.toLowerCase());
+		console.log('DB address:', data.user.address.toLowerCase());
 	});
 
 	$: if (fetching_image) {
@@ -157,7 +170,21 @@
 	const deFocusInput = () => {
 		infobox_show = false;
 	};
-	const soulbind = async () => {};
+	const soulbind = async () => {
+		if ($userState == 1) {
+			try {
+				const contract = new ethers.Contract(token_address, token_abi, $networkSigner);
+				const tx = await contract.bind();
+				const receipt = await tx.wait();
+				if (receipt.status == 1) {
+					console.log(receipt.status);
+					goto('/profile');
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	};
 </script>
 
 <svelte:head>
@@ -353,7 +380,7 @@
 				{/if}
 			{/if}
 		</form>
-	{:else if $userState == 1}
+	{:else if correct_address && $userState == 1}
 		<section>
 			<div class="gm">
 				<div class="gm-inner">
