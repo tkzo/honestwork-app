@@ -16,6 +16,18 @@
 				<p class="yellow semibold link">mint your pass now</p>
 			</a>
 		</div>
+	{:else if $userState == 1}
+		<div class="bar">
+			<p class="light-80">your nft is not soulbound.</p>
+			<div style="width:8px" />
+			<p>😱</p>
+			<div style="width:8px" />
+			<p class="light-80">-></p>
+			<div style="width:8px" />
+			<a href="/bind">
+				<p class="yellow semibold link">bind your nft now</p>
+			</a>
+		</div>
 	{/if}
 </main>
 

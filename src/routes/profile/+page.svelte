@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Skill from '$lib/components/cards/Skill.svelte';
-	import { connectWallet, userAddress, userConnected } from '$lib/stores/Network';
+	import { connectWallet, userAddress, userConnected, userState } from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 
 	/*
@@ -157,6 +157,7 @@
 	const deFocusInput = () => {
 		infobox_show = false;
 	};
+	const soulbind = async () => {};
 </script>
 
 <svelte:head>
@@ -165,7 +166,7 @@
 </svelte:head>
 
 <main>
-	{#if correct_address}
+	{#if correct_address && $userState > 1}
 		<form method="POST" bind:this={myform}>
 			<div style="height: 12px" />
 			<section class="bar">
@@ -192,7 +193,7 @@
 						past jobs
 					</p>
 				</div>
-				<p class="yellow semibold link">save changes</p>
+				<button class="yellow semibold link">update profile</button>
 			</section>
 			<div style="height: 12px" />
 			{#if chosenTab == 'profile'}
@@ -222,6 +223,7 @@
 								<p class="light-40">username</p>
 							</div>
 							<input
+								name="username"
 								class="flex-input"
 								type="text"
 								bind:value={username}
@@ -236,6 +238,7 @@
 								<p class="light-40">title</p>
 							</div>
 							<input
+								name="title"
 								class="flex-input"
 								type="text"
 								bind:value={title}
@@ -250,8 +253,9 @@
 								<p class="light-40">email</p>
 							</div>
 							<input
+								name="email"
 								class="flex-input"
-								type="text"
+								type="email"
 								bind:value={email}
 								placeholder={data.user.email}
 								on:focus={() => focusInput('email')}
@@ -264,6 +268,7 @@
 								<p class="light-40">nft address</p>
 							</div>
 							<input
+								name="nft_address"
 								class="flex-input"
 								type="text"
 								bind:value={nft_address}
@@ -278,6 +283,7 @@
 								<p class="light-40">nft id</p>
 							</div>
 							<input
+								name="nft_id"
 								class={`flex-input no-spinner ${
 									!fetching_image ? (is_owner ? 'success' : 'error') : ''
 								}`}
@@ -299,7 +305,13 @@
 								<div class="placeholder">
 									<p class="light-40">link</p>
 								</div>
-								<input class="flex-input" type="text" placeholder={link} bind:value={links[i]} />
+								<input
+									name={`link-${i}`}
+									class="flex-input"
+									type="text"
+									placeholder={link}
+									bind:value={links[i]}
+								/>
 							</div>
 							{#if i < data.user.links.length - 1}
 								<div style="height: 8px" />
@@ -310,6 +322,7 @@
 				<div style="height: 16px" />
 				<div class="bio">
 					<textarea
+						name="bio"
 						rows="17"
 						size="520"
 						maxlength="1000"
@@ -340,6 +353,17 @@
 				{/if}
 			{/if}
 		</form>
+	{:else if $userState == 1}
+		<section>
+			<div class="gm">
+				<div class="gm-inner">
+					<p>gm fren</p>
+				</div>
+			</div>
+			<div class="gm" on:click={soulbind} on:keydown>
+				<p class="yellow link">bind your nft</p>
+			</div>
+		</section>
 	{:else if $userConnected}
 		<div style="height: 16px" />
 		<section style="width:520px">

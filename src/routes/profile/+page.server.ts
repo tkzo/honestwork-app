@@ -36,7 +36,36 @@ const validateSignature = async (address: string, userSignature: string, userSal
 export const actions: Actions = {
 	default: async ({ cookies, request }) => {
 		//validate from cookies
-		//disect request
-		//fetch
+		const userAddress = cookies.get('address');
+		const userSignature = cookies.get('signature');
+		const userSalt = cookies.get('salt');
+
+		//todo: fix all values
+		const data = await request.formData();
+		const body = {
+			username: data.get('username'),
+			show_ens: false,
+			title: data.get('title'),
+			email: data.get('email'),
+			bio: data.get('bio'),
+			image_url: '',
+			nft_address: data.get('nft_address'),
+			nft_id: data.get('nft_id'),
+			timezone: '',
+			links: ''
+		};
+
+		const url = `http://localhost:3000/api/v1/users/${userAddress}/${userSalt}/${userSignature}`;
+		let response = await fetch(url, {
+			method: 'PATCH',
+			body: JSON.stringify(body),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+		if (response.ok) {
+			const json = await response.json();
+			console.log(json);
+		}
 	}
 };
