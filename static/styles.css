@@ -9,6 +9,9 @@
 		url('fonts/ProtoMono-SemiBold.otf') format('otf'),
 		url('fonts/ProtoMono-SemiBoldShadow.otf') format('otf');
 }
+:root {
+	--color-dark: #000000;
+}
 body {
 	min-height: 100vh;
 	min-width: 100vw;

@@ -1,6 +1,6 @@
 <script>
 	import { chainName } from '$lib/stores/Network';
-	import { theme } from '$lib/stores/Theme';
+	import { theme, toggleTheme } from '$lib/stores/Theme';
 	let pages = [
 		{ name: 'faq', path: '/' },
 		{ name: 'terms', path: '/' },
@@ -11,7 +11,9 @@
 <main>
 	<div class="left-container">
 		<div class="brand-section">
-			<p class="light-40 semibold">ⓒ 2022 decoded-labs</p>
+			<a href="https://decoded-labs.com" target="_blank" rel="noreferrer">
+				<p class="light-40 semibold">ⓒ <span class="link">decoded</span></p>
+			</a>
 		</div>
 
 		<div class="sitemap-section">
@@ -37,9 +39,7 @@
 		<div class="network-section">
 			<p
 				class="light-40 semibold link"
-				on:click={() => {
-					theme.set($theme == 'light' ? 'dark' : 'light');
-				}}
+				on:click={() => toggleTheme($theme == 'light' ? 'dark' : 'light')}
 				on:keydown
 			>
 				{$theme == 'light' ? 'dark mode' : 'light mode'}

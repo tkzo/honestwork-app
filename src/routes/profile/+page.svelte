@@ -12,6 +12,7 @@
 	import { ethers } from 'ethers';
 	import { goto } from '$app/navigation';
 	import { Jumper } from 'svelte-loading-spinners';
+	import { tweened } from 'svelte/motion';
 
 	// move to separate file
 	export function setCookie(name: string, val: string) {
@@ -56,6 +57,7 @@
 	let changes_made: boolean = false;
 
 	let links: string[] = data.user.links ? data.user.links : new Array(3).fill('');
+	let initial_links: string[] = data.user.links ? data.user.links : new Array(3).fill('');
 	let myform: HTMLFormElement;
 	let chosenTab = 'profile';
 	let nft_image: string = placeholder_image;
@@ -65,13 +67,25 @@
 	let email: string = data.user.email;
 	let nft_id: number = data.user.nft_id;
 	let nft_address: string = data.user.nft_address;
+	let bio: string = data.user.bio;
 	let fetching_image = true;
 	let infobox_show: boolean = false;
 	let infobox_previous_content: string;
 	let chosen_skill_slot: number = -1;
 
-	$: if (username != data.user.username) {
+	$: if (
+		username != data.user.username ||
+		title != data.user.title ||
+		email != data.user.email ||
+		nft_id != data.user.nft_id ||
+		nft_address != data.user.nft_address ||
+		initial_links[0] != links[0] ||
+		initial_links[1] != links[1] ||
+		initial_links[2] != links[2] ||
+		bio != data.user.bio
+	) {
 		changes_made = true;
+		console.log('Changed!');
 	} else {
 		changes_made = false;
 	}
@@ -97,8 +111,24 @@
 		nft_image = placeholder_image;
 	}
 
+	const blink = tweened(1, {
+		duration: 100
+	});
 	const toggle = (tab: string) => {
-		chosenTab = tab;
+		if (!changes_made) {
+			chosenTab = tab;
+		} else {
+			$blink = 0;
+			setTimeout(() => {
+				$blink = 1;
+			}, 100);
+			setTimeout(() => {
+				$blink = 0;
+			}, 200);
+			setTimeout(() => {
+				$blink = 1;
+			}, 300);
+		}
 	};
 	const getNft = async () => {
 		fetching_image = true;
@@ -222,8 +252,9 @@
 						past jobs
 					</p>
 				</div>
-				<button class={` semibold link ${changes_made ? 'yellow' : 'light-60'}`}
-					>update profile</button
+				<button
+					class={` semibold link ${changes_made ? 'yellow' : 'light-60'}`}
+					style={`opacity: ${$blink}`}>update profile</button
 				>
 			</section>
 			<div style="height: 12px" />
@@ -356,7 +387,7 @@
 						size="520"
 						maxlength="1000"
 						placeholder="enter bio here..."
-						bind:value={data.user.bio}
+						bind:value={bio}
 					/>
 				</div>
 			{:else if chosenTab == 'skills'}

@@ -1,4 +1,21 @@
-import { writable } from 'svelte/store';
+import { browser } from '$app/environment';
+import { writable, derived } from 'svelte/store';
 
-// get from locals / unsafe cookies
-export const theme = writable('light');
+export const setLocalTheme = () => {
+	if (typeof localStorage !== 'undefined' && typeof localStorage.theme !== 'undefined') {
+		let stored = localStorage.theme;
+		theme.set(stored);
+	} else {
+		theme.set('light');
+	}
+	themeLoaded.set(true);
+};
+export const theme = writable('');
+export const themeLoaded = writable(false);
+
+export const toggleTheme = (mode) => {
+	if (typeof localStorage !== 'undefined') {
+		localStorage.theme = mode;
+		theme.set(mode);
+	}
+};

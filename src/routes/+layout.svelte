@@ -4,9 +4,10 @@
 	import Notification from '$lib/components/common/Notification.svelte';
 	import { connectWallet, connecting } from '$lib/stores/Network';
 	import { onMount } from 'svelte';
-	import { theme } from '$lib/stores/Theme';
+	import { setLocalTheme, theme, themeLoaded } from '$lib/stores/Theme';
 
 	onMount(async () => {
+		setLocalTheme();
 		connecting.set(true);
 		await connectWallet();
 		connecting.set(false);
@@ -19,16 +20,20 @@
 	<link href="/fonts/ProtoMono-Regular.otf" rel="stylesheet" />
 	<link href="/fonts/ProtoMono-SemiBold.otf" rel="stylesheet" />
 	<link rel="stylesheet" href="/styles.css" />
-	<link rel="stylesheet" href={`/${$theme}.css`} />
+	{#if $themeLoaded}
+		<link rel="stylesheet" href={`/${$theme}.css`} />
+	{/if}
 </svelte:head>
 
 <main>
-	<Navigation />
-	<div style="height: 32px;" />
-	<Notification />
-	<slot />
-	<div style="height: 64px;" />
-	<Footer />
+	{#if $themeLoaded}
+		<Navigation />
+		<div style="height: 32px;" />
+		<Notification />
+		<slot />
+		<div style="height: 64px;" />
+		<Footer />
+	{/if}
 </main>
 
 <style>
@@ -38,5 +43,6 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		background-color: var(--color-dark);
 	}
 </style>
