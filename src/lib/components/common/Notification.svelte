@@ -4,7 +4,7 @@
 </script>
 
 <main>
-	{#if (!$userConnected || $userState == 0 || $userState == 1) && $page.route.id != ('/connect_wallet' && '/mint')}
+	{#if (!$userConnected || $userState == 0) && $page.route.id != ('/connect_wallet' && '/mint')}
 		<div class="bar">
 			<p class="light-80">you're in guest mode</p>
 			<div style="width:8px" />

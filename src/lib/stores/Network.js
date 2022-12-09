@@ -8,6 +8,7 @@ export let networkSigner = writable();
 export let chainID = writable('');
 export let userState = writable(0);
 export let connecting = writable(false);
+export let chainName = writable('');
 
 export let token_address = '0x2FF8bcE87314356276D5582Ebd204392B16f0941';
 
@@ -22,7 +23,17 @@ export const connectWallet = async () => {
 		networkSigner.set(signer);
 		let addr = await signer.getAddress();
 		userAddress.set(addr);
-		chainID.set(await signer.getChainId());
+		let chain_id = await signer.getChainId();
+		chainID.set(chain_id);
+		if (chain_id == 1453) {
+			chainName.set('devm');
+		} else if (chain_id == 1) {
+			chainName.set('mainnet');
+		} else if (chain_id == 137) {
+			chainName.set('polygon');
+		} else if (chain_id == 56) {
+			chainName.set('binance');
+		}
 		userConnected.set(true);
 		console.log('States set.');
 		await fetchUserState(signer, addr);
@@ -45,6 +56,7 @@ const fetchUserState = async (signer, addr) => {
 	try {
 		const contract = new ethers.Contract(token_address, token_abi, signer);
 		let state = await contract.getUserState(addr);
+		console.log('User state:', state);
 		userState.set(state);
 	} catch (err) {
 		console.log(err);

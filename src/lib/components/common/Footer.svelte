@@ -1,4 +1,5 @@
 <script>
+	import { chainName } from '$lib/stores/Network';
 	let pages = [
 		{ name: 'faq', path: '/' },
 		{ name: 'terms', path: '/' },
@@ -30,7 +31,7 @@
 	</div>
 	<div class="right-container">
 		<div class="network-section">
-			<p class="light-40 semibold">mainnet</p>
+			<p class="light-40 semibold">NETWORK <span class="yellow">{$chainName}</span></p>
 		</div>
 	</div>
 </main>
