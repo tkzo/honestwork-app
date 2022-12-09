@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 import { ethers } from 'ethers';
+import { env } from '$env/dynamic/public';
 
 export let userConnected = writable(false);
 export let userAddress = writable('');
@@ -9,15 +10,13 @@ export let chainID = writable('');
 export let userState = writable(0);
 export let connecting = writable(false);
 export let chainName = writable('');
-
-export let token_address = '0x2FF8bcE87314356276D5582Ebd204392B16f0941';
+export let token_address = env.PUBLIC_MEMBERSHIP_TOKEN_ADDRESS;
 
 export const connectWallet = async () => {
 	connecting.set(true);
 	try {
 		const provider = new ethers.providers.Web3Provider(window.ethereum);
 		await provider.send('eth_requestAccounts', []);
-		console.log('Received accounts.');
 		const signer = provider.getSigner();
 		networkProvider.set(provider);
 		networkSigner.set(signer);
@@ -35,15 +34,11 @@ export const connectWallet = async () => {
 			chainName.set('binance');
 		}
 		userConnected.set(true);
-		console.log('States set.');
 		await fetchUserState(signer, addr);
-		console.log('NFT state fetched.');
 		window.ethereum.on('accountsChanged', function () {
-			console.log('Account changed!');
 			window.location.reload();
 		});
 		window.ethereum.on('chainChanged', function () {
-			console.log('Chain changed!');
 			window.location.reload();
 		});
 	} catch (err) {
@@ -56,7 +51,6 @@ const fetchUserState = async (signer, addr) => {
 	try {
 		const contract = new ethers.Contract(token_address, token_abi, signer);
 		let state = await contract.getUserState(addr);
-		console.log('User state:', state);
 		userState.set(state);
 	} catch (err) {
 		console.log(err);

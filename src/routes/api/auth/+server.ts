@@ -1,5 +1,5 @@
 import type { RequestHandler } from './$types';
-import { redirect } from '@sveltejs/kit';
+import { invalid, redirect } from '@sveltejs/kit';
 
 export const GET: RequestHandler = ({ url, cookies }) => {
 	const userSignature = cookies.get('signature');
@@ -22,5 +22,6 @@ const validateSignature = async (address: string, userSignature: string, userSal
 		console.log(address);
 	} else {
 		console.log('HTTP-Error: ' + response.status);
+		throw invalid(401);
 	}
 };

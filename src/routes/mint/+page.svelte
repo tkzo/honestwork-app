@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import {
 		userConnected,
 		token_abi,
@@ -6,7 +7,6 @@
 		userState,
 		token_address
 	} from '$lib/stores/Network';
-	import { redirect } from '@sveltejs/kit';
 	import { ethers } from 'ethers';
 
 	const mint = async () => {
@@ -16,8 +16,7 @@
 				const tx = await contract.mint();
 				const receipt = await tx.wait();
 				if (receipt.status == 1) {
-					console.log(receipt.status);
-					redirect(300, '/create_account');
+					goto('/create_account');
 				}
 			} catch (error) {
 				console.log(error);

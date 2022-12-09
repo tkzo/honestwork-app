@@ -11,7 +11,6 @@
 	} from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 	import { ethers } from 'ethers';
-	import { redirect } from '@sveltejs/kit';
 	import { goto } from '$app/navigation';
 
 	/*
