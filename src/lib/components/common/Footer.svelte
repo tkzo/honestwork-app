@@ -23,11 +23,11 @@
 			{/each}
 		</div>
 		<div class="social-section">
-			<img src="icons/github.svg" alt="Github" />
+			<img src={`icons/${$theme == 'light' ? 'light/' : ''}github.svg`} alt="Github" />
 			<div style="width:8px" />
-			<img src="icons/twitter.svg" alt="Twitter" />
+			<img src={`icons/${$theme == 'light' ? 'light/' : ''}twitter.svg`} alt="Twitter" />
 			<div style="width:8px" />
-			<img src="icons/discord.svg" alt="Discord" />
+			<img src={`icons/${$theme == 'light' ? 'light/' : ''}discord.svg`} alt="Discord" />
 		</div>
 	</div>
 	<div class="right-container">
