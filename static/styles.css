@@ -9,37 +9,6 @@
 		url('fonts/ProtoMono-SemiBold.otf') format('otf'),
 		url('fonts/ProtoMono-SemiBoldShadow.otf') format('otf');
 }
-
-:root {
-	--color-dark: #0c0c0c;
-	--color-light: #ffffff;
-	--color-light-80: rgba(255, 255, 255, 0.8);
-	--color-light-60: rgba(255, 255, 255, 0.6);
-	--color-light-40: rgba(255, 255, 255, 0.4);
-	--color-light-20: rgba(255, 255, 255, 0.2);
-	--color-light-2: rgba(255, 255, 255, 0.02);
-	--color-primary: #ffd369;
-	--color-error: red;
-	--color-success: green;
-	font-family: 'Proto Mono';
-	color: var(--color-light);
-}
-
-/* :root {
-	--color-dark: #dddddd;
-	--color-light: #000000;
-	--color-light-80: rgba(0, 0, 0, 0.8);
-	--color-light-60: rgba(0, 0, 0, 0.6);
-	--color-light-40: rgba(0, 0, 0, 0.4);
-	--color-light-20: rgba(0, 0, 0, 0.2);
-	--color-light-2: rgba(0, 0, 0, 0.02);
-	--color-primary: #ff4c29;
-	--color-error: red;
-	--color-success: green;
-	font-family: 'Proto Mono', monospace;
-	color: var(--color-light);
-} */
-
 body {
 	min-height: 100vh;
 	min-width: 100vw;

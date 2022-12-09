@@ -1,5 +1,6 @@
 <script>
 	import { chainName } from '$lib/stores/Network';
+	import { theme } from '$lib/stores/Theme';
 	let pages = [
 		{ name: 'faq', path: '/' },
 		{ name: 'terms', path: '/' },
@@ -32,6 +33,17 @@
 	<div class="right-container">
 		<div class="network-section">
 			<p class="light-40 semibold">NETWORK <span class="yellow">{$chainName}</span></p>
+		</div>
+		<div class="network-section">
+			<p
+				class="light-40 semibold link"
+				on:click={() => {
+					theme.set($theme == 'light' ? 'dark' : 'light');
+				}}
+				on:keydown
+			>
+				{$theme == 'light' ? 'dark mode' : 'light mode'}
+			</p>
 		</div>
 	</div>
 </main>
@@ -99,6 +111,11 @@
 	.left-container {
 		display: flex;
 		flex-direction: row;
+		align-items: center;
+	}
+	.right-container {
+		display: flex;
+		flex-direction: row-reverse;
 		align-items: center;
 	}
 </style>

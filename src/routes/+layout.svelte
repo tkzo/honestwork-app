@@ -2,8 +2,9 @@
 	import Navigation from '$lib/components/common/Navigation.svelte';
 	import Footer from '$lib/components/common/Footer.svelte';
 	import Notification from '$lib/components/common/Notification.svelte';
-	import { connectWallet, connecting, networkProvider } from '$lib/stores/Network';
+	import { connectWallet, connecting } from '$lib/stores/Network';
 	import { onMount } from 'svelte';
+	import { theme } from '$lib/stores/Theme';
 
 	onMount(async () => {
 		connecting.set(true);
@@ -17,6 +18,8 @@
 	<link href="/fonts/ProtoMono-Medium.otf" rel="stylesheet" />
 	<link href="/fonts/ProtoMono-Regular.otf" rel="stylesheet" />
 	<link href="/fonts/ProtoMono-SemiBold.otf" rel="stylesheet" />
+	<link rel="stylesheet" href="/styles.css" />
+	<link rel="stylesheet" href={`/${$theme}.css`} />
 </svelte:head>
 
 <main>

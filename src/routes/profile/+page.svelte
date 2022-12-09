@@ -3,7 +3,6 @@
 	import {
 		connectWallet,
 		userAddress,
-		userConnected,
 		userState,
 		token_abi,
 		token_address,
@@ -349,7 +348,7 @@
 						{/if}
 					{/each}
 				</div>
-
+				<div style="height: 16px" />
 				<div class="bio">
 					<textarea
 						name="bio"
