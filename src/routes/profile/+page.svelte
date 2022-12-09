@@ -12,10 +12,9 @@
 	import { onMount } from 'svelte';
 	import { ethers } from 'ethers';
 	import { goto } from '$app/navigation';
+	import { Jumper } from 'svelte-loading-spinners';
 
-	/*
-	 * General utils for managing cookies in Typescript.
-	 */
+	// move to separate file
 	export function setCookie(name: string, val: string) {
 		const date = new Date();
 		const value = val;
@@ -48,15 +47,16 @@
 	}
 
 	//todo: add non-gateway image resolver
-	//todo: add wrong account, switch to correct account
 	//todo: type declaration of data
 	//todo: refactor input fields into a component
+	//todo: page loads twice -fix
 
 	export let data: any;
 	let placeholder_image = 'assets/xcopy.gif';
 	let correct_address: boolean;
+	let changes_made: boolean = false;
 
-	let links: string[] = data.user.links;
+	let links: string[] = data.user.links ? data.user.links : new Array(3).fill('');
 	let myform: HTMLFormElement;
 	let chosenTab = 'profile';
 	let nft_image: string = placeholder_image;
@@ -70,6 +70,12 @@
 	let infobox_show: boolean = false;
 	let infobox_previous_content: string;
 	let chosen_skill_slot: number = -1;
+
+	$: if (username != data.user.username) {
+		changes_made = true;
+	} else {
+		changes_made = false;
+	}
 
 	type InputSettings = {
 		title: string;
@@ -86,8 +92,6 @@
 		await connectWallet();
 		await getNft();
 		correct_address = $userAddress.toLowerCase() == data.user.address.toLowerCase();
-		console.log('Wallet address:', $userAddress.toLowerCase());
-		console.log('DB address:', data.user.address.toLowerCase());
 	});
 
 	$: if (fetching_image) {
@@ -219,7 +223,9 @@
 						past jobs
 					</p>
 				</div>
-				<button class="yellow semibold link">update profile</button>
+				<button class={` semibold link ${changes_made ? 'yellow' : 'light-60'}`}
+					>update profile</button
+				>
 			</section>
 			<div style="height: 12px" />
 			{#if chosenTab == 'profile'}
@@ -324,28 +330,26 @@
 					</div>
 				</div>
 				<div style="height: 16px" />
-				{#if data.user.links}
-					<div class="links">
-						{#each data.user.links as link, i}
-							<div class="input-field">
-								<div class="placeholder">
-									<p class="light-40">link</p>
-								</div>
-								<input
-									name={`link-${i}`}
-									class="flex-input"
-									type="text"
-									placeholder={link}
-									bind:value={links[i]}
-								/>
+				<div class="links">
+					{#each links as link, i}
+						<div class="input-field">
+							<div class="placeholder">
+								<p class="light-40">link</p>
 							</div>
-							{#if i < data.user.links.length - 1}
-								<div style="height: 8px" />
-							{/if}
-						{/each}
-					</div>
-				{/if}
-				<div style="height: 16px" />
+							<input
+								name={`link-${i}`}
+								class="flex-input"
+								type="text"
+								placeholder={link}
+								bind:value={links[i]}
+							/>
+						</div>
+						{#if i < links.length - 1}
+							<div style="height: 8px" />
+						{/if}
+					{/each}
+				</div>
+
 				<div class="bio">
 					<textarea
 						name="bio"
@@ -390,7 +394,7 @@
 				<p class="yellow link">bind your nft</p>
 			</div>
 		</section>
-	{:else if $userConnected}
+	{:else if correct_address != null}
 		<div style="height: 16px" />
 		<section style="width:520px">
 			<div class="gm">
@@ -402,6 +406,11 @@
 				<p>switch to <span class="yellow">{data.user.address}</span> to see this page.</p>
 			</div>
 		</section>
+	{:else}
+		<div class="spinner">
+			<div style="height: 36px;" />
+			<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
+		</div>
 	{/if}
 </main>
 

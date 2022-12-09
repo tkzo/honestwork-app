@@ -213,3 +213,8 @@ button:active {
 	background: transparent;
 	border: 1px solid grey;
 }
+
+.spinner {
+	position: absolute;
+	transform: translateY(50%);
+}
