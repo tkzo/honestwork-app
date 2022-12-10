@@ -26,9 +26,15 @@ export const actions: Actions = {
 			//todo: fix api returns
 			let text = await response.text();
 			if (text != `"User doesn't have NFT."`) {
-				cookies.set('address', address.toString());
-				cookies.set('salt', salt.toString());
-				cookies.set('signature', signature.toString());
+				cookies.set('address', address.toString(), {
+					expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000)
+				});
+				cookies.set('salt', salt.toString(), {
+					expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000)
+				});
+				cookies.set('signature', signature.toString(), {
+					expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000)
+				});
 			}
 		}
 	}

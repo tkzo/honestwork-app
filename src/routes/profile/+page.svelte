@@ -354,7 +354,12 @@
 							/>
 						</div>
 						<div style="height: 8px" />
-						<div class="input-field" on:click={() => (show_nft = !show_nft)} on:keydown>
+						<div
+							class="input-field"
+							on:click={() => (show_nft = !show_nft)}
+							on:keydown
+							style="cursor:pointer;"
+						>
 							<input hidden type="checkbox" name="show_nft" bind:checked={show_nft} />
 							{#if show_nft}
 								<img src="icons/checked.svg" alt="Checked" style="height:16px;width:16px;" />
@@ -368,14 +373,18 @@
 						</div>
 						<div style="height:8px" />
 						{#if !show_nft}
-							<div class="input-field">
+							<div class="input-field file-input-container">
 								<input
+									class="file-input"
 									type="file"
 									accept="image/png, image/jpeg"
 									on:change={uploadPhoto}
 									bind:value={file_uploaded}
 								/>
 								<input hidden type="text" name="image_url" bind:value={image_url} />
+								<div class="pseudo-file-input-container">
+									<p class="pseudo-file-input">UPLOAD FILE</p>
+								</div>
 							</div>
 						{/if}
 					</div>
@@ -559,5 +568,24 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+	}
+	.file-input {
+		opacity: 0;
+		width: 320px;
+		height: 32px;
+		cursor: pointer;
+	}
+	.file-input-container {
+		position: relative;
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--color-light-20);
+	}
+	.pseudo-file-input {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		pointer-events: none;
 	}
 </style>
