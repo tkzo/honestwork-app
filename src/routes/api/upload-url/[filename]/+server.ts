@@ -1,6 +1,7 @@
 import type { RequestHandler } from './$types';
 import { json } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
+
 import { S3 } from '@aws-sdk/client-s3';
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
 import { ListObjectsCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
@@ -20,7 +21,7 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 		//todo: investigate dns issue
 		const s3Client2 = new S3({
 			forcePathStyle: false,
-			endpoint: 'https://fra1.digitaloceanspaces.com',
+			endpoint: env.PRIVATE_SPACES_REGION_URL,
 			region: 'us-east-1',
 			credentials: {
 				accessKeyId: env.PRIVATE_SPACES_KEY!,
