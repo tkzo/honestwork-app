@@ -267,9 +267,9 @@
 					</p>
 				</section>
 				<div class="info">
-					<section>
+					<section style="height: 100%">
 						<img
-							src={show_nft ? nft_image : image_url}
+							src={show_nft ? nft_image : image_url ? image_url : placeholder_image}
 							alt="Profile"
 							placeholder={placeholder_image}
 						/>
@@ -354,19 +354,30 @@
 							/>
 						</div>
 						<div style="height: 8px" />
-						<div class="input-field">
-							<input type="checkbox" name="show_nft" bind:checked={show_nft} />
-							<p class="light-40">show nft?</p>
+						<div class="input-field" on:click={() => (show_nft = !show_nft)} on:keydown>
+							<input hidden type="checkbox" name="show_nft" bind:checked={show_nft} />
+							{#if show_nft}
+								<img src="icons/checked.svg" alt="Checked" style="height:16px;width:16px;" />
+								<div style="width:8px" />
+								<p class="yellow">use nft image</p>
+							{:else}
+								<img src="icons/unchecked.svg" alt="Checked" style="height:16px;width:16px;" />
+								<div style="width:8px" />
+								<p class="light-60">use nft image</p>
+							{/if}
 						</div>
-						<div class="input-field">
-							<input
-								type="file"
-								accept="image/png, image/jpeg"
-								on:change={uploadPhoto}
-								bind:value={file_uploaded}
-							/>
-							<input hidden type="text" name="image_url" bind:value={image_url} />
-						</div>
+						<div style="height:8px" />
+						{#if !show_nft}
+							<div class="input-field">
+								<input
+									type="file"
+									accept="image/png, image/jpeg"
+									on:change={uploadPhoto}
+									bind:value={file_uploaded}
+								/>
+								<input hidden type="text" name="image_url" bind:value={image_url} />
+							</div>
+						{/if}
 					</div>
 				</div>
 				<div style="height: 16px" />
@@ -472,6 +483,7 @@
 		display: flex;
 		flex-direction: row;
 		min-width: 320px;
+		justify-content: flex-start;
 		flex: 1;
 	}
 	.placeholder {
