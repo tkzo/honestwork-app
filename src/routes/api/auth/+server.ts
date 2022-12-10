@@ -18,8 +18,6 @@ const validateSignature = async (address: string, userSignature: string, userSal
 	let response = await fetch(url);
 	if (response.ok) {
 		let json = await response.json();
-		console.log(json);
-		console.log(address);
 	} else {
 		console.log('HTTP-Error: ' + response.status);
 		throw invalid(401);

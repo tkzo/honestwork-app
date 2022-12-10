@@ -144,6 +144,7 @@ input:focus {
 }
 
 textarea:focus {
+	outline: none;
 	border: none;
 	border-width: 1px;
 	border-style: solid;

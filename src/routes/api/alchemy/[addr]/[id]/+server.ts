@@ -1,10 +1,11 @@
 import type { RequestHandler } from './$types';
 import { json } from '@sveltejs/kit';
 import { Network, Alchemy } from 'alchemy-sdk';
+import { env } from '$env/dynamic/private';
 
 export const GET: RequestHandler = async ({ params }) => {
 	const settings = {
-		apiKey: '6S77iu4XWkdCm3lztMIZql9JOLMW_adQ',
+		apiKey: env.PRIVATE_ALCHEMY_APIKEY,
 		network: Network.ETH_MAINNET
 	};
 	const alchemy = new Alchemy(settings);

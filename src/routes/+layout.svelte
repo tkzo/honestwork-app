@@ -28,7 +28,7 @@
 <main>
 	{#if $themeLoaded}
 		<Navigation />
-		<div style="height: 32px;" />
+		<div style="height:64px;" />
 		<Notification />
 		<slot />
 		<div style="height: 64px;" />

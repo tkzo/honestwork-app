@@ -1,4 +1,5 @@
 <script lang="ts">
+	/// <reference types="aws-sdk" />
 	import Skill from '$lib/components/cards/Skill.svelte';
 	import {
 		connectWallet,
@@ -14,55 +15,36 @@
 	import { Jumper } from 'svelte-loading-spinners';
 	import { tweened } from 'svelte/motion';
 
-	// move to separate file
-	export function setCookie(name: string, val: string) {
-		const date = new Date();
-		const value = val;
-
-		// Set it expire in 7 days
-		date.setTime(date.getTime() + 7 * 24 * 60 * 60 * 1000);
-
-		// Set it
-		document.cookie = name + '=' + value + '; expires=' + date.toUTCString() + '; path=/';
-	}
-
-	export function getCookie(name: string) {
-		const value = '; ' + document.cookie;
-		console.log('Value:', value);
-		const parts = value.split('; ' + name + '=');
-
-		if (parts.length == 2) {
-			return parts.pop()?.split(';').shift();
-		}
-	}
-
-	export function deleteCookie(name: string) {
-		const date = new Date();
-
-		// Set it expire in -1 days
-		date.setTime(date.getTime() + -1 * 24 * 60 * 60 * 1000);
-
-		// Set it
-		document.cookie = name + '=; expires=' + date.toUTCString() + '; path=/';
-	}
-
-	//todo: add non-gateway image resolver
+	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
-	//todo: refactor input fields into a component
 	//todo: page loads twice -fix
 
 	export let data: any;
+
+	type InputSettings = {
+		title: string;
+		infobox_distance: number;
+		infobox_content: string;
+	};
+	let inputSettings: InputSettings = {
+		title: 'username',
+		infobox_distance: 0,
+		infobox_content: 'your username will be used to identify you on the platform.'
+	};
+
 	let placeholder_image = 'assets/xcopy.gif';
 	let correct_address: boolean;
 	let changes_made: boolean = false;
-
+	let file_uploaded: string;
 	let links: string[] = data.user.links ? data.user.links : new Array(3).fill('');
 	let initial_links: string[] = data.user.links ? data.user.links : new Array(3).fill('');
+	let image_url: string = data.user.image_url;
 	let myform: HTMLFormElement;
 	let chosenTab = 'profile';
 	let nft_image: string = placeholder_image;
 	let is_owner: boolean;
 	let username: string = data.user.username;
+	let show_nft: boolean = data.user.show_nft;
 	let title: string = data.user.title;
 	let email: string = data.user.email;
 	let nft_id: number = data.user.nft_id;
@@ -82,28 +64,19 @@
 		initial_links[0] != links[0] ||
 		initial_links[1] != links[1] ||
 		initial_links[2] != links[2] ||
-		bio != data.user.bio
+		bio != data.user.bio ||
+		image_url != data.user.image_url ||
+		show_nft != data.user.show_nft
 	) {
 		changes_made = true;
-		console.log('Changed!');
 	} else {
 		changes_made = false;
 	}
 
-	type InputSettings = {
-		title: string;
-		infobox_distance: number;
-		infobox_content: string;
-	};
-	let inputSettings: InputSettings = {
-		title: 'username',
-		infobox_distance: 0,
-		infobox_content: 'your username will be used to identify you on the platform.'
-	};
-
 	onMount(async () => {
 		await connectWallet();
 		await getNft();
+		//todo: move to layout
 		correct_address = $userAddress.toLowerCase() == data.user.address.toLowerCase();
 	});
 
@@ -117,7 +90,7 @@
 	const toggle = (tab: string) => {
 		if (!changes_made) {
 			chosenTab = tab;
-		} else {
+		} else if (chosenTab != tab) {
 			$blink = 0;
 			setTimeout(() => {
 				$blink = 1;
@@ -217,6 +190,26 @@
 			}
 		}
 	};
+	//todo: update spaces cors policy with domain
+	const uploadPhoto = async (e: any) => {
+		const file = e.target.files[0]!;
+		const res = await fetch(`/api/upload-url/${e.target.files[0].name}`);
+		const { url, fields } = await res.json();
+		const formData = new FormData();
+		Object.entries({ ...fields, file }).forEach(([key, value]) => {
+			formData.append(key, value as string);
+		});
+		const upload = await fetch(url, {
+			method: 'POST',
+			body: formData
+		});
+		if (upload.ok) {
+			console.log('Uploaded successfully!');
+		} else {
+			console.error('Upload failed.');
+		}
+		image_url = `https://honestwork-userfiles.fra1.digitaloceanspaces.com/${$userAddress}/${e.target.files[0].name}`;
+	};
 </script>
 
 <svelte:head>
@@ -227,7 +220,6 @@
 <main>
 	{#if correct_address && $userState > 1}
 		<form method="POST" bind:this={myform}>
-			<div style="height: 12px" />
 			<section class="bar">
 				<div class="tabs">
 					<p
@@ -276,7 +268,11 @@
 				</section>
 				<div class="info">
 					<section>
-						<img src={nft_image} alt="Profile" />
+						<img
+							src={show_nft ? nft_image : image_url}
+							alt="Profile"
+							placeholder={placeholder_image}
+						/>
 					</section>
 					<div style="width: 12px" />
 					<div class="input-fields">
@@ -356,6 +352,20 @@
 								on:focus={() => focusInput('nft_id')}
 								on:focusout={() => deFocusInput()}
 							/>
+						</div>
+						<div style="height: 8px" />
+						<div class="input-field">
+							<input type="checkbox" name="show_nft" bind:checked={show_nft} />
+							<p class="light-40">show nft?</p>
+						</div>
+						<div class="input-field">
+							<input
+								type="file"
+								accept="image/png, image/jpeg"
+								on:change={uploadPhoto}
+								bind:value={file_uploaded}
+							/>
+							<input hidden type="text" name="image_url" bind:value={image_url} />
 						</div>
 					</div>
 				</div>

@@ -20,9 +20,9 @@
 		<div style="width:8px" />
 		<p class="light-60">/</p>
 		<div style="width:8px" />
-		<a href="/creators">
-			<p class={$page.route.id == '/creators' ? 'yellow semibold link' : 'light-60 semibold link'}>
-				creators
+		<a href="/skills">
+			<p class={$page.route.id == '/skills' ? 'yellow semibold link' : 'light-60 semibold link'}>
+				skills
 			</p>
 		</a>
 		<div style="width:8px" />

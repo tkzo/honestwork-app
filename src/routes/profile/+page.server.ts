@@ -42,17 +42,19 @@ export const actions: Actions = {
 
 		//todo: fix all values
 		const data = await request.formData();
+		console.log('Show nft:', data.get('show_nft'));
 		const body = {
 			username: data.get('username'),
 			show_ens: false,
 			title: data.get('title'),
 			email: data.get('email'),
 			bio: data.get('bio'),
-			image_url: '',
+			image_url: data.get('image_url'),
 			nft_address: data.get('nft_address'),
 			nft_id: data.get('nft_id'),
+			show_nft: data.get('show_nft') == 'on' ? true : false,
 			timezone: '',
-			links: ''
+			links: [data.get('link-0'), data.get('link-1'), data.get('link-2')]
 		};
 
 		const url = `http://localhost:3000/api/v1/users/${userAddress}/${userSalt}/${userSignature}`;
