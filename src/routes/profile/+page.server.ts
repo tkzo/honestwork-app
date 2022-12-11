@@ -1,8 +1,7 @@
-import { json, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import type { Actions } from './$types';
 import { env } from '$env/dynamic/private';
-import { connectNode, nodeProvider } from '$lib/stores/Network';
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const userAddress = cookies.get('address')!;
@@ -46,11 +45,17 @@ export const actions: Actions = {
 		const userAddress = cookies.get('address');
 		const userSignature = cookies.get('signature');
 		const userSalt = cookies.get('salt');
+		// const userImageUrl = cookies.get('user_image_url')
 		const data = await request.formData();
-		const cloud_url = env.PRIVATE_SPACES_URL + '/' + userAddress + '/' + data.get('file_url');
+		let cloud_url;
+		if (data.get('file_url') != '') {
+			cloud_url = env.PRIVATE_SPACES_URL + '/' + userAddress + '/' + data.get('file_url');
+		}
+
+		console.log('Cloud url:', cloud_url);
 		const body = {
 			username: data.get('username'),
-			show_ens: false,
+			show_ens: data.get('show_ens') == 'on' ? true : false,
 			title: data.get('title'),
 			email: data.get('email'),
 			bio: data.get('bio'),

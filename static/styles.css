@@ -119,7 +119,7 @@ input {
 	border-width: 1px;
 	border-style: solid;
 	border-color: var(--color-light-20);
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 16px;
 }
 
@@ -132,7 +132,7 @@ textarea {
 	border-width: 1px;
 	border-style: solid;
 	border-color: var(--color-light-20);
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 16px;
 }
 
@@ -190,4 +190,18 @@ button:active {
 .spinner {
 	position: absolute;
 	transform: translateY(50%);
+}
+
+@keyframes rotating {
+	from {
+		-webkit-transform: rotate(0deg);
+	}
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+.rotating {
+	-webkit-animation: rotating 3s linear infinite;
+	animation: rotating 3s linear infinite;
 }

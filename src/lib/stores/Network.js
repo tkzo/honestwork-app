@@ -48,11 +48,11 @@ export const connectWallet = async () => {
 	connecting.set(false);
 };
 
-export const connectNode = async (rpc_url) => {
+export const connectNode = async () => {
 	try {
-		const provider = new ethers.providers.JsonRpcProvider(rpc_url);
+		const provider = new ethers.providers.JsonRpcProvider(env.PUBLIC_ETHEREUM_RPC);
+		console.log('Connected.', provider);
 		nodeProvider.set(provider);
-		return provider;
 	} catch (err) {
 		console.log('error:', err);
 	}

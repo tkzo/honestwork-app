@@ -100,17 +100,4 @@
 		border-color: var(--color-light-20);
 		box-sizing: border-box;
 	}
-	@keyframes rotating {
-		from {
-			-webkit-transform: rotate(0deg);
-		}
-		to {
-			-webkit-transform: rotate(360deg);
-		}
-	}
-
-	.rotating {
-		-webkit-animation: rotating 3s linear infinite;
-		animation: rotating 3s linear infinite;
-	}
 </style>

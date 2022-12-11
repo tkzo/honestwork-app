@@ -7,7 +7,10 @@
 		userState,
 		token_abi,
 		token_address,
-		networkSigner
+		networkSigner,
+		nodeProvider,
+		connectNode,
+		userConnected
 	} from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 	import { ethers } from 'ethers';
@@ -58,9 +61,23 @@
 	let upload_url: Response;
 	let myfile: File;
 	let ens_name: string;
+	let show_ens: boolean = data.user.show_ens;
+	let ens_loading: boolean = false;
+	let file_url: string;
 
-	$: console.log(file_uploaded);
+	onMount(async () => {
+		await connectWallet();
+		await getNft();
+		//todo: move to layout
+		correct_address = $userAddress.toLowerCase() == data.user.address.toLowerCase();
+	});
 
+	$: if ($userConnected && show_ens) {
+		setEnsName();
+	}
+	$: if (fetching_image) {
+		nft_image = placeholder_image;
+	}
 	$: if (
 		username != data.user.username ||
 		title != data.user.title ||
@@ -72,24 +89,20 @@
 		initial_links[2] != links[2] ||
 		bio != data.user.bio ||
 		image_url != data.user.image_url ||
-		show_nft != data.user.show_nft
+		show_nft != data.user.show_nft ||
+		show_ens != data.user.show_ens
 	) {
 		changes_made = true;
 	} else {
 		changes_made = false;
 	}
 
-	onMount(async () => {
-		await connectWallet();
-		await getNft();
-		//todo: move to layout
-		correct_address = $userAddress.toLowerCase() == data.user.address.toLowerCase();
-	});
-
-	$: if (fetching_image) {
-		nft_image = placeholder_image;
-	}
-
+	const setEnsName = async () => {
+		ens_loading = true;
+		await connectNode();
+		ens_name = await $nodeProvider.lookupAddress($userAddress);
+		ens_loading = false;
+	};
 	const blink = tweened(1, {
 		duration: 100
 	});
@@ -209,10 +222,18 @@
 		upload_url = res;
 	};
 	const submit = async (e: any) => {
-		//todo: refactor into order agnostic
+		//todo: refactor into order-agnostic
 		console.log(e);
-		if (e.target[6].files.length != 0) {
-			const file = e.target[6].files[0]!;
+
+		let target_file;
+		for (let t of e.target) {
+			if (t.files) {
+				target_file = t;
+			}
+		}
+		if (target_file) console.log(target_file);
+		if (target_file.files.length != 0) {
+			const file = target_file.files[0]!;
 			const { url, fields } = await upload_url.json();
 			const formData = new FormData();
 			Object.entries({ ...fields, file }).forEach(([key, value]) => {
@@ -301,15 +322,51 @@
 							<div class="placeholder">
 								<p class="light-40">username</p>
 							</div>
+							{#if show_ens}
+								{#if ens_loading}
+									<div class="input-like">
+										<img
+											src="icons/loader.svg"
+											alt="loading"
+											class="rotating"
+											style="height:16px;width:16px;"
+										/>
+										&nbsp;loading ens...
+									</div>
+								{:else}
+									<div class="input-like">
+										{ens_name}
+									</div>
+								{/if}
+							{/if}
 							<input
 								name="username"
 								class="flex-input"
 								type="text"
+								hidden={show_ens}
 								bind:value={username}
 								placeholder={data.user.username}
 								on:focus={() => focusInput('username')}
 								on:focusout={() => deFocusInput()}
 							/>
+						</div>
+						<div style="height: 8px" />
+						<div
+							class="input-field"
+							on:click={() => (show_ens = !show_ens)}
+							on:keydown
+							style="cursor:pointer;"
+						>
+							<input hidden type="checkbox" name="show_ens" bind:checked={show_ens} />
+							{#if show_ens}
+								<img src="icons/checked.svg" alt="Checked" style="height:16px;width:16px;" />
+								<div style="width:8px" />
+								<p class="yellow">use ens name</p>
+							{:else}
+								<img src="icons/unchecked.svg" alt="Checked" style="height:16px;width:16px;" />
+								<div style="width:8px" />
+								<p class="light-60">use ens name</p>
+							{/if}
 						</div>
 						<div style="height: 8px" />
 						<div class="input-field">
@@ -383,6 +440,7 @@
 								type="file"
 								accept="image/png, image/jpeg"
 								on:change={uploadPhoto}
+								bind:value={file_url}
 							/>
 							<input hidden type="text" name="image_url" bind:value={image_url} />
 							<div class="pseudo-file-input-container">
@@ -607,5 +665,22 @@
 		top: 50%;
 		transform: translate(-50%, -50%);
 		pointer-events: none;
+	}
+	.input-like {
+		background-color: var(--color-dark);
+		font-family: 'Proto Mono', monospace;
+		color: var(--color-light);
+		padding: 8px;
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--color-light-20);
+		font-size: 13px;
+		line-height: 16px;
+		box-sizing: border-box;
+		flex: 1;
+		height: 32px;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
 	}
 </style>
