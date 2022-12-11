@@ -39,6 +39,7 @@
 	let links: string[] = data.user.links ? data.user.links : new Array(3).fill('');
 	let initial_links: string[] = data.user.links ? data.user.links : new Array(3).fill('');
 	let image_url: string = data.user.image_url;
+	let uploaded_image_url: string;
 	let myform: HTMLFormElement;
 	let chosenTab = 'profile';
 	let nft_image: string = placeholder_image;
@@ -54,6 +55,8 @@
 	let infobox_show: boolean = false;
 	let infobox_previous_content: string;
 	let chosen_skill_slot: number = -1;
+	let upload_url: Response;
+	let myfile: File;
 
 	$: if (
 		username != data.user.username ||
@@ -69,9 +72,19 @@
 		show_nft != data.user.show_nft
 	) {
 		changes_made = true;
+		// updateDB();
 	} else {
 		changes_made = false;
 	}
+
+	const updateDB = async () => {
+		console.log(myform);
+		let formData: HTMLFormElement = <HTMLFormElement>{};
+		// const data = new URLSearchParams(new FormData(myform.elements));
+		await fetch('/api/user', {
+			body: data
+		});
+	};
 
 	onMount(async () => {
 		await connectWallet();
@@ -193,22 +206,35 @@
 	//todo: update spaces cors policy with domain
 	const uploadPhoto = async (e: any) => {
 		const file = e.target.files[0]!;
+		if (file == null) return; // If user cancels file selection
+		const reader = new FileReader();
+		reader.onload = function () {
+			if (typeof reader.result == 'string') image_url = reader.result;
+		};
+		reader.readAsDataURL(file);
 		const res = await fetch(`/api/upload-url/${e.target.files[0].name}`);
-		const { url, fields } = await res.json();
-		const formData = new FormData();
-		Object.entries({ ...fields, file }).forEach(([key, value]) => {
-			formData.append(key, value as string);
-		});
-		const upload = await fetch(url, {
-			method: 'POST',
-			body: formData
-		});
-		if (upload.ok) {
-			console.log('Uploaded successfully!');
-		} else {
-			console.error('Upload failed.');
+		upload_url = res;
+	};
+	const submit = async (e: any) => {
+		if (e.target[7].files.length != 0) {
+			const file = e.target[7].files[0]!;
+			const { url, fields } = await upload_url.json();
+			const formData = new FormData();
+			Object.entries({ ...fields, file }).forEach(([key, value]) => {
+				formData.append(key, value as string);
+			});
+			const upload = await fetch(url, {
+				method: 'POST',
+				body: formData
+			});
+			//todo: stop exec if not ok
+			if (upload.ok) {
+				console.log('Uploaded successfully!');
+			} else {
+				console.error('Upload failed.');
+			}
 		}
-		image_url = `https://honestwork-userfiles.fra1.digitaloceanspaces.com/${$userAddress}/${e.target.files[0].name}`;
+		myform.submit();
 	};
 </script>
 
@@ -219,7 +245,7 @@
 
 <main>
 	{#if correct_address && $userState > 1}
-		<form method="POST" bind:this={myform}>
+		<form method="POST" bind:this={myform} on:submit|preventDefault={submit}>
 			<section class="bar">
 				<div class="tabs">
 					<p
@@ -372,21 +398,19 @@
 							{/if}
 						</div>
 						<div style="height:8px" />
-						{#if !show_nft}
-							<div class="input-field file-input-container">
-								<input
-									class="file-input"
-									type="file"
-									accept="image/png, image/jpeg"
-									on:change={uploadPhoto}
-									bind:value={file_uploaded}
-								/>
-								<input hidden type="text" name="image_url" bind:value={image_url} />
-								<div class="pseudo-file-input-container">
-									<p class="pseudo-file-input">UPLOAD FILE</p>
-								</div>
+						<div class="input-field file-input-container">
+							<input
+								class="file-input"
+								type="file"
+								accept="image/png, image/jpeg"
+								on:change={uploadPhoto}
+								bind:value={file_uploaded}
+							/>
+							<input hidden type="text" name="image_url" bind:value={image_url} />
+							<div class="pseudo-file-input-container">
+								<p class="pseudo-file-input">UPLOAD FILE</p>
 							</div>
-						{/if}
+						</div>
 					</div>
 				</div>
 				<div style="height: 16px" />

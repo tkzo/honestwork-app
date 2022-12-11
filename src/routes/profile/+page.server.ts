@@ -1,6 +1,7 @@
 import { json, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import type { Actions } from './$types';
+import { env } from '$env/dynamic/private';
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const userAddress = cookies.get('address');
@@ -35,14 +36,11 @@ const validateSignature = async (address: string, userSignature: string, userSal
 
 export const actions: Actions = {
 	default: async ({ cookies, request }) => {
-		//validate from cookies
+		//todo: validate from cookies
 		const userAddress = cookies.get('address');
 		const userSignature = cookies.get('signature');
 		const userSalt = cookies.get('salt');
-
-		//todo: fix all values
 		const data = await request.formData();
-		console.log('Show nft:', data.get('show_nft'));
 		const body = {
 			username: data.get('username'),
 			show_ens: false,
@@ -57,7 +55,7 @@ export const actions: Actions = {
 			links: [data.get('link-0'), data.get('link-1'), data.get('link-2')]
 		};
 
-		const url = `http://localhost:3000/api/v1/users/${userAddress}/${userSalt}/${userSignature}`;
+		const url = `${env.PRIVATE_HONESTWORK_API}users/${userAddress}/${userSalt}/${userSignature}`;
 		let response = await fetch(url, {
 			method: 'PATCH',
 			body: JSON.stringify(body),

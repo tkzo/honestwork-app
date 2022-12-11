@@ -1,27 +1,8 @@
 <script lang="ts">
-	import {
-		chainID,
-		networkSigner,
-		userAddress,
-		userConnected,
-		connectWallet
-	} from '$lib/stores/Network';
-	import { onMount } from 'svelte';
+	import { networkSigner, userAddress, userConnected } from '$lib/stores/Network';
 
-	// const checkUserAvailable = async () => {
-	// 	const url = `http://localhost:3002/users/${$userAddress}`;
-	// 	let response = await fetch(url);
-	// 	if (response.ok) {
-	// 		let json = await response.json();
-	// 		console.log(json);
-	// 	} else {
-	// 		alert('HTTP-Error: ' + response.status);
-	// 	}
-	// };
-	// onMount(async () => {
-	// 	await connectWallet();
-	// });
 	let myform: HTMLFormElement;
+	//todo: salt generation on browser
 	const salt = 'post';
 	let signature: string;
 	const signUp = async () => {
