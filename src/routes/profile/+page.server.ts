@@ -47,13 +47,14 @@ export const actions: Actions = {
 		const userSignature = cookies.get('signature');
 		const userSalt = cookies.get('salt');
 		const data = await request.formData();
+		const cloud_url = env.PRIVATE_SPACES_URL + '/' + userAddress + '/' + data.get('file_url');
 		const body = {
 			username: data.get('username'),
 			show_ens: false,
 			title: data.get('title'),
 			email: data.get('email'),
 			bio: data.get('bio'),
-			image_url: data.get('image_url'),
+			image_url: cloud_url,
 			nft_address: data.get('nft_address'),
 			nft_id: data.get('nft_id'),
 			show_nft: data.get('show_nft') == 'on' ? true : false,

@@ -7,9 +7,7 @@
 		userState,
 		token_abi,
 		token_address,
-		networkSigner,
-		networkProvider,
-		chainID
+		networkSigner
 	} from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 	import { ethers } from 'ethers';
@@ -60,6 +58,8 @@
 	let upload_url: Response;
 	let myfile: File;
 	let ens_name: string;
+
+	$: console.log(file_uploaded);
 
 	$: if (
 		username != data.user.username ||
@@ -378,11 +378,11 @@
 						<div style="height:8px" />
 						<div class="input-field file-input-container">
 							<input
+								name="file_url"
 								class="file-input"
 								type="file"
 								accept="image/png, image/jpeg"
 								on:change={uploadPhoto}
-								bind:value={file_uploaded}
 							/>
 							<input hidden type="text" name="image_url" bind:value={image_url} />
 							<div class="pseudo-file-input-container">
