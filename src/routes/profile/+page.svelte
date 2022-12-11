@@ -7,7 +7,9 @@
 		userState,
 		token_abi,
 		token_address,
-		networkSigner
+		networkSigner,
+		networkProvider,
+		chainID
 	} from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 	import { ethers } from 'ethers';
@@ -57,6 +59,7 @@
 	let chosen_skill_slot: number = -1;
 	let upload_url: Response;
 	let myfile: File;
+	let ens_name: string;
 
 	$: if (
 		username != data.user.username ||
@@ -72,19 +75,9 @@
 		show_nft != data.user.show_nft
 	) {
 		changes_made = true;
-		// updateDB();
 	} else {
 		changes_made = false;
 	}
-
-	const updateDB = async () => {
-		console.log(myform);
-		let formData: HTMLFormElement = <HTMLFormElement>{};
-		// const data = new URLSearchParams(new FormData(myform.elements));
-		await fetch('/api/user', {
-			body: data
-		});
-	};
 
 	onMount(async () => {
 		await connectWallet();
@@ -216,8 +209,10 @@
 		upload_url = res;
 	};
 	const submit = async (e: any) => {
-		if (e.target[7].files.length != 0) {
-			const file = e.target[7].files[0]!;
+		//todo: refactor into order agnostic
+		console.log(e);
+		if (e.target[6].files.length != 0) {
+			const file = e.target[6].files[0]!;
 			const { url, fields } = await upload_url.json();
 			const formData = new FormData();
 			Object.entries({ ...fields, file }).forEach(([key, value]) => {
@@ -379,6 +374,21 @@
 								on:focusout={() => deFocusInput()}
 							/>
 						</div>
+
+						<div style="height:8px" />
+						<div class="input-field file-input-container">
+							<input
+								class="file-input"
+								type="file"
+								accept="image/png, image/jpeg"
+								on:change={uploadPhoto}
+								bind:value={file_uploaded}
+							/>
+							<input hidden type="text" name="image_url" bind:value={image_url} />
+							<div class="pseudo-file-input-container">
+								<p class="pseudo-file-input">UPLOAD FILE</p>
+							</div>
+						</div>
 						<div style="height: 8px" />
 						<div
 							class="input-field"
@@ -396,20 +406,6 @@
 								<div style="width:8px" />
 								<p class="light-60">use nft image</p>
 							{/if}
-						</div>
-						<div style="height:8px" />
-						<div class="input-field file-input-container">
-							<input
-								class="file-input"
-								type="file"
-								accept="image/png, image/jpeg"
-								on:change={uploadPhoto}
-								bind:value={file_uploaded}
-							/>
-							<input hidden type="text" name="image_url" bind:value={image_url} />
-							<div class="pseudo-file-input-container">
-								<p class="pseudo-file-input">UPLOAD FILE</p>
-							</div>
 						</div>
 					</div>
 				</div>

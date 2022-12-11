@@ -2,15 +2,21 @@ import { json, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import type { Actions } from './$types';
 import { env } from '$env/dynamic/private';
+import { connectNode, nodeProvider } from '$lib/stores/Network';
 
 export const load: PageServerLoad = async ({ cookies }) => {
-	const userAddress = cookies.get('address');
+	const userAddress = cookies.get('address')!;
 	const userSignature = cookies.get('signature');
 	const userSalt = cookies.get('salt');
+
+	//todo: move trigger to component mount (takes too long)
+	// let provider = await connectNode(env.PRIVATE_ETHEREUM_RPC);
+	// let ens_name = await provider?.lookupAddress(userAddress);
 
 	if (userSignature && userSalt && userAddress) {
 		let user = await validateSignature(userAddress, userSignature, userSalt);
 		user.address = userAddress;
+		// user.ens_name = ens_name;
 		return { user: user };
 	} else {
 		throw redirect(301, '/create_account');

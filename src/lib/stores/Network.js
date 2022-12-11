@@ -11,6 +11,7 @@ export let userState = writable(-1);
 export let connecting = writable(false);
 export let chainName = writable('');
 export let token_address = env.PUBLIC_MEMBERSHIP_TOKEN_ADDRESS;
+export let nodeProvider = writable();
 
 export const connectWallet = async () => {
 	connecting.set(true);
@@ -45,6 +46,16 @@ export const connectWallet = async () => {
 		console.log('error:', err);
 	}
 	connecting.set(false);
+};
+
+export const connectNode = async (rpc_url) => {
+	try {
+		const provider = new ethers.providers.JsonRpcProvider(rpc_url);
+		nodeProvider.set(provider);
+		return provider;
+	} catch (err) {
+		console.log('error:', err);
+	}
 };
 
 const fetchUserState = async (signer, addr) => {
