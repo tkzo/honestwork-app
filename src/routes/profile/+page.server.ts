@@ -40,7 +40,7 @@ const validateSignature = async (address: string, userSignature: string, userSal
 };
 
 export const actions: Actions = {
-	default: async ({ cookies, request }) => {
+	profile: async ({ cookies, request }) => {
 		//todo: validate from cookies
 		const userAddress = cookies.get('address');
 		const userSignature = cookies.get('signature');
@@ -80,4 +80,44 @@ export const actions: Actions = {
 			console.log(json);
 		}
 	}
+	// skills: async ({ cookies, request }) => {
+	// 	//todo: validate from cookies
+	// 	const userAddress = cookies.get('address');
+	// 	const userSignature = cookies.get('signature');
+	// 	const userSalt = cookies.get('salt');
+	// 	// const userImageUrl = cookies.get('user_image_url')
+	// 	const data = await request.formData();
+	// 	let cloud_url;
+	// 	if (data.get('file_url') != '') {
+	// 		cloud_url = env.PRIVATE_SPACES_URL + '/' + userAddress + '/' + data.get('file_url');
+	// 	}
+
+	// 	console.log('Cloud url:', cloud_url);
+	// 	const body = {
+	// 		username: data.get('username'),
+	// 		show_ens: data.get('show_ens') == 'on' ? true : false,
+	// 		title: data.get('title'),
+	// 		email: data.get('email'),
+	// 		bio: data.get('bio'),
+	// 		image_url: cloud_url,
+	// 		nft_address: data.get('nft_address'),
+	// 		nft_id: data.get('nft_id'),
+	// 		show_nft: data.get('show_nft') == 'on' ? true : false,
+	// 		timezone: '',
+	// 		links: [data.get('link-0'), data.get('link-1'), data.get('link-2')]
+	// 	};
+
+	// 	const url = `${env.PRIVATE_HONESTWORK_API}users/${userAddress}/${userSalt}/${userSignature}`;
+	// 	let response = await fetch(url, {
+	// 		method: 'PATCH',
+	// 		body: JSON.stringify(body),
+	// 		headers: {
+	// 			'Content-Type': 'application/json'
+	// 		}
+	// 	});
+	// 	if (response.ok) {
+	// 		const json = await response.json();
+	// 		console.log(json);
+	// 	}
+	// }
 };

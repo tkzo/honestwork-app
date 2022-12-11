@@ -12,7 +12,7 @@
 		connectNode,
 		userConnected
 	} from '$lib/stores/Network';
-	import { onMount } from 'svelte';
+	import { onMount, SvelteComponent } from 'svelte';
 	import { ethers } from 'ethers';
 	import { goto } from '$app/navigation';
 	import { Jumper } from 'svelte-loading-spinners';
@@ -34,15 +34,12 @@
 		infobox_distance: 0,
 		infobox_content: 'your username will be used to identify you on the platform.'
 	};
-
 	let placeholder_image = 'assets/xcopy.gif';
 	let correct_address: boolean;
 	let changes_made: boolean = false;
-	let file_uploaded: string;
 	let links: string[] = data.user.links ? data.user.links : new Array(3).fill('');
 	let initial_links: string[] = data.user.links ? data.user.links : new Array(3).fill('');
 	let image_url: string = data.user.image_url;
-	let uploaded_image_url: string;
 	let myform: HTMLFormElement;
 	let chosenTab = 'profile';
 	let nft_image: string = placeholder_image;
@@ -59,7 +56,6 @@
 	let infobox_previous_content: string;
 	let chosen_skill_slot: number = -1;
 	let upload_url: Response;
-	let myfile: File;
 	let ens_name: string;
 	let show_ens: boolean = data.user.show_ens;
 	let ens_loading: boolean = false;
@@ -161,21 +157,22 @@
 			case 'title':
 				inputSettings = {
 					title: 'title',
-					infobox_distance: 40,
+					infobox_distance: 64,
 					infobox_content: 'your title will be used to identify you on the platform.'
 				};
 				break;
 			case 'email':
 				inputSettings = {
 					title: 'email',
-					infobox_distance: 80,
-					infobox_content: 'your email will only be used to protocol level notifications.'
+					infobox_distance: 104,
+					infobox_content:
+						'your email is only visible to you and will only be used to protocol level notifications.'
 				};
 				break;
 			case 'nft_address':
 				inputSettings = {
 					title: 'nft_address',
-					infobox_distance: 120,
+					infobox_distance: 144,
 					infobox_content: 'your nft address will be used to identify you on the platform.'
 				};
 				break;
@@ -187,7 +184,7 @@
 					inputSettings.infobox_content = "you don't own this nft.";
 				}
 				inputSettings.title = 'nft_id';
-				inputSettings.infobox_distance = 160;
+				inputSettings.infobox_distance = 184;
 				break;
 		}
 	};
@@ -212,7 +209,7 @@
 	//todo: update spaces cors policy with domain
 	const uploadPhoto = async (e: any) => {
 		const file = e.target.files[0]!;
-		if (file == null) return; // If user cancels file selection
+		if (file == null) return;
 		const reader = new FileReader();
 		reader.onload = function () {
 			if (typeof reader.result == 'string') image_url = reader.result;
@@ -222,9 +219,6 @@
 		upload_url = res;
 	};
 	const submit = async (e: any) => {
-		//todo: refactor into order-agnostic
-		console.log(e);
-
 		let target_file;
 		for (let t of e.target) {
 			if (t.files) {
@@ -261,7 +255,7 @@
 
 <main>
 	{#if correct_address && $userState > 1}
-		<form method="POST" bind:this={myform} on:submit|preventDefault={submit}>
+		<form method="POST" bind:this={myform} on:submit|preventDefault={submit} action="?/profile">
 			<section class="bar">
 				<div class="tabs">
 					<p
@@ -491,8 +485,8 @@
 				<div class="bio">
 					<textarea
 						name="bio"
-						rows="17"
 						size="520"
+						rows="20"
 						maxlength="1000"
 						placeholder="enter bio here..."
 						bind:value={bio}
