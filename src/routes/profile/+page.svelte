@@ -12,7 +12,7 @@
 		connectNode,
 		userConnected
 	} from '$lib/stores/Network';
-	import { onMount, SvelteComponent } from 'svelte';
+	import { onMount } from 'svelte';
 	import { ethers } from 'ethers';
 	import { goto } from '$app/navigation';
 	import { Jumper } from 'svelte-loading-spinners';
@@ -39,6 +39,18 @@
 	let changes_made: boolean = false;
 	let links: string[] = data.user.links ? data.user.links : new Array(3).fill('');
 	let initial_links: string[] = data.user.links ? data.user.links : new Array(3).fill('');
+
+	// let initial_links: string[] = data.user.links ? data.user.links : new Array(3).fill('');
+
+	let link_0: string = data.user.links ? data.user.links[0] : '';
+	let link_1: string = data.user.links ? data.user.links[1] : '';
+	let link_2: string = data.user.links ? data.user.links[2] : '';
+
+	$: if (links || username) {
+		console.log('What?', link_0);
+		console.log(data.user.links);
+	}
+
 	let image_url: string = data.user.image_url;
 	let myform: HTMLFormElement;
 	let chosenTab = 'profile';
@@ -80,9 +92,9 @@
 		email != data.user.email ||
 		nft_id != data.user.nft_id ||
 		nft_address != data.user.nft_address ||
-		initial_links[0] != links[0] ||
-		initial_links[1] != links[1] ||
-		initial_links[2] != links[2] ||
+		link_0 != data.user.links[0] ||
+		link_1 != data.user.links[1] ||
+		link_2 != data.user.links[2] ||
 		bio != data.user.bio ||
 		image_url != data.user.image_url ||
 		show_nft != data.user.show_nft ||
@@ -463,23 +475,44 @@
 				</div>
 				<div style="height: 16px" />
 				<div class="links">
-					{#each links as link, i}
-						<div class="input-field">
-							<div class="placeholder">
-								<p class="light-40">link</p>
-							</div>
-							<input
-								name={`link-${i}`}
-								class="flex-input"
-								type="text"
-								placeholder={link}
-								bind:value={links[i]}
-							/>
+					<div class="input-field">
+						<div class="placeholder">
+							<p class="light-40">link</p>
 						</div>
-						{#if i < links.length - 1}
-							<div style="height: 8px" />
-						{/if}
-					{/each}
+						<input
+							name={`link-0`}
+							class="flex-input"
+							type="text"
+							placeholder={link_0}
+							bind:value={link_0}
+						/>
+					</div>
+					<div style="height: 8px" />
+					<div class="input-field">
+						<div class="placeholder">
+							<p class="light-40">link</p>
+						</div>
+						<input
+							name={`link-1`}
+							class="flex-input"
+							type="text"
+							placeholder={link_1}
+							bind:value={link_1}
+						/>
+					</div>
+					<div style="height: 8px" />
+					<div class="input-field">
+						<div class="placeholder">
+							<p class="light-40">link</p>
+						</div>
+						<input
+							name={`link-2`}
+							class="flex-input"
+							type="text"
+							placeholder={link_2}
+							bind:value={link_2}
+						/>
+					</div>
 				</div>
 				<div style="height: 16px" />
 				<div class="bio">
