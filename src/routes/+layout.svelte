@@ -20,6 +20,8 @@
 	<link href="/fonts/ProtoMono-Regular.otf" rel="stylesheet" />
 	<link href="/fonts/ProtoMono-SemiBold.otf" rel="stylesheet" />
 	<link rel="stylesheet" href="/styles.css" />
+	<script src="https://github.com/tholman/ascii-morph/blob/master/asciiMorph.min.js">
+	</script>
 	{#if $themeLoaded}
 		<link rel="stylesheet" href={`/${$theme}.css`} />
 	{/if}

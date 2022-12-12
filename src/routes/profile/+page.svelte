@@ -18,6 +18,7 @@
 	import { goto } from '$app/navigation';
 	import { Jumper } from 'svelte-loading-spinners';
 	import { tweened } from 'svelte/motion';
+	import { chosen_skill_slot } from '$lib/stores/State';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
@@ -42,7 +43,8 @@
 	let link_1: string = data.user.links ? data.user.links[1] : '';
 	let link_2: string = data.user.links ? data.user.links[2] : '';
 	let image_url: string = data.user.image_url;
-	let myform: HTMLFormElement;
+	let profileForm: HTMLFormElement;
+	let skillsForm: HTMLFormElement;
 	let chosenTab = 'profile';
 	let nft_image: string = placeholder_image;
 	let is_owner: boolean;
@@ -218,7 +220,7 @@
 		const res = await fetch(`/api/upload-url/${e.target.files[0].name}`);
 		upload_url = res;
 	};
-	const submit = async (e: any) => {
+	const submitProfile = async (e: any) => {
 		let target_file;
 		for (let t of e.target) {
 			if (t.files) {
@@ -243,8 +245,9 @@
 				console.error('Upload failed.');
 			}
 		}
-		myform.submit();
+		profileForm.submit();
 	};
+	const submitSkills = async () => {};
 </script>
 
 <svelte:head>
@@ -254,38 +257,29 @@
 
 <main>
 	{#if correct_address && $userState > 1}
-		<form method="POST" bind:this={myform} on:submit|preventDefault={submit} action="?/profile">
-			<section class="bar">
-				<div class="tabs">
-					<p
-						class={`tab link semibold ${chosenTab == 'profile' ? 'yellow' : 'light-60'}`}
-						on:click={() => toggle('profile')}
-						on:keydown
+		{#if chosenTab == 'profile'}
+			<form
+				method="POST"
+				bind:this={profileForm}
+				on:submit|preventDefault={submitProfile}
+				action="?/profile"
+			>
+				<section class="bar">
+					<div class="tabs">
+						<p class="tab link semibold yellow">profile</p>
+						<p class="tab link semibold light-60" on:click={() => toggle('skills')} on:keydown>
+							skills
+						</p>
+						<p class="tab link semibold light-60" on:click={() => toggle('past jobs')} on:keydown>
+							past jobs
+						</p>
+					</div>
+					<button
+						class={` semibold link ${changes_made ? 'yellow' : 'light-60'}`}
+						style={`opacity: ${$blink}`}>update profile</button
 					>
-						profile
-					</p>
-					<p
-						class={`tab link semibold ${chosenTab == 'skills' ? 'yellow' : 'light-60'}`}
-						on:click={() => toggle('skills')}
-						on:keydown
-					>
-						skills
-					</p>
-					<p
-						class={`tab link semibold ${chosenTab == 'past jobs' ? 'yellow' : 'light-60'}`}
-						on:click={() => toggle('past jobs')}
-						on:keydown
-					>
-						past jobs
-					</p>
-				</div>
-				<button
-					class={` semibold link ${changes_made ? 'yellow' : 'light-60'}`}
-					style={`opacity: ${$blink}`}>update profile</button
-				>
-			</section>
-			<div style="height: 12px" />
-			{#if chosenTab == 'profile'}
+				</section>
+				<div style="height: 12px" />
 				<section
 					class="infobox"
 					style={`margin-top:${inputSettings.infobox_distance}px; opacity:${
@@ -528,10 +522,48 @@
 						bind:value={bio}
 					/>
 				</div>
-			{:else if chosenTab == 'skills'}
+			</form>
+		{:else if chosenTab == 'skills'}
+			<form
+				method="POST"
+				bind:this={skillsForm}
+				on:submit|preventDefault={submitSkills}
+				action="?/profile"
+			>
+				{#if $chosen_skill_slot == -1}
+					<section class="bar">
+						<div class="tabs">
+							<p class="tab link semibold light-60" on:click={() => toggle('profile')} on:keydown>
+								profile
+							</p>
+							<p class="tab link semibold yellow">skills</p>
+							<p class="tab link semibold light-60" on:click={() => toggle('past jobs')} on:keydown>
+								past jobs
+							</p>
+						</div>
+						<button class={`semibold link yellow`}>+add new skill</button>
+					</section>
+				{:else}
+					<section class="bar">
+						<div class="tabs">
+							<p
+								class="tab link semibold light-60"
+								on:click={() => {
+									toggle('skills');
+									chosen_skill_slot.set(-1);
+								}}
+								on:keydown
+							>
+								back to skills
+							</p>
+						</div>
+						<button class={`semibold link yellow`}>+save changes</button>
+					</section>
+				{/if}
+				<div style="height: 16px" />
 				<Skills {data} />
-			{/if}
-		</form>
+			</form>
+		{/if}
 	{:else if correct_address && $userState == 1}
 		<section>
 			<div class="gm">

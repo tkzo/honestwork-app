@@ -1,15 +1,14 @@
 <script lang="ts">
 	import Skill from '$lib/components/cards/Skill.svelte';
 	import SkillEdit from '$lib/components/cards/SkillEdit.svelte';
+	import { chosen_skill_slot } from '$lib/stores/State';
 	export let data: any;
-	let chosen_skill_slot = -1;
 </script>
 
-<p>add skill(1/3)</p>
 {#if data.user.skills}
-	{#if chosen_skill_slot == -1}
+	{#if $chosen_skill_slot == -1}
 		{#each data.user.skills as skill, i}
-			<div on:click={() => (chosen_skill_slot = i)} on:keydown>
+			<div on:click={() => chosen_skill_slot.set(i)} on:keydown>
 				<Skill
 					slot={skill.slot}
 					title={skill.title}
@@ -23,6 +22,6 @@
 			{/if}
 		{/each}
 	{:else}
-		<SkillEdit slot="1" />
+		<SkillEdit skill={data.user.skills[$chosen_skill_slot]} />
 	{/if}
 {/if}
