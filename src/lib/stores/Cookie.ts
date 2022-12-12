@@ -12,7 +12,6 @@ export function setCookie(name: string, val: string) {
 
 export function getCookie(name: string) {
 	const value = '; ' + document.cookie;
-	console.log('Value:', value);
 	const parts = value.split('; ' + name + '=');
 
 	if (parts.length == 2) {

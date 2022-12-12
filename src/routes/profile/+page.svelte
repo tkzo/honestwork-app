@@ -1,6 +1,6 @@
 <script lang="ts">
 	/// <reference types="aws-sdk" />
-	import Skill from '$lib/components/cards/Skill.svelte';
+	import Skills from '$lib/components/profile/Skills.svelte';
 	import {
 		connectWallet,
 		userAddress,
@@ -12,6 +12,7 @@
 		connectNode,
 		userConnected
 	} from '$lib/stores/Network';
+	import { theme } from '$lib/stores/Theme';
 	import { onMount } from 'svelte';
 	import { ethers } from 'ethers';
 	import { goto } from '$app/navigation';
@@ -37,20 +38,9 @@
 	let placeholder_image = 'assets/xcopy.gif';
 	let correct_address: boolean;
 	let changes_made: boolean = false;
-	let links: string[] = data.user.links ? data.user.links : new Array(3).fill('');
-	let initial_links: string[] = data.user.links ? data.user.links : new Array(3).fill('');
-
-	// let initial_links: string[] = data.user.links ? data.user.links : new Array(3).fill('');
-
 	let link_0: string = data.user.links ? data.user.links[0] : '';
 	let link_1: string = data.user.links ? data.user.links[1] : '';
 	let link_2: string = data.user.links ? data.user.links[2] : '';
-
-	$: if (links || username) {
-		console.log('What?', link_0);
-		console.log(data.user.links);
-	}
-
 	let image_url: string = data.user.image_url;
 	let myform: HTMLFormElement;
 	let chosenTab = 'profile';
@@ -66,7 +56,6 @@
 	let fetching_image = true;
 	let infobox_show: boolean = false;
 	let infobox_previous_content: string;
-	let chosen_skill_slot: number = -1;
 	let upload_url: Response;
 	let ens_name: string;
 	let show_ens: boolean = data.user.show_ens;
@@ -210,7 +199,6 @@
 				const tx = await contract.bind();
 				const receipt = await tx.wait();
 				if (receipt.status == 1) {
-					console.log(receipt.status);
 					goto('/profile');
 				}
 			} catch (error) {
@@ -237,7 +225,6 @@
 				target_file = t;
 			}
 		}
-		if (target_file) console.log(target_file);
 		if (target_file.files.length != 0) {
 			const file = target_file.files[0]!;
 			const { url, fields } = await upload_url.json();
@@ -332,7 +319,7 @@
 								{#if ens_loading}
 									<div class="input-like">
 										<img
-											src="icons/loader.svg"
+											src={`${$theme == 'dark' ? 'icons/loader.svg' : 'icons/light/loader.svg'}`}
 											alt="loading"
 											class="rotating"
 											style="height:16px;width:16px;"
@@ -365,11 +352,19 @@
 						>
 							<input hidden type="checkbox" name="show_ens" bind:checked={show_ens} />
 							{#if show_ens}
-								<img src="icons/checked.svg" alt="Checked" style="height:16px;width:16px;" />
+								<img
+									src={`${$theme == 'dark' ? 'icons/checked.svg' : 'icons/light/checked.svg'}`}
+									alt="Checked"
+									style="height:16px;width:16px;"
+								/>
 								<div style="width:8px" />
 								<p class="yellow">use ens name</p>
 							{:else}
-								<img src="icons/unchecked.svg" alt="Checked" style="height:16px;width:16px;" />
+								<img
+									src={`${$theme == 'dark' ? 'icons/unchecked.svg' : 'icons/light/unchecked.svg'}`}
+									alt="Checked"
+									style="height:16px;width:16px;"
+								/>
 								<div style="width:8px" />
 								<p class="light-60">use ens name</p>
 							{/if}
@@ -462,11 +457,19 @@
 						>
 							<input hidden type="checkbox" name="show_nft" bind:checked={show_nft} />
 							{#if show_nft}
-								<img src="icons/checked.svg" alt="Checked" style="height:16px;width:16px;" />
+								<img
+									src={`${$theme == 'dark' ? 'icons/checked.svg' : 'icons/light/checked.svg'}`}
+									alt="Checked"
+									style="height:16px;width:16px;"
+								/>
 								<div style="width:8px" />
 								<p class="yellow">use nft image</p>
 							{:else}
-								<img src="icons/unchecked.svg" alt="Checked" style="height:16px;width:16px;" />
+								<img
+									src={`${$theme == 'dark' ? 'icons/unchecked.svg' : 'icons/light/unchecked.svg'}`}
+									alt="Checked"
+									style="height:16px;width:16px;"
+								/>
 								<div style="width:8px" />
 								<p class="light-60">use nft image</p>
 							{/if}
@@ -526,26 +529,7 @@
 					/>
 				</div>
 			{:else if chosenTab == 'skills'}
-				{#if data.user.skills}
-					{#if chosen_skill_slot == -1}
-						{#each data.user.skills as skill, i}
-							<div on:click={() => (chosen_skill_slot = i)} on:keydown>
-								<Skill
-									slot={skill.slot}
-									title={skill.title}
-									description={skill.description}
-									image_urls={skill.image_urls}
-									minimum_price={skill.minimum_price}
-								/>
-							</div>
-							{#if i < data.user.skills?.length - 1}
-								<div style="height: 12px" />
-							{/if}
-						{/each}
-					{:else}
-						<p>skill edit</p>
-					{/if}
-				{/if}
+				<Skills {data} />
 			{/if}
 		</form>
 	{:else if correct_address && $userState == 1}

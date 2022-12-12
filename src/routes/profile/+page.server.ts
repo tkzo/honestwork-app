@@ -51,8 +51,6 @@ export const actions: Actions = {
 		if (data.get('file_url') != '') {
 			cloud_url = env.PRIVATE_SPACES_URL + '/' + userAddress + '/' + data.get('file_url');
 		}
-
-		console.log('Cloud url:', cloud_url);
 		const body = {
 			username: data.get('username'),
 			show_ens: data.get('show_ens') == 'on' ? true : false,
@@ -92,7 +90,6 @@ export const actions: Actions = {
 	// 		cloud_url = env.PRIVATE_SPACES_URL + '/' + userAddress + '/' + data.get('file_url');
 	// 	}
 
-	// 	console.log('Cloud url:', cloud_url);
 	// 	const body = {
 	// 		username: data.get('username'),
 	// 		show_ens: data.get('show_ens') == 'on' ? true : false,

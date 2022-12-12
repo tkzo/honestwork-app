@@ -51,7 +51,6 @@ export const connectWallet = async () => {
 export const connectNode = async () => {
 	try {
 		const provider = new ethers.providers.JsonRpcProvider(env.PUBLIC_ETHEREUM_RPC);
-		console.log('Connected.', provider);
 		nodeProvider.set(provider);
 	} catch (err) {
 		console.log('error:', err);

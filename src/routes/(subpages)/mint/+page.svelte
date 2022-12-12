@@ -23,7 +23,6 @@
 			}
 		}
 	};
-	$: console.log($userState);
 </script>
 
 <svelte:head>
