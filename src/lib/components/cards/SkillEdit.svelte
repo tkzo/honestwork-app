@@ -6,6 +6,12 @@
 
 	let description_chars = 1000;
 	let description_text = skill.description;
+	let title: string = skill.title;
+	let minimum: string = skill.minimum_price;
+	let link_0: string = skill.links[0];
+	let link_1: string = skill.links[1];
+	let link_2: string = skill.links[2];
+
 	let text_length = 0;
 	let file_url_0: string;
 	let file_url_1: string;
@@ -58,9 +64,10 @@
 				urls[$chosen_skill_slot][i] = await fetch(
 					`/api/upload-skill-url/${$chosen_skill_slot}/${i}/${e.target.files[0].name}`
 				);
-				skill_upload_urls.set(urls);
 			}
 		}
+		skill_upload_urls.set(urls);
+		console.log($skill_upload_urls);
 	};
 	const updateDescription = () => {
 		text_length = myTextarea.value.length;
@@ -71,6 +78,7 @@
 </script>
 
 <section class="gallery">
+	<input hidden type="number" name="skill_slot" bind:value={$chosen_skill_slot} />
 	<div
 		class="image-card"
 		style={`background-image:url(${image_url_0 ?? skill.image_urls[0] ?? 'assets/xcopy.gif'})`}
@@ -91,6 +99,7 @@
 			bind:this={comp_0}
 		/>
 		<input hidden type="text" name="image_url_0" bind:value={image_url_0} />
+		<input hidden type="number" name="image_slot_0" value="0" />
 	</div>
 	<div
 		class="image-card"
@@ -112,6 +121,7 @@
 			bind:this={comp_1}
 		/>
 		<input hidden type="text" name="image_url_1" bind:value={image_url_1} />
+		<input hidden type="number" name="image_slot_1" value="1" />
 	</div>
 	<div
 		class="image-card"
@@ -133,6 +143,7 @@
 			bind:this={comp_2}
 		/>
 		<input hidden type="text" name="image_url_2" bind:value={image_url_2} />
+		<input hidden type="number" name="image_slot_2" value="2" />
 	</div>
 	<div
 		class="image-card"
@@ -154,6 +165,7 @@
 			bind:this={comp_3}
 		/>
 		<input hidden type="text" name="image_url_3" bind:value={image_url_3} />
+		<input hidden type="number" name="image_slot_3" value="3" />
 	</div>
 	<div
 		class="image-card"
@@ -175,6 +187,7 @@
 			bind:this={comp_4}
 		/>
 		<input hidden type="text" name="image_url_4" bind:value={image_url_4} />
+		<input hidden type="number" name="image_slot_4" value="4" />
 	</div>
 	<div
 		class="image-card"
@@ -196,6 +209,7 @@
 			bind:this={comp_5}
 		/>
 		<input hidden type="text" name="image_url_5" bind:value={image_url_5} />
+		<input hidden type="number" name="image_slot_5" value="5" />
 	</div>
 	<div
 		class="image-card"
@@ -217,6 +231,7 @@
 			bind:this={comp_6}
 		/>
 		<input hidden type="text" name="image_url_6" bind:value={image_url_6} />
+		<input hidden type="number" name="image_slot_6" value="6" />
 	</div>
 	<div
 		class="image-card"
@@ -238,6 +253,7 @@
 			bind:this={comp_7}
 		/>
 		<input hidden type="text" name="image_url_7" bind:value={image_url_7} />
+		<input hidden type="number" name="image_slot_7" value="7" />
 	</div>
 </section>
 <div style="height:16px;" />
@@ -246,14 +262,20 @@
 		<div class="placeholder">
 			<p class="light-40">title</p>
 		</div>
-		<input name="title" class="flex-input" type="text" />
+		<input name="title" class="flex-input" type="text" placeholder={title} bind:value={title} />
 	</div>
 	<div style="height:8px;" />
 	<div class="input-field">
 		<div class="placeholder">
 			<p class="light-40">minimum budget</p>
 		</div>
-		<input name="minimum" class="flex-input" type="text" />
+		<input
+			name="minimum_price"
+			class="flex-input"
+			type="text"
+			placeholder={minimum}
+			bind:value={minimum}
+		/>
 	</div>
 </div>
 <div style="height:16px;" />
@@ -280,7 +302,6 @@
 	</div>
 </div>
 <div style="height:16px;" />
-
 <div class="description">
 	<div class="description-bar">
 		<section class="description-title"><p class="light-40">description</p></section>
