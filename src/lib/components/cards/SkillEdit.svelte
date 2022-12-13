@@ -1,24 +1,66 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { skill_upload_urls, chosen_skill_slot } from '$lib/stores/State';
 
 	export let skill: any;
+
 	let description_chars = 1000;
 	let description_text = skill.description;
 	let text_length = 0;
-	let file_url: string;
+	let file_url_0: string;
+	let file_url_1: string;
+	let file_url_2: string;
+	let file_url_3: string;
+	let file_url_4: string;
+	let file_url_5: string;
+	let file_url_6: string;
+	let file_url_7: string;
 	let myTextarea: HTMLTextAreaElement;
 	let image_url: string;
 	let upload_response: Response;
+	let image_url_0: string;
+	let image_url_1: string;
+	let image_url_2: string;
+	let image_url_3: string;
+	let image_url_4: string;
+	let image_url_5: string;
+	let image_url_6: string;
+	let image_url_7: string;
+	let comp_0: HTMLInputElement;
+	let comp_1: HTMLInputElement;
+	let comp_2: HTMLInputElement;
+	let comp_3: HTMLInputElement;
+	let comp_4: HTMLInputElement;
+	let comp_5: HTMLInputElement;
+	let comp_6: HTMLInputElement;
+	let comp_7: HTMLInputElement;
+
 	const uploadPhoto = async (e: any) => {
 		const file = e.target.files[0]!;
 		if (file == null) return;
 		const reader = new FileReader();
 		reader.onload = function () {
-			if (typeof reader.result == 'string') image_url = reader.result;
+			if (typeof reader.result == 'string') {
+				if (e.srcElement.name == 'file_url_0') image_url_0 = reader.result;
+				if (e.srcElement.name == 'file_url_1') image_url_1 = reader.result;
+				if (e.srcElement.name == 'file_url_2') image_url_2 = reader.result;
+				if (e.srcElement.name == 'file_url_3') image_url_3 = reader.result;
+				if (e.srcElement.name == 'file_url_4') image_url_4 = reader.result;
+				if (e.srcElement.name == 'file_url_5') image_url_5 = reader.result;
+				if (e.srcElement.name == 'file_url_6') image_url_6 = reader.result;
+				if (e.srcElement.name == 'file_url_7') image_url_7 = reader.result;
+			}
 		};
 		reader.readAsDataURL(file);
-		const res = await fetch(`/api/upload-url/${e.target.files[0].name}`);
-		upload_response = res;
+		let urls = $skill_upload_urls;
+		for (let i = 0; i < 8; i++) {
+			if (e.srcElement.name == `file_url_${i}`) {
+				urls[$chosen_skill_slot][i] = await fetch(
+					`/api/upload-skill-url/${$chosen_skill_slot}/${i}/${e.target.files[0].name}`
+				);
+				skill_upload_urls.set(urls);
+			}
+		}
 	};
 	const updateDescription = () => {
 		text_length = myTextarea.value.length;
@@ -29,28 +71,174 @@
 </script>
 
 <section class="gallery">
-	{#each new Array(8) as image_url, i}
-		<div
-			class="image-card"
-			style={`background-image:url(${skill.image_urls[i] ?? 'assets/xcopy.gif'})`}
-		>
-			<div class="image-tint" />
-			<div class="upload-button">
-				<img src="icons/upload.svg" alt="Upload" />
-				<div style="height:4px;" />
-				<p class="yellow">UPLOAD IMAGE</p>
-			</div>
-			<input
-				name="file_url"
-				class="file-input"
-				type="file"
-				accept="image/png, image/jpeg"
-				on:change={uploadPhoto}
-				bind:value={file_url}
-			/>
-			<input hidden type="text" name="image_url" bind:value={image_url} />
+	<div
+		class="image-card"
+		style={`background-image:url(${image_url_0 ?? skill.image_urls[0] ?? 'assets/xcopy.gif'})`}
+	>
+		<div class="image-tint" />
+		<div class="upload-button">
+			<img src="icons/upload.svg" alt="Upload" />
+			<div style="height:4px;" />
+			<p class="yellow">UPLOAD IMAGE</p>
 		</div>
-	{/each}
+		<input
+			name={`file_url_${0}`}
+			class="file-input"
+			type="file"
+			accept="image/png, image/jpeg"
+			on:change={uploadPhoto}
+			bind:value={file_url_0}
+			bind:this={comp_0}
+		/>
+		<input hidden type="text" name="image_url_0" bind:value={image_url_0} />
+	</div>
+	<div
+		class="image-card"
+		style={`background-image:url(${image_url_1 ?? skill.image_urls[1] ?? 'assets/xcopy.gif'})`}
+	>
+		<div class="image-tint" />
+		<div class="upload-button">
+			<img src="icons/upload.svg" alt="Upload" />
+			<div style="height:4px;" />
+			<p class="yellow">UPLOAD IMAGE</p>
+		</div>
+		<input
+			name={`file_url_${1}`}
+			class="file-input"
+			type="file"
+			accept="image/png, image/jpeg"
+			on:change={uploadPhoto}
+			bind:value={file_url_1}
+			bind:this={comp_1}
+		/>
+		<input hidden type="text" name="image_url_1" bind:value={image_url_1} />
+	</div>
+	<div
+		class="image-card"
+		style={`background-image:url(${image_url_2 ?? skill.image_urls[2] ?? 'assets/xcopy.gif'})`}
+	>
+		<div class="image-tint" />
+		<div class="upload-button">
+			<img src="icons/upload.svg" alt="Upload" />
+			<div style="height:4px;" />
+			<p class="yellow">UPLOAD IMAGE</p>
+		</div>
+		<input
+			name={`file_url_${2}`}
+			class="file-input"
+			type="file"
+			accept="image/png, image/jpeg"
+			on:change={uploadPhoto}
+			bind:value={file_url_2}
+			bind:this={comp_2}
+		/>
+		<input hidden type="text" name="image_url_2" bind:value={image_url_2} />
+	</div>
+	<div
+		class="image-card"
+		style={`background-image:url(${image_url_3 ?? skill.image_urls[3] ?? 'assets/xcopy.gif'})`}
+	>
+		<div class="image-tint" />
+		<div class="upload-button">
+			<img src="icons/upload.svg" alt="Upload" />
+			<div style="height:4px;" />
+			<p class="yellow">UPLOAD IMAGE</p>
+		</div>
+		<input
+			name={`file_url_${3}`}
+			class="file-input"
+			type="file"
+			accept="image/png, image/jpeg"
+			on:change={uploadPhoto}
+			bind:value={file_url_3}
+			bind:this={comp_3}
+		/>
+		<input hidden type="text" name="image_url_3" bind:value={image_url_3} />
+	</div>
+	<div
+		class="image-card"
+		style={`background-image:url(${image_url_4 ?? skill.image_urls[4] ?? 'assets/xcopy.gif'})`}
+	>
+		<div class="image-tint" />
+		<div class="upload-button">
+			<img src="icons/upload.svg" alt="Upload" />
+			<div style="height:4px;" />
+			<p class="yellow">UPLOAD IMAGE</p>
+		</div>
+		<input
+			name={`file_url_${4}`}
+			class="file-input"
+			type="file"
+			accept="image/png, image/jpeg"
+			on:change={uploadPhoto}
+			bind:value={file_url_4}
+			bind:this={comp_4}
+		/>
+		<input hidden type="text" name="image_url_4" bind:value={image_url_4} />
+	</div>
+	<div
+		class="image-card"
+		style={`background-image:url(${image_url_5 ?? skill.image_urls[5] ?? 'assets/xcopy.gif'})`}
+	>
+		<div class="image-tint" />
+		<div class="upload-button">
+			<img src="icons/upload.svg" alt="Upload" />
+			<div style="height:4px;" />
+			<p class="yellow">UPLOAD IMAGE</p>
+		</div>
+		<input
+			name={`file_url_${5}`}
+			class="file-input"
+			type="file"
+			accept="image/png, image/jpeg"
+			on:change={uploadPhoto}
+			bind:value={file_url_5}
+			bind:this={comp_5}
+		/>
+		<input hidden type="text" name="image_url_5" bind:value={image_url_5} />
+	</div>
+	<div
+		class="image-card"
+		style={`background-image:url(${image_url_6 ?? skill.image_urls[6] ?? 'assets/xcopy.gif'})`}
+	>
+		<div class="image-tint" />
+		<div class="upload-button">
+			<img src="icons/upload.svg" alt="Upload" />
+			<div style="height:4px;" />
+			<p class="yellow">UPLOAD IMAGE</p>
+		</div>
+		<input
+			name={`file_url_${6}`}
+			class="file-input"
+			type="file"
+			accept="image/png, image/jpeg"
+			on:change={uploadPhoto}
+			bind:value={file_url_6}
+			bind:this={comp_6}
+		/>
+		<input hidden type="text" name="image_url_6" bind:value={image_url_6} />
+	</div>
+	<div
+		class="image-card"
+		style={`background-image:url(${image_url_7 ?? skill.image_urls[7] ?? 'assets/xcopy.gif'})`}
+	>
+		<div class="image-tint" />
+		<div class="upload-button">
+			<img src="icons/upload.svg" alt="Upload" />
+			<div style="height:4px;" />
+			<p class="yellow">UPLOAD IMAGE</p>
+		</div>
+		<input
+			name={`file_url_${7}`}
+			class="file-input"
+			type="file"
+			accept="image/png, image/jpeg"
+			on:change={uploadPhoto}
+			bind:value={file_url_7}
+			bind:this={comp_7}
+		/>
+		<input hidden type="text" name="image_url_7" bind:value={image_url_7} />
+	</div>
 </section>
 <div style="height:16px;" />
 <div class="input-fields">

@@ -18,7 +18,7 @@
 	import { goto } from '$app/navigation';
 	import { Jumper } from 'svelte-loading-spinners';
 	import { tweened } from 'svelte/motion';
-	import { chosen_skill_slot } from '$lib/stores/State';
+	import { chosen_skill_slot, skill_upload_urls } from '$lib/stores/State';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
@@ -209,7 +209,7 @@
 		}
 	};
 	//todo: update spaces cors policy with domain
-	const uploadPhoto = async (e: any) => {
+	const uploadProfileImage = async (e: any) => {
 		const file = e.target.files[0]!;
 		if (file == null) return;
 		const reader = new FileReader();
@@ -247,7 +247,32 @@
 		}
 		profileForm.submit();
 	};
-	const submitSkills = async () => {};
+
+	const submitSkills = async (e: any) => {
+		let counter = 0;
+		for await (let t of e.target) {
+			if (t.files != null && t.files.length > 0) {
+				const file = t.files[0]!;
+				let clone_response = $skill_upload_urls[$chosen_skill_slot][counter].clone();
+				const { url, fields } = await clone_response.json();
+				const formData = new FormData();
+				Object.entries({ ...fields, file }).forEach(([key, value]) => {
+					formData.append(key, value as string);
+				});
+				const upload = await fetch(url, {
+					method: 'POST',
+					body: formData
+				});
+				//todo: stop exec if not ok
+				if (upload.ok) {
+					console.log('Uploaded successfully!');
+				} else {
+					console.error('Upload failed.');
+				}
+				counter++;
+			}
+		}
+	};
 </script>
 
 <svelte:head>
@@ -434,7 +459,7 @@
 								class="file-input"
 								type="file"
 								accept="image/png, image/jpeg"
-								on:change={uploadPhoto}
+								on:change={uploadProfileImage}
 								bind:value={file_url}
 							/>
 							<input hidden type="text" name="image_url" bind:value={image_url} />
@@ -528,7 +553,7 @@
 				method="POST"
 				bind:this={skillsForm}
 				on:submit|preventDefault={submitSkills}
-				action="?/profile"
+				action="?/skills"
 			>
 				{#if $chosen_skill_slot == -1}
 					<section class="bar">
