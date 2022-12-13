@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 };
 
 const validateSignature = async (address: string, userSignature: string, userSalt: string) => {
-	const url = `http://localhost:3000/api/v1/users/${address}`;
+	const url = `${env.PRIVATE_HONESTWORK_API}users/${address}`;
 	let response = await fetch(url);
 	if (response.ok) {
 		let json = await response.json();

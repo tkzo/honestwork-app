@@ -1,5 +1,6 @@
 import type { RequestHandler } from './$types';
 import { invalid, redirect } from '@sveltejs/kit';
+import { env } from '$env/dynamic/private';
 
 export const GET: RequestHandler = ({ url, cookies }) => {
 	const userSignature = cookies.get('signature');
@@ -14,7 +15,7 @@ export const GET: RequestHandler = ({ url, cookies }) => {
 };
 
 const validateSignature = async (address: string, userSignature: string, userSalt: string) => {
-	const url = `http://localhost:3000/v1/api/users/${address}`;
+	const url = `${env.PRIVATE_HONESTWORK_API}users/${address}`;
 	let response = await fetch(url);
 	if (response.ok) {
 		let json = await response.json();

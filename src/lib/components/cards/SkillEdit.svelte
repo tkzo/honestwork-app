@@ -67,7 +67,6 @@
 			}
 		}
 		skill_upload_urls.set(urls);
-		console.log($skill_upload_urls);
 	};
 	const updateDescription = () => {
 		text_length = myTextarea.value.length;

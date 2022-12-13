@@ -39,9 +39,9 @@
 	let placeholder_image = 'assets/xcopy.gif';
 	let correct_address: boolean;
 	let changes_made: boolean = false;
-	let link_0: string = data.user.links ? data.user.links[0] : '';
-	let link_1: string = data.user.links ? data.user.links[1] : '';
-	let link_2: string = data.user.links ? data.user.links[2] : '';
+	let link_0: string = data.user.links != null ? data.user.links[0] : '';
+	let link_1: string = data.user.links != null ? data.user.links[1] : '';
+	let link_2: string = data.user.links != null ? data.user.links[2] : '';
 	let image_url: string = data.user.image_url;
 	let profileForm: HTMLFormElement;
 	let skillsForm: HTMLFormElement;
@@ -83,9 +83,9 @@
 		email != data.user.email ||
 		nft_id != data.user.nft_id ||
 		nft_address != data.user.nft_address ||
-		link_0 != data.user.links[0] ||
-		link_1 != data.user.links[1] ||
-		link_2 != data.user.links[2] ||
+		link_0 != (data.user.links ? data.user.links[0] : '') ||
+		link_1 != (data.user.links ? data.user.links[1] : '') ||
+		link_2 != (data.user.links ? data.user.links[2] : '') ||
 		bio != data.user.bio ||
 		image_url != data.user.image_url ||
 		show_nft != data.user.show_nft ||
