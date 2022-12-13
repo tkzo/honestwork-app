@@ -8,10 +8,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	const userSignature = cookies.get('signature');
 	const userSalt = cookies.get('salt');
 
-	//todo: move trigger to component mount (takes too long)
-	// let provider = await connectNode(env.PRIVATE_ETHEREUM_RPC);
-	// let ens_name = await provider?.lookupAddress(userAddress);
-
 	if (userSignature && userSalt && userAddress) {
 		let user = await validateSignature(userAddress, userSignature, userSalt);
 		user.address = userAddress;
