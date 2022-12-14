@@ -11,7 +11,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	if (userSignature && userSalt && userAddress) {
 		let user = await validateSignature(userAddress, userSignature, userSalt);
 		user.address = userAddress;
-		// user.ens_name = ens_name;
 		return { user: user };
 	} else {
 		throw redirect(301, '/create_account');
