@@ -1,4 +1,4 @@
 <svelte:head>
-	<title>Projects</title>
+	<title>HW | Projects</title>
 	<meta name="description" content="HonestWork Projects Page" />
 </svelte:head>

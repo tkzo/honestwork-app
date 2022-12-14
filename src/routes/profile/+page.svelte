@@ -63,12 +63,19 @@
 	let show_ens: boolean = data.user.show_ens;
 	let ens_loading: boolean = false;
 	let file_url: string;
+	let username_input_element: HTMLInputElement;
+	let username_input_length: number;
+	let username_input_limit = 15;
+	let title_input_element: HTMLInputElement;
+	let title_input_length: number;
+	let title_input_limit = 15;
 
 	onMount(async () => {
 		await connectWallet();
 		await getNft();
 		//todo: move to layout
 		correct_address = $userAddress.toLowerCase() == data.user.address.toLowerCase();
+		updateInputLengths();
 	});
 
 	$: if ($userConnected && show_ens) {
@@ -276,10 +283,16 @@
 		}
 		skillsForm.submit();
 	};
+	const updateInputLengths = () => {
+		username_input_length = !show_ens
+			? username_input_element.value.length
+			: data.user.username.length;
+		title_input_length = title_input_element?.value.length ?? data.user.title.length;
+	};
 </script>
 
 <svelte:head>
-	<title>Profile</title>
+	<title>HW | Profile</title>
 	<meta name="description" content="HonestWork Profile Page" />
 </svelte:head>
 
@@ -360,10 +373,17 @@
 								type="text"
 								hidden={show_ens}
 								bind:value={username}
+								bind:this={username_input_element}
 								placeholder={data.user.username}
 								on:focus={() => focusInput('username')}
 								on:focusout={() => deFocusInput()}
+								on:keyup={updateInputLengths}
 							/>
+							{#if !show_ens}
+								<div class="limit">
+									<p><span class="yellow">{username_input_length}</span>/{username_input_limit}</p>
+								</div>
+							{/if}
 						</div>
 						<div style="height: 8px" />
 						<div
@@ -401,10 +421,15 @@
 								class="flex-input"
 								type="text"
 								bind:value={title}
+								bind:this={title_input_element}
 								placeholder={data.user.title}
 								on:focus={() => focusInput('title')}
 								on:focusout={() => deFocusInput()}
+								on:keyup={updateInputLengths}
 							/>
+							<div class="limit">
+								<p><span class="yellow">{title_input_length}</span>/{title_input_limit}</p>
+							</div>
 						</div>
 						<div style="height: 8px" />
 						<div class="input-field">
@@ -643,6 +668,7 @@
 		min-width: 320px;
 		justify-content: flex-start;
 		flex: 1;
+		position: relative;
 	}
 	.placeholder {
 		height: 32px;
@@ -753,5 +779,10 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: flex-start;
+	}
+	.limit {
+		position: absolute;
+		right: 12px;
+		transform: translateY(50%);
 	}
 </style>
