@@ -36,7 +36,6 @@ const validateSignature = async (address: string, userSignature: string, userSal
 
 export const actions: Actions = {
 	profile: async ({ cookies, request }) => {
-		//todo: validate from cookies
 		const userAddress = cookies.get('address');
 		const userSignature = cookies.get('signature');
 		const userSalt = cookies.get('salt');
