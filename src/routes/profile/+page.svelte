@@ -228,31 +228,35 @@
 		upload_url = res;
 	};
 	const submitProfile = async (e: any) => {
-		let target_file;
-		for (let t of e.target) {
-			if (t.files) {
-				target_file = t;
+		if (show_nft && !is_owner) {
+			console.log('Nope.');
+		} else {
+			let target_file;
+			for (let t of e.target) {
+				if (t.files) {
+					target_file = t;
+				}
 			}
-		}
-		if (target_file.files.length != 0) {
-			const file = target_file.files[0]!;
-			const { url, fields } = await upload_url.json();
-			const formData = new FormData();
-			Object.entries({ ...fields, file }).forEach(([key, value]) => {
-				formData.append(key, value as string);
-			});
-			const upload = await fetch(url, {
-				method: 'POST',
-				body: formData
-			});
-			//todo: stop exec if not ok
-			if (upload.ok) {
-				console.log('Uploaded successfully!');
-			} else {
-				console.error('Upload failed.');
+			if (target_file.files.length != 0) {
+				const file = target_file.files[0]!;
+				const { url, fields } = await upload_url.json();
+				const formData = new FormData();
+				Object.entries({ ...fields, file }).forEach(([key, value]) => {
+					formData.append(key, value as string);
+				});
+				const upload = await fetch(url, {
+					method: 'POST',
+					body: formData
+				});
+				//todo: stop exec if not ok
+				if (upload.ok) {
+					console.log('Uploaded successfully!');
+				} else {
+					console.error('Upload failed.');
+				}
 			}
+			profileForm.submit();
 		}
-		profileForm.submit();
 	};
 
 	const submitSkills = async (e: any) => {
@@ -285,8 +289,9 @@
 	};
 	const updateInputLengths = () => {
 		username_input_length = !show_ens
-			? username_input_element.value.length
+			? username_input_element?.value.length ?? data.user.username.length
 			: data.user.username.length;
+
 		title_input_length = title_input_element?.value.length ?? data.user.title.length;
 	};
 </script>
@@ -372,9 +377,10 @@
 								class="flex-input"
 								type="text"
 								hidden={show_ens}
+								placeholder={data.user.username}
+								maxlength={username_input_limit}
 								bind:value={username}
 								bind:this={username_input_element}
-								placeholder={data.user.username}
 								on:focus={() => focusInput('username')}
 								on:focusout={() => deFocusInput()}
 								on:keyup={updateInputLengths}
@@ -420,9 +426,10 @@
 								name="title"
 								class="flex-input"
 								type="text"
+								placeholder={data.user.title}
+								maxlength={title_input_limit}
 								bind:value={title}
 								bind:this={title_input_element}
-								placeholder={data.user.title}
 								on:focus={() => focusInput('title')}
 								on:focusout={() => deFocusInput()}
 								on:keyup={updateInputLengths}
