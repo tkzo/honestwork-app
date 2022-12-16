@@ -20,6 +20,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 const validateSignature = async (address: string, userSignature: string, userSalt: string) => {
 	const url = `${env.PRIVATE_HONESTWORK_API}users/${address}`;
 	let response = await fetch(url);
+	//todo: move validation to api
 	if (response.ok) {
 		let json = await response.json();
 		if (json.signature) {
@@ -130,7 +131,7 @@ export const actions: Actions = {
 		const body = {
 			slot: data.get('skill_slot'),
 			title: data.get('title'),
-			minimum: data.get('minimum'),
+			minimum_price: data.get('minimum_price'),
 			links: [data.get('link-0'), data.get('link-1'), data.get('link-2')],
 			image_urls: [
 				cloud_url_0,
@@ -145,19 +146,34 @@ export const actions: Actions = {
 			description: data.get('description')
 		};
 
-		const url = `${
-			env.PRIVATE_HONESTWORK_API
-		}skills/${userAddress}/${userSalt}/${userSignature}/${data.get('skill_slot')}`;
-		let response = await fetch(url, {
-			method: 'PATCH',
-			body: JSON.stringify(body),
-			headers: {
-				'Content-Type': 'application/json'
+		if (data.get('skill_method') == 'add') {
+			const url = `${env.PRIVATE_HONESTWORK_API}skills/${userAddress}/${userSalt}/${userSignature}`;
+			let response = await fetch(url, {
+				method: 'POST',
+				body: JSON.stringify(body),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			if (response.ok) {
+				const json = await response.json();
+				console.log(json);
 			}
-		});
-		if (response.ok) {
-			const json = await response.json();
-			console.log(json);
+		} else {
+			const url = `${
+				env.PRIVATE_HONESTWORK_API
+			}skills/${userAddress}/${userSalt}/${userSignature}/${data.get('skill_slot')}`;
+			let response = await fetch(url, {
+				method: 'PATCH',
+				body: JSON.stringify(body),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			if (response.ok) {
+				const json = await response.json();
+				console.log(json);
+			}
 		}
 	}
 };

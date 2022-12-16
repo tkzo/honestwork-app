@@ -9,6 +9,7 @@
 
 	$: trimmed_description =
 		description.length > 251 ? description.slice(0, 251) + '...' : description;
+	let placeholder_image = 'assets/xcopy.gif';
 </script>
 
 <section>
@@ -17,8 +18,8 @@
 		<p class="yellow">></p>
 	</div>
 	<div class="gallery">
-		{#each image_urls as url}
-			<img src={url} alt="gallery" class="preview-image" />
+		{#each image_urls.slice(0, 4) as url}
+			<img src={url == '' ? placeholder_image : url} alt="gallery" class="preview-image" />
 		{/each}
 	</div>
 	<div class="description">

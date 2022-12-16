@@ -1,14 +1,39 @@
 <script lang="ts">
 	import Skill from '$lib/components/cards/Skill.svelte';
 	import SkillEdit from '$lib/components/cards/SkillEdit.svelte';
-	import { chosen_skill_slot } from '$lib/stores/State';
+	import { chosen_skill_slot, skill_add } from '$lib/stores/State';
 	export let data: any;
+	let total_skills = 3;
+	type SkillType = {
+		slot: number;
+		title: string;
+		description: string;
+		links: string[];
+		image_urls: string[];
+		minimum_price: number;
+	};
+	let empty_skill: SkillType = {
+		slot: 0,
+		title: '',
+		description: '',
+		links: [],
+		image_urls: [],
+		minimum_price: 0
+	};
+
+	const handleSkillAdd = () => {
+		chosen_skill_slot.set(data.user.skills?.length ?? 0);
+		skill_add.set(true);
+	};
+	const handleSkillEdit = (slot: number) => {
+		chosen_skill_slot.set(slot);
+	};
 </script>
 
-{#if data.user.skills}
-	{#if $chosen_skill_slot == -1}
+{#if $chosen_skill_slot == -1}
+	{#if data.user.skills}
 		{#each data.user.skills as skill, i}
-			<div on:click={() => chosen_skill_slot.set(i)} on:keydown>
+			<div on:click={() => handleSkillEdit(i)} on:keydown>
 				<Skill
 					slot={skill.slot}
 					title={skill.title}
@@ -22,6 +47,34 @@
 			{/if}
 		{/each}
 	{:else}
-		<SkillEdit skill={data.user.skills[$chosen_skill_slot]} />
+		<div class="empty">
+			<div style="height:16px" />
+			{#if data.user.skills?.length ?? 0 < 1}
+				<p class="light-60">you don't have any skills published yet.</p>
+			{:else}
+				<p class="light-60">you can add {total_skills - data.user.skills.length} more skill(s)</p>
+			{/if}
+			<div style="height:12px" />
+			<section class="add-button" on:click={handleSkillAdd} on:keydown>
+				<p class="yellow">+add new skill</p>
+			</section>
+		</div>
 	{/if}
+{:else}
+	<SkillEdit skill={data.user.skills?.[$chosen_skill_slot] ?? empty_skill} />
 {/if}
+
+<style>
+	.empty {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.add-button {
+		height: 32px;
+		align-items: center;
+		justify-content: center;
+		padding: 8px;
+		cursor: pointer;
+	}
+</style>

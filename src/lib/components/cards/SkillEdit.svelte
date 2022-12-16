@@ -43,6 +43,7 @@
 
 	const uploadPhoto = async (e: any) => {
 		const file = e.target.files[0]!;
+		console.log('File:', file);
 		if (file == null) return;
 		const reader = new FileReader();
 		reader.onload = function () {
@@ -58,6 +59,8 @@
 			}
 		};
 		reader.readAsDataURL(file);
+		console.log('Element name:', e.srcElement.name);
+		console.log('Image data url:', image_url_0);
 		let urls = $skill_upload_urls;
 		for (let i = 0; i < 8; i++) {
 			if (e.srcElement.name == `file_url_${i}`) {
@@ -80,7 +83,9 @@
 	<input hidden type="number" name="skill_slot" bind:value={$chosen_skill_slot} />
 	<div
 		class="image-card"
-		style={`background-image:url(${image_url_0 ?? skill.image_urls[0] ?? 'assets/xcopy.gif'})`}
+		style={`background-image:url(${
+			image_url_0 ?? skill.image_urls[0] != '' ? skill.image_urls[0] : 'assets/xcopy.gif'
+		})`}
 	>
 		<div class="image-tint" />
 		<div class="upload-button">
@@ -102,7 +107,9 @@
 	</div>
 	<div
 		class="image-card"
-		style={`background-image:url(${image_url_1 ?? skill.image_urls[1] ?? 'assets/xcopy.gif'})`}
+		style={`background-image:url(${
+			image_url_1 ?? skill.image_urls[1] != '' ? skill.image_urls[1] : 'assets/xcopy.gif'
+		})`}
 	>
 		<div class="image-tint" />
 		<div class="upload-button">
@@ -124,7 +131,9 @@
 	</div>
 	<div
 		class="image-card"
-		style={`background-image:url(${image_url_2 ?? skill.image_urls[2] ?? 'assets/xcopy.gif'})`}
+		style={`background-image:url(${
+			image_url_2 ?? skill.image_urls[2] != '' ? skill.image_urls[2] : 'assets/xcopy.gif'
+		})`}
 	>
 		<div class="image-tint" />
 		<div class="upload-button">
@@ -146,7 +155,9 @@
 	</div>
 	<div
 		class="image-card"
-		style={`background-image:url(${image_url_3 ?? skill.image_urls[3] ?? 'assets/xcopy.gif'})`}
+		style={`background-image:url(${
+			image_url_3 ?? skill.image_urls[3] != '' ? skill.image_urls[3] : 'assets/xcopy.gif'
+		})`}
 	>
 		<div class="image-tint" />
 		<div class="upload-button">
@@ -168,7 +179,9 @@
 	</div>
 	<div
 		class="image-card"
-		style={`background-image:url(${image_url_4 ?? skill.image_urls[4] ?? 'assets/xcopy.gif'})`}
+		style={`background-image:url(${
+			image_url_4 ?? skill.image_urls[4] != '' ? skill.image_urls[4] : 'assets/xcopy.gif'
+		})`}
 	>
 		<div class="image-tint" />
 		<div class="upload-button">
@@ -190,7 +203,9 @@
 	</div>
 	<div
 		class="image-card"
-		style={`background-image:url(${image_url_5 ?? skill.image_urls[5] ?? 'assets/xcopy.gif'})`}
+		style={`background-image:url(${
+			image_url_5 ?? skill.image_urls[5] != '' ? skill.image_urls[5] : 'assets/xcopy.gif'
+		})`}
 	>
 		<div class="image-tint" />
 		<div class="upload-button">
@@ -212,7 +227,9 @@
 	</div>
 	<div
 		class="image-card"
-		style={`background-image:url(${image_url_6 ?? skill.image_urls[6] ?? 'assets/xcopy.gif'})`}
+		style={`background-image:url(${
+			image_url_6 ?? skill.image_urls[6] != '' ? skill.image_urls[6] : 'assets/xcopy.gif'
+		})`}
 	>
 		<div class="image-tint" />
 		<div class="upload-button">
@@ -234,7 +251,9 @@
 	</div>
 	<div
 		class="image-card"
-		style={`background-image:url(${image_url_7 ?? skill.image_urls[7] ?? 'assets/xcopy.gif'})`}
+		style={`background-image:url(${
+			image_url_7 ?? skill.image_urls[7] != '' ? skill.image_urls[7] : 'assets/xcopy.gif'
+		})`}
 	>
 		<div class="image-tint" />
 		<div class="upload-button">
@@ -283,21 +302,21 @@
 		<div class="placeholder">
 			<p class="light-40">link</p>
 		</div>
-		<input name={`link-0`} class="flex-input" type="text" />
+		<input name={`link-0`} class="flex-input" type="text" bind:value={link_0} />
 	</div>
 	<div style="height:8px;" />
 	<div class="input-field">
 		<div class="placeholder">
 			<p class="light-40">link</p>
 		</div>
-		<input name={`link-1`} class="flex-input" type="text" />
+		<input name={`link-1`} class="flex-input" type="text" bind:value={link_1} />
 	</div>
 	<div style="height:8px;" />
 	<div class="input-field">
 		<div class="placeholder">
 			<p class="light-40">link</p>
 		</div>
-		<input name={`link-2`} class="flex-input" type="text" />
+		<input name={`link-2`} class="flex-input" type="text" bind:value={link_2} />
 	</div>
 </div>
 <div style="height:16px;" />

@@ -18,7 +18,7 @@
 	import { goto } from '$app/navigation';
 	import { Jumper } from 'svelte-loading-spinners';
 	import { tweened } from 'svelte/motion';
-	import { chosen_skill_slot, skill_upload_urls } from '$lib/stores/State';
+	import { chosen_skill_slot, skill_add, skill_upload_urls } from '$lib/stores/State';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
@@ -590,6 +590,7 @@
 				on:submit|preventDefault={submitSkills}
 				action="?/skills"
 			>
+				<input hidden name="skill_method" value={$skill_add ? 'add' : 'edit'} />
 				{#if $chosen_skill_slot == -1}
 					<section class="bar">
 						<div class="tabs">
@@ -601,7 +602,6 @@
 								past jobs
 							</p>
 						</div>
-						<button class={`semibold link yellow`}>+add new skill</button>
 					</section>
 				{:else}
 					<section class="bar">
