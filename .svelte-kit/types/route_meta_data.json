@@ -1,0 +1,92 @@
+{
+	"/": [],
+	"/about": [
+		"src/routes/about/+page.ts"
+	],
+	"/sverdle": [
+		"src/routes/sverdle/+page.server.ts"
+	],
+	"/sverdle/how-to-play": [
+		"src/routes/sverdle/how-to-play/+page.ts"
+	],
+	"/creators": [],
+	"/jobs": [],
+	"/profile": [
+		"src/routes/profile/+page.server.ts"
+	],
+	"/onboard": [
+		"src/routes/onboard/+page.server.ts"
+	],
+	"/connect_wallet": [
+		"src/routes/connect_wallet/+page.server.ts"
+	],
+	"/create_account": [
+		"src/routes/create_account/+page.server.ts"
+	],
+	"/api/check_account": [
+		"src/routes/api/check_account/+server.ts"
+	],
+	"/api/createAccount": [
+		"src/routes/api/createAccount/+server.ts"
+	],
+	"/api": [
+		"src/routes/api/+server.ts"
+	],
+	"/api/sign": [
+		"src/routes/api/sign/+server.ts"
+	],
+	"/profile/[slug]": [
+		"src/routes/profile/[slug]/+page.server.ts"
+	],
+	"/api/auth": [
+		"src/routes/api/auth/+server.ts"
+	],
+	"/api/auth/[slug]": [
+		"src/routes/api/auth/[slug]/+server.ts"
+	],
+	"/api/autho": [
+		"src/routes/api/autho/+server.ts"
+	],
+	"/api/alchemy": [
+		"src/routes/api/alchemy/+server.ts"
+	],
+	"/api/alchemy/[addr]/[id]": [
+		"src/routes/api/alchemy/[addr]/[id]/+server.ts"
+	],
+	"/creators copy": [],
+	"/projects": [],
+	"/mint": [],
+	"/bind": [],
+	"/(subpages)/profile": [
+		"src/routes/(subpages)/profile/+page.server.ts"
+	],
+	"/(subpages)/connect_wallet": [
+		"src/routes/(subpages)/connect_wallet/+page.server.ts"
+	],
+	"/(subpages)/create_account": [
+		"src/routes/(subpages)/create_account/+page.server.ts"
+	],
+	"/(subpages)/mint": [],
+	"/skills": [],
+	"/api/upload-url": [
+		"src/routes/api/upload-url/+server.ts"
+	],
+	"/api/upload-url/[filename]/[extension]": [
+		"src/routes/api/upload-url/[filename]/[extension]/+server.ts"
+	],
+	"/api/upload-url/[filename]": [
+		"src/routes/api/upload-url/[filename]/+server.ts"
+	],
+	"/api/user": [
+		"src/routes/api/user/+server.ts"
+	],
+	"/api/upload-skill-url/[slot]/[filename]": [
+		"src/routes/api/upload-skill-url/[slot]/[filename]/+server.ts"
+	],
+	"/api/upload-skill-url/[skill_slot]/[filename]": [
+		"src/routes/api/upload-skill-url/[skill_slot]/[filename]/+server.ts"
+	],
+	"/api/upload-skill-url/[skill_slot]/[image_slot]/[filename]": [
+		"src/routes/api/upload-skill-url/[skill_slot]/[image_slot]/[filename]/+server.ts"
+	]
+}
