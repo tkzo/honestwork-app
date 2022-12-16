@@ -224,6 +224,7 @@
 			if (typeof reader.result == 'string') image_url = reader.result;
 		};
 		reader.readAsDataURL(file);
+
 		const res = await fetch(`/api/upload-url/${e.target.files[0].name}`);
 		upload_url = res;
 	};
@@ -344,7 +345,7 @@
 				<div class="info">
 					<section style="height: 100%">
 						<img
-							src={show_nft ? nft_image : image_url ? image_url : placeholder_image}
+							src={show_nft ? nft_image : image_url ?? placeholder_image}
 							alt="Profile"
 							placeholder={placeholder_image}
 						/>

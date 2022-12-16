@@ -4,6 +4,7 @@
 
 	export let skill: any;
 
+	let placeholder_image = 'assets/xcopy.gif';
 	let description_chars = 1000;
 	let description_text = skill.description;
 	let title: string = skill.title;
@@ -24,14 +25,14 @@
 	let myTextarea: HTMLTextAreaElement;
 	let image_url: string;
 	let upload_response: Response;
-	let image_url_0: string;
-	let image_url_1: string;
-	let image_url_2: string;
-	let image_url_3: string;
-	let image_url_4: string;
-	let image_url_5: string;
-	let image_url_6: string;
-	let image_url_7: string;
+	let image_url_0: string = skill.image_urls[0];
+	let image_url_1: string = skill.image_urls[1];
+	let image_url_2: string = skill.image_urls[2];
+	let image_url_3: string = skill.image_urls[3];
+	let image_url_4: string = skill.image_urls[4];
+	let image_url_5: string = skill.image_urls[5];
+	let image_url_6: string = skill.image_urls[6];
+	let image_url_7: string = skill.image_urls[7];
 	let comp_0: HTMLInputElement;
 	let comp_1: HTMLInputElement;
 	let comp_2: HTMLInputElement;
@@ -43,7 +44,6 @@
 
 	const uploadPhoto = async (e: any) => {
 		const file = e.target.files[0]!;
-		console.log('File:', file);
 		if (file == null) return;
 		const reader = new FileReader();
 		reader.onload = function () {
@@ -59,8 +59,6 @@
 			}
 		};
 		reader.readAsDataURL(file);
-		console.log('Element name:', e.srcElement.name);
-		console.log('Image data url:', image_url_0);
 		let urls = $skill_upload_urls;
 		for (let i = 0; i < 8; i++) {
 			if (e.srcElement.name == `file_url_${i}`) {
@@ -81,12 +79,7 @@
 
 <section class="gallery">
 	<input hidden type="number" name="skill_slot" bind:value={$chosen_skill_slot} />
-	<div
-		class="image-card"
-		style={`background-image:url(${
-			image_url_0 ?? skill.image_urls[0] != '' ? skill.image_urls[0] : 'assets/xcopy.gif'
-		})`}
-	>
+	<div class="image-card" style={`background-image:url(${image_url_0 ?? 'assets/xcopy.gif'})`}>
 		<div class="image-tint" />
 		<div class="upload-button">
 			<img src="icons/upload.svg" alt="Upload" />
@@ -94,7 +87,7 @@
 			<p class="yellow">UPLOAD IMAGE</p>
 		</div>
 		<input
-			name={`file_url_${0}`}
+			name={`file_url_0`}
 			class="file-input"
 			type="file"
 			accept="image/png, image/jpeg"
@@ -105,12 +98,7 @@
 		<input hidden type="text" name="image_url_0" bind:value={image_url_0} />
 		<input hidden type="number" name="image_slot_0" value="0" />
 	</div>
-	<div
-		class="image-card"
-		style={`background-image:url(${
-			image_url_1 ?? skill.image_urls[1] != '' ? skill.image_urls[1] : 'assets/xcopy.gif'
-		})`}
-	>
+	<div class="image-card" style={`background-image:url('${image_url_1 ?? placeholder_image}')`}>
 		<div class="image-tint" />
 		<div class="upload-button">
 			<img src="icons/upload.svg" alt="Upload" />
@@ -118,7 +106,7 @@
 			<p class="yellow">UPLOAD IMAGE</p>
 		</div>
 		<input
-			name={`file_url_${1}`}
+			name={`file_url_1`}
 			class="file-input"
 			type="file"
 			accept="image/png, image/jpeg"
@@ -129,12 +117,7 @@
 		<input hidden type="text" name="image_url_1" bind:value={image_url_1} />
 		<input hidden type="number" name="image_slot_1" value="1" />
 	</div>
-	<div
-		class="image-card"
-		style={`background-image:url(${
-			image_url_2 ?? skill.image_urls[2] != '' ? skill.image_urls[2] : 'assets/xcopy.gif'
-		})`}
-	>
+	<div class="image-card" style={`background-image:url('${image_url_2 ?? placeholder_image}')`}>
 		<div class="image-tint" />
 		<div class="upload-button">
 			<img src="icons/upload.svg" alt="Upload" />
@@ -153,12 +136,7 @@
 		<input hidden type="text" name="image_url_2" bind:value={image_url_2} />
 		<input hidden type="number" name="image_slot_2" value="2" />
 	</div>
-	<div
-		class="image-card"
-		style={`background-image:url(${
-			image_url_3 ?? skill.image_urls[3] != '' ? skill.image_urls[3] : 'assets/xcopy.gif'
-		})`}
-	>
+	<div class="image-card" style={`background-image:url('${image_url_3 ?? placeholder_image}')`}>
 		<div class="image-tint" />
 		<div class="upload-button">
 			<img src="icons/upload.svg" alt="Upload" />
@@ -177,12 +155,7 @@
 		<input hidden type="text" name="image_url_3" bind:value={image_url_3} />
 		<input hidden type="number" name="image_slot_3" value="3" />
 	</div>
-	<div
-		class="image-card"
-		style={`background-image:url(${
-			image_url_4 ?? skill.image_urls[4] != '' ? skill.image_urls[4] : 'assets/xcopy.gif'
-		})`}
-	>
+	<div class="image-card" style={`background-image:url('${image_url_4 ?? placeholder_image}')`}>
 		<div class="image-tint" />
 		<div class="upload-button">
 			<img src="icons/upload.svg" alt="Upload" />
@@ -201,12 +174,7 @@
 		<input hidden type="text" name="image_url_4" bind:value={image_url_4} />
 		<input hidden type="number" name="image_slot_4" value="4" />
 	</div>
-	<div
-		class="image-card"
-		style={`background-image:url(${
-			image_url_5 ?? skill.image_urls[5] != '' ? skill.image_urls[5] : 'assets/xcopy.gif'
-		})`}
-	>
+	<div class="image-card" style={`background-image:url('${image_url_5 ?? placeholder_image}')`}>
 		<div class="image-tint" />
 		<div class="upload-button">
 			<img src="icons/upload.svg" alt="Upload" />
@@ -225,12 +193,7 @@
 		<input hidden type="text" name="image_url_5" bind:value={image_url_5} />
 		<input hidden type="number" name="image_slot_5" value="5" />
 	</div>
-	<div
-		class="image-card"
-		style={`background-image:url(${
-			image_url_6 ?? skill.image_urls[6] != '' ? skill.image_urls[6] : 'assets/xcopy.gif'
-		})`}
-	>
+	<div class="image-card" style={`background-image:url('${image_url_6 ?? placeholder_image}')`}>
 		<div class="image-tint" />
 		<div class="upload-button">
 			<img src="icons/upload.svg" alt="Upload" />
@@ -249,12 +212,7 @@
 		<input hidden type="text" name="image_url_6" bind:value={image_url_6} />
 		<input hidden type="number" name="image_slot_6" value="6" />
 	</div>
-	<div
-		class="image-card"
-		style={`background-image:url(${
-			image_url_7 ?? skill.image_urls[7] != '' ? skill.image_urls[7] : 'assets/xcopy.gif'
-		})`}
-	>
+	<div class="image-card" style={`background-image:url('${image_url_7 ?? placeholder_image}')`}>
 		<div class="image-tint" />
 		<div class="upload-button">
 			<img src="icons/upload.svg" alt="Upload" />
@@ -366,6 +324,12 @@
 	}
 	.image-card:hover .image-tint {
 		display: block;
+	}
+	.image-card-background {
+		position: absolute;
+		z-index: -1;
+		height: 90px;
+		width: 120px;
 	}
 	.upload-button {
 		position: absolute;

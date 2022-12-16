@@ -35,6 +35,7 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 		if (data.Contents) {
 			for (let i = 0; i < data.Contents.length; i++) {
 				let foldername = data.Contents[i].Key?.split('/');
+				console.log(foldername);
 				if (foldername && foldername[0] == userAddress) {
 					if (
 						foldername[1] &&
@@ -43,6 +44,7 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 						foldername[2] == params.image_slot
 					)
 						try {
+							console.log('deleting: ' + data.Contents[i].Key);
 							await s3Client2.send(
 								new DeleteObjectCommand({
 									Bucket: `${env.PRIVATE_SPACES_BUCKETNAME}`,
