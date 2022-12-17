@@ -266,6 +266,11 @@
 			if (t.files != null) {
 				if (t.files != null && t.files.length > 0) {
 					const file = t.files[0]!;
+					console.log('File:', file);
+					console.log('Chosen skill:', $chosen_skill_slot);
+					console.log('Counter', counter);
+					console.log('Upload urls:', $skill_upload_urls);
+					//@ts-expect-error
 					let clone_response = $skill_upload_urls[$chosen_skill_slot][counter].clone();
 					const { url, fields } = await clone_response.json();
 					const formData = new FormData();
@@ -288,6 +293,32 @@
 		}
 		skillsForm.submit();
 	};
+	// const submitSkills = async (e: any) => {
+	// 	let counter = 0;
+	// 	for await (let t of $skill_upload_urls[$chosen_skill_slot]) {
+	// 				//@ts-expect-error
+	// 				let clone_response = t[counter].clone();
+	// 				const { url, fields } = await clone_response.json();
+	// 				const formData = new FormData();
+	// 				Object.entries({ ...fields, file }).forEach(([key, value]) => {
+	// 					formData.append(key, value as string);
+	// 				});
+	// 				const upload = await fetch(url, {
+	// 					method: 'POST',
+	// 					body: formData
+	// 				});
+	// 				//todo: stop exec if not ok
+	// 				if (upload.ok) {
+	// 					console.log('Uploaded successfully!');
+	// 				} else {
+	// 					console.error('Upload failed.');
+	// 				}
+	// 			}
+	// 			counter++;
+	// 		}
+	// 	}
+	// 	skillsForm.submit();
+	// };
 	const updateInputLengths = () => {
 		username_input_length = !show_ens
 			? username_input_element?.value.length ?? data.user.username.length

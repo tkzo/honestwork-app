@@ -35,25 +35,31 @@
 		{#each data.user.skills as skill, i}
 			<div on:click={() => handleSkillEdit(i)} on:keydown>
 				<Skill
-					slot={skill.slot}
+					slot={i}
 					title={skill.title}
 					description={skill.description}
 					image_urls={skill.image_urls}
 					minimum_price={skill.minimum_price}
 				/>
 			</div>
-			{#if i < data.user.skills?.length - 1}
+			{#if i < data.user.skills.length - 1}
 				<div style="height: 12px" />
 			{/if}
 		{/each}
+		{#if data.user.skills.length < total_skills}
+			<div class="empty">
+				<div style="height:16px" />
+				<p class="light-60">you can add {total_skills - data.user.skills.length} more skill(s)</p>
+				<div style="height:12px" />
+				<section class="add-button" on:click={handleSkillAdd} on:keydown>
+					<p class="yellow">+add new skill</p>
+				</section>
+			</div>
+		{/if}
 	{:else}
 		<div class="empty">
 			<div style="height:16px" />
-			{#if data.user.skills?.length ?? 0 < 1}
-				<p class="light-60">you don't have any skills published yet.</p>
-			{:else}
-				<p class="light-60">you can add {total_skills - data.user.skills.length} more skill(s)</p>
-			{/if}
+			<p class="light-60">you don't have any skills published yet.</p>
 			<div style="height:12px" />
 			<section class="add-button" on:click={handleSkillAdd} on:keydown>
 				<p class="yellow">+add new skill</p>
