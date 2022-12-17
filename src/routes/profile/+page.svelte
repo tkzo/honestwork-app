@@ -347,13 +347,59 @@
 					</p>
 				</section>
 				<div class="info">
-					<section style="height: 100%">
-						<img
-							src={show_nft ? nft_image : image_url ?? placeholder_image}
-							alt="Profile"
-							placeholder={placeholder_image}
-						/>
-					</section>
+					<div class="left-section">
+						<section>
+							<img
+								src={show_nft ? nft_image : image_url ?? placeholder_image}
+								alt="Profile"
+								placeholder={placeholder_image}
+							/>
+						</section>
+						<div class="input-field file-input-container">
+							<input
+								name="file_url"
+								class="file-input"
+								type="file"
+								accept="image/png, image/jpeg"
+								on:change={uploadProfileImage}
+								bind:value={file_url}
+							/>
+							<input hidden type="text" name="image_url" bind:value={image_url} />
+							<div class="pseudo-file-input-container">
+								<p class="pseudo-file-input">UPLOAD FILE</p>
+							</div>
+						</div>
+						<div
+							class="input-field file-input-container nft-checkbox"
+							on:click={() => (show_nft = !show_nft)}
+							on:keydown
+							style="cursor:pointer; padding:8px;"
+						>
+							<div style="display:flex;flex-direction:row;">
+								<input hidden type="checkbox" name="show_nft" bind:checked={show_nft} />
+								{#if show_nft}
+									<img
+										src={`${$theme == 'dark' ? 'icons/checked.svg' : 'icons/light/checked.svg'}`}
+										alt="Checked"
+										style="height:16px;width:16px;"
+									/>
+									<div style="width:8px" />
+									<p class="yellow">use nft image</p>
+								{:else}
+									<img
+										src={`${
+											$theme == 'dark' ? 'icons/unchecked.svg' : 'icons/light/unchecked.svg'
+										}`}
+										alt="Checked"
+										style="height:16px;width:16px;"
+									/>
+									<div style="width:8px" />
+									<p class="light-60">use nft image</p>
+								{/if}
+							</div>
+						</div>
+					</div>
+
 					<div style="width: 12px" />
 					<div class="input-fields">
 						<div class="input-field">
@@ -422,7 +468,7 @@
 								<p class="light-60">use ens name</p>
 							{/if}
 						</div>
-						<div style="height: 8px" />
+						<div style="height: 12px" />
 						<div class="input-field">
 							<div class="placeholder">
 								<p class="light-40">title</p>
@@ -493,7 +539,7 @@
 						</div>
 
 						<div style="height:8px" />
-						<div class="input-field file-input-container">
+						<!-- <div class="input-field file-input-container">
 							<input
 								name="file_url"
 								class="file-input"
@@ -532,7 +578,7 @@
 								<div style="width:8px" />
 								<p class="light-60">use nft image</p>
 							{/if}
-						</div>
+						</div> -->
 					</div>
 				</div>
 				<div style="height: 16px" />
@@ -693,13 +739,13 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
+		flex: 1;
 	}
 	.input-field {
 		display: flex;
 		flex-direction: row;
-		min-width: 320px;
+		/* min-width: 320px; */
 		justify-content: flex-start;
-		flex: 1;
 		position: relative;
 	}
 	.placeholder {
@@ -778,13 +824,13 @@
 	}
 	.file-input {
 		opacity: 0;
-		width: 320px;
+		width: 188px;
 		height: 32px;
 		cursor: pointer;
 	}
 	.file-input-container {
 		position: relative;
-		border-width: 1px;
+		border-width: 0px 1px 1px 1px;
 		border-style: solid;
 		border-color: var(--color-light-20);
 	}
@@ -828,5 +874,10 @@
 	.description-title {
 		padding: 8px;
 		border-width: 1px 1px 0px 1px;
+	}
+	.nft-checkbox {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 </style>
