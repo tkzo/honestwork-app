@@ -14,27 +14,6 @@
 	let token_address = '0x2FF8bcE87314356276D5582Ebd204392B16f0941';
 	let state, name, email;
 
-	const newPost = async () => {
-		const signature = await $networkSigner.signMessage('post');
-		const url = `http://localhost:3001/posts/new/${$userAddress}/${signature}`;
-		let response = await fetch(url, {
-			method: 'POST',
-			body: JSON.stringify({
-				address: '0xfB1C2FF46962B452C1731d44F0789bFb3607e63f',
-				title: "I'll convert your PNG into JPEG",
-				text: 'This is a nice text right here.',
-				formats: ['PNG', 'JPG'],
-				images: ['url.com/pic1.png', 'url.com/pic2.jpg']
-			})
-		});
-		if (response.ok) {
-			let json = await response.json();
-			console.log(json);
-		} else {
-			alert('HTTP-Error: ' + response.status);
-		}
-	};
-
 	const soulboundApiCall = async () => {
 		// const url = `/api?address=${$userAddress}&hash=${'0xcCcC'}&name=${name}&email=${email}`;
 		// let response = await fetch(url);

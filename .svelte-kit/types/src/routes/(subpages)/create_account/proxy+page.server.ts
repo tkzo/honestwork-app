@@ -25,10 +25,7 @@ export const actions = {
 			let response = await fetch(url, {
 				method: 'POST'
 			});
-			//todo: fix api returns
 			let text = await response.text();
-			console.log(text);
-
 			if (text != `"User doesn't have NFT."`) {
 				cookies.set('address', address.toString(), {
 					expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000)

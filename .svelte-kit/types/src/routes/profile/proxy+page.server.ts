@@ -10,7 +10,7 @@ export const load = async ({ cookies }: Parameters<PageServerLoad>[0]) => {
 	const userSalt = cookies.get('salt');
 
 	if (userSignature && userSalt && userAddress) {
-		let user = await validateSignature(userAddress, userSignature, userSalt);
+		let user = await getUser(userAddress);
 		user.address = userAddress;
 		return { user: user };
 	} else {
@@ -18,18 +18,12 @@ export const load = async ({ cookies }: Parameters<PageServerLoad>[0]) => {
 	}
 };
 
-const validateSignature = async (address: string, userSignature: string, userSalt: string) => {
+const getUser = async (address: string) => {
 	const url = `${env.PRIVATE_HONESTWORK_API}users/${address}`;
 	let response = await fetch(url);
-	//todo: move validation to api
 	if (response.ok) {
 		let json = await response.json();
-		if (json.signature) {
-			if (json.salt != userSalt || json.signature != userSignature) {
-				throw 404;
-			}
-			return json;
-		}
+		return json;
 	} else {
 		console.log('HTTP-Error: ' + response.status);
 		return response.status;
@@ -74,7 +68,6 @@ export const actions = {
 		}
 	},
 	skills: async ({ cookies, request }: import('./$types').RequestEvent) => {
-		//todo: validate from cookies
 		const userAddress = cookies.get('address');
 		const userSignature = cookies.get('signature');
 		const userSalt = cookies.get('salt');

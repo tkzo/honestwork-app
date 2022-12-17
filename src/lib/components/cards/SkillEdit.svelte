@@ -12,7 +12,6 @@
 	let link_0: string = skill.links[0];
 	let link_1: string = skill.links[1];
 	let link_2: string = skill.links[2];
-
 	let text_length = 0;
 	let file_url_0: string;
 	let file_url_1: string;
@@ -43,7 +42,6 @@
 
 	const uploadPhoto = async (e: any) => {
 		const file = e.target.files[0]!;
-		console.log(file);
 		if (file == null) return;
 		const reader = new FileReader();
 		reader.onload = function () {
@@ -60,7 +58,6 @@
 		};
 		reader.readAsDataURL(file);
 		let urls = $skill_upload_urls;
-		console.log('Skill urls;', $skill_upload_urls);
 
 		for (let i = 0; i < 10; i++) {
 			urls[i] = Array<Response>;
@@ -68,8 +65,6 @@
 
 		for (let i = 0; i < 8; i++) {
 			if (e.srcElement.name == `file_url_${i}`) {
-				console.log('Chosen skill(client),i:', $chosen_skill_slot, i);
-				console.log('urls:', urls);
 				// @ts-expect-error
 				urls[$chosen_skill_slot][i] = await fetch(
 					`/api/upload-skill-url/${$chosen_skill_slot}/${i}/${e.target.files[0].name}`
@@ -77,7 +72,6 @@
 			}
 		}
 		skill_upload_urls.set(urls);
-		console.log('Skill upload urls after upload:', $skill_upload_urls);
 	};
 	const updateDescription = () => {
 		text_length = myTextarea.value.length;
@@ -293,7 +287,7 @@
 	<div style="height:8px;" />
 	<div class="input-field">
 		<div class="placeholder">
-			<p class="light-40">minimum budget</p>
+			<p class="light-40">minimum budget ($)</p>
 		</div>
 		<input
 			name="minimum_price"
