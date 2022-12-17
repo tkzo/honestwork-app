@@ -71,6 +71,7 @@
 	let bio_element: HTMLTextAreaElement;
 	let bio_length: number;
 	let bio_limit = 1000;
+	let infobox_marginleft = '532px';
 
 	onMount(async () => {
 		await connectWallet();
@@ -199,6 +200,12 @@
 				inputSettings.title = 'nft_id';
 				inputSettings.infobox_distance = 184;
 				break;
+			case 'image':
+				inputSettings = {
+					title: 'image',
+					infobox_distance: 190,
+					infobox_content: 'your image should be square and less than 5mb.'
+				};
 		}
 	};
 	const deFocusInput = () => {
@@ -335,7 +342,7 @@
 					class="infobox"
 					style={`margin-top:${inputSettings.infobox_distance}px; opacity:${
 						infobox_show ? '1' : '0'
-					}; `}
+					}; margin-left:${infobox_marginleft}`}
 				>
 					<p
 						class="light-60"
@@ -363,6 +370,15 @@
 								accept="image/png, image/jpeg"
 								on:change={uploadProfileImage}
 								bind:value={file_url}
+								on:mouseover={() => {
+									focusInput('image');
+									infobox_marginleft = '-252px';
+								}}
+								on:focus
+								on:mouseleave={() => {
+									deFocusInput();
+									infobox_marginleft = '532px';
+								}}
 							/>
 							<input hidden type="text" name="image_url" bind:value={image_url} />
 							<div class="pseudo-file-input-container">
@@ -833,7 +849,9 @@
 		border-width: 0px 1px 1px 1px;
 		border-style: solid;
 		border-color: var(--color-light-20);
+		cursor: pointer;
 	}
+
 	.pseudo-file-input {
 		position: absolute;
 		left: 50%;
