@@ -18,7 +18,7 @@
 	import { goto } from '$app/navigation';
 	import { Jumper } from 'svelte-loading-spinners';
 	import { tweened } from 'svelte/motion';
-	import { chosen_skill_slot, skill_add, skill_upload_urls } from '$lib/stores/State';
+	import { chosen_skill_slot, skill_add, skill_upload_urls, changes_made } from '$lib/stores/State';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
@@ -38,7 +38,6 @@
 	};
 	let placeholder_image = 'assets/xcopy.gif';
 	let correct_address: boolean;
-	let changes_made: boolean = false;
 	let link_0: string = data.user.links != null ? data.user.links[0] : '';
 	let link_1: string = data.user.links != null ? data.user.links[1] : '';
 	let link_2: string = data.user.links != null ? data.user.links[2] : '';
@@ -69,6 +68,9 @@
 	let title_input_element: HTMLInputElement;
 	let title_input_length: number;
 	let title_input_limit = 15;
+	let bio_element: HTMLTextAreaElement;
+	let bio_length: number;
+	let bio_limit = 1000;
 
 	onMount(async () => {
 		await connectWallet();
@@ -98,9 +100,10 @@
 		show_nft != data.user.show_nft ||
 		show_ens != data.user.show_ens
 	) {
-		changes_made = true;
+		console.log('Changes made!');
+		changes_made.set(true);
 	} else {
-		changes_made = false;
+		changes_made.set(false);
 	}
 
 	const setEnsName = async () => {
@@ -113,7 +116,7 @@
 		duration: 100
 	});
 	const toggle = (tab: string) => {
-		if (!changes_made) {
+		if (!$changes_made) {
 			chosenTab = tab;
 		} else if (chosenTab != tab) {
 			$blink = 0;
@@ -294,6 +297,7 @@
 			: data.user.username.length;
 
 		title_input_length = title_input_element?.value.length ?? data.user.title.length;
+		bio_length = bio_element?.value.length ?? data.user.bio.length;
 	};
 </script>
 
@@ -317,13 +321,13 @@
 						<p class="tab link semibold light-60" on:click={() => toggle('skills')} on:keydown>
 							skills
 						</p>
-						<p class="tab link semibold light-60" on:click={() => toggle('past jobs')} on:keydown>
-							past jobs
+						<p class="tab link semibold light-60" on:click={() => toggle('jobs')} on:keydown>
+							jobs
 						</p>
 					</div>
 					<button
-						class={` semibold link ${changes_made ? 'yellow' : 'light-60'}`}
-						style={`opacity: ${$blink}`}>update profile</button
+						class={` semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
+						style={`opacity: ${$blink}`}>save changes</button
 					>
 				</section>
 				<div style="height: 12px" />
@@ -573,6 +577,10 @@
 					</div>
 				</div>
 				<div style="height: 16px" />
+				<div class="description-bar">
+					<section class="description-title"><p class="light-40">bio</p></section>
+					<p class="chars light-60"><span class="yellow">{bio_length}</span>/{bio_limit}</p>
+				</div>
 				<div class="bio">
 					<textarea
 						name="bio"
@@ -581,6 +589,8 @@
 						maxlength="1000"
 						placeholder="enter bio here..."
 						bind:value={bio}
+						bind:this={bio_element}
+						on:keyup={updateInputLengths}
 					/>
 				</div>
 			</form>
@@ -599,8 +609,8 @@
 								profile
 							</p>
 							<p class="tab link semibold yellow">skills</p>
-							<p class="tab link semibold light-60" on:click={() => toggle('past jobs')} on:keydown>
-								past jobs
+							<p class="tab link semibold light-60" on:click={() => toggle('jobs')} on:keydown>
+								jobs
 							</p>
 						</div>
 					</section>
@@ -618,12 +628,26 @@
 								back to skills
 							</p>
 						</div>
-						<button class={`semibold link yellow`}>+save changes</button>
+						<button class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
+							>save changes</button
+						>
 					</section>
 				{/if}
 				<div style="height: 16px" />
 				<Skills {data} />
 			</form>
+		{:else if chosenTab == 'jobs'}
+			<section class="bar">
+				<div class="tabs">
+					<p class="tab link semibold light-60" on:click={() => toggle('profile')} on:keydown>
+						profile
+					</p>
+					<p class="tab link semibold light-60" on:click={() => toggle('skills')} on:keydown>
+						skills
+					</p>
+					<p class="tab link semibold yellow">jobs</p>
+				</div>
+			</section>
 		{/if}
 	{:else if correct_address && $userState == 1}
 		<section>
@@ -792,5 +816,17 @@
 		position: absolute;
 		right: 12px;
 		transform: translateY(50%);
+	}
+	.description-bar {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		font-size: 13px;
+		line-height: 16px;
+		align-items: center;
+	}
+	.description-title {
+		padding: 8px;
+		border-width: 1px 1px 0px 1px;
 	}
 </style>

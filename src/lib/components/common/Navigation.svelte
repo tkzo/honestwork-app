@@ -47,7 +47,7 @@
 			</p>
 			<div style="width:8px" />
 			<a href={`/api/auth?address=${$userAddress}`}>
-				<p class="yellow semibold link">takez0_o</p>
+				<p class="yellow semibold link">profile</p>
 			</a>
 		{/if}
 	</div>

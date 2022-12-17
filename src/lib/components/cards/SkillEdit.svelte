@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { skill_upload_urls, chosen_skill_slot } from '$lib/stores/State';
+	import { skill_upload_urls, chosen_skill_slot, changes_made } from '$lib/stores/State';
 
 	export let skill: any;
 
@@ -39,6 +39,30 @@
 	let comp_5: HTMLInputElement;
 	let comp_6: HTMLInputElement;
 	let comp_7: HTMLInputElement;
+	let title_input_element: HTMLInputElement;
+	let title_input_length: number;
+	let title_input_limit = 15;
+
+	$: if (
+		title != skill.title ||
+		link_0 != (skill.links ? skill.links[0] : '') ||
+		link_1 != (skill.links ? skill.links[1] : '') ||
+		link_2 != (skill.links ? skill.links[2] : '') ||
+		description_text != skill.description ||
+		image_url_0 != (skill.image_urls ? skill.image_urls[0] : '') ||
+		image_url_1 != (skill.image_urls ? skill.image_urls[1] : '') ||
+		image_url_2 != (skill.image_urls ? skill.image_urls[2] : '') ||
+		image_url_3 != (skill.image_urls ? skill.image_urls[3] : '') ||
+		image_url_4 != (skill.image_urls ? skill.image_urls[4] : '') ||
+		image_url_5 != (skill.image_urls ? skill.image_urls[5] : '') ||
+		image_url_6 != (skill.image_urls ? skill.image_urls[6] : '') ||
+		image_url_7 != (skill.image_urls ? skill.image_urls[7] : '') ||
+		minimum != skill.minimum_price
+	) {
+		changes_made.set(true);
+	} else {
+		changes_made.set(false);
+	}
 
 	const uploadPhoto = async (e: any) => {
 		const file = e.target.files[0]!;
@@ -76,8 +100,12 @@
 	const updateDescription = () => {
 		text_length = myTextarea.value.length;
 	};
+	const updateInputLengths = () => {
+		title_input_length = title_input_element?.value.length ?? skill.title.length;
+	};
 	onMount(() => {
 		updateDescription();
+		updateInputLengths();
 	});
 </script>
 
@@ -282,7 +310,19 @@
 		<div class="placeholder">
 			<p class="light-40">title</p>
 		</div>
-		<input name="title" class="flex-input" type="text" placeholder={title} bind:value={title} />
+		<input
+			name="title"
+			class="flex-input"
+			type="text"
+			placeholder={title}
+			maxlength={title_input_limit}
+			bind:value={title}
+			bind:this={title_input_element}
+			on:keyup={updateInputLengths}
+		/>
+		<div class="limit">
+			<p><span class="yellow">{title_input_length}</span>/{title_input_limit}</p>
+		</div>
 	</div>
 	<div style="height:8px;" />
 	<div class="input-field">
@@ -403,6 +443,7 @@
 		min-width: 320px;
 		justify-content: flex-start;
 		height: 32px;
+		position: relative;
 	}
 	.flex-input {
 		flex: 1;
@@ -435,5 +476,10 @@
 	.description-title {
 		padding: 8px;
 		border-width: 1px 1px 0px 1px;
+	}
+	.limit {
+		position: absolute;
+		right: 12px;
+		transform: translateY(50%);
 	}
 </style>
