@@ -107,9 +107,28 @@
 		updateDescription();
 		updateInputLengths();
 	});
+	let show_infobox = false;
 </script>
 
-<section class="gallery">
+<section
+	class="gallery"
+	on:mouseover={() => (show_infobox = true)}
+	on:focus
+	on:mouseout={() => {
+		show_infobox = false;
+	}}
+	on:blur
+>
+	{#if show_infobox}
+		<section class="infobox">
+			<p class="light-60">
+				images should be <span class="yellow">4:3</span> ratio for best results.<br /><br />files
+				cannot exceed
+				<span class="yellow">5mb</span>.<br /><br />accepted formats;
+				<span class="yellow">png/jpeg/jpg</span>
+			</p>
+		</section>
+	{/if}
 	<input hidden type="number" name="skill_slot" value={$chosen_skill_slot} />
 	<div
 		class="image-card"
@@ -423,6 +442,7 @@
 	.image-card:hover .upload-button {
 		display: flex;
 	}
+
 	.image-card:hover {
 		border: none;
 	}
@@ -481,5 +501,12 @@
 		position: absolute;
 		right: 12px;
 		transform: translateY(50%);
+	}
+	.infobox {
+		width: 240px;
+		padding: 8px;
+		position: absolute;
+		margin-left: 520px;
+		margin-top: -8px;
 	}
 </style>
