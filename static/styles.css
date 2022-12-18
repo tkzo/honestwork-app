@@ -90,6 +90,9 @@ a:visited {
 .light-80 {
 	color: var(--color-light-80);
 }
+.light {
+	color: var(--color-light);
+}
 
 .link {
 	cursor: pointer;

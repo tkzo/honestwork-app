@@ -137,7 +137,8 @@ export const actions = {
 				cloud_url_6,
 				cloud_url_7
 			],
-			description: data.get('description')
+			description: data.get('description'),
+			publish: data.get('publish') == 'on' ? true : false
 		};
 
 		if (data.get('skill_method') == 'add') {
@@ -154,6 +155,7 @@ export const actions = {
 				console.log(json);
 			}
 		} else {
+			console.log(body);
 			const url = `${
 				env.PRIVATE_HONESTWORK_API
 			}skills/${userAddress}/${userSalt}/${userSignature}/${data.get('skill_slot')}`;

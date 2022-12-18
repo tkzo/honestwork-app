@@ -57,7 +57,8 @@
 		image_url_5 != (skill.image_urls ? skill.image_urls[5] : '') ||
 		image_url_6 != (skill.image_urls ? skill.image_urls[6] : '') ||
 		image_url_7 != (skill.image_urls ? skill.image_urls[7] : '') ||
-		minimum != skill.minimum_price
+		minimum != skill.minimum_price ||
+		publish != skill.publish
 	) {
 		changes_made.set(true);
 	} else {
@@ -108,8 +109,26 @@
 		updateInputLengths();
 	});
 	let show_infobox = false;
+	let publish: boolean = skill.publish;
 </script>
 
+<section>
+	<div class="publish-bar">
+		<input hidden type="checkbox" name="publish" bind:checked={publish} />
+		{#if publish}
+			<p class="light-60">status: <span class="light">published</span></p>
+			<p class="yellow" on:click={() => (publish = !publish)} on:keydown style="cursor:pointer;">
+				unpublish
+			</p>
+		{:else}
+			<p class="light-60">status: <span class="light">unpublished</span></p>
+			<p class="yellow" on:click={() => (publish = !publish)} on:keydown style="cursor:pointer;">
+				publish
+			</p>
+		{/if}
+	</div>
+</section>
+<div style="height:8px;" />
 <section
 	class="gallery"
 	on:mouseover={() => (show_infobox = true)}
@@ -508,5 +527,12 @@
 		position: absolute;
 		margin-left: 520px;
 		margin-top: -8px;
+	}
+	.publish-bar {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		padding: 8px;
 	}
 </style>
