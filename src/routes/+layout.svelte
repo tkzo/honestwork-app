@@ -15,6 +15,18 @@
 </script>
 
 <svelte:head>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-3X3Y5X23HN"></script>
+	<script>
+		if (typeof window !== 'undefined' && window) {
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				window.dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+
+			gtag('config', 'G-3X3Y5X23HN');
+		}
+	</script>
 	<link href="/fonts/ProtoMono-Light.otf" rel="stylesheet" />
 	<link href="/fonts/ProtoMono-Medium.otf" rel="stylesheet" />
 	<link href="/fonts/ProtoMono-Regular.otf" rel="stylesheet" />
