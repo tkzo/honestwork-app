@@ -22,7 +22,6 @@
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
-	//todo: page loads twice -fix
 
 	export let data: any;
 
