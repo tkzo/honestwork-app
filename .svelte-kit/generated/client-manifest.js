@@ -21,7 +21,7 @@ export const dictionary = {
 	"/(subpages)/mint": [5],
 	"/profile": [~7],
 	"/projects": [8],
-	"/skills": [9]
+	"/skills": [~9]
 };
 
 export const hooks = {

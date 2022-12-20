@@ -34,6 +34,8 @@ declare module '$env/static/private' {
 	export const PRIVATE_SPACES_REGION_URL: string;
 	export const PRIVATE_HONESTWORK_API: string;
 	export const PRIVATE_MIXPANEL_TOKEN: string;
+	export const PRIVATE_SUPABASE_KEY: string;
+	export const PRIVATE_SUPABASE_URL: string;
 	export const MANPATH: string;
 	export const NIX_PROFILES: string;
 	export const TERM_PROGRAM: string;
@@ -70,6 +72,7 @@ declare module '$env/static/private' {
 	export const npm_package_json: string;
 	export const npm_config_engine_strict: string;
 	export const _: string;
+	export const LaunchInstanceID: string;
 	export const npm_config_userconfig: string;
 	export const npm_config_init_module: string;
 	export const USER_ZDOTDIR: string;
@@ -105,6 +108,7 @@ declare module '$env/static/private' {
 	export const GIT_ASKPASS: string;
 	export const INFOPATH: string;
 	export const HOMEBREW_CELLAR: string;
+	export const SECURITYSESSIONID: string;
 	export const npm_node_execpath: string;
 	export const npm_config_prefix: string;
 	export const COLORTERM: string;
@@ -147,6 +151,8 @@ declare module '$env/dynamic/private' {
 		PRIVATE_SPACES_REGION_URL: string;
 		PRIVATE_HONESTWORK_API: string;
 		PRIVATE_MIXPANEL_TOKEN: string;
+		PRIVATE_SUPABASE_KEY: string;
+		PRIVATE_SUPABASE_URL: string;
 		MANPATH: string;
 		NIX_PROFILES: string;
 		TERM_PROGRAM: string;
@@ -183,6 +189,7 @@ declare module '$env/dynamic/private' {
 		npm_package_json: string;
 		npm_config_engine_strict: string;
 		_: string;
+		LaunchInstanceID: string;
 		npm_config_userconfig: string;
 		npm_config_init_module: string;
 		USER_ZDOTDIR: string;
@@ -218,6 +225,7 @@ declare module '$env/dynamic/private' {
 		GIT_ASKPASS: string;
 		INFOPATH: string;
 		HOMEBREW_CELLAR: string;
+		SECURITYSESSIONID: string;
 		npm_node_execpath: string;
 		npm_config_prefix: string;
 		COLORTERM: string;

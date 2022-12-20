@@ -10,8 +10,9 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 	if (userSignature && userSalt && userAddress) {
 		let user = await getUser(userAddress);
+		let skills = await getSkills(userAddress);
 		user.address = userAddress;
-		return { user: user };
+		return { user: user, skills: skills };
 	} else {
 		throw redirect(301, '/create_account');
 	}
@@ -23,6 +24,18 @@ const getUser = async (address: string) => {
 	if (response.ok) {
 		let json = await response.json();
 		return json;
+	} else {
+		console.log('HTTP-Error: ' + response.status);
+		return response.status;
+	}
+};
+
+const getSkills = async (address: string) => {
+	const url = `${env.PRIVATE_HONESTWORK_API}skills/${address}`;
+	let response = await fetch(url);
+	if (response.ok) {
+		let json = await response.json();
+		return { json: json };
 	} else {
 		console.log('HTTP-Error: ' + response.status);
 		return response.status;
@@ -124,7 +137,7 @@ export const actions: Actions = {
 		const body = {
 			slot: data.get('skill_slot'),
 			title: data.get('title'),
-			minimum_price: data.get('minimum_price'),
+			minimum_price: parseInt(data.get('minimum_price')!.toString()),
 			links: [data.get('link-0'), data.get('link-1'), data.get('link-2')],
 			image_urls: [
 				cloud_url_0,
@@ -154,7 +167,6 @@ export const actions: Actions = {
 				console.log(json);
 			}
 		} else {
-			console.log(body);
 			const url = `${
 				env.PRIVATE_HONESTWORK_API
 			}skills/${userAddress}/${userSalt}/${userSignature}/${data.get('skill_slot')}`;

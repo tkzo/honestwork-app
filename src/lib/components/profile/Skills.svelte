@@ -2,6 +2,7 @@
 	import Skill from '$lib/components/cards/Skill.svelte';
 	import SkillEdit from '$lib/components/cards/SkillEdit.svelte';
 	import { chosen_skill_slot, skill_add } from '$lib/stores/State';
+	import { onMount } from 'svelte';
 	export let data: any;
 	let total_skills = 3;
 	type SkillType = {
@@ -22,17 +23,20 @@
 	};
 
 	const handleSkillAdd = () => {
-		chosen_skill_slot.set(data.user.skills?.length ?? 0);
+		chosen_skill_slot.set(data.skills?.length ?? 0);
 		skill_add.set(true);
 	};
 	const handleSkillEdit = (slot: number) => {
 		chosen_skill_slot.set(slot);
 	};
+	onMount(() => {
+		console.log(data);
+	});
 </script>
 
 {#if $chosen_skill_slot == -1}
-	{#if data.user.skills}
-		{#each data.user.skills as skill, i}
+	{#if data.skills}
+		{#each data.skills.json as skill, i}
 			<div on:click={() => handleSkillEdit(i)} on:keydown>
 				<Skill
 					slot={i}
@@ -42,14 +46,14 @@
 					minimum_price={skill.minimum_price}
 				/>
 			</div>
-			{#if i < data.user.skills.length - 1}
+			{#if i < data.skills.length - 1}
 				<div style="height: 12px" />
 			{/if}
 		{/each}
-		{#if data.user.skills.length < total_skills}
+		{#if data.skills.json.length < total_skills}
 			<div class="empty">
 				<div style="height:16px" />
-				<p class="light-60">you can add {total_skills - data.user.skills.length} more skill(s)</p>
+				<p class="light-60">you can add {total_skills - data.skills.length} more skill(s)</p>
 				<div style="height:12px" />
 				<section class="add-button" on:click={handleSkillAdd} on:keydown>
 					<p class="yellow">+add new skill</p>
@@ -67,7 +71,7 @@
 		</div>
 	{/if}
 {:else}
-	<SkillEdit skill={data.user.skills?.[$chosen_skill_slot] ?? empty_skill} />
+	<SkillEdit skill={data.skills?.json[$chosen_skill_slot] ?? empty_skill} />
 {/if}
 
 <style>

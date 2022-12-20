@@ -3,9 +3,6 @@
 	"/api/alchemy/[addr]/[id]": [
 		"src/routes/api/alchemy/[addr]/[id]/+server.ts"
 	],
-	"/api/auth": [
-		"src/routes/api/auth/+server.ts"
-	],
 	"/api/upload-skill-url/[skill_slot]/[image_slot]/[filename]": [
 		"src/routes/api/upload-skill-url/[skill_slot]/[image_slot]/[filename]/+server.ts"
 	],
@@ -27,5 +24,7 @@
 		"src/routes/profile/+page.server.ts"
 	],
 	"/projects": [],
-	"/skills": []
+	"/skills": [
+		"src/routes/skills/+page.server.ts"
+	]
 }
