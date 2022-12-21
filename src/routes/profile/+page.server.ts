@@ -135,7 +135,7 @@ export const actions: Actions = {
 		}
 
 		const body = {
-			slot: data.get('skill_slot'),
+			user_address: data.get('user_address'),
 			title: data.get('title'),
 			minimum_price: parseInt(data.get('minimum_price')!.toString()),
 			links: [data.get('link-0'), data.get('link-1'), data.get('link-2')],

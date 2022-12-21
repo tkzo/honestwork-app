@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { skill_upload_urls, chosen_skill_slot, changes_made } from '$lib/stores/State';
+	import { userAddress } from '$lib/stores/Network';
 
 	export let skill: any;
 
@@ -114,6 +115,7 @@
 
 <section>
 	<div class="publish-bar">
+		<input hidden type="text" name="user_address" value={$userAddress} />
 		<input hidden type="checkbox" name="publish" bind:checked={publish} />
 		{#if publish}
 			<p class="light-60">status: <span class="light">published</span></p>
