@@ -4,9 +4,7 @@ import type { PageServerLoad } from './$types';
 import { env } from '$env/dynamic/private';
 
 export const load = async ({}: Parameters<PageServerLoad>[0]) => {
-	let offset = 0;
-	let size = 10;
-	const url = `${env.PRIVATE_HONESTWORK_API}skills/limit/${offset}/${size}`;
+	const url = `${env.PRIVATE_HONESTWORK_API}skills`;
 	let response = await fetch(url);
 	if (response.ok) {
 		let json = await response.json();

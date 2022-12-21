@@ -151,7 +151,8 @@ export const actions = {
 				cloud_url_7
 			],
 			description: data.get('description'),
-			publish: data.get('publish') == 'on' ? true : false
+			publish: data.get('publish') == 'on' ? true : false,
+			created_at: Math.floor(new Date().getTime() / 1000)
 		};
 
 		if (data.get('skill_method') == 'add') {

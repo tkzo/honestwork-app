@@ -43,6 +43,7 @@
 		"ethers": "^5.7.2",
 		"mixpanel": "^0.17.0",
 		"svelte-file-dropzone": "^1.0.0",
+		"svelte-lazy": "^1.1.0",
 		"svelte-loading-spinners": "^0.3.4"
 	}
 }
