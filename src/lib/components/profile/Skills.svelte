@@ -27,7 +27,7 @@
 	};
 
 	const handleSkillAdd = () => {
-		chosen_skill_slot.set(data.skills.json.length ?? 0);
+		chosen_skill_slot.set(data.skills.json?.length ?? 0);
 		skill_add.set(true);
 	};
 	const handleSkillEdit = (slot: number) => {
@@ -50,14 +50,14 @@
 					minimum_price={skill.minimum_price}
 				/>
 			</div>
-			{#if i < data.skills.json.length - 1}
+			{#if i < data.skills.json?.length - 1}
 				<div style="height: 12px" />
 			{/if}
 		{/each}
-		{#if data.skills.json.length < total_skills}
+		{#if data.skills.json?.length < total_skills}
 			<div class="empty">
 				<div style="height:16px" />
-				<p class="light-60">you can add {total_skills - data.skills.json.length} more skill(s)</p>
+				<p class="light-60">you can add {total_skills - data.skills.json?.length} more skill(s)</p>
 				<div style="height:12px" />
 				<section class="add-button" on:click={handleSkillAdd} on:keydown>
 					<p class="yellow">+add new skill</p>
