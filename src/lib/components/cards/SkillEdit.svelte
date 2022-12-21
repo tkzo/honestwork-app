@@ -116,6 +116,7 @@
 
 <section>
 	<div class="publish-bar">
+		<input hidden type="number" name="skill_slot" value={$chosen_skill_slot} />
 		<input hidden type="text" name="user_address" value={$userAddress} />
 		<input hidden type="checkbox" name="publish" bind:checked={publish} />
 		{#if publish}
@@ -151,7 +152,6 @@
 			</p>
 		</section>
 	{/if}
-	<input hidden type="number" name="skill_slot" value={$chosen_skill_slot} />
 	<div
 		class="image-card"
 		style={`background-image:url(${
