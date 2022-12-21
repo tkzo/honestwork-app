@@ -33,9 +33,6 @@
 	const handleSkillEdit = (slot: number) => {
 		chosen_skill_slot.set(slot);
 	};
-	onMount(() => {
-		console.log('Skills:', data.skills);
-	});
 </script>
 
 {#if $chosen_skill_slot == -1}
