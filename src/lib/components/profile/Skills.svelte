@@ -34,13 +34,13 @@
 		chosen_skill_slot.set(slot);
 	};
 	onMount(() => {
-		console.log(data);
+		console.log('Skills:', data.skills);
 	});
 </script>
 
 {#if $chosen_skill_slot == -1}
-	{#if typeof data.skills != null}
-		{#each data.skills.json as skill, i}
+	{#if data.skills.json != null}
+		{#each data.skills?.json as skill, i}
 			<div on:click={() => handleSkillEdit(i)} on:keydown>
 				<Skill
 					slot={i}
