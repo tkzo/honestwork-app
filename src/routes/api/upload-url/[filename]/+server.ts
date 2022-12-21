@@ -35,7 +35,7 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 		if (data.Contents) {
 			for (let i = 0; i < data.Contents.length; i++) {
 				let foldername = data.Contents[i].Key?.split('/');
-				if (foldername && foldername[0] == userAddress) {
+				if (foldername && foldername[0] == userAddress && typeof foldername[1] == undefined) {
 					try {
 						const deleted_file = await s3Client2.send(
 							new DeleteObjectCommand({
