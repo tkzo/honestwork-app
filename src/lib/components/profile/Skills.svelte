@@ -39,7 +39,7 @@
 </script>
 
 {#if $chosen_skill_slot == -1}
-	{#if data.skills}
+	{#if typeof data.skills != null}
 		{#each data.skills.json as skill, i}
 			<div on:click={() => handleSkillEdit(i)} on:keydown>
 				<Skill
