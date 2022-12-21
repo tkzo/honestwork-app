@@ -18,7 +18,13 @@
 	import { goto } from '$app/navigation';
 	import { Jumper } from 'svelte-loading-spinners';
 	import { tweened } from 'svelte/motion';
-	import { chosen_skill_slot, skill_add, skill_upload_urls, changes_made } from '$lib/stores/State';
+	import {
+		chosen_skill_slot,
+		skill_add,
+		skill_upload_urls,
+		changes_made,
+		submitting
+	} from '$lib/stores/State';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
@@ -100,7 +106,6 @@
 		show_nft != data.user.show_nft ||
 		show_ens != data.user.show_ens
 	) {
-		console.log('Changes made!');
 		changes_made.set(true);
 	} else {
 		changes_made.set(false);
@@ -238,6 +243,7 @@
 		upload_url = res;
 	};
 	const submitProfile = async (e: any) => {
+		submitting.set(true);
 		if (show_nft && !is_owner) {
 			console.log('Nope.');
 		} else {
@@ -269,6 +275,7 @@
 		}
 	};
 	const submitSkills = async (e: any) => {
+		submitting.set(true);
 		let counter = 0;
 		for await (let t of e.target) {
 			if (t.files != null) {
@@ -331,9 +338,12 @@
 							jobs
 						</p>
 					</div>
+
 					<button
 						class={` semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
-						style={`opacity: ${$blink}`}>save changes</button
+						style={`opacity: ${$blink}`}
+					>
+						save changes</button
 					>
 				</section>
 				<div style="height: 16px" />
@@ -430,7 +440,8 @@
 											class="rotating"
 											style="height:16px;width:16px;"
 										/>
-										&nbsp;loading ens...
+										<div style="width:4px" />
+										<p>loading ens...</p>
 									</div>
 								{:else}
 									<div class="input-like">
@@ -689,9 +700,20 @@
 								back to skills
 							</p>
 						</div>
-						<button class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
-							>save changes</button
-						>
+						<div class="save-changes">
+							{#if $submitting}
+								<img
+									src={`${$theme == 'dark' ? 'icons/loader.svg' : 'icons/light/loader.svg'}`}
+									alt="loading"
+									class="rotating"
+									style="height:16px;width:16px;"
+								/>
+								<div style="width:4px;" />
+							{/if}
+							<button class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
+								>save changes</button
+							>
+						</div>
 					</section>
 				{/if}
 				<div style="height: 16px" />
@@ -895,6 +917,12 @@
 	.nft-checkbox {
 		display: flex;
 		flex-direction: column;
+		align-items: center;
+	}
+	.save-changes {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
 		align-items: center;
 	}
 </style>

@@ -111,7 +111,6 @@
 	});
 	let show_infobox = false;
 	let publish: boolean = skill.publish;
-	$: console.log('Chosen: ' + $chosen_skill_slot);
 </script>
 
 <section>

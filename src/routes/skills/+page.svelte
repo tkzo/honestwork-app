@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Skill from '$lib/components/cards/Skill.svelte';
+	import Skill from '$lib/components/profile/Skill.svelte';
 	export let data: any;
 </script>
 

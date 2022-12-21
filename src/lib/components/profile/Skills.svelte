@@ -1,10 +1,12 @@
 <script lang="ts">
-	import Skill from '$lib/components/cards/Skill.svelte';
-	import SkillEdit from '$lib/components/cards/SkillEdit.svelte';
+	import Skill from '$lib/components/profile/Skill.svelte';
+	import SkillEdit from '$lib/components/profile/SkillEdit.svelte';
 	import { chosen_skill_slot, skill_add } from '$lib/stores/State';
-	import { onMount } from 'svelte';
+
 	export let data: any;
+
 	let total_skills = 3;
+
 	type SkillType = {
 		slot: number;
 		title: string;
