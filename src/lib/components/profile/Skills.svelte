@@ -9,17 +9,21 @@
 		slot: number;
 		title: string;
 		description: string;
+		tags: string[];
 		links: string[];
 		image_urls: string[];
 		minimum_price: number;
+		publish: boolean;
 	};
 	let empty_skill: SkillType = {
 		slot: 0,
 		title: '',
 		description: '',
+		tags: [],
 		links: [],
 		image_urls: [],
-		minimum_price: 0
+		minimum_price: 0,
+		publish: false
 	};
 
 	const handleSkillAdd = () => {

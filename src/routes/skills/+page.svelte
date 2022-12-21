@@ -1,18 +1,6 @@
 <script lang="ts">
 	import Skill from '$lib/components/cards/Skill.svelte';
-	import { onMount } from 'svelte';
 	export let data: any;
-	type SkillType = {
-		slot: number;
-		title: string;
-		description: string;
-		links: string[];
-		image_urls: string[];
-		minimum_price: number;
-	};
-	onMount(() => {
-		console.log(data.json);
-	});
 </script>
 
 <svelte:head>

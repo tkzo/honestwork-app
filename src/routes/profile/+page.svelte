@@ -336,7 +336,7 @@
 						style={`opacity: ${$blink}`}>save changes</button
 					>
 				</section>
-				<div style="height: 12px" />
+				<div style="height: 16px" />
 				<section
 					class="infobox"
 					style={`margin-top:${inputSettings.infobox_distance}px; opacity:${
