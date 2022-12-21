@@ -75,7 +75,9 @@
 		</div>
 	{/if}
 {:else}
-	<SkillEdit skill={data.skills.json ? data.skills.json[$chosen_skill_slot] : empty_skill} />
+	<SkillEdit
+		skill={data.skills.json ? data.skills.json[$chosen_skill_slot] ?? empty_skill : empty_skill}
+	/>
 {/if}
 
 <style>
