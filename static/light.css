@@ -9,6 +9,6 @@
 	--color-primary: #ff4c29;
 	--color-error: red;
 	--color-success: green;
-	font-family: 'Proto Mono', monospace;
+	font-family: 'Cygnito Mono', monospace;
 	color: var(--color-light);
 }

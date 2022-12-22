@@ -27,10 +27,10 @@
 			gtag('config', 'G-3X3Y5X23HN');
 		}
 	</script>
-	<link href="/fonts/ProtoMono-Light.otf" rel="stylesheet" />
+	<!-- <link href="/fonts/ProtoMono-Light.otf" rel="stylesheet" />
 	<link href="/fonts/ProtoMono-Medium.otf" rel="stylesheet" />
 	<link href="/fonts/ProtoMono-Regular.otf" rel="stylesheet" />
-	<link href="/fonts/ProtoMono-SemiBold.otf" rel="stylesheet" />
+	<link href="/fonts/ProtoMono-SemiBold.otf" rel="stylesheet" /> -->
 	<link rel="stylesheet" href="/styles.css" />
 	<script src="https://github.com/tholman/ascii-morph/blob/master/asciiMorph.min.js">
 	</script>

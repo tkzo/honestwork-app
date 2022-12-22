@@ -882,7 +882,7 @@
 	}
 	.input-like {
 		background-color: var(--color-dark);
-		font-family: 'Proto Mono', monospace;
+		font-family: 'Cygnito Mono', monospace;
 		color: var(--color-light);
 		padding: 8px;
 		border-width: 1px;
