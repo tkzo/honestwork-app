@@ -57,7 +57,7 @@ section {
 p {
 	font-style: normal;
 	font-weight: 400;
-	font-size: 14px;
+	font-size: 12px;
 	line-height: 16px;
 	margin: 0px;
 }
@@ -122,7 +122,7 @@ input {
 	border-width: 1px;
 	border-style: solid;
 	border-color: var(--color-light-20);
-	font-size: 14px;
+	font-size: 12px;
 	line-height: 16px;
 }
 
@@ -135,7 +135,7 @@ textarea {
 	border-width: 1px;
 	border-style: solid;
 	border-color: var(--color-light-20);
-	font-size: 14px;
+	font-size: 12px;
 	line-height: 16px;
 }
 
