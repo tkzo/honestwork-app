@@ -565,46 +565,6 @@
 						</div>
 
 						<div style="height:8px" />
-						<!-- <div class="input-field file-input-container">
-							<input
-								name="file_url"
-								class="file-input"
-								type="file"
-								accept="image/png, image/jpeg"
-								on:change={uploadProfileImage}
-								bind:value={file_url}
-							/>
-							<input hidden type="text" name="image_url" bind:value={image_url} />
-							<div class="pseudo-file-input-container">
-								<p class="pseudo-file-input">UPLOAD FILE</p>
-							</div>
-						</div>
-						<div style="height: 8px" />
-						<div
-							class="input-field"
-							on:click={() => (show_nft = !show_nft)}
-							on:keydown
-							style="cursor:pointer;"
-						>
-							<input hidden type="checkbox" name="show_nft" bind:checked={show_nft} />
-							{#if show_nft}
-								<img
-									src={`${$theme == 'dark' ? 'icons/checked.svg' : 'icons/light/checked.svg'}`}
-									alt="Checked"
-									style="height:16px;width:16px;"
-								/>
-								<div style="width:8px" />
-								<p class="yellow">use nft image</p>
-							{:else}
-								<img
-									src={`${$theme == 'dark' ? 'icons/unchecked.svg' : 'icons/light/unchecked.svg'}`}
-									alt="Checked"
-									style="height:16px;width:16px;"
-								/>
-								<div style="width:8px" />
-								<p class="light-60">use nft image</p>
-							{/if}
-						</div> -->
 					</div>
 				</div>
 				<div style="height: 16px" />
@@ -887,7 +847,7 @@
 	}
 	.input-like {
 		background-color: var(--color-dark);
-		font-family: 'Cygnito Mono', monospace;
+		font-family: 'Proto Mono', monospace;
 		color: var(--color-light);
 		padding: 8px;
 		border-width: 1px;

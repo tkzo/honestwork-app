@@ -6,7 +6,20 @@
 	export let image_urls: Array<string>;
 	export let minimum_price: number;
 
-	let tags = ['logo design', 'ui/ux', 'nft'];
+	let tags = [
+		{
+			key: 'member',
+			value: 'tier 3'
+		},
+		{
+			key: 'jobs delivered',
+			value: '666'
+		},
+		{
+			key: 'min. budget',
+			value: minimum_price
+		}
+	];
 
 	$: trimmed_description =
 		description.length > 120 ? description.slice(0, 120) + '...' : description;
@@ -34,17 +47,20 @@
 		<div class="tags">
 			{#each tags as tag}
 				<div class="tag">
-					<p class="light-40 link">{tag}</p>
+					<p class="link">{tag.value} <span class="light-40">{tag.key}</span></p>
 				</div>
 				{#if tag != tags[tags.length - 1]}
 					<div style="width: 4px" />
 				{/if}
 			{/each}
 		</div>
-		<div class="tag">
-			<p class="light-40">
-				MIN <span style="color: var(--color-light)">${minimum_price}</span>
-			</p>
+		<div class="actions">
+			<div class="action">
+				<img src="icons/message.svg" alt="message" />
+			</div>
+			<div class="action">
+				<img src="icons/heart.svg" alt="heart" />
+			</div>
 		</div>
 	</div>
 </section>
@@ -61,9 +77,6 @@
 	}
 	section:hover {
 		background-color: var(--color-light-2);
-	}
-	section:hover span {
-		color: var(--color-primary);
 	}
 	.contents {
 		display: flex;
@@ -110,5 +123,17 @@
 	}
 	.tag:hover {
 		background-color: var(--color-primary);
+	}
+	.actions {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+	.action {
+		height: 16px;
+		padding: 8px;
+		border-width: 0px 1px 0px 1px;
+		border-style: solid;
+		border-color: var(--color-light-20);
 	}
 </style>

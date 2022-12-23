@@ -74,7 +74,7 @@ section {
 p {
 	font-style: normal;
 	font-weight: 400;
-	font-size: 13px;
+	font-size: 12px;
 	line-height: 16px;
 	margin: 0px;
 	text-transform: uppercase;
@@ -140,7 +140,7 @@ input {
 input {
 	background-color: var(--color-dark);
 	font-family: 'Ubuntu Mono', monospace;
-	color: var(--color-light);
+	color: var(--color-light-80);
 	padding: 8px;
 	box-sizing: border-box;
 	border-width: 1px;
@@ -185,7 +185,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 ::placeholder {
-	color: var(--color-light);
+	color: var(--color-light-80);
 }
 
 ::-moz-selection {
