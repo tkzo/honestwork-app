@@ -4,6 +4,7 @@
 	import { Svroller } from 'svrollbar';
 	import type { SkillType } from '$lib/types/Types';
 	// import VirtualList from '@sveltejs/svelte-virtual-list';
+	import fuzzy from 'fuzzy';
 
 	export let data: any;
 
@@ -11,7 +12,17 @@
 	let active_skill: SkillType;
 	let scroll_state = false;
 
+	let search_input = '';
+
 	$: feedHeight = window.innerHeight - 128;
+	$: filteredResults = fuzzy.filter(search_input, data.json, {
+		extract: (skill: SkillType) => skill.description
+	});
+	$: filteredSkills = filteredResults
+		.map((result: any) => result.original)
+		.sort((a: SkillType, b: SkillType) => {
+			return b.created_at - a.created_at;
+		});
 
 	const updateScrollState = () => {
 		if (ghost_component.getBoundingClientRect().y < 106) {
@@ -19,9 +30,8 @@
 		} else {
 			scroll_state = false;
 		}
+		console.log(filteredSkills);
 	};
-
-	$: published_skills = data.json;
 </script>
 
 <svelte:head>
@@ -35,7 +45,7 @@
 			<div class="input-container">
 				<img src="icons/search_passive.svg" alt="search icon" />
 				<div style="width:8px" />
-				<input type="text" placeholder="Search for skills" />
+				<input type="text" placeholder="Search for skills" bind:value={search_input} />
 				{#if scroll_state}
 					<div class="top">
 						<p class="yellow">top</p>
@@ -49,7 +59,6 @@
 					<div style="width:8px" />
 					<p>most recent</p>
 				</div>
-
 				<img src="icons/chevron_passive.svg" alt="chevron" />
 			</div>
 		</div>
@@ -57,7 +66,7 @@
 			<div style="height:8px" />
 			<!-- <VirtualList items={data.json} let:item height={feedHeight.toString() + 'px'}>
 		</VirtualList> -->
-			{#each data.json as skill, index}
+			{#each filteredSkills as skill, index}
 				{#if index == 0}
 					<div style="height:0px" bind:this={ghost_component} />
 				{/if}
