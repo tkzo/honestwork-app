@@ -49,8 +49,12 @@
 </main>
 
 <style>
+	img {
+		height: 16px;
+		width: 16px;
+	}
 	main {
-		background: var(--color-dark);
+		background: var(--color-light-2);
 		border-width: 1px 0px;
 		border-style: solid;
 		border-color: var(--color-light-20);
@@ -62,6 +66,8 @@
 		position: fixed;
 		bottom: 0px;
 		width: 100%;
+		z-index: 99;
+		height: 32px;
 	}
 	.brand-section {
 		height: 32px;

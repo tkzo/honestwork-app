@@ -6,6 +6,9 @@
 	"/api/auth": [
 		"src/routes/api/auth/+server.ts"
 	],
+	"/api/search": [
+		"src/routes/api/search/+server.ts"
+	],
 	"/api/upload-skill-url/[skill_slot]/[image_slot]/[filename]": [
 		"src/routes/api/upload-skill-url/[skill_slot]/[image_slot]/[filename]/+server.ts"
 	],

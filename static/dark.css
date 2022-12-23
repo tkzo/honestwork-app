@@ -5,10 +5,10 @@
 	--color-light-60: rgba(255, 255, 255, 0.6);
 	--color-light-40: rgba(255, 255, 255, 0.4);
 	--color-light-20: rgba(255, 255, 255, 0.2);
-	--color-light-2: rgba(255, 255, 255, 0.02);
+	--color-light-2: #101112;
 	--color-primary: #ffd369;
 	--color-error: red;
 	--color-success: green;
-	font-family: 'Cygnito Mono', monospace;
+	font-family: 'Proto Mono', monospace;
 	color: var(--color-light);
 }

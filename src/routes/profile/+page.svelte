@@ -768,6 +768,10 @@
 		width: 100%;
 		resize: none;
 	}
+	.bio {
+		width: 100%;
+		height: 100%;
+	}
 	img {
 		width: 188px;
 		height: 188px;
@@ -809,6 +813,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 0px 12px 0px 0px;
+		background: var(--color-light-2);
 	}
 	.info {
 		width: 520px;

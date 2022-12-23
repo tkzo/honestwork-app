@@ -17,17 +17,17 @@
 				jobs
 			</p>
 		</a>
-		<div style="width:8px" />
-		<p class="light-60">/</p>
-		<div style="width:8px" />
+		<!-- <div style="width:8px" />
+		<p class="light-60">/</p> -->
+		<div style="width:12px" />
 		<a href="/skills">
 			<p class={$page.route.id == '/skills' ? 'yellow semibold link' : 'light-60 semibold link'}>
 				skills
 			</p>
 		</a>
-		<div style="width:8px" />
-		<p class="light-60">/</p>
-		<div style="width:8px" />
+		<!-- <div style="width:8px" />
+		<p class="light-60">/</p> -->
+		<div style="width:12px" />
 		<a href="/projects">
 			<p class={$page.route.id == '/projects' ? 'yellow semibold link' : 'light-60 semibold link'}>
 				projects
@@ -54,8 +54,12 @@
 </main>
 
 <style>
+	img {
+		width: 16px;
+		height: 16px;
+	}
 	main {
-		background: var(--color-dark);
+		background: var(--color-light-2);
 		border-width: 1px 0px;
 		border-style: solid;
 		border-color: var(--color-light-20);
@@ -66,6 +70,8 @@
 		align-items: center;
 		position: fixed;
 		width: 100%;
+		z-index: 99;
+		height: 32px;
 	}
 	.logo-section {
 		height: 32px;

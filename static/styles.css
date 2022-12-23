@@ -10,6 +10,24 @@
 		url('fonts/ProtoMono-SemiBoldShadow.otf') format('otf');
 } */
 
+/* hide scrollbar but allow scrolling */
+body {
+	-ms-overflow-style: none; /* for Internet Explorer, Edge */
+	scrollbar-width: none; /* for Firefox */
+	overflow-y: scroll;
+	--svrollbar-track-width: 1px;
+	/* --svrollbar-track-background: #85b4b9; */
+	--svrollbar-track-opacity: 1;
+
+	--svrollbar-thumb-width: 10px;
+	--svrollbar-thumb-background: #d9ab55;
+	--svrollbar-thumb-opacity: 1;
+}
+
+body::-webkit-scrollbar {
+	display: none !important;
+}
+
 :root {
 	--color-dark: #000000;
 }
@@ -24,7 +42,6 @@ body {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
-	text-transform: uppercase;
 }
 
 section {
@@ -57,13 +74,14 @@ section {
 p {
 	font-style: normal;
 	font-weight: 400;
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 16px;
 	margin: 0px;
+	text-transform: uppercase;
 }
 
 a {
-	font-weight: 600;
+	font-weight: 400;
 	color: var(--color-primary);
 	text-decoration: none;
 	cursor: pointer;
@@ -94,6 +112,12 @@ a:visited {
 	color: var(--color-light);
 }
 
+.body-text {
+	font-family: 'Ubuntu Mono', monospace;
+	font-size: 13px;
+	line-height: 20px;
+}
+
 .link {
 	cursor: pointer;
 }
@@ -115,28 +139,28 @@ input {
 
 input {
 	background-color: var(--color-dark);
-	font-family: 'Cygnito Mono', monospace;
+	font-family: 'Ubuntu Mono', monospace;
 	color: var(--color-light);
 	padding: 8px;
 	box-sizing: border-box;
 	border-width: 1px;
 	border-style: solid;
 	border-color: var(--color-light-20);
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 16px;
 }
 
 textarea {
 	background-color: var(--color-dark);
-	font-family: 'Cygnito Mono', monospace;
+	font-family: 'Ubuntu Mono', monospace;
 	color: var(--color-light-80);
 	padding: 8px;
 	box-sizing: border-box;
 	border-width: 1px;
 	border-style: solid;
 	border-color: var(--color-light-20);
-	font-size: 12px;
-	line-height: 16px;
+	font-size: 13px;
+	line-height: 20px;
 }
 
 input:focus {
@@ -179,7 +203,7 @@ button:focus {
 	outline: none;
 	background: transparent;
 	border: 1px solid transparent;
-	font-family: 'Cygnito Mono', monospace;
+	font-family: 'Proto Mono', monospace;
 	cursor: pointer;
 	padding: 0px;
 }

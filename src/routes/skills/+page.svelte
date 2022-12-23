@@ -1,6 +1,12 @@
 <script lang="ts">
-	import Skill from '$lib/components/profile/Skill.svelte';
+	import Skill from '$lib/components/skills/Skill.svelte';
+	import SkillPage from '$lib/components/skills/SkillPage.svelte';
+	import { Svroller } from 'svrollbar';
+	import VirtualList from '@sveltejs/svelte-virtual-list';
+
 	export let data: any;
+
+	$: feedHeight = window.innerHeight - 97;
 </script>
 
 <svelte:head>
@@ -8,15 +14,57 @@
 	<meta name="description" content="HonestWork Skills Page" />
 </svelte:head>
 
-{#each data.json as skill, i}
-	<Skill
-		slot={i}
-		title={skill.title}
-		description={skill.description}
-		image_urls={skill.image_urls}
-		minimum_price={skill.minimum_price}
-	/>
-	{#if i < data.json.length - 1}
-		<div style="height: 12px" />
-	{/if}
-{/each}
+<main>
+	<div class="feed">
+		<Svroller width="520px" height={feedHeight.toString() + 'px'}>
+			<div style="height:8px" />
+			<!-- <VirtualList items={data.json} let:item height={feedHeight.toString() + 'px'}>
+			<Skill
+				title={item.title}
+				description={item.description}
+				image_urls={item.image_urls}
+				minimum_price={item.minimum_price}
+			/>
+		</VirtualList> -->
+			{#each data.json as item}
+				<Skill
+					title={item.title}
+					description={item.description}
+					image_urls={item.image_urls}
+					minimum_price={item.minimum_price}
+				/>
+			{/each}
+		</Svroller>
+	</div>
+	<div class="skill">
+		<SkillPage />
+	</div>
+</main>
+
+<style>
+	:global(.virtual-list-wrapper) {
+		/* hide scrollbar */
+		-ms-overflow-style: none !important;
+		scrollbar-width: none !important;
+	}
+
+	:global(.virtual-list-wrapper::-webkit-scrollbar) {
+		/* hide scrollbar */
+		display: none !important;
+	}
+	main {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.feed {
+		width: 520px;
+		border-width: 1px 1px 0px 1px;
+		border-style: solid;
+		border-color: var(--color-light-20);
+		overflow-y: hidden;
+	}
+	.skill {
+		width: 520px;
+	}
+</style>
