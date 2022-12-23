@@ -111,6 +111,9 @@ a:visited {
 .light {
 	color: var(--color-light);
 }
+.dark {
+	color: var(--color-dark);
+}
 
 .body-text {
 	font-family: 'Ubuntu Mono', monospace;

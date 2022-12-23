@@ -14,6 +14,7 @@
 	let active_skill: SkillType;
 	let scroll_state = false;
 	let search_input = '';
+	let hovering_scrolltop = false;
 
 	$: feedHeight = window.innerHeight - 128;
 	$: filteredResults = fuzzy.filter(search_input, data.json, {
@@ -34,6 +35,7 @@
 	};
 	const scrollTop = () => {
 		viewport.scroll({ top: 0, behavior: 'smooth' });
+		hovering_scrolltop = false;
 	};
 </script>
 
@@ -50,9 +52,22 @@
 				<div style="width:8px" />
 				<input type="text" placeholder="Search for skills" bind:value={search_input} />
 				{#if scroll_state}
-					<div class="top link" on:click={scrollTop} on:keydown>
-						<p class="yellow">top</p>
-						<img src="icons/corner-right-up.svg" alt="go top" />
+					<div
+						class="top link"
+						on:click={scrollTop}
+						on:keydown
+						on:mouseover={() => (hovering_scrolltop = true)}
+						on:mouseout={() => (hovering_scrolltop = false)}
+						on:focus
+						on:blur
+					>
+						<p class={hovering_scrolltop ? 'dark' : 'yellow'}>top</p>
+						<img
+							src={hovering_scrolltop
+								? 'icons/corner-right-up_active.svg'
+								: 'icons/corner-right-up_passive.svg'}
+							alt="go top"
+						/>
 					</div>
 				{/if}
 			</div>
@@ -65,12 +80,6 @@
 				<img src="icons/chevron_passive.svg" alt="chevron" />
 			</div>
 		</div>
-		<!-- <Svroller
-			width="520px"
-			height={feedHeight.toString() + 'px'}
-			on:show={updateScrollState}
-			bind:this={myel}
-		> -->
 		<div class="wrapper">
 			<div
 				bind:this={viewport}
@@ -106,7 +115,6 @@
 			</div>
 			<Svrollbar {viewport} {contents} on:show={updateScrollState} />
 		</div>
-		<!-- </Svroller> -->
 	</div>
 	<div class="skill">
 		<SkillPage skill={active_skill} />
