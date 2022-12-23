@@ -5,6 +5,9 @@
 	export let description: string;
 	export let image_urls: Array<string>;
 	export let minimum_price: number;
+	export let chosen: boolean;
+
+	$: console.log('Chosen?', chosen);
 
 	let tags = [
 		{
@@ -26,7 +29,7 @@
 	let placeholder_image = 'assets/xcopy.gif';
 </script>
 
-<section>
+<section class={chosen ? 'chosen' : ''}>
 	<div class="contents">
 		<div class="thumbnail">
 			<img src={image_urls[0] ?? placeholder_image} alt="gallery" class="preview-image" />
@@ -135,5 +138,8 @@
 		border-width: 0px 1px 0px 1px;
 		border-style: solid;
 		border-color: var(--color-light-20);
+	}
+	.chosen {
+		background-color: var(--color-light-2);
 	}
 </style>

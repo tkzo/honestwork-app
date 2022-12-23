@@ -8,7 +8,7 @@
 	export let data: any;
 
 	let ghost_component: any;
-	let active_item: SkillType;
+	let active_skill: SkillType;
 	let scroll_state = false;
 
 	$: feedHeight = window.innerHeight - 128;
@@ -20,6 +20,8 @@
 			scroll_state = false;
 		}
 	};
+
+	$: published_skills = data.json;
 </script>
 
 <svelte:head>
@@ -55,22 +57,23 @@
 			<div style="height:8px" />
 			<!-- <VirtualList items={data.json} let:item height={feedHeight.toString() + 'px'}>
 		</VirtualList> -->
-			{#each data.json as item, index}
+			{#each data.json as skill, index}
 				{#if index == 0}
 					<div style="height:0px" bind:this={ghost_component} />
 				{/if}
-				{#if item.publish}
+				{#if skill.publish}
 					<div
 						on:click={() => {
-							active_item = item;
+							active_skill = skill;
 						}}
 						on:keydown
 					>
 						<Skill
-							title={item.title}
-							description={item.description}
-							image_urls={item.image_urls}
-							minimum_price={item.minimum_price}
+							chosen={index == 1 ? true : skill == active_skill}
+							title={skill.title}
+							description={skill.description}
+							image_urls={skill.image_urls}
+							minimum_price={skill.minimum_price}
 						/>
 					</div>
 				{/if}
@@ -78,7 +81,7 @@
 		</Svroller>
 	</div>
 	<div class="skill">
-		<SkillPage skill={active_item} />
+		<SkillPage skill={active_skill} />
 	</div>
 </main>
 
