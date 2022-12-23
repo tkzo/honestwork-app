@@ -38,7 +38,7 @@
 		</div>
 		<div class="tag border-all">
 			<p class="light-40">
-				MIN <span style="color: var(--color-light)">${minimum_price}</span>
+				MIN <span class="light">${minimum_price}</span>
 			</p>
 		</div>
 	</div>
@@ -100,5 +100,11 @@
 	}
 	.tag:hover {
 		background-color: var(--color-primary);
+	}
+	.tag:hover p {
+		color: var(--color-dark);
+	}
+	.tag:hover span {
+		color: var(--color-dark);
 	}
 </style>

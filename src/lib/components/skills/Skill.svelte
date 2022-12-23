@@ -7,8 +7,6 @@
 	export let minimum_price: number;
 	export let chosen: boolean;
 
-	$: console.log('Chosen?', chosen);
-
 	let tags = [
 		{
 			key: 'member',

@@ -3,6 +3,8 @@
 	import { skill_upload_urls, chosen_skill_slot, changes_made } from '$lib/stores/State';
 	import { userAddress } from '$lib/stores/Network';
 
+	//todo: move images to img elements instead of div backgrounds (won't show ones with empty letter in its name)
+
 	export let skill: any;
 
 	let placeholder_image = 'assets/xcopy.gif';
