@@ -17,7 +17,7 @@
 		},
 		{
 			key: 'min. budget',
-			value: minimum_price
+			value: '$' + minimum_price.toString().slice(0, 6)
 		}
 	];
 

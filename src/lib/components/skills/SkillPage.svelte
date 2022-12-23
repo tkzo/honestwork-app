@@ -3,6 +3,4 @@
 	export let skill: SkillType;
 </script>
 
-<main>
-	{skill}
-</main>
+<main />

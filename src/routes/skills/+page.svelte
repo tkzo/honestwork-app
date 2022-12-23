@@ -59,19 +59,21 @@
 				{#if index == 0}
 					<div style="height:0px" bind:this={ghost_component} />
 				{/if}
-				<div
-					on:click={() => {
-						active_item = item;
-					}}
-					on:keydown
-				>
-					<Skill
-						title={item.title}
-						description={item.description}
-						image_urls={item.image_urls}
-						minimum_price={item.minimum_price}
-					/>
-				</div>
+				{#if item.publish}
+					<div
+						on:click={() => {
+							active_item = item;
+						}}
+						on:keydown
+					>
+						<Skill
+							title={item.title}
+							description={item.description}
+							image_urls={item.image_urls}
+							minimum_price={item.minimum_price}
+						/>
+					</div>
+				{/if}
 			{/each}
 		</Svroller>
 	</div>
