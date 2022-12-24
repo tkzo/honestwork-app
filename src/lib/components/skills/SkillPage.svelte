@@ -1,16 +1,18 @@
 <script lang="ts">
 	import type { SkillType, UserType } from '$lib/types/Types';
-
+	import { Svrollbar } from 'svrollbar';
 	export let skill: SkillType;
+	let viewport: Element;
+	let contents: Element;
 
 	let user: UserType;
 	let chosen_image: number = 0;
 
+	$: feedHeight = window.innerHeight - 136;
 	$: if (skill) {
 		fetchUser();
 		resetState();
 	}
-
 	$: trimmed_images = skill.image_urls.filter((url: string) => url !== '');
 
 	const fetchUser = async () => {
@@ -33,48 +35,56 @@
 </script>
 
 <main>
-	<div class="profile-bar">
-		<div class="left-section">
-			<img class="pfp" src={user?.image_url} alt="" />
-			<div style="width:8px;" />
-			<p class="yellow">{user?.username}</p>
-			<div style="width:8px;" />
-			<p class="light-60">{user?.title}</p>
-		</div>
-		<img src="icons/external.svg" alt="External Link" style="margin-right:8px;" />
-	</div>
-	<div class="gallery">
-		<img class="gallery-images" src={trimmed_images[chosen_image]} alt="Gallery" />
-		<div class="gallery-buttons">
-			<div class="left-gallery-button" on:click={previousImage} on:keydown>
-				<p class="light-40">PREVIOUS</p>
-			</div>
-			<p>{chosen_image + 1}/{trimmed_images.length}</p>
-			<div class="right-gallery-button" on:click={nextImage} on:keydown>
-				<p class="light-40">NEXT</p>
-			</div>
-		</div>
-	</div>
-	<div style="height:12px;" />
-	<div class="description">
-		<div class="body-text light-80">
-			{skill.description}
-		</div>
-	</div>
-	<div style="height:12px;" />
-	<div class="links">
-		{#each skill.links as link}
-			<div class="link-container">
-				<p class="placeholder light-40">link</p>
+	<div class="wrapper">
+		<div class="profile-bar">
+			<div class="left-section">
+				<img class="pfp" src={user?.image_url} alt="" />
 				<div style="width:8px;" />
-				<a href={link}>
-					<p class="light-80">{link}</p>
-				</a>
+				<p class="yellow">{user?.username}</p>
+				<div style="width:8px;" />
+				<p class="light-60">{user?.title}</p>
 			</div>
-			{#if link !== skill.links[skill.links.length - 1]}
-				<div style="height:8px;" />
-			{/if}
-		{/each}
+			<img src="icons/external.svg" alt="External Link" style="margin-right:8px;" />
+		</div>
+		<div bind:this={viewport} class="viewport" style={`height:${feedHeight.toString() + 'px'}`}>
+			<div bind:this={contents} class="contents">
+				<div class="gallery">
+					<img class="gallery-images" src={trimmed_images[chosen_image]} alt="Gallery" />
+					<div class="gallery-buttons">
+						<div class="left-gallery-button" on:click={previousImage} on:keydown>
+							<p class="light-40">PREVIOUS</p>
+						</div>
+						<p>{chosen_image + 1}/{trimmed_images.length}</p>
+						<div class="right-gallery-button" on:click={nextImage} on:keydown>
+							<p class="light-40">NEXT</p>
+						</div>
+					</div>
+				</div>
+				<div style="height:12px;" />
+				<div class="description">
+					<div class="body-text light-80">
+						{skill.description}
+					</div>
+				</div>
+				<div style="height:12px;" />
+				<div class="links">
+					{#each skill.links as link}
+						<div class="link-container">
+							<p class="placeholder light-40">link</p>
+							<div style="width:8px;" />
+							<a href={link}>
+								<p class="light-80">{link}</p>
+							</a>
+						</div>
+						{#if link !== skill.links[skill.links.length - 1]}
+							<div style="height:8px;" />
+						{/if}
+					{/each}
+				</div>
+				<div style="height:32px;" />
+				<Svrollbar alwaysVisible {viewport} {contents} />
+			</div>
+		</div>
 	</div>
 </main>
 
@@ -156,5 +166,32 @@
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
 		border-color: var(--color-light-20);
+	}
+	.viewport {
+		position: relative;
+		overflow: scroll;
+		box-sizing: border-box;
+
+		/* hide scrollbar */
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+
+	.viewport::-webkit-scrollbar {
+		/* hide scrollbar */
+		display: none;
+	}
+	.wrapper {
+		position: relative;
+		-ms-overflow-style: none; /* for Internet Explorer, Edge */
+		scrollbar-width: none; /* for Firefox */
+		overflow-y: scroll;
+		--svrollbar-track-width: 1px;
+		/* --svrollbar-track-background: #85b4b9; */
+		--svrollbar-track-opacity: 1;
+
+		--svrollbar-thumb-width: 10px;
+		--svrollbar-thumb-background: #d9ab55;
+		--svrollbar-thumb-opacity: 1;
 	}
 </style>
