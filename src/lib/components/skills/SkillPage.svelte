@@ -1,26 +1,34 @@
 <script lang="ts">
 	import type { SkillType, UserType } from '$lib/types/Types';
-	import { onMount } from 'svelte';
 
 	export let skill: SkillType;
 
 	let user: UserType;
 	let chosen_image: number = 0;
 
-	// onMount(async () => {
-	// 	await fetchUser();
-	// 	user = user;
-	// });
-
 	$: if (skill) {
 		fetchUser();
-		// user = user;
-		// console.log('User: ', user);
+		resetState();
 	}
+
+	$: trimmed_images = skill.image_urls.filter((url: string) => url !== '');
 
 	const fetchUser = async () => {
 		const res = await fetch(`/api/user/${skill.user_address}`);
 		user = await res.json();
+	};
+	const nextImage = () => {
+		if (chosen_image < trimmed_images.length - 1) {
+			chosen_image++;
+		}
+	};
+	const previousImage = () => {
+		if (chosen_image > 0) {
+			chosen_image--;
+		}
+	};
+	const resetState = () => {
+		chosen_image = 0;
 	};
 </script>
 
@@ -36,20 +44,20 @@
 		<img src="icons/external.svg" alt="External Link" style="margin-right:8px;" />
 	</div>
 	<div class="gallery">
-		<img class="gallery-images" src={skill.image_urls[chosen_image]} alt="Gallery" />
+		<img class="gallery-images" src={trimmed_images[chosen_image]} alt="Gallery" />
 		<div class="gallery-buttons">
-			<div class="left-gallery-button">
+			<div class="left-gallery-button" on:click={previousImage} on:keydown>
 				<p class="light-40">PREVIOUS</p>
 			</div>
-			<p>1/10</p>
-			<div class="right-gallery-button">
+			<p>{chosen_image + 1}/{trimmed_images.length}</p>
+			<div class="right-gallery-button" on:click={nextImage} on:keydown>
 				<p class="light-40">NEXT</p>
 			</div>
 		</div>
 	</div>
 	<div style="height:12px;" />
 	<div class="description">
-		<div class="body-text">
+		<div class="body-text light-80">
 			{skill.description}
 		</div>
 	</div>
@@ -105,6 +113,7 @@
 	}
 	.gallery-images {
 		width: 100%;
+		height: 388px;
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
 		border-color: var(--color-light-20);
