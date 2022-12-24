@@ -15,8 +15,8 @@
 	"/api/upload-url/[filename]": [
 		"src/routes/api/upload-url/[filename]/+server.ts"
 	],
-	"/api/user": [
-		"src/routes/api/user/+server.ts"
+	"/api/user/[address]": [
+		"src/routes/api/user/[address]/+server.ts"
 	],
 	"/(subpages)/connect_wallet": [
 		"src/routes/(subpages)/connect_wallet/+page.server.ts"

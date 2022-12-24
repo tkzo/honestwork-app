@@ -11,20 +11,26 @@
 	export let contents: Element;
 
 	let ghost_component: any;
-	let active_skill: SkillType;
 	let scroll_state = false;
 	let search_input = '';
 	let hovering_scrolltop = false;
+	let input_active = false;
+	let active_skill: SkillType | null = null;
 
 	$: feedHeight = window.innerHeight - 128;
-	$: filteredResults = fuzzy.filter(search_input, data.json, {
-		extract: (skill: SkillType) => skill.description
-	});
-	$: filteredSkills = filteredResults
+	$: filteredSkills = fuzzy
+		.filter(search_input, data.json, {
+			extract: (skill: SkillType) => skill.description
+		})
 		.map((result: any) => result.original)
 		.sort((a: SkillType, b: SkillType) => {
 			return b.created_at - a.created_at;
-		});
+		})
+		.filter((skill: SkillType) => skill.publish);
+
+	$: if (filteredSkills) {
+		active_skill = filteredSkills[0];
+	}
 
 	const updateScrollState = () => {
 		if (ghost_component.getBoundingClientRect().y < 106) {
@@ -48,9 +54,18 @@
 	<div class="feed">
 		<div class="search-bar">
 			<div class="input-container">
-				<img src="icons/search_passive.svg" alt="search icon" />
+				<img
+					src={input_active ? 'icons/search_active.svg' : 'icons/search_passive.svg'}
+					alt="search icon"
+				/>
 				<div style="width:8px" />
-				<input type="text" placeholder="Search for skills" bind:value={search_input} />
+				<input
+					type="text"
+					placeholder="Search for skills"
+					bind:value={search_input}
+					on:focus={() => (input_active = true)}
+					on:focusout={() => (input_active = false)}
+				/>
 				{#if scroll_state}
 					<div
 						class="top link"
@@ -102,7 +117,7 @@
 								on:keydown
 							>
 								<Skill
-									chosen={index == 1 ? true : skill == active_skill}
+									chosen={skill == active_skill}
 									title={skill.title}
 									description={skill.description}
 									image_urls={skill.image_urls}
@@ -116,8 +131,11 @@
 			<Svrollbar {viewport} {contents} on:show={updateScrollState} />
 		</div>
 	</div>
+	<div style="width:12px" />
 	<div class="skill">
-		<SkillPage skill={active_skill} />
+		{#if active_skill != null}
+			<SkillPage skill={active_skill} />
+		{/if}
 	</div>
 </main>
 
