@@ -1,5 +1,7 @@
 {
-	"/": [],
+	"/": [
+		"src/routes/+page.server.ts"
+	],
 	"/api/alchemy/[addr]/[id]": [
 		"src/routes/api/alchemy/[addr]/[id]/+server.ts"
 	],

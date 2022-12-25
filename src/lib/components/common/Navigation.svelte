@@ -17,22 +17,18 @@
 				jobs
 			</p>
 		</a>
-		<!-- <div style="width:8px" />
-		<p class="light-60">/</p> -->
 		<div style="width:12px" />
 		<a href="/skills">
 			<p class={$page.route.id == '/skills' ? 'yellow semibold link' : 'light-60 semibold link'}>
 				skills
 			</p>
 		</a>
-		<!-- <div style="width:8px" />
-		<p class="light-60">/</p> -->
-		<div style="width:12px" />
+		<!-- <div style="width:12px" />
 		<a href="/projects">
 			<p class={$page.route.id == '/projects' ? 'yellow semibold link' : 'light-60 semibold link'}>
 				projects
 			</p>
-		</a>
+		</a> -->
 	</div>
 	<div class="wallet-section">
 		{#if !$userConnected}

@@ -14,7 +14,7 @@ export const nodes = [() => import('./nodes/0'),
 export const server_loads = [];
 
 export const dictionary = {
-	"/": [2],
+	"/": [~2],
 	"/(subpages)/connect_wallet": [~3],
 	"/(subpages)/create_account": [~4],
 	"/jobs": [6],
