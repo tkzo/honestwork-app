@@ -39,7 +39,7 @@
 	{#if $themeLoaded}
 		<Navigation />
 		<div style="height:64px;" />
-		<Notification />
+		<!-- <Notification /> -->
 		<slot />
 		<!-- <div style="height: 64px;" /> -->
 		<Footer />
