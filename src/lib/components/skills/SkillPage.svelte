@@ -35,17 +35,17 @@
 </script>
 
 <main>
-	<div class="wrapper">
-		<div class="profile-bar">
-			<div class="left-section">
-				<img class="pfp" src={user?.image_url} alt="" />
-				<div style="width:8px;" />
-				<p class="yellow">{user?.username}</p>
-				<div style="width:8px;" />
-				<p class="light-60">{user?.title}</p>
-			</div>
-			<img src="icons/external.svg" alt="External Link" style="margin-right:8px;" />
+	<div class="profile-bar">
+		<div class="left-section">
+			<img class="pfp" src={user?.image_url} alt="" />
+			<div style="width:8px;" />
+			<p class="yellow">{user?.username}</p>
+			<div style="width:8px;" />
+			<p class="light-60">{user?.title}</p>
 		</div>
+		<img src="icons/external.svg" alt="External Link" style="margin-right:8px;" />
+	</div>
+	<div class="wrapper">
 		<div bind:this={viewport} class="viewport" style={`height:${feedHeight.toString() + 'px'}`}>
 			<div bind:this={contents} class="contents">
 				<div class="gallery">
@@ -82,9 +82,9 @@
 					{/each}
 				</div>
 				<div style="height:32px;" />
-				<Svrollbar alwaysVisible {viewport} {contents} />
 			</div>
 		</div>
+		<Svrollbar alwaysVisible {viewport} {contents} />
 	</div>
 </main>
 
@@ -147,6 +147,12 @@
 		border-color: var(--color-light-20);
 		padding: 8px 12px;
 	}
+	.right-gallery-button:hover {
+		background-color: var(--color-primary);
+	}
+	.right-gallery-button:hover p {
+		color: var(--color-dark);
+	}
 	.description {
 		border-width: 1px 1px 1px 1px;
 		border-style: solid;
@@ -167,6 +173,20 @@
 		border-style: solid;
 		border-color: var(--color-light-20);
 	}
+	.wrapper {
+		position: relative;
+		-ms-overflow-style: none; /* for Internet Explorer, Edge */
+		scrollbar-width: none; /* for Firefox */
+		overflow-y: scroll;
+		--svrollbar-track-width: 1px;
+		/* --svrollbar-track-background: #85b4b9; */
+		--svrollbar-track-opacity: 1;
+
+		--svrollbar-thumb-width: 10px;
+		--svrollbar-thumb-background: #d9ab55;
+		--svrollbar-thumb-opacity: 1;
+	}
+
 	.viewport {
 		position: relative;
 		overflow: scroll;
@@ -180,18 +200,5 @@
 	.viewport::-webkit-scrollbar {
 		/* hide scrollbar */
 		display: none;
-	}
-	.wrapper {
-		position: relative;
-		-ms-overflow-style: none; /* for Internet Explorer, Edge */
-		scrollbar-width: none; /* for Firefox */
-		overflow-y: scroll;
-		--svrollbar-track-width: 1px;
-		/* --svrollbar-track-background: #85b4b9; */
-		--svrollbar-track-opacity: 1;
-
-		--svrollbar-thumb-width: 10px;
-		--svrollbar-thumb-background: #d9ab55;
-		--svrollbar-thumb-opacity: 1;
 	}
 </style>

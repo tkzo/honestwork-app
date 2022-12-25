@@ -16,17 +16,23 @@
 	let hovering_scrolltop = false;
 	let input_active = false;
 	let active_skill: SkillType | null = null;
+	let sorting_options = [
+		{ k: 'publish date', v: 'created_at', a: 'false' },
+		{ k: 'rating', v: 'rating', a: 'false' },
+		{ k: 'min. budget', v: 'minimum_price', a: 'false' }
+	];
+	let show_sorting_options = false;
+	let chosen_sorting_option = 0;
 
 	$: feedHeight = window.innerHeight - 128;
-	$: filteredSkills = fuzzy
-		.filter(search_input, data.json, {
-			extract: (skill: SkillType) => skill.description
-		})
-		.map((result: any) => result.original)
-		.sort((a: SkillType, b: SkillType) => {
-			return b.created_at - a.created_at;
-		})
-		.filter((skill: SkillType) => skill.publish);
+	$: filteredSkills =
+		search_input != ''
+			? fuzzy
+					.filter(search_input, data.json, {
+						extract: (skill: SkillType) => skill.description
+					})
+					.map((result: any) => result.original)
+			: data.json;
 
 	$: if (filteredSkills) {
 		active_skill = filteredSkills[0];
@@ -42,6 +48,17 @@
 	const scrollTop = () => {
 		viewport.scroll({ top: 0, behavior: 'smooth' });
 		hovering_scrolltop = false;
+	};
+	const fetchSorting = async () => {
+		const result = await fetch(
+			`/api/skill/${sorting_options[chosen_sorting_option].v}/${sorting_options[chosen_sorting_option].a}`
+		);
+		data.json = await result.json();
+	};
+	const chooseSorting = (index: number) => {
+		chosen_sorting_option = index;
+		show_sorting_options = false;
+		fetchSorting();
 	};
 </script>
 
@@ -86,13 +103,38 @@
 					</div>
 				{/if}
 			</div>
-			<div class="sorting-container">
-				<div class="sorting-wrapper">
-					<p class="light-40">sort by</p>
-					<div style="width:8px" />
-					<p>most recent</p>
+			<div class="sorting-dropdown">
+				<div
+					class="sorting-container"
+					on:click={() => (show_sorting_options = !show_sorting_options)}
+					on:keydown
+				>
+					<div class="sorting-wrapper">
+						<p class="light-40">sort by</p>
+						<div style="width:8px" />
+						<p>{sorting_options[chosen_sorting_option].k}</p>
+					</div>
+					<img
+						src={show_sorting_options ? 'icons/chevron_active.svg' : 'icons/chevron_passive.svg'}
+						alt="chevron"
+					/>
 				</div>
-				<img src="icons/chevron_passive.svg" alt="chevron" />
+				{#if show_sorting_options}
+					<div class="sorting-options">
+						{#each sorting_options as option, index}
+							{#if option !== sorting_options[chosen_sorting_option]}
+								<div class="sorting-option" on:click={() => chooseSorting(index)} on:keydown>
+									<p class="light-40">sort by</p>
+									<div style="width:8px" />
+									<p>{option.k}</p>
+									{#if chosen_sorting_option === index}
+										<img src="icons/check.svg" alt="check" />
+									{/if}
+								</div>
+							{/if}
+						{/each}
+					</div>
+				{/if}
 			</div>
 		</div>
 		<div class="wrapper">
@@ -109,22 +151,21 @@
 						{#if index == 0}
 							<div style="height:0px" bind:this={ghost_component} />
 						{/if}
-						{#if skill.publish}
-							<div
-								on:click={() => {
-									active_skill = skill;
-								}}
-								on:keydown
-							>
-								<Skill
-									chosen={skill == active_skill}
-									title={skill.title}
-									description={skill.description}
-									image_urls={skill.image_urls}
-									minimum_price={skill.minimum_price}
-								/>
-							</div>
-						{/if}
+						<div
+							on:click={() => {
+								active_skill = skill;
+							}}
+							on:keydown
+						>
+							<Skill
+								chosen={skill == active_skill}
+								title={skill.title}
+								description={skill.description}
+								image_urls={skill.image_urls}
+								minimum_price={skill.minimum_price}
+								user_address={skill.user_address}
+							/>
+						</div>
 					{/each}
 				</div>
 			</div>
@@ -237,5 +278,27 @@
 	.viewport::-webkit-scrollbar {
 		/* hide scrollbar */
 		display: none;
+	}
+	.sorting-dropdown {
+		position: relative;
+		cursor: pointer;
+	}
+	.sorting-options {
+		position: absolute;
+		z-index: 66;
+		margin-top: 1px;
+		margin-left: -1px;
+		width: 100%;
+	}
+	.sorting-option {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		background-color: var(--color-light-2);
+		padding: 8px;
+		border-width: 0px 0px 1px 1px;
+		border-style: solid;
+		border-color: var(--color-light-20);
+		flex: 1;
 	}
 </style>

@@ -1,13 +1,16 @@
 <svelte:options immutable={true} />
 
 <script lang="ts">
+	import type { UserType } from '$lib/types/Types';
+	import { onMount } from 'svelte';
 	export let title: string;
 	export let description: string;
 	export let image_urls: Array<string>;
 	export let minimum_price: number;
 	export let chosen: boolean;
+	export let user_address: string;
 
-	let tags = [
+	$: tags = [
 		{
 			key: 'member',
 			value: 'tier 3'
@@ -25,12 +28,29 @@
 	$: trimmed_description =
 		description.length > 120 ? description.slice(0, 120) + '...' : description;
 	let placeholder_image = 'assets/xcopy.gif';
+
+	onMount(() => {
+		fetchUser();
+	});
+
+	const fetchUser = async () => {
+		const res = await fetch(`/api/user/${user_address}`);
+		user = await res.json();
+	};
+	let user: UserType;
+	//todo: show placeholder until image is loaded
+	let image_component: HTMLImageElement;
 </script>
 
 <section class={chosen ? 'chosen' : ''}>
 	<div class="contents">
 		<div class="thumbnail">
-			<img src={image_urls[0] ?? placeholder_image} alt="gallery" class="preview-image" />
+			<img
+				src={image_urls[0] ?? placeholder_image}
+				alt="gallery"
+				class="preview-image"
+				bind:this={image_component}
+			/>
 		</div>
 		<div class="content">
 			<div>
@@ -39,7 +59,7 @@
 				<div class="body-text light-60">{trimmed_description}</div>
 			</div>
 			<div class="sub">
-				<p class="yellow">takez0_o</p>
+				<p class="yellow">{user?.username}</p>
 				<p>4.9<span class="light-60">(366)</span></p>
 			</div>
 		</div>
@@ -125,6 +145,12 @@
 	.tag:hover {
 		background-color: var(--color-primary);
 	}
+	.tag:hover p {
+		color: var(--color-dark);
+	}
+	.tag:hover span {
+		color: var(--color-dark);
+	}
 	.actions {
 		display: flex;
 		flex-direction: row;
@@ -133,7 +159,7 @@
 	.action {
 		height: 16px;
 		padding: 8px;
-		border-width: 0px 1px 0px 1px;
+		border-width: 0px 0px 0px 1px;
 		border-style: solid;
 		border-color: var(--color-light-20);
 	}
