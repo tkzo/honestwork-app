@@ -75,8 +75,8 @@
 					src={input_active ? 'icons/search_active.svg' : 'icons/search_passive.svg'}
 					alt="search icon"
 				/>
-				<div style="width:8px" />
 				<input
+					class="search-input"
 					type="text"
 					placeholder="Search for skills"
 					bind:value={search_input}
@@ -215,7 +215,7 @@
 	}
 	.input-container {
 		width: 320px;
-		padding: 8px;
+		padding: 0px 8px;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -226,9 +226,11 @@
 	}
 	input {
 		border: none;
-		padding: 0px;
 		width: 240px;
 		background: var(--color-light-2);
+	}
+	.search-input {
+		padding: 8px;
 	}
 	.top {
 		display: flex;
