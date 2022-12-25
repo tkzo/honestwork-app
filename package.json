@@ -40,6 +40,7 @@
 		"@xmtp/xmtp-js": "^7.7.2",
 		"alchemy-sdk": "^2.2.3",
 		"aws-sdk": "^2.1272.0",
+		"buffer": "^6.0.3",
 		"dotenv": "^16.0.3",
 		"ethers": "^5.7.2",
 		"fuzzy": "^0.1.3",

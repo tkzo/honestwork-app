@@ -19,7 +19,7 @@ class Redirect {
     this.location = location;
   }
 }
-class ValidationError {
+class ActionFailure {
   constructor(status, data) {
     this.status = status;
     this.data = data;
@@ -27,7 +27,7 @@ class ValidationError {
 }
 function error(status, message) {
   if (isNaN(status) || status < 400 || status > 599) {
-    throw new Error(`HTTP error status codes must be between 400 and 599 \u2014 ${status} is invalid`);
+    throw new Error(`HTTP error status codes must be between 400 and 599 — ${status} is invalid`);
   }
   return new HttpError(status, message);
 }
@@ -38,7 +38,7 @@ function redirect(status, location) {
   return new Redirect(status, location);
 }
 function json(data, init) {
-  const headers = new Headers(init == null ? void 0 : init.headers);
+  const headers = new Headers(init?.headers);
   if (!headers.has("content-type")) {
     headers.set("content-type", "application/json");
   }
@@ -48,9 +48,9 @@ function json(data, init) {
   });
 }
 export {
+  ActionFailure as A,
   HttpError as H,
   Redirect as R,
-  ValidationError as V,
   error as e,
   json as j,
   redirect as r

@@ -9,7 +9,8 @@ export const nodes = [() => import('./nodes/0'),
 	() => import('./nodes/6'),
 	() => import('./nodes/7'),
 	() => import('./nodes/8'),
-	() => import('./nodes/9')];
+	() => import('./nodes/9'),
+	() => import('./nodes/10')];
 
 export const server_loads = [];
 
@@ -18,10 +19,11 @@ export const dictionary = {
 	"/(subpages)/connect_wallet": [~3],
 	"/(subpages)/create_account": [~4],
 	"/jobs": [6],
+	"/messages": [7],
 	"/(subpages)/mint": [5],
-	"/profile": [~7],
-	"/projects": [8],
-	"/skills": [~9]
+	"/profile": [~8],
+	"/projects": [9],
+	"/skills": [~10]
 };
 
 export const hooks = {

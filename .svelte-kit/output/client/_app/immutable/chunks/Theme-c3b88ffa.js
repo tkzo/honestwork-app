@@ -1,0 +1,1 @@
+import{w as o}from"./index-917600e1.js";const l=()=>{if(typeof localStorage<"u"&&typeof localStorage.theme<"u"){let e=localStorage.theme;t.set(e)}else t.set("light");a.set(!0)},t=o(""),a=o(!1),r=e=>{typeof localStorage<"u"&&(localStorage.theme=e,t.set(e))};export{r as a,a as b,l as s,t};

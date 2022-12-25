@@ -1,1 +1,1 @@
-{"prerendered":{"pages":[],"assets":[],"redirects":[],"paths":[]},"prerender_map":[["/",false],["/connect_wallet",false],["/create_account",false],["/creators",false],["/jobs",false],["/profile/[slug]",false]]}
+{"prerendered":{"pages":[],"assets":[],"redirects":[],"paths":[]},"prerender_map":[["/",false],["/(subpages)/connect_wallet",false],["/(subpages)/create_account",false],["/jobs",false],["/messages",false],["/(subpages)/mint",false],["/profile",false],["/projects",false],["/skills",false]]}

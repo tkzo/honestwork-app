@@ -1,33 +1,71 @@
-@font-face {
+/* @font-face {
 	font-family: 'Proto Mono';
-	src: url('../fonts/ProtoMono-Light.otf') format('otf'),
-		url('../fonts/ProtoMono-LightShadow.otf') format('otf'),
-		url('../fonts/ProtoMono-Medium.otf') format('otf'),
-		url('../fonts/ProtoMono-MediumShadow.otf') format('otf'),
-		url('../fonts/ProtoMono-SemiBold.otf') format('otf'),
-		url('../fonts/ProtoMono-SemiBoldShadow.otf') format('otf');
+	font-style: normal;
 	font-weight: 400, 500, 600, 700;
+	src: local(''), url('fonts/ProtoMono-Light.otf') format('otf'),
+		url('fonts/ProtoMono-LightShadow.otf') format('otf'),
+		url('fonts/ProtoMono-Medium.otf') format('otf'),
+		url('fonts/ProtoMono-MediumShadow.otf') format('otf'),
+		url('fonts/ProtoMono-SemiBold.otf') format('otf'),
+		url('fonts/ProtoMono-SemiBoldShadow.otf') format('otf');
+} */
+
+/* hide scrollbar but allow scrolling */
+body {
+	-ms-overflow-style: none; /* for Internet Explorer, Edge */
+	scrollbar-width: none; /* for Firefox */
+	overflow-y: hidden;
+	--svrollbar-track-width: 1px;
+	/* --svrollbar-track-background: #85b4b9; */
+	--svrollbar-track-opacity: 1;
+
+	--svrollbar-thumb-width: 10px;
+	--svrollbar-thumb-background: #d9ab55;
+	--svrollbar-thumb-opacity: 1;
+}
+
+body::-webkit-scrollbar {
+	display: none !important;
 }
 
 :root {
-	--color-dark: #0c0c0c;
-	--color-light: #ffffff;
-	--color-light-80: rgba(255, 255, 255, 0.8);
-	--color-light-60: rgba(255, 255, 255, 0.6);
-	--color-light-40: rgba(255, 255, 255, 0.4);
-	--color-light-20: rgba(255, 255, 255, 0.2);
-	--color-primary: #fcef50;
-	font-family: 'Proto Mono', monospace;
-	color: var(--color-light);
+	--color-dark: #000000;
 }
-
 body {
 	min-height: 100vh;
+	min-width: 100vw;
 	margin: 0;
 	background-color: var(--color-dark);
-	/* background-image: url('assets/bg.webp'); */
 	background-size: 100vw 100vh;
-	border-width: 0px 1px;
+	border-color: var(--color-light-20);
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+section {
+	display: flex;
+	background-color: var(--color-dark);
+	border-width: 1px;
+	border-style: solid;
+	border-color: var(--color-light-20);
+	box-sizing: border-box;
+}
+
+.border-all {
+	display: flex;
+	background-color: var(--color-dark);
+	border-width: 1px;
+	border-style: solid;
+	border-color: var(--color-light-20);
+	box-sizing: border-box;
+}
+
+.border-bottom {
+	display: flex;
+	background-color: var(--color-dark);
+	border-width: 0px 0px 1px 0px;
 	border-style: solid;
 	border-color: var(--color-light-20);
 	box-sizing: border-box;
@@ -39,10 +77,11 @@ p {
 	font-size: 12px;
 	line-height: 16px;
 	margin: 0px;
+	text-transform: uppercase;
 }
 
 a {
-	font-weight: 600;
+	font-weight: 400;
 	color: var(--color-primary);
 	text-decoration: none;
 	cursor: pointer;
@@ -66,14 +105,29 @@ a:visited {
 .light-60 {
 	color: var(--color-light-60);
 }
+.light-80 {
+	color: var(--color-light-80);
+}
+.light {
+	color: var(--color-light);
+}
+.dark {
+	color: var(--color-dark);
+}
+
+.body-text {
+	font-family: 'Ubuntu Mono', monospace;
+	font-size: 13px;
+	line-height: 20px;
+}
 
 .link {
 	cursor: pointer;
 }
 
 .link:hover {
-	color: var(--color-primary);
-	text-shadow: 0px 0px 10px var(--color-primary);
+	background-color: var(--color-primary);
+	color: var(--color-dark);
 }
 
 input {
@@ -88,16 +142,28 @@ input {
 
 input {
 	background-color: var(--color-dark);
-	font-family: 'Proto Mono', monospace;
-	color: var(--color-light);
+	font-family: 'Ubuntu Mono', monospace;
+	color: var(--color-light-80);
 	padding: 8px;
 	box-sizing: border-box;
 	border-width: 1px;
 	border-style: solid;
 	border-color: var(--color-light-20);
-	font-size: 11px;
-	line-height: 12px;
-	text-align: center;
+	font-size: 13px;
+	line-height: 16px;
+}
+
+textarea {
+	background-color: var(--color-dark);
+	font-family: 'Ubuntu Mono', monospace;
+	color: var(--color-light-80);
+	padding: 8px;
+	box-sizing: border-box;
+	border-width: 1px;
+	border-style: solid;
+	border-color: var(--color-light-20);
+	font-size: 13px;
+	line-height: 20px;
 }
 
 input:focus {
@@ -107,8 +173,22 @@ input:focus {
 	border-color: var(--color-primary);
 }
 
+textarea:focus {
+	outline: none;
+	border: none;
+	border-width: 1px;
+	border-style: solid;
+	border-color: var(--color-primary);
+}
+
+input[type='number'].no-spinner::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
 ::placeholder {
-	color: var(--color-light-20);
+	color: var(--color-light-80);
 }
 
 ::-moz-selection {
@@ -135,4 +215,23 @@ button:active {
 	outline: none;
 	background: transparent;
 	border: 1px solid grey;
+}
+
+.spinner {
+	position: absolute;
+	transform: translateY(50%);
+}
+
+@keyframes rotating {
+	from {
+		-webkit-transform: rotate(0deg);
+	}
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+.rotating {
+	-webkit-animation: rotating 3s linear infinite;
+	animation: rotating 3s linear infinite;
 }

@@ -30,6 +30,7 @@
 		"src/routes/(subpages)/create_account/+page.server.ts"
 	],
 	"/jobs": [],
+	"/messages": [],
 	"/(subpages)/mint": [],
 	"/profile": [
 		"src/routes/profile/+page.server.ts"

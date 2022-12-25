@@ -23,29 +23,28 @@
 				skills
 			</p>
 		</a>
-		<!-- <div style="width:12px" />
-		<a href="/projects">
-			<p class={$page.route.id == '/projects' ? 'yellow semibold link' : 'light-60 semibold link'}>
-				projects
-			</p>
-		</a> -->
 	</div>
-	<div class="wallet-section">
-		{#if !$userConnected}
-			{#if $connecting}
-				<img src="icons/loader.svg" alt="loading" class="rotating" />
+	<div class="right-section">
+		<a class="messages" href="/messages">
+			<p class="light-40">messages(<span class="yellow">4</span>)</p>
+		</a>
+		<div class="wallet-section">
+			{#if !$userConnected}
+				{#if $connecting}
+					<img src="icons/loader.svg" alt="loading" class="rotating" />
+				{/if}
+				<div style="width:4px" />
+				<p class="yellow semibold link" on:click={connectWallet} on:keydown>connect</p>
+			{:else}
+				<p class="light-40">
+					{$userAddress.substring(0, 6)}...{$userAddress.substring($userAddress.length - 4)}
+				</p>
+				<div style="width:8px" />
+				<a href={`/api/auth?address=${$userAddress}`}>
+					<p class="yellow semibold link">profile</p>
+				</a>
 			{/if}
-			<div style="width:4px" />
-			<p class="yellow semibold link" on:click={connectWallet} on:keydown>connect</p>
-		{:else}
-			<p class="light-40">
-				{$userAddress.substring(0, 6)}...{$userAddress.substring($userAddress.length - 4)}
-			</p>
-			<div style="width:8px" />
-			<a href={`/api/auth?address=${$userAddress}`}>
-				<p class="yellow semibold link">profile</p>
-			</a>
-		{/if}
+		</div>
 	</div>
 </main>
 
@@ -90,6 +89,14 @@
 		align-items: center;
 		justify-content: center;
 	}
+	.right-section {
+		height: 32px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-end;
+		box-sizing: border-box;
+	}
 	.wallet-section {
 		height: 32px;
 		display: flex;
@@ -101,5 +108,15 @@
 		border-style: solid;
 		border-color: var(--color-light-20);
 		box-sizing: border-box;
+	}
+	.messages {
+		height: 100%;
+		border-width: 0px 0px 0px 1px;
+		border-style: solid;
+		border-color: var(--color-light-20);
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding: 0px 8px;
 	}
 </style>

@@ -12,6 +12,7 @@ export let connecting = writable(false);
 export let chainName = writable('');
 export let token_address = env.PUBLIC_MEMBERSHIP_TOKEN_ADDRESS;
 export let nodeProvider = writable();
+export let xmtpClient = writable();
 
 export const connectWallet = async () => {
 	connecting.set(true);

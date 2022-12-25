@@ -5,8 +5,10 @@
 	import { connectWallet, connecting } from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 	import { setLocalTheme, theme, themeLoaded } from '$lib/stores/Theme';
+	import { Buffer } from 'buffer';
+	globalThis.Buffer = Buffer;
 
-	onMount(async () => {
+	$: onMount(async () => {
 		setLocalTheme();
 		connecting.set(true);
 		await connectWallet();
