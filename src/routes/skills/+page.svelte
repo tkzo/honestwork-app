@@ -229,6 +229,9 @@
 		width: 240px;
 		background: var(--color-light-2);
 	}
+	input:focus {
+		outline: none;
+	}
 	.search-input {
 		padding: 8px;
 	}
