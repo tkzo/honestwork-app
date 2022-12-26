@@ -1,12 +1,13 @@
 <script lang="ts">
+	//todo: add types
+
 	import { networkSigner, userAddress, userConnected } from '$lib/stores/Network';
 	import { browser } from '$app/environment';
-	import { Client, Conversations } from '@xmtp/xmtp-js';
+	import { Client } from '@xmtp/xmtp-js';
 	import { shortcut } from '$lib/stores/Shortcut';
 	import { Svrollbar } from 'svrollbar';
-	import type { Conversation } from '@xmtp/xmtp-js';
 	import Message from '$lib/components/messages/Message.svelte';
-	import { beforeUpdate, afterUpdate } from 'svelte';
+	import { afterUpdate } from 'svelte';
 
 	export let viewport: Element;
 	export let contents: Element;
@@ -16,46 +17,35 @@
 	let last_messages = new Array();
 	let peers = new Array();
 	let loaded = false;
-	$: chosen_conversation = conversations[0];
 	let user_input: HTMLTextAreaElement;
 	let placeholder_image = 'assets/xcopy.gif';
 	let chosen_messages = new Array();
 	let first_chat_load = true;
+	let new_message = '';
+	let rows = 1;
+	let chosen_conversation: any;
 
-	afterUpdate(() => {
-		console.log('First load?', first_chat_load);
+	afterUpdate(async () => {
 		if (first_chat_load && contents.clientHeight > 0) {
-			scrollHard();
+			scroll('auto');
 			first_chat_load = false;
 		} else {
-			console.log('First load?', first_chat_load);
-			scrollSmooth();
+			scroll('smooth');
 		}
 	});
-
-	let rows = 1;
-
-	$: if (chosen_messages.length > 0) {
-		console.log('Trig');
-	}
-
-	const updateRows = () => {
-		console.log('Updating');
-		rows = user_input.value.split(/\r\n|\r|\n/).length;
-	};
 
 	$: if (userConnected) {
 		connectXmtp();
 	}
 	$: feedHeight = window.innerHeight - 165;
 
-	const scrollSmooth = () => {
-		console.log('Client height smooth:', contents.clientHeight);
-		viewport.scroll({ top: contents.clientHeight, behavior: 'smooth' });
+	//todo: doesn't recognize wrapping -fix
+	const updateRows = () => {
+		rows = user_input.value.split(/\r\n|\r|\n/).length;
 	};
-	const scrollHard = () => {
-		console.log('Client height hard:', contents.clientHeight);
-		viewport.scroll({ top: contents.clientHeight, behavior: 'auto' });
+
+	const scroll = (behavior: any) => {
+		viewport.scroll({ top: contents.clientHeight, behavior: behavior });
 	};
 
 	const connectXmtp = async () => {
@@ -66,30 +56,36 @@
 			for await (const conv of conversations) {
 				peers.push(await fetchPeer(conv.peerAddress));
 			}
+			chooseItem(conversations[0]);
+			chosen_conversation = conversations[0];
 		}
 		loaded = true;
 	};
 
 	const fetchInbox = async (convos: any[]) => {
+		let c = 0;
 		for await (const convo of convos) {
-			last_messages.push(getLastMessage);
+			let msg = await getLastMessage(convo);
+			// last_messages.push(msg);
+			last_messages[c] = msg;
+			c++;
 		}
+		last_messages = last_messages;
 	};
 
 	const createConversation = async () => {
 		await connectXmtp();
-		console.log('Client:', xmtp);
 		if ($userAddress != '0xfB1C2FF46962B452C1731d44F0789bFb3607e63f') {
 			const newConversation = await xmtp.conversations.newConversation(
 				'0xfB1C2FF46962B452C1731d44F0789bFb3607e63f'
 			);
 			newConversation.send('gm');
-			console.log('New conv:', newConversation);
 		}
 	};
 
 	const chooseItem = async (convo: any) => {
 		chosen_conversation = convo;
+		first_chat_load = true;
 		getChatMessages(convo);
 	};
 
@@ -112,6 +108,7 @@
 		for await (const message of await convo.streamMessages()) {
 			chosen_messages.push(message);
 			chosen_messages = chosen_messages;
+			fetchInbox(conversations);
 		}
 	};
 
@@ -119,14 +116,13 @@
 		const result = await fetch(`/api/user/${peer}`);
 		return await result.json();
 	};
-	const sendMessage = async (convo: any) => {
-		console.log('Value:', user_input.value);
-		await convo.send(user_input.value);
-		user_input.value = '';
-	};
 
-	const updateScrollState = (e: any) => {
-		console.log('Client height:', contents.clientHeight);
+	const sendMessage = async (convo: any) => {
+		new_message = user_input.value;
+		let input_ = user_input.value;
+		user_input.value = '';
+		await convo.send(input_);
+		new_message = '';
 	};
 </script>
 
@@ -158,9 +154,9 @@
 									{#await fetchPeer(convo.peerAddress) then peer}
 										<p>{peer.username && peer.username != '' ? peer.username : 'anon'}</p>
 									{/await}
-									{#await getLastMessage(convo) then msg}
-										<div class="body-text light-60">{msg}</div>
-									{/await}
+									{#if last_messages[index] && last_messages[index] != ''}
+										<div class="body-text light-60">{last_messages[0]}</div>
+									{/if}
 								</div>
 							</div>
 						{/each}
@@ -182,7 +178,7 @@
 						{/if}
 					</div>
 				</div>
-				<Svrollbar {viewport} {contents} on:show={updateScrollState} />
+				<Svrollbar {viewport} {contents} />
 			</div>
 		</div>
 		<div class="input-field">
@@ -198,9 +194,13 @@
 				class="send-button"
 				on:click={() => sendMessage(chosen_conversation)}
 				on:keydown
-				use:shortcut={{ code: `KeyReturn` }}
+				use:shortcut={{ shift: true, code: 'Enter' }}
 			>
-				<img src="/icons/message.svg" alt="send" />
+				{#if new_message.length > 0}
+					<img src="icons/loader.svg" alt="loading" class="rotating" />
+				{:else}
+					<img src="/icons/message.svg" alt="send" />
+				{/if}
 			</div>
 		</div>
 	</div>
@@ -309,7 +309,6 @@
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
-		padding: 0px;
 		border-style: solid;
 		border-width: 1px 0px 0px 0px;
 		border-color: var(--color-light-20);

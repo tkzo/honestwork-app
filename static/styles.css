@@ -191,6 +191,10 @@ input[type='number']::-webkit-outer-spin-button {
 	color: var(--color-light-80);
 }
 
+textarea::placeholder {
+	color: var(--color-light-60);
+}
+
 ::-moz-selection {
 	color: var(--color-dark);
 	background: var(--color-primary);
