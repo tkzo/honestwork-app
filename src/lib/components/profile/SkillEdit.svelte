@@ -411,7 +411,6 @@
 	</div>
 	<textarea
 		name="description"
-		size="520"
 		rows="20"
 		maxlength="1000"
 		placeholder="enter skill description..."

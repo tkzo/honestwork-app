@@ -2,24 +2,61 @@
 	import { networkSigner, userAddress, userConnected } from '$lib/stores/Network';
 	import { browser } from '$app/environment';
 	import { Client, Conversations } from '@xmtp/xmtp-js';
-
-	import type { Conversation, Message } from '@xmtp/xmtp-js';
+	import { shortcut } from '$lib/stores/Shortcut';
+	import { Svrollbar } from 'svrollbar';
+	import type { Conversation } from '@xmtp/xmtp-js';
+	import Message from '$lib/components/messages/Message.svelte';
+	import { beforeUpdate, afterUpdate } from 'svelte';
 
 	export let viewport: Element;
 	export let contents: Element;
 
 	let xmtp: any;
 	let conversations = new Array();
-	let first_messages = new Array();
+	let last_messages = new Array();
 	let peers = new Array();
 	let loaded = false;
-	let chosen_conversation: Conversation;
-	// let chosen_messages = new Array();
+	$: chosen_conversation = conversations[0];
+	let user_input: HTMLTextAreaElement;
+	let placeholder_image = 'assets/xcopy.gif';
+	let chosen_messages = new Array();
+	let first_chat_load = true;
+
+	afterUpdate(() => {
+		console.log('First load?', first_chat_load);
+		if (first_chat_load && contents.clientHeight > 0) {
+			scrollHard();
+			first_chat_load = false;
+		} else {
+			console.log('First load?', first_chat_load);
+			scrollSmooth();
+		}
+	});
+
+	let rows = 1;
+
+	$: if (chosen_messages.length > 0) {
+		console.log('Trig');
+	}
+
+	const updateRows = () => {
+		console.log('Updating');
+		rows = user_input.value.split(/\r\n|\r|\n/).length;
+	};
 
 	$: if (userConnected) {
 		connectXmtp();
 	}
-	$: feedHeight = window.innerHeight - 128;
+	$: feedHeight = window.innerHeight - 165;
+
+	const scrollSmooth = () => {
+		console.log('Client height smooth:', contents.clientHeight);
+		viewport.scroll({ top: contents.clientHeight, behavior: 'smooth' });
+	};
+	const scrollHard = () => {
+		console.log('Client height hard:', contents.clientHeight);
+		viewport.scroll({ top: contents.clientHeight, behavior: 'auto' });
+	};
 
 	const connectXmtp = async () => {
 		if (browser && $networkSigner) {
@@ -33,10 +70,9 @@
 		loaded = true;
 	};
 
-	const fetchInbox = async (conversations: any[]) => {
-		for await (const convo of conversations) {
-			let convo_messages = await convo.messages();
-			first_messages.push(convo_messages[0]);
+	const fetchInbox = async (convos: any[]) => {
+		for await (const convo of convos) {
+			last_messages.push(getLastMessage);
 		}
 	};
 
@@ -54,21 +90,43 @@
 
 	const chooseItem = async (convo: any) => {
 		chosen_conversation = convo;
+		getChatMessages(convo);
 	};
 
-	const getFirstMessage = async (convo: any) => {
+	const getLastMessage = async (convo: any) => {
 		let convo_messages = await convo.messages();
-		return convo_messages[0].content;
+		let msg = convo_messages[convo_messages.length - 1].content;
+		if (msg.length > 30) {
+			msg = msg.substring(0, 30) + '...';
+		}
+		return msg;
 	};
 
 	const getChatMessages = async (convo: any) => {
 		let convo_messages = await convo.messages();
-		return convo_messages;
+		syncChatMessages(convo);
+		chosen_messages = convo_messages;
+	};
+
+	const syncChatMessages = async (convo: any) => {
+		for await (const message of await convo.streamMessages()) {
+			chosen_messages.push(message);
+			chosen_messages = chosen_messages;
+		}
 	};
 
 	const fetchPeer = async (peer: string) => {
 		const result = await fetch(`/api/user/${peer}`);
 		return await result.json();
+	};
+	const sendMessage = async (convo: any) => {
+		console.log('Value:', user_input.value);
+		await convo.send(user_input.value);
+		user_input.value = '';
+	};
+
+	const updateScrollState = (e: any) => {
+		console.log('Client height:', contents.clientHeight);
 	};
 </script>
 
@@ -88,13 +146,19 @@
 								on:click={() => chooseItem(convo)}
 								on:keydown
 							>
-								<img class="peer-image" src={peers[index]?.image_url ?? ''} alt="smth" />
+								<img
+									class="peer-image"
+									src={peers[index]?.image_url && peers[index]?.image_url != ''
+										? peers[index]?.image_url
+										: placeholder_image}
+									alt="smth"
+								/>
 								<div style="width: 12px;" />
 								<div class="inbox-contents">
 									{#await fetchPeer(convo.peerAddress) then peer}
-										<p>{peer.username}</p>
+										<p>{peer.username && peer.username != '' ? peer.username : 'anon'}</p>
 									{/await}
-									{#await getFirstMessage(convo) then msg}
+									{#await getLastMessage(convo) then msg}
 										<div class="body-text light-60">{msg}</div>
 									{/await}
 								</div>
@@ -108,29 +172,37 @@
 	<div style="width:12px" />
 	<div class="chat">
 		<div class="chat-window">
-			{#if loaded}
-				{#await getChatMessages(chosen_conversation) then chosen_messages}
-					{#each chosen_messages as message}
-						{#if message.senderAddress == $userAddress}
-							<div class="self-message">
-								<div class="date" />
-								<div class="message-contents">
-									<div class="body-text light-80">{message.content}</div>
-								</div>
-							</div>
-						{:else}
-							<div class="peer-message">
-								<div class="date" />
-								<div class="message-contents">
-									<div class="body-text light-80">{message.content}</div>
-								</div>
-							</div>
+			<div class="wrapper">
+				<div bind:this={viewport} class="viewport" style={`height:${feedHeight.toString() + 'px'}`}>
+					<div bind:this={contents} class="contents">
+						{#if loaded && chosen_messages.length > 0}
+							{#each chosen_messages as message, index}
+								<Message {message} {index} array_length={chosen_messages.length} />
+							{/each}
 						{/if}
-					{/each}
-				{/await}
-			{/if}
+					</div>
+				</div>
+				<Svrollbar {viewport} {contents} on:show={updateScrollState} />
+			</div>
 		</div>
-		<div class="input-field" />
+		<div class="input-field">
+			<textarea
+				placeholder="Write a message..."
+				bind:this={user_input}
+				name="message"
+				{rows}
+				maxlength="1000"
+				on:input={updateRows}
+			/>
+			<div
+				class="send-button"
+				on:click={() => sendMessage(chosen_conversation)}
+				on:keydown
+				use:shortcut={{ code: `KeyReturn` }}
+			>
+				<img src="/icons/message.svg" alt="send" />
+			</div>
+		</div>
 	</div>
 </main>
 
@@ -139,6 +211,11 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+	}
+	textarea {
+		width: 100%;
+		resize: none;
+		border: none;
 	}
 	.peer-image {
 		width: 62px;
@@ -161,6 +238,10 @@
 		border-style: solid;
 		border-top-color: var(--color-light-20);
 		border-bottom-color: var(--color-light-20);
+		cursor: pointer;
+	}
+	.inbox-item:hover {
+		background-color: var(--color-light-2);
 	}
 	.chosen-item {
 		border-right-color: var(--color-primary);
@@ -212,32 +293,57 @@
 		border-color: var(--color-light-20);
 		display: flex;
 		flex-direction: column;
+		justify-content: flex-end;
 	}
 	.chat-window {
 		display: flex;
-		flex-direction: column-reverse;
-		justify-content: flex-end;
+		flex-direction: column;
 	}
-	.self-message {
+	.gray-line {
+		border-style: solid;
+		border-width: 1px 1px 1px 0px;
+		border-color: var(--color-light-20);
+	}
+	.input-field {
 		display: flex;
 		flex-direction: row;
-		justify-content: flex-end;
-		width: min-content;
-		max-width: 352px;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0px;
+		border-style: solid;
+		border-width: 1px 0px 0px 0px;
+		border-color: var(--color-light-20);
 	}
-	.peer-message {
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
-		width: min-content;
-		max-width: 352px;
+	.send-button {
+		margin-right: 12px;
+		margin-top: 3px;
 	}
-	.message-contents {
-		background-color: var(--color-light-2);
-		padding: 12px 16px;
-		width: 100%;
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
+	.wrapper {
+		position: relative;
+		-ms-overflow-style: none; /* for Internet Explorer, Edge */
+		scrollbar-width: none; /* for Firefox */
+		overflow-y: scroll;
+		--svrollbar-track-width: 1px;
+		/* --svrollbar-track-background: #85b4b9; */
+		--svrollbar-track-opacity: 1;
+
+		--svrollbar-thumb-width: 10px;
+		--svrollbar-thumb-background: #d9ab55;
+		--svrollbar-thumb-opacity: 1;
+	}
+
+	.viewport {
+		position: relative;
+		overflow: scroll;
+		box-sizing: border-box;
+
+		/* hide scrollbar */
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+
+	.viewport::-webkit-scrollbar {
+		/* hide scrollbar */
+		display: none;
 	}
 </style>
