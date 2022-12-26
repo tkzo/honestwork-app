@@ -53,4 +53,9 @@
 		border-width: 0px 0px 0px 1px;
 		border-color: var(--color-primary);
 	}
+	.gray-line {
+		border-style: solid;
+		border-width: 1px 1px 1px 0px;
+		border-color: var(--color-light-20);
+	}
 </style>

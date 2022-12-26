@@ -8,6 +8,7 @@
 	import { Svrollbar } from 'svrollbar';
 	import Message from '$lib/components/messages/Message.svelte';
 	import { afterUpdate } from 'svelte';
+	import { Jumper } from 'svelte-loading-spinners';
 
 	export let viewport: Element;
 	export let contents: Element;
@@ -160,6 +161,14 @@
 								</div>
 							</div>
 						{/each}
+					{:else}
+						<div class="spinster">
+							<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
+							<div style="height: 12px;" />
+							<p class="light-60" style="animation: blinking 2s linear infinite;">
+								connecting xmtp...
+							</p>
+						</div>
 					{/if}
 				</div>
 			</div>
@@ -344,5 +353,12 @@
 	.viewport::-webkit-scrollbar {
 		/* hide scrollbar */
 		display: none;
+	}
+	.spinster {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: 24px;
 	}
 </style>

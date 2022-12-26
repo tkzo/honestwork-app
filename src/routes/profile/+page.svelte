@@ -616,7 +616,6 @@
 				<div class="bio">
 					<textarea
 						name="bio"
-						size="520"
 						rows="20"
 						maxlength="1000"
 						placeholder="enter bio here..."

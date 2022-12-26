@@ -235,6 +235,12 @@ button:active {
 	}
 }
 
+@keyframes blinking {
+	50% {
+		opacity: 0;
+	}
+}
+
 .rotating {
 	-webkit-animation: rotating 3s linear infinite;
 	animation: rotating 3s linear infinite;
