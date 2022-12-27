@@ -1,4 +1,3 @@
-import { MetadataDirective } from '@aws-sdk/client-s3';
 import { writable } from 'svelte/store';
 
 type Metadata = {

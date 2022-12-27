@@ -14,10 +14,12 @@
 		resetState();
 	}
 	$: trimmed_images = skill.image_urls.filter((url: string) => url !== '');
+	$: console.log();
 
 	const fetchUser = async () => {
 		const res = await fetch(`/api/user/${skill.user_address}`);
 		user = await res.json();
+		getNft();
 	};
 	const nextImage = () => {
 		if (chosen_image < trimmed_images.length - 1) {
@@ -32,12 +34,37 @@
 	const resetState = () => {
 		chosen_image = 0;
 	};
+	let nft_image: any;
+	const getNft = async () => {
+		if (user.nft_address && user.nft_id) {
+			try {
+				const response = await fetch(`api/alchemy/${user.nft_address}/${user.nft_id}`);
+				if (response.ok) {
+					const data = await response.json();
+					nft_image = data.image;
+				}
+			} catch (err) {
+				console.log(err);
+			}
+		}
+	};
+	let placeholder_image = 'assets/xcopy.gif';
 </script>
 
 <main>
 	<div class="profile-bar">
 		<div class="left-section">
-			<img class="pfp" src={user?.image_url} alt="" />
+			<img
+				class="pfp"
+				src={user?.show_nft
+					? nft_image && nft_image != ''
+						? nft_image
+						: placeholder_image
+					: user?.image_url && user.image_url != ''
+					? user.image_url
+					: placeholder_image}
+				alt=""
+			/>
 			<div style="width:8px;" />
 			<p class="yellow">{user?.username}</p>
 			<div style="width:8px;" />
