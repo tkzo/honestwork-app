@@ -9,6 +9,7 @@
 	import Message from '$lib/components/messages/Message.svelte';
 	import { afterUpdate, onMount } from 'svelte';
 	import { Jumper } from 'svelte-loading-spinners';
+	import { onDestroy } from 'svelte';
 	// import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
 
 	export let viewport: Element;
@@ -84,7 +85,9 @@
 		let c = 0;
 		for await (const convo of convos) {
 			let msg = await getLastMessage(convo);
-			console.log('Last message:', msg);
+			if (!syncing) {
+				syncChatMessages(convo);
+			}
 			last_messages[c] = msg;
 			c++;
 		}
@@ -108,6 +111,12 @@
 	// 	}
 	// };
 
+	onDestroy(() => {
+		if (active_stream) {
+			active_stream.return();
+		}
+	});
+
 	const chooseItem = async (convo: any) => {
 		chosen_conversation = convo;
 		first_chat_load = true;
@@ -128,15 +137,14 @@
 
 	const getChatMessages = async (convo: any) => {
 		let convo_messages = await convo.messages();
-		if (!syncing) {
-			syncChatMessages(convo);
-		}
 		chosen_messages = convo_messages;
 	};
 
 	let syncing = false;
+	let active_stream: any;
 	const syncChatMessages = async (convo: any) => {
-		for await (const message of await convo.streamMessages()) {
+		active_stream = await convo.streamMessages();
+		for await (const message of active_stream) {
 			syncing = true;
 			chosen_messages.push(message);
 			chosen_messages = chosen_messages;
