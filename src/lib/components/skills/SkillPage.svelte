@@ -7,9 +7,12 @@
 
 	let user: UserType;
 	let chosen_image: number = 0;
+	let nft_image: any;
+	let placeholder_image = 'assets/xcopy.gif';
 
 	$: feedHeight = window.innerHeight - 136;
 	$: if (skill) {
+		nft_image = '';
 		fetchUser();
 		resetState();
 	}
@@ -34,7 +37,6 @@
 	const resetState = () => {
 		chosen_image = 0;
 	};
-	let nft_image: any;
 	const getNft = async () => {
 		if (user.nft_address && user.nft_id) {
 			try {
@@ -48,7 +50,6 @@
 			}
 		}
 	};
-	let placeholder_image = 'assets/xcopy.gif';
 </script>
 
 <main>
