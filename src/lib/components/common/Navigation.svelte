@@ -26,7 +26,7 @@
 	</div>
 	<div class="right-section">
 		<a class="messages" href="/messages">
-			<p class="light-40">messages(<span class="yellow">4</span>)</p>
+			<p class="light-40 link">messages</p>
 		</a>
 		<div class="wallet-section">
 			{#if !$userConnected}

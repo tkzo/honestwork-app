@@ -4,7 +4,6 @@
 	import { Svrollbar } from 'svrollbar';
 	import type { SkillType } from '$lib/types/Types';
 	import fuzzy from 'fuzzy';
-	// import VirtualList from '@sveltejs/svelte-virtual-list';
 
 	export let data: any;
 	export let viewport: Element;
@@ -145,8 +144,6 @@
 			>
 				<div bind:this={contents} class="contents">
 					<div style="height:8px" />
-					<!-- <VirtualList items={data.json} let:item height={feedHeight.toString() + 'px'}>
-		</VirtualList> -->
 					{#each filteredSkills as skill, index}
 						{#if index == 0}
 							<div style="height:0px" bind:this={ghost_component} />
@@ -181,14 +178,6 @@
 </main>
 
 <style>
-	/* :global(.virtual-list-wrapper) {
-		-ms-overflow-style: none !important;
-		scrollbar-width: none !important;
-	}
-
-	:global(.virtual-list-wrapper::-webkit-scrollbar) {
-		display: none !important;
-	} */
 	main {
 		display: flex;
 		flex-direction: row;

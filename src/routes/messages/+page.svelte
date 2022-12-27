@@ -9,6 +9,7 @@
 	import Message from '$lib/components/messages/Message.svelte';
 	import { afterUpdate } from 'svelte';
 	import { Jumper } from 'svelte-loading-spinners';
+	import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
 
 	export let viewport: Element;
 	export let contents: Element;
@@ -25,6 +26,8 @@
 	let new_message = '';
 	let rows = 1;
 	let chosen_conversation: any;
+	let create_conversation = false;
+	let error_message = '';
 
 	afterUpdate(async () => {
 		if (first_chat_load && contents.clientHeight > 0) {
@@ -49,6 +52,13 @@
 		viewport.scroll({ top: contents.clientHeight, behavior: behavior });
 	};
 
+	const pendingConversation = () => {
+		if ($new_conversation_address != '') {
+			newConversation($new_conversation_address);
+			new_conversation_address.set('');
+		}
+	};
+
 	const connectXmtp = async () => {
 		if (browser && $networkSigner) {
 			xmtp = await Client.create($networkSigner);
@@ -59,6 +69,7 @@
 			}
 			chooseItem(conversations[0]);
 			chosen_conversation = conversations[0];
+			pendingConversation();
 		}
 		loaded = true;
 	};
@@ -74,13 +85,20 @@
 		last_messages = last_messages;
 	};
 
-	const createConversation = async () => {
-		await connectXmtp();
-		if ($userAddress != '0xfB1C2FF46962B452C1731d44F0789bFb3607e63f') {
-			const newConversation = await xmtp.conversations.newConversation(
-				'0xfB1C2FF46962B452C1731d44F0789bFb3607e63f'
-			);
-			newConversation.send('gm');
+	const newConversation = async (addr: string) => {
+		if (xmtp) {
+			let address_available = await xmtp.canMessage(addr);
+			if (!address_available) {
+				error_message = 'Address is not available on xmtp network';
+				return;
+			}
+			const convo = await xmtp.conversations.newConversation(addr, {
+				conversationId: 'honestwork.app/conversations',
+				metadata: {
+					title: $new_conversation_metadata.title
+				}
+			});
+			return convo;
 		}
 	};
 
@@ -129,9 +147,11 @@
 
 <main>
 	<div class="inbox">
-		<div class="create-conversation" on:click={createConversation} on:keydown>
-			<p class="yellow">create new chat</p>
-		</div>
+		{#if error_message != ''}
+			<div class="create-conversation">
+				<p>{error_message}</p>
+			</div>
+		{/if}
 		<div class="wrapper">
 			<div bind:this={viewport} class="viewport" style={`height:${feedHeight.toString() + 'px'}`}>
 				<div bind:this={contents} class="contents">
@@ -160,6 +180,9 @@
 									{/if}
 								</div>
 							</div>
+							{#if index != conversations.length - 1}
+								<div style="height: 12px;" />
+							{/if}
 						{/each}
 					{:else}
 						<div class="spinster">
@@ -243,7 +266,7 @@
 		flex-direction: row;
 		justify-content: flex-start;
 		align-items: center;
-		border-width: 1px 1px 1px 0px;
+		border-width: 1px 0px 1px 0px;
 		border-style: solid;
 		border-top-color: var(--color-light-20);
 		border-bottom-color: var(--color-light-20);
@@ -253,6 +276,7 @@
 		background-color: var(--color-light-2);
 	}
 	.chosen-item {
+		border-width: 1px 1px 1px 0px;
 		border-right-color: var(--color-primary);
 		background-color: var(--color-light-2);
 	}

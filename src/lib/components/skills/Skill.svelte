@@ -1,6 +1,7 @@
 <svelte:options immutable={true} />
 
 <script lang="ts">
+	import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
 	import type { UserType } from '$lib/types/Types';
 	import { onMount } from 'svelte';
 	export let title: string;
@@ -76,8 +77,15 @@
 			{/each}
 		</div>
 		<div class="actions">
-			<div class="action">
-				<img src="icons/message.svg" alt="message" />
+			<div
+				class="action"
+				on:click={() => {
+					new_conversation_address.set(user_address);
+					new_conversation_metadata.set({ title: title });
+				}}
+				on:keydown
+			>
+				<a href="/messages"> <img src="icons/message.svg" alt="message" /> </a>
 			</div>
 			<div class="action">
 				<img src="icons/heart.svg" alt="heart" />
