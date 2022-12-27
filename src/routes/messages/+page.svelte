@@ -7,9 +7,9 @@
 	import { shortcut } from '$lib/stores/Shortcut';
 	import { Svrollbar } from 'svrollbar';
 	import Message from '$lib/components/messages/Message.svelte';
-	import { afterUpdate } from 'svelte';
+	import { afterUpdate, onMount } from 'svelte';
 	import { Jumper } from 'svelte-loading-spinners';
-	import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
+	// import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
 
 	export let viewport: Element;
 	export let contents: Element;
@@ -26,7 +26,6 @@
 	let new_message = '';
 	let rows = 1;
 	let chosen_conversation: any;
-	let create_conversation = false;
 	let error_message = '';
 
 	afterUpdate(async () => {
@@ -38,7 +37,13 @@
 		}
 	});
 
-	$: if (userConnected) {
+	// onMount(async () => {
+	// 	if (userConnected && !loaded) {
+	// 		connectXmtp();
+	// 	}
+	// });
+
+	$: if (userConnected && !loaded) {
 		connectXmtp();
 	}
 	$: feedHeight = window.innerHeight - 165;
@@ -52,12 +57,13 @@
 		viewport.scroll({ top: contents.clientHeight, behavior: behavior });
 	};
 
-	const pendingConversation = () => {
-		if ($new_conversation_address != '') {
-			newConversation($new_conversation_address);
-			new_conversation_address.set('');
-		}
-	};
+	// const pendingConversation = () => {
+	// 	if ($new_conversation_address != '') {
+	// 		console.log('Creating pending conversation...');
+	// 		newConversation($new_conversation_address);
+	// 		new_conversation_address.set('');
+	// 	}
+	// };
 
 	const connectXmtp = async () => {
 		if (browser && $networkSigner) {
@@ -69,7 +75,7 @@
 			}
 			chooseItem(conversations[0]);
 			chosen_conversation = conversations[0];
-			pendingConversation();
+			// pendingConversation();
 		}
 		loaded = true;
 	};
@@ -78,29 +84,29 @@
 		let c = 0;
 		for await (const convo of convos) {
 			let msg = await getLastMessage(convo);
-			// last_messages.push(msg);
+			console.log('Last message:', msg);
 			last_messages[c] = msg;
 			c++;
 		}
 		last_messages = last_messages;
 	};
 
-	const newConversation = async (addr: string) => {
-		if (xmtp) {
-			let address_available = await xmtp.canMessage(addr);
-			if (!address_available) {
-				error_message = 'Address is not available on xmtp network';
-				return;
-			}
-			const convo = await xmtp.conversations.newConversation(addr, {
-				conversationId: 'honestwork.app/conversations',
-				metadata: {
-					title: $new_conversation_metadata.title
-				}
-			});
-			return convo;
-		}
-	};
+	// const newConversation = async (addr: string) => {
+	// 	if (xmtp) {
+	// 		let address_available = await xmtp.canMessage(addr);
+	// 		if (!address_available) {
+	// 			error_message = 'Address is not available on xmtp network';
+	// 			return;
+	// 		}
+	// 		const convo = await xmtp.conversations.newConversation(addr, {
+	// 			conversationId: 'honestwork.app/conversations',
+	// 			metadata: {
+	// 				title: $new_conversation_metadata.title
+	// 			}
+	// 		});
+	// 		return convo;
+	// 	}
+	// };
 
 	const chooseItem = async (convo: any) => {
 		chosen_conversation = convo;
@@ -110,6 +116,9 @@
 
 	const getLastMessage = async (convo: any) => {
 		let convo_messages = await convo.messages();
+		if (convo_messages.length == 0) {
+			return 'No messages yet...';
+		}
 		let msg = convo_messages[convo_messages.length - 1].content;
 		if (msg.length > 30) {
 			msg = msg.substring(0, 30) + '...';
@@ -119,12 +128,16 @@
 
 	const getChatMessages = async (convo: any) => {
 		let convo_messages = await convo.messages();
-		syncChatMessages(convo);
+		if (!syncing) {
+			syncChatMessages(convo);
+		}
 		chosen_messages = convo_messages;
 	};
 
+	let syncing = false;
 	const syncChatMessages = async (convo: any) => {
 		for await (const message of await convo.streamMessages()) {
+			syncing = true;
 			chosen_messages.push(message);
 			chosen_messages = chosen_messages;
 			fetchInbox(conversations);
@@ -176,7 +189,7 @@
 										<p>{peer.username && peer.username != '' ? peer.username : 'anon'}</p>
 									{/await}
 									{#if last_messages[index] && last_messages[index] != ''}
-										<div class="body-text light-60">{last_messages[0]}</div>
+										<div class="body-text light-60">{last_messages[index]}</div>
 									{/if}
 								</div>
 							</div>
