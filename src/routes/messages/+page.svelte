@@ -10,7 +10,7 @@
 	import { afterUpdate, onMount } from 'svelte';
 	import { Jumper } from 'svelte-loading-spinners';
 	import { onDestroy } from 'svelte';
-	// import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
+	import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
 
 	export let viewport: Element;
 	export let contents: Element;
@@ -30,6 +30,7 @@
 	let error_message = '';
 	let syncing = false;
 	let active_stream: any;
+	let all_streams: any;
 
 	afterUpdate(async () => {
 		if (first_chat_load && contents.clientHeight > 0) {
@@ -42,6 +43,9 @@
 	onDestroy(() => {
 		if (active_stream) {
 			active_stream.return();
+		}
+		if (all_streams) {
+			all_streams.return();
 		}
 	});
 
@@ -59,27 +63,25 @@
 		viewport.scroll({ top: contents.clientHeight, behavior: behavior });
 	};
 
-	// const pendingConversation = () => {
-	// 	if ($new_conversation_address != '') {
-	// 		console.log('Creating pending conversation...');
-	// 		newConversation($new_conversation_address);
-	// 		new_conversation_address.set('');
-	// 	}
-	// };
+	const pendingConversation = async () => {
+		if ($new_conversation_address != '') {
+			console.log('Creating pending conversation...');
+			await newConversation($new_conversation_address);
+			new_conversation_address.set('');
+		}
+	};
 
 	const fetchConversations = async () => {
-		if (browser) {
+		if (browser && $xmtpClient) {
+			await pendingConversation();
 			conversations = await $xmtpClient.conversations.list();
 			if (conversations.length > 0) {
-				fetchInbox(conversations);
+				await fetchInbox(conversations);
 				for await (const conv of conversations) {
 					peers.push(await fetchPeer(conv.peerAddress));
 				}
 				chooseItem(conversations[0]);
-				chosen_conversation = conversations[0];
 			}
-
-			// pendingConversation();
 		}
 		loaded = true;
 	};
@@ -90,6 +92,7 @@
 			let msg = await getLastMessage(convo);
 			if (!syncing) {
 				syncChatMessages(convo);
+				syncConversations();
 			}
 			last_messages[c] = msg;
 			c++;
@@ -97,27 +100,29 @@
 		last_messages = last_messages;
 	};
 
-	// const newConversation = async (addr: string) => {
-	// 	if (xmtp) {
-	// 		let address_available = await xmtp.canMessage(addr);
-	// 		if (!address_available) {
-	// 			error_message = 'Address is not available on xmtp network';
-	// 			return;
-	// 		}
-	// 		const convo = await xmtp.conversations.newConversation(addr, {
-	// 			conversationId: 'honestwork.app/conversations',
-	// 			metadata: {
-	// 				title: $new_conversation_metadata.title
-	// 			}
-	// 		});
-	// 		return convo;
-	// 	}
-	// };
+	const newConversation = async (addr: string) => {
+		// let address_available = await $xmtpClient.canMessage(addr);
+		// if (!address_available) {
+		// 	error_message = 'Address is not available on xmtp network';
+		// 	return;
+		// }
+		const convo = await $xmtpClient.conversations.newConversation(addr, {
+			conversationId: 'honestwork.app/conversations',
+			metadata: {
+				title: $new_conversation_metadata.title
+			}
+		});
+		conversations.push(convo);
+		chooseItem(conversations[conversations.length - 1]);
+		user_input.focus();
+		return convo;
+	};
 
 	const chooseItem = async (convo: any) => {
 		chosen_conversation = convo;
 		first_chat_load = true;
 		getChatMessages(convo);
+		user_input.focus();
 	};
 
 	const getLastMessage = async (convo: any) => {
@@ -144,6 +149,15 @@
 			chosen_messages.push(message);
 			chosen_messages = chosen_messages;
 			fetchInbox(conversations);
+		}
+	};
+
+	const syncConversations = async () => {
+		all_streams = await $xmtpClient.conversations.stream();
+		for await (const conversation of all_streams) {
+			console.log(`New conversation started with ${conversation.peerAddress}`);
+			conversations.push(conversation);
+			conversations = conversations;
 		}
 	};
 
@@ -217,7 +231,11 @@
 	<div class="chat">
 		<div class="chat-window">
 			<div class="wrapper">
-				<div bind:this={viewport} class="viewport" style={`height:${feedHeight.toString() + 'px'}`}>
+				<div
+					bind:this={viewport}
+					class="viewport chat-viewport"
+					style={`height:${feedHeight.toString() + 'px'}`}
+				>
 					<div bind:this={contents} class="contents">
 						{#if loaded && chosen_messages.length > 0}
 							{#each chosen_messages as message, index}
@@ -388,6 +406,12 @@
 		/* hide scrollbar */
 		-ms-overflow-style: none;
 		scrollbar-width: none;
+	}
+
+	.chat-viewport {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
 	}
 
 	.viewport::-webkit-scrollbar {

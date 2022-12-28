@@ -11,6 +11,7 @@
 	export let chosen: boolean;
 	export let user_address: string;
 
+	//todo: make this dynamic
 	$: tags = [
 		{
 			key: 'member',
