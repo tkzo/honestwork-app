@@ -318,6 +318,9 @@
 		resize: none;
 		border: none;
 	}
+	textarea:focus {
+		outline: none;
+	}
 	.peer-image {
 		width: 62px;
 		height: 62px;
