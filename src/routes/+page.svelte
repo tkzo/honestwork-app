@@ -1,4 +1,8 @@
 <script>
+	import { goto } from '$app/navigation';
+	import { connectWallet } from '$lib/stores/Network';
+	import { userConnected, xmtpConnected } from '$lib/stores/Network';
+
 	const track = async () => {
 		if (typeof window !== 'undefined' && window) {
 			window.dataLayer = window.dataLayer || [];
@@ -11,10 +15,18 @@
 			});
 		}
 	};
+	const handleConnect = async () => {
+		await connectWallet();
+		goto('/skills');
+	};
 </script>
 
 <svelte:head>
 	<title>HonestWork</title>
 	<meta name="description" content="HonestWork" />
 </svelte:head>
-<div on:click={track} on:keydown>PUSH ME</div>
+{#if !$xmtpConnected || !$userConnected}
+	<div on:click={track} on:keydown>THIS IS THE LANDING PAGE</div>
+	<div on:click={handleConnect} on:keydown>CONNECT WALLET</div>
+	<div on:click={() => goto('/skills')} on:keydown>START EXPLORING</div>
+{/if}

@@ -13,6 +13,7 @@
 	import { setLocalTheme, theme, themeLoaded } from '$lib/stores/Theme';
 	import { Buffer } from 'buffer';
 	import { Jumper } from 'svelte-loading-spinners';
+	import { page } from '$app/stores';
 
 	globalThis.Buffer = Buffer;
 
@@ -42,27 +43,29 @@
 
 <main>
 	{#if $themeLoaded}
-		<Navigation />
+		{#if $page.route.id !== '/'}
+			<Navigation />
+		{/if}
 		<div style="height:64px;" />
 		<!-- <Notification /> -->
-		{#if $userConnected && $xmtpConnected}
-			<slot />
-		{:else if $connecting}
+		{#if $connecting && $page.route.id !== '/'}
 			<div class="spinster">
 				<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
 				<div style="height: 12px;" />
 				<p class="light-60" style="animation: blinking 2s linear infinite;">connecting wallet...</p>
 			</div>
-		{:else if $xmtpConnecting}
+		{:else if $xmtpConnecting && $page.route.id !== '/'}
 			<div class="spinster">
 				<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
 				<div style="height: 12px;" />
 				<p class="light-60" style="animation: blinking 2s linear infinite;">connecting xmtp...</p>
 			</div>
 		{:else}
-			pls just connect
+			<slot />
 		{/if}
-		<Footer />
+		{#if $page.route.id !== '/'}
+			<Footer />
+		{/if}
 	{/if}
 </main>
 
