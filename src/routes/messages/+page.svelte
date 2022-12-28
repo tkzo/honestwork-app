@@ -1,7 +1,7 @@
 <script lang="ts">
 	//todo: add types
 
-	import { networkSigner, userAddress, userConnected, xmtpClient } from '$lib/stores/Network';
+	import { nodeProvider, userAddress, userConnected, xmtpClient } from '$lib/stores/Network';
 	import { browser } from '$app/environment';
 	import { Client } from '@xmtp/xmtp-js';
 	import { shortcut } from '$lib/stores/Shortcut';
@@ -14,6 +14,9 @@
 
 	export let viewport: Element;
 	export let contents: Element;
+
+	export let viewport_inbox: Element;
+	export let contents_inbox: Element;
 
 	let xmtp: any;
 	let conversations = new Array();
@@ -53,6 +56,7 @@
 		fetchConversations();
 	}
 	$: feedHeight = window.innerHeight - 165;
+	$: inboxHeight = window.innerHeight - 128;
 
 	//todo: doesn't recognize wrapping -fix
 	const updateRows = () => {
@@ -65,7 +69,6 @@
 
 	const pendingConversation = async () => {
 		if ($new_conversation_address != '') {
-			console.log('Creating pending conversation...');
 			await newConversation($new_conversation_address);
 			new_conversation_address.set('');
 		}
@@ -80,7 +83,8 @@
 				for await (const conv of conversations) {
 					peers.push(await fetchPeer(conv.peerAddress));
 				}
-				chooseItem(conversations[0]);
+				peers = peers;
+				chooseItem(conversations[conversations.length - 1]);
 			}
 		}
 		loaded = true;
@@ -101,11 +105,6 @@
 	};
 
 	const newConversation = async (addr: string) => {
-		// let address_available = await $xmtpClient.canMessage(addr);
-		// if (!address_available) {
-		// 	error_message = 'Address is not available on xmtp network';
-		// 	return;
-		// }
 		const convo = await $xmtpClient.conversations.newConversation(addr, {
 			conversationId: 'honestwork.app/conversations',
 			metadata: {
@@ -163,7 +162,16 @@
 
 	const fetchPeer = async (peer: string) => {
 		const result = await fetch(`/api/user/${peer}`);
-		return await result.json();
+		let jason = await result.json();
+		if (jason.show_nft) {
+			let img_url = await getNft(jason.nft_address, jason.nft_id);
+			jason.nft_image_url = img_url;
+		}
+		if (jason.show_ens) {
+			let ens_name = await $nodeProvider.lookupAddress(peer);
+			jason.ens_name = ens_name;
+		}
+		return jason;
 	};
 
 	const sendMessage = async (convo: any) => {
@@ -172,6 +180,19 @@
 		user_input.value = '';
 		await convo.send(input_);
 		new_message = '';
+	};
+
+	const getNft = async (addr: string, id: number) => {
+		try {
+			const response = await fetch(`api/alchemy/${addr}/${id}`);
+			if (response.ok) {
+				const data = await response.json();
+				console.log('NFT log:', data);
+				return data.image;
+			}
+		} catch (err) {
+			console.log(err);
+		}
 	};
 </script>
 
@@ -182,47 +203,61 @@
 				<p>{error_message}</p>
 			</div>
 		{/if}
-		<div class="wrapper">
-			<div bind:this={viewport} class="viewport" style={`height:${feedHeight.toString() + 'px'}`}>
-				<div bind:this={contents} class="contents">
-					{#if conversations && loaded}
-						<div style="height:8px" />
-						{#each conversations as convo, index}
-							<div
-								class={`inbox-item ${chosen_conversation == convo ? 'chosen-item' : ''}`}
-								on:click={() => chooseItem(convo)}
-								on:keydown
-							>
-								<img
-									class="peer-image"
-									src={peers[index]?.image_url && peers[index]?.image_url != ''
-										? peers[index]?.image_url
-										: placeholder_image}
-									alt="smth"
-								/>
-								<div style="width: 12px;" />
-								<div class="inbox-contents">
-									{#await fetchPeer(convo.peerAddress) then peer}
-										<p>{peer.username && peer.username != '' ? peer.username : 'anon'}</p>
-									{/await}
-									{#if last_messages[index] && last_messages[index] != ''}
-										<div class="body-text light-60">{last_messages[index]}</div>
-									{/if}
+		<div class="inbox-window">
+			<div class="inbox-wrapper">
+				<div
+					bind:this={viewport_inbox}
+					class="viewport inbox-viewport"
+					style={`height:${inboxHeight.toString() + 'px'}`}
+				>
+					<div bind:this={contents_inbox} class="contents inbox-contents">
+						{#if conversations && loaded}
+							<div style="height:8px" />
+
+							{#each conversations as convo, index}
+								<div
+									class={`inbox-item ${chosen_conversation == convo ? 'chosen-item' : ''}`}
+									on:click={() => chooseItem(convo)}
+									on:keydown
+								>
+									<img
+										class="peer-image"
+										src={peers[index]?.show_nft
+											? peers[index]?.nft_image_url
+											: peers[index]?.image_url && peers[index]?.image_url != ''
+											? peers[index]?.image_url
+											: placeholder_image}
+										alt="smth"
+									/>
+
+									<div style="width: 12px;" />
+									<div class="inbox-inner-contents">
+										<p>
+											{peers[index]?.show_ens
+												? peers[index]?.ens_name
+												: peers[index]?.username && peers[index]?.username != ''
+												? peers[index].username
+												: 'anon'}
+										</p>
+										{#if last_messages[index] && last_messages[index] != ''}
+											<div class="body-text light-60">{last_messages[index]}</div>
+										{/if}
+									</div>
 								</div>
-							</div>
-							{#if index != conversations.length - 1}
+								{#if index != conversations.length - 1}
+									<div style="height: 12px;" />
+								{/if}
+							{/each}
+						{:else}
+							<div class="spinster">
+								<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
 								<div style="height: 12px;" />
-							{/if}
-						{/each}
-					{:else}
-						<div class="spinster">
-							<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
-							<div style="height: 12px;" />
-							<p class="light-60" style="animation: blinking 2s linear infinite;">
-								connecting xmtp...
-							</p>
-						</div>
-					{/if}
+								<p class="light-60" style="animation: blinking 2s linear infinite;">
+									connecting xmtp...
+								</p>
+							</div>
+						{/if}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -293,6 +328,8 @@
 		border-style: solid;
 		border-color: var(--color-light-20);
 		box-sizing: content-box;
+		display: flex;
+		flex-direction: column;
 	}
 	.inbox-item {
 		width: 319px;
@@ -314,10 +351,11 @@
 		border-right-color: var(--color-primary);
 		background-color: var(--color-light-2);
 	}
-	.inbox-contents {
+	.inbox-inner-contents {
 		width: 228px;
 		display: flex;
 		flex-direction: column;
+		align-items: flex-start;
 	}
 	.wrapper {
 		position: relative;
@@ -366,6 +404,10 @@
 		display: flex;
 		flex-direction: column;
 	}
+	.inbox-window {
+		display: flex;
+		flex-direction: column;
+	}
 	.gray-line {
 		border-style: solid;
 		border-width: 1px 1px 1px 0px;
@@ -396,6 +438,24 @@
 		--svrollbar-thumb-width: 10px;
 		--svrollbar-thumb-background: #d9ab55;
 		--svrollbar-thumb-opacity: 1;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.inbox-wrapper {
+		position: relative;
+		-ms-overflow-style: none; /* for Internet Explorer, Edge */
+		scrollbar-width: none; /* for Firefox */
+		overflow-y: scroll;
+		--svrollbar-track-width: 1px;
+		/* --svrollbar-track-background: #85b4b9; */
+		--svrollbar-track-opacity: 1;
+
+		--svrollbar-thumb-width: 10px;
+		--svrollbar-thumb-background: #d9ab55;
+		--svrollbar-thumb-opacity: 1;
+		display: flex;
+		flex-direction: column-reverse;
 	}
 
 	.viewport {
@@ -424,5 +484,14 @@
 		flex-direction: column;
 		align-items: center;
 		margin-top: 24px;
+	}
+	.inbox-viewport {
+		display: flex;
+		flex-direction: column;
+	}
+	.inbox-contents {
+		display: flex;
+		flex-direction: column-reverse;
+		align-items: flex-start;
 	}
 </style>

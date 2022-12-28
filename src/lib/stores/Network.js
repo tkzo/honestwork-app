@@ -59,6 +59,7 @@ export const connectWallet = async () => {
 	} catch (err) {
 		console.log('error:', err);
 	}
+	connectNode();
 };
 
 export const connectNode = async () => {
