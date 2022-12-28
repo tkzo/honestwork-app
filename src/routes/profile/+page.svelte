@@ -79,7 +79,6 @@
 	let infobox_marginleft = '532px';
 
 	onMount(async () => {
-		await connectWallet();
 		await getNft();
 		//todo: move to layout
 		correct_address = $userAddress.toLowerCase() == data.user.address.toLowerCase();

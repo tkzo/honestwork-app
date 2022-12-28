@@ -2,17 +2,22 @@
 	import Navigation from '$lib/components/common/Navigation.svelte';
 	import Footer from '$lib/components/common/Footer.svelte';
 	import Notification from '$lib/components/common/Notification.svelte';
-	import { connectWallet, connecting } from '$lib/stores/Network';
+	import {
+		connectWallet,
+		connecting,
+		userConnected,
+		xmtpConnected,
+		xmtpConnecting
+	} from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 	import { setLocalTheme, theme, themeLoaded } from '$lib/stores/Theme';
 	import { Buffer } from 'buffer';
+	import { Jumper } from 'svelte-loading-spinners';
+
 	globalThis.Buffer = Buffer;
 
 	$: onMount(async () => {
 		setLocalTheme();
-		connecting.set(true);
-		await connectWallet();
-		connecting.set(false);
 	});
 </script>
 
@@ -40,8 +45,23 @@
 		<Navigation />
 		<div style="height:64px;" />
 		<!-- <Notification /> -->
-		<slot />
-		<!-- <div style="height: 64px;" /> -->
+		{#if $userConnected && $xmtpConnected}
+			<slot />
+		{:else if $connecting}
+			<div class="spinster">
+				<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
+				<div style="height: 12px;" />
+				<p class="light-60" style="animation: blinking 2s linear infinite;">connecting wallet...</p>
+			</div>
+		{:else if $xmtpConnecting}
+			<div class="spinster">
+				<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
+				<div style="height: 12px;" />
+				<p class="light-60" style="animation: blinking 2s linear infinite;">connecting xmtp...</p>
+			</div>
+		{:else}
+			pls just connect
+		{/if}
 		<Footer />
 	{/if}
 </main>
@@ -54,5 +74,12 @@
 		flex-direction: column;
 		align-items: center;
 		background-color: var(--color-dark);
+	}
+	.spinster {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: 24px;
 	}
 </style>

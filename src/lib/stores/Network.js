@@ -1,6 +1,8 @@
 import { writable } from 'svelte/store';
 import { ethers } from 'ethers';
 import { env } from '$env/dynamic/public';
+import { Client } from '@xmtp/xmtp-js';
+import { get } from 'svelte/store';
 
 export let userConnected = writable(false);
 export let userAddress = writable('');
@@ -13,6 +15,8 @@ export let chainName = writable('');
 export let token_address = env.PUBLIC_MEMBERSHIP_TOKEN_ADDRESS;
 export let nodeProvider = writable();
 export let xmtpClient = writable();
+export let xmtpConnected = writable(false);
+export let xmtpConnecting = writable(false);
 
 export const connectWallet = async () => {
 	connecting.set(true);
@@ -43,10 +47,18 @@ export const connectWallet = async () => {
 		window.ethereum.on('chainChanged', function () {
 			window.location.reload();
 		});
+		connecting.set(false);
+		if (!get(xmtpConnected)) {
+			console.log('Bool:', get(xmtpConnected));
+			xmtpConnecting.set(true);
+			let xc = await Client.create(signer);
+			xmtpClient.set(xc);
+			xmtpConnecting.set(false);
+			xmtpConnected.set(true);
+		}
 	} catch (err) {
 		console.log('error:', err);
 	}
-	connecting.set(false);
 };
 
 export const connectNode = async () => {

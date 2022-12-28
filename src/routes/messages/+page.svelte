@@ -1,7 +1,7 @@
 <script lang="ts">
 	//todo: add types
 
-	import { networkSigner, userAddress, userConnected } from '$lib/stores/Network';
+	import { networkSigner, userAddress, userConnected, xmtpClient } from '$lib/stores/Network';
 	import { browser } from '$app/environment';
 	import { Client } from '@xmtp/xmtp-js';
 	import { shortcut } from '$lib/stores/Shortcut';
@@ -28,6 +28,8 @@
 	let rows = 1;
 	let chosen_conversation: any;
 	let error_message = '';
+	let syncing = false;
+	let active_stream: any;
 
 	afterUpdate(async () => {
 		if (first_chat_load && contents.clientHeight > 0) {
@@ -37,15 +39,14 @@
 			scroll('smooth');
 		}
 	});
-
-	// onMount(async () => {
-	// 	if (userConnected && !loaded) {
-	// 		connectXmtp();
-	// 	}
-	// });
+	onDestroy(() => {
+		if (active_stream) {
+			active_stream.return();
+		}
+	});
 
 	$: if (userConnected && !loaded) {
-		connectXmtp();
+		fetchConversations();
 	}
 	$: feedHeight = window.innerHeight - 165;
 
@@ -66,16 +67,18 @@
 	// 	}
 	// };
 
-	const connectXmtp = async () => {
-		if (browser && $networkSigner) {
-			xmtp = await Client.create($networkSigner);
-			conversations = await xmtp.conversations.list();
-			fetchInbox(conversations);
-			for await (const conv of conversations) {
-				peers.push(await fetchPeer(conv.peerAddress));
+	const fetchConversations = async () => {
+		if (browser) {
+			conversations = await $xmtpClient.conversations.list();
+			if (conversations.length > 0) {
+				fetchInbox(conversations);
+				for await (const conv of conversations) {
+					peers.push(await fetchPeer(conv.peerAddress));
+				}
+				chooseItem(conversations[0]);
+				chosen_conversation = conversations[0];
 			}
-			chooseItem(conversations[0]);
-			chosen_conversation = conversations[0];
+
 			// pendingConversation();
 		}
 		loaded = true;
@@ -111,12 +114,6 @@
 	// 	}
 	// };
 
-	onDestroy(() => {
-		if (active_stream) {
-			active_stream.return();
-		}
-	});
-
 	const chooseItem = async (convo: any) => {
 		chosen_conversation = convo;
 		first_chat_load = true;
@@ -140,8 +137,6 @@
 		chosen_messages = convo_messages;
 	};
 
-	let syncing = false;
-	let active_stream: any;
 	const syncChatMessages = async (convo: any) => {
 		active_stream = await convo.streamMessages();
 		for await (const message of active_stream) {

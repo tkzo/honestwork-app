@@ -1,5 +1,11 @@
 <script>
-	import { userAddress, userConnected, connectWallet, connecting } from '$lib/stores/Network';
+	import {
+		userAddress,
+		userConnected,
+		connectWallet,
+		connecting,
+		xmtpConnected
+	} from '$lib/stores/Network';
 	import { page } from '$app/stores';
 </script>
 
@@ -25,9 +31,11 @@
 		</a>
 	</div>
 	<div class="right-section">
-		<a class="messages" href="/messages">
-			<p class="light-40 link">messages</p>
-		</a>
+		{#if $userConnected && $xmtpConnected}
+			<a class="messages" href="/messages">
+				<p class="light-40 link">messages</p>
+			</a>
+		{/if}
 		<div class="wallet-section">
 			{#if !$userConnected}
 				{#if $connecting}
@@ -40,7 +48,7 @@
 					{$userAddress.substring(0, 6)}...{$userAddress.substring($userAddress.length - 4)}
 				</p>
 				<div style="width:8px" />
-				<a href={`/api/auth?address=${$userAddress}`}>
+				<a href={`/profile`}>
 					<p class="yellow semibold link">profile</p>
 				</a>
 			{/if}
