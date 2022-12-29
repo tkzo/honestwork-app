@@ -11,11 +11,12 @@
 	import LogRocket from 'logrocket';
 
 	LogRocket.init('2wdgml/honestwork');
-	LogRocket.identify('takezo', {
-		name: 'Takezo Shinmen',
-		email: 'takez0_o@pm.me',
-		subscriptionType: 'tier3'
-	});
+	$: if ($userAddress && $userAddress != '') {
+		LogRocket.identify($userAddress, {
+			name: 'Takezo Test'
+		});
+	}
+
 	globalThis.Buffer = Buffer;
 
 	$: onMount(async () => {
