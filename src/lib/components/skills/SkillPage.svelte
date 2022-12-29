@@ -1,28 +1,33 @@
 <script lang="ts">
 	import type { SkillType, UserType } from '$lib/types/Types';
 	import { Svrollbar } from 'svrollbar';
+	import Skeleton from '$lib/components/common/Skeleton.svelte';
+	import { nodeProvider } from '$lib/stores/Network';
+
 	export let skill: SkillType;
+
 	let viewport: Element;
 	let contents: Element;
 
 	let user: UserType;
 	let chosen_image: number = 0;
 	let nft_image: any;
+	let ens_name: string;
 	let placeholder_image = 'assets/xcopy.gif';
 
 	$: feedHeight = window.innerHeight - 136;
 	$: if (skill) {
 		nft_image = '';
-		fetchUser();
 		resetState();
+		fetchUser();
 	}
 	$: trimmed_images = skill.image_urls.filter((url: string) => url !== '');
-	$: console.log();
 
 	const fetchUser = async () => {
 		const res = await fetch(`/api/user/${skill.user_address}`);
 		user = await res.json();
-		getNft();
+		await getNft();
+		ens_name = await $nodeProvider.lookupAddress(skill.user_address);
 	};
 	const nextImage = () => {
 		if (chosen_image < trimmed_images.length - 1) {
@@ -36,6 +41,8 @@
 	};
 	const resetState = () => {
 		chosen_image = 0;
+		ens_name = '';
+		nft_image = '';
 	};
 	const getNft = async () => {
 		if (user.nft_address && user.nft_id) {
@@ -67,7 +74,13 @@
 				alt=""
 			/>
 			<div style="width:8px;" />
-			<p class="yellow">{user?.username}</p>
+			{#if user?.show_ens && ens_name && ens_name != ''}
+				<p class="yellow">{ens_name}</p>
+			{:else if user?.username && user.username != ''}
+				<p class="yellow">{user?.username}</p>
+			{:else}
+				<Skeleton width="100px" height="20px" />
+			{/if}
 			<div style="width:8px;" />
 			<p class="light-60">{user?.title}</p>
 		</div>

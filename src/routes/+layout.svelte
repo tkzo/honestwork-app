@@ -14,6 +14,8 @@
 	import { Buffer } from 'buffer';
 	import { Jumper } from 'svelte-loading-spinners';
 	import { page } from '$app/stores';
+	import LogRocket from 'logrocket';
+	LogRocket.init('2wdgml/honestwork');
 
 	globalThis.Buffer = Buffer;
 

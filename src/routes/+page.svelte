@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { connectWallet } from '$lib/stores/Network';
 	import { userConnected, xmtpConnected } from '$lib/stores/Network';
+	import Skeleton from '$lib/components/common/Skeleton.svelte';
 
 	const track = async () => {
 		if (typeof window !== 'undefined' && window) {
@@ -29,4 +30,6 @@
 	<div on:click={track} on:keydown>THIS IS THE LANDING PAGE</div>
 	<div on:click={handleConnect} on:keydown>CONNECT WALLET</div>
 	<div on:click={() => goto('/skills')} on:keydown>START EXPLORING</div>
+{:else}
+	<Skeleton width="200px" borderRadius="0px" />
 {/if}
