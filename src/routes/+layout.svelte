@@ -11,7 +11,7 @@
 	import LogRocket from 'logrocket';
 
 	LogRocket.init('2wdgml/honestwork');
-	LogRocket.identify($userAddress, {
+	LogRocket.identify('takezo', {
 		name: 'Takezo Shinmen',
 		email: 'takez0_o@pm.me',
 		subscriptionType: 'tier3'
