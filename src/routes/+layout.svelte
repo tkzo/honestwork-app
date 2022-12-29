@@ -17,10 +17,13 @@
 	const logrocketIdentify = async () => {
 		const res = await fetch(`/api/user/${$userAddress}`);
 		const user = await res.json();
-		LogRocket.identify($userAddress, {
-			name: user.username,
-			email: user.email
-		});
+		if (user.username != '') {
+			LogRocket.identify($userAddress, {
+				name: user.username,
+				email: user.email,
+				tier: 3
+			});
+		}
 	};
 
 	globalThis.Buffer = Buffer;

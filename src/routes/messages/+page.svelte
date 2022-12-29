@@ -1,20 +1,20 @@
 <script lang="ts">
 	//todo: add types
 
-	import { nodeProvider, userAddress, userConnected, xmtpClient } from '$lib/stores/Network';
+	import { nodeProvider, userConnected, xmtpClient } from '$lib/stores/Network';
 	import { browser } from '$app/environment';
-	import { Client } from '@xmtp/xmtp-js';
 	import { shortcut } from '$lib/stores/Shortcut';
 	import { Svrollbar } from 'svrollbar';
 	import Message from '$lib/components/messages/Message.svelte';
-	import { afterUpdate, onMount } from 'svelte';
+	import { afterUpdate } from 'svelte';
 	import { Jumper } from 'svelte-loading-spinners';
 	import { onDestroy } from 'svelte';
 	import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
 
+	//todo: move conversation into its own component
+
 	export let viewport: Element;
 	export let contents: Element;
-
 	export let viewport_inbox: Element;
 	export let contents_inbox: Element;
 
