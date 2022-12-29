@@ -12,10 +12,16 @@
 
 	LogRocket.init('2wdgml/honestwork');
 	$: if ($userAddress && $userAddress != '') {
-		LogRocket.identify($userAddress, {
-			name: 'Takezo Test'
-		});
+		logrocketIdentify();
 	}
+	const logrocketIdentify = async () => {
+		const res = await fetch(`/api/user/${$userAddress}`);
+		const user = await res.json();
+		LogRocket.identify($userAddress, {
+			name: user.username,
+			email: user.email
+		});
+	};
 
 	globalThis.Buffer = Buffer;
 
