@@ -1,22 +1,21 @@
 <script lang="ts">
 	import Navigation from '$lib/components/common/Navigation.svelte';
 	import Footer from '$lib/components/common/Footer.svelte';
-	import Notification from '$lib/components/common/Notification.svelte';
-	import {
-		connectWallet,
-		connecting,
-		userConnected,
-		xmtpConnected,
-		xmtpConnecting
-	} from '$lib/stores/Network';
+	// import Notification from '$lib/components/common/Notification.svelte';
+	import { connecting, xmtpConnecting, userAddress } from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 	import { setLocalTheme, theme, themeLoaded } from '$lib/stores/Theme';
 	import { Buffer } from 'buffer';
 	import { Jumper } from 'svelte-loading-spinners';
 	import { page } from '$app/stores';
 	import LogRocket from 'logrocket';
-	LogRocket.init('2wdgml/honestwork');
 
+	LogRocket.init('2wdgml/honestwork');
+	LogRocket.identify($userAddress, {
+		name: 'Takezo Shinmen',
+		email: 'takez0_o@pm.me',
+		subscriptionType: 'tier3'
+	});
 	globalThis.Buffer = Buffer;
 
 	$: onMount(async () => {
