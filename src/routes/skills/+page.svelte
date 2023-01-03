@@ -62,7 +62,7 @@
 </script>
 
 <svelte:head>
-	<title>Skills</title>
+	<title>HW | Skills</title>
 	<meta name="description" content="HonestWork Skills Page" />
 </svelte:head>
 

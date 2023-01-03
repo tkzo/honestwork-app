@@ -26,8 +26,6 @@
 		}
 	};
 
-	// delete later
-
 	globalThis.Buffer = Buffer;
 
 	$: onMount(async () => {

@@ -1,7 +1,5 @@
 {
-	"/": [
-		"src/routes/+page.server.ts"
-	],
+	"/": [],
 	"/api/alchemy/[addr]/[id]": [
 		"src/routes/api/alchemy/[addr]/[id]/+server.ts"
 	],
@@ -29,8 +27,12 @@
 	"/(subpages)/create_account": [
 		"src/routes/(subpages)/create_account/+page.server.ts"
 	],
-	"/jobs": [],
-	"/messages": [],
+	"/jobs": [
+		"src/routes/jobs/+page.server.ts"
+	],
+	"/messages": [
+		"src/routes/messages/+page.server.ts"
+	],
 	"/(subpages)/mint": [],
 	"/profile": [
 		"src/routes/profile/+page.server.ts"

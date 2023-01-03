@@ -12,7 +12,6 @@
 	import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
 
 	//todo: move conversation into its own component
-
 	export let viewport: Element;
 	export let contents: Element;
 	export let viewport_inbox: Element;
@@ -67,16 +66,12 @@
 		viewport.scroll({ top: contents.clientHeight, behavior: behavior });
 	};
 
-	const pendingConversation = async () => {
-		if ($new_conversation_address != '') {
-			await newConversation($new_conversation_address);
-			new_conversation_address.set('');
-		}
-	};
-
 	const fetchConversations = async () => {
 		if (browser && $xmtpClient) {
-			await pendingConversation();
+			if ($new_conversation_address != '') {
+				await newConversation($new_conversation_address);
+				new_conversation_address.set('');
+			}
 			conversations = await $xmtpClient.conversations.list();
 			if (conversations.length > 0) {
 				await fetchInbox(conversations);
