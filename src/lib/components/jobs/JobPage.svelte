@@ -27,7 +27,6 @@
 		await getNft();
 		ens_name = await $nodeProvider.lookupAddress(job.user_address);
 	};
-	//todo: move to a store
 	const getNft = async () => {
 		if (user.nft_address && user.nft_id) {
 			try {
