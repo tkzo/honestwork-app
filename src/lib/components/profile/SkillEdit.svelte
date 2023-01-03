@@ -143,6 +143,7 @@
 	}}
 	on:blur
 >
+	<!-- <TextEditor /> -->
 	{#if show_infobox}
 		<section class="infobox">
 			<p class="light-60">

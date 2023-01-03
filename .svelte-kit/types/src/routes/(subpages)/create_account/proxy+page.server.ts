@@ -5,9 +5,9 @@ import type { PageServerLoad } from './$types';
 import { env } from '$env/dynamic/private';
 
 export const load = ({ cookies }: Parameters<PageServerLoad>[0]) => {
-	const userAddress = cookies.get('address');
-	const userSignature = cookies.get('signature');
-	const userSalt = cookies.get('salt');
+	const userAddress = cookies.get('honestwork_address', {});
+	const userSignature = cookies.get('honestwork_signature');
+	const userSalt = cookies.get('honestwork_salt');
 	if (userSignature && userSalt && userAddress) {
 		throw redirect(301, `/profile`);
 	}
@@ -20,21 +20,43 @@ export const actions = {
 		const address = data.get('address');
 		const salt = data.get('salt');
 		const signature = data.get('signature');
+		console.log('Eh?');
 		if (salt && signature && address) {
+			console.log('Eh?');
+
 			const url = `${env.PRIVATE_HONESTWORK_API}users/${address}/${salt}/${signature}`;
 			let response = await fetch(url, {
 				method: 'POST'
 			});
 			let text = await response.text();
 			if (text != `"User doesn't have NFT."`) {
-				cookies.set('address', address.toString(), {
-					expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000)
+				console.log('Eh?');
+
+				cookies.set('honestwork_address', address.toString(), {
+					// domain: 'honestwork.app',
+					expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000),
+					secure: true,
+					httpOnly: true,
+					sameSite: true,
+					path: '/'
 				});
-				cookies.set('salt', salt.toString(), {
-					expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000)
+				const userAddress = cookies.get('honestwork_address', {});
+				console.log('User address: ' + userAddress);
+				cookies.set('honestwork_salt', salt.toString(), {
+					// domain: 'honestwork.app',
+					expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000),
+					secure: true,
+					httpOnly: true,
+					sameSite: true,
+					path: '/'
 				});
-				cookies.set('signature', signature.toString(), {
-					expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000)
+				cookies.set('honestwork_signature', signature.toString(), {
+					// domain: 'honestwork.app',
+					expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000),
+					secure: true,
+					httpOnly: true,
+					sameSite: true,
+					path: '/'
 				});
 			}
 		}

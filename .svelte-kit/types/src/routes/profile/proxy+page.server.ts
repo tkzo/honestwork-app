@@ -3,13 +3,19 @@ import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import type { Actions } from './$types';
 import { env } from '$env/dynamic/private';
+import { ethers } from 'ethers';
 
 export const load = async ({ cookies }: Parameters<PageServerLoad>[0]) => {
-	const userAddress = cookies.get('address')!;
-	const userSignature = cookies.get('signature');
-	const userSalt = cookies.get('salt');
+	const userAddress = cookies.get('honestwork_address')!;
+	const userSignature = cookies.get('honestwork_signature');
+	const userSalt = cookies.get('honestwork_salt');
 
-	if (userSignature && userSalt && userAddress) {
+	if (
+		userSignature &&
+		userSalt &&
+		userAddress &&
+		userAddress == verifySignature(userSalt, userSignature)
+	) {
 		let user = await getUser(userAddress);
 		let skills = await getSkills(userAddress);
 		user.address = userAddress;
@@ -17,6 +23,10 @@ export const load = async ({ cookies }: Parameters<PageServerLoad>[0]) => {
 	} else {
 		throw redirect(301, '/create_account');
 	}
+};
+
+const verifySignature = (salt: string, signature: string) => {
+	return ethers.utils.verifyMessage(salt, signature);
 };
 
 const getUser = async (address: string) => {

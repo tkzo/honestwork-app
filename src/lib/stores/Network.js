@@ -18,38 +18,45 @@ export let xmtpClient = writable();
 export let xmtpConnected = writable(false);
 export let xmtpConnecting = writable(false);
 
+let chain_names = {
+	1: 'mainnet',
+	56: 'binance',
+	137: 'polygon',
+	1453: 'devm'
+};
+
 export const connectWallet = async () => {
 	connecting.set(true);
 	try {
+		// get user provider,signer
 		const provider = new ethers.providers.Web3Provider(window.ethereum);
 		await provider.send('eth_requestAccounts', []);
 		const signer = provider.getSigner();
 		networkProvider.set(provider);
 		networkSigner.set(signer);
+
+		// get connection details
 		let addr = await signer.getAddress();
 		userAddress.set(addr);
 		let chain_id = await signer.getChainId();
 		chainID.set(chain_id);
-		if (chain_id == 1453) {
-			chainName.set('devm');
-		} else if (chain_id == 1) {
-			chainName.set('mainnet');
-		} else if (chain_id == 137) {
-			chainName.set('polygon');
-		} else if (chain_id == 56) {
-			chainName.set('binance');
+		for (const [key, value] of Object.entries(chain_names)) {
+			if (key == chain_id) {
+				chainName.set(value);
+			}
 		}
 		userConnected.set(true);
+
+		// membership state
 		await fetchUserState(signer, addr);
-		window.ethereum.on('accountsChanged', function () {
-			window.location.reload();
-		});
-		window.ethereum.on('chainChanged', function () {
-			window.location.reload();
-		});
+
+		// set network/account change listeners
+		setListeners();
+
 		connecting.set(false);
+
+		// xmtp connection
 		if (!get(xmtpConnected)) {
-			console.log('Bool:', get(xmtpConnected));
 			xmtpConnecting.set(true);
 			let xc = await Client.create(signer);
 			xmtpClient.set(xc);
@@ -59,6 +66,15 @@ export const connectWallet = async () => {
 	} catch (err) {
 		console.log('error:', err);
 	}
+};
+
+const setListeners = () => {
+	window.ethereum.on('accountsChanged', function () {
+		window.location.reload();
+	});
+	window.ethereum.on('chainChanged', function () {
+		window.location.reload();
+	});
 };
 
 export const connectNode = async () => {

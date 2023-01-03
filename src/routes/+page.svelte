@@ -1,7 +1,7 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { connectWallet } from '$lib/stores/Network';
-	import { userConnected, xmtpConnected } from '$lib/stores/Network';
+	import { userConnected, xmtpConnected, userState } from '$lib/stores/Network';
 	import Skeleton from '$lib/components/common/Skeleton.svelte';
 
 	const track = async () => {

@@ -33,9 +33,6 @@ declare module '$env/static/private' {
 	export const PRIVATE_SPACES_BUCKETNAME: string;
 	export const PRIVATE_SPACES_REGION_URL: string;
 	export const PRIVATE_HONESTWORK_API: string;
-	export const PRIVATE_MIXPANEL_TOKEN: string;
-	export const PRIVATE_SUPABASE_KEY: string;
-	export const PRIVATE_SUPABASE_URL: string;
 	export const MANPATH: string;
 	export const NIX_PROFILES: string;
 	export const TERM_PROGRAM: string;
@@ -148,9 +145,6 @@ declare module '$env/dynamic/private' {
 		PRIVATE_SPACES_BUCKETNAME: string;
 		PRIVATE_SPACES_REGION_URL: string;
 		PRIVATE_HONESTWORK_API: string;
-		PRIVATE_MIXPANEL_TOKEN: string;
-		PRIVATE_SUPABASE_KEY: string;
-		PRIVATE_SUPABASE_URL: string;
 		MANPATH: string;
 		NIX_PROFILES: string;
 		TERM_PROGRAM: string;
