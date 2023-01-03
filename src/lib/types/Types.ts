@@ -22,3 +22,19 @@ export type UserType = {
 	bio: string;
 	links: Array<string>;
 };
+
+export type JobType = {
+	user_address: string;
+	created_at: number;
+	title: string;
+	description: string;
+	image_url: string;
+	budget: number;
+	links: Array<string>;
+	tags: Array<string>;
+	installments: number;
+	networks: Array<string>;
+	tokens: Array<string>;
+	sticky_duration: number;
+	highlight: number;
+};

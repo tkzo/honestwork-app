@@ -2,7 +2,7 @@
 	import Job from '$lib/components/jobs/Job.svelte';
 	import JobPage from '$lib/components/jobs/JobPage.svelte';
 	import { Svrollbar } from 'svrollbar';
-	import type { SkillType } from '$lib/types/Types';
+	import type { SkillType, JobType } from '$lib/types/Types';
 	import fuzzy from 'fuzzy';
 
 	export let data: any;
@@ -14,7 +14,7 @@
 	let search_input = '';
 	let hovering_scrolltop = false;
 	let input_active = false;
-	let active_skill: SkillType | null = null;
+	let active_job: JobType | null = null;
 	let sorting_options = [
 		{ k: 'publish date', v: 'created_at', a: 'false' },
 		{ k: 'rating', v: 'rating', a: 'false' },
@@ -34,7 +34,7 @@
 			: data.json;
 
 	$: if (filteredSkills) {
-		active_skill = filteredSkills[0];
+		active_job = filteredSkills[0];
 	}
 
 	const updateScrollState = () => {
@@ -150,12 +150,12 @@
 						{/if}
 						<div
 							on:click={() => {
-								active_skill = job;
+								active_job = job;
 							}}
 							on:keydown
 						>
 							<Job
-								chosen={job == active_skill}
+								chosen={job == active_job}
 								username="Consensys"
 								user_title="Web3 Infrastructure Provider"
 								title={job.title}
@@ -175,8 +175,8 @@
 	</div>
 	<div style="width:12px" />
 	<div class="skill">
-		{#if active_skill != null}
-			<!-- <SkillPage skill={active_skill} /> -->
+		{#if active_job != null}
+			<JobPage job={active_job} />
 		{/if}
 	</div>
 </main>

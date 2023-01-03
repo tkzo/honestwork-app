@@ -76,7 +76,7 @@
 		<div class="content">
 			<div>
 				<p>{title}</p>
-				<div style="height:12px" />
+				<div style="height:4px" />
 				<div class="body-text light-60">{trimmed_description}</div>
 			</div>
 			<div style="height: 16px" />
@@ -96,7 +96,7 @@
 		<div class="tags">
 			{#each tags as tag}
 				<div class="tag">
-					<p class="link">{tag.value} <span class="light-40">{tag.key}</span></p>
+					<p>{tag.value} <span class="light-40">{tag.key}</span></p>
 				</div>
 			{/each}
 		</div>
@@ -130,12 +130,6 @@
 		justify-content: space-between;
 		width: 362px;
 	}
-	.sub {
-		width: 100%;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-	}
 	.preview-image {
 		height: 120px;
 		width: 120px;
@@ -155,29 +149,8 @@
 		border-style: solid;
 		border-color: var(--color-light-20);
 	}
-	.tag:hover {
-		background-color: var(--color-primary);
-	}
-	.tag:hover p {
-		color: var(--color-dark);
-	}
-	.tag:hover span {
-		color: var(--color-dark);
-	}
 	.title-bar {
 		border-width: 0px 0px 1px 0px;
-		border-style: solid;
-		border-color: var(--color-light-20);
-	}
-	.actions {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
-	.action {
-		height: 16px;
-		padding: 8px;
-		border-width: 0px 0px 0px 1px;
 		border-style: solid;
 		border-color: var(--color-light-20);
 	}
@@ -199,9 +172,6 @@
 		background-color: var(--color-primary);
 	}
 	.hashtag:hover p {
-		color: var(--color-dark);
-	}
-	.hashtag:hover span {
 		color: var(--color-dark);
 	}
 </style>
