@@ -4,6 +4,7 @@
 	import Skeleton from '$lib/components/common/Skeleton.svelte';
 	import { nodeProvider } from '$lib/stores/Network';
 	import type { JobType } from '$lib/types/Types';
+	import { tokens } from '$lib/stores/Tokens';
 
 	export let job: JobType;
 
@@ -14,11 +15,15 @@
 	let nft_image: any;
 	let ens_name: string;
 	let placeholder_image = 'assets/xcopy.gif';
+	let chosen_network: string;
 
 	$: feedHeight = window.innerHeight - 136;
 	$: if (job) {
 		nft_image = '';
 		fetchUser();
+		if (job.tokens_accepted) {
+			chosen_network = job.tokens_accepted[0].name;
+		}
 	}
 
 	const fetchUser = async () => {
@@ -68,7 +73,7 @@
 					{/if}
 					<div style="width:4px;" />
 
-					<img src="icons/external.svg" alt="External Link" style="margin-right:8px;" />
+					<img src="icons/external.svg" alt="External Link" style="margin-top:-2px;" />
 				</div>
 
 				<div style="height:4px;" />
@@ -94,6 +99,62 @@
 				<div class="description">
 					<div class="body-text light-80">
 						{job.description}
+					</div>
+				</div>
+				<div style="height:12px;" />
+				<div class="payment-container">
+					<div class="network-tabs">
+						{#if job.tokens_accepted}
+							{#each job.tokens_accepted as network}
+								<div
+									class="network-tab"
+									on:click={() => (chosen_network = network.name)}
+									on:keydown
+								>
+									<p class={chosen_network == network.name ? 'yellow' : 'light-60'}>
+										{network.name}
+									</p>
+								</div>
+							{/each}
+						{/if}
+					</div>
+					<div class="token-container">
+						<div class="token-wrapper">
+							<div class="token-tabs">
+								<p class="light-40">payment tokens</p>
+								<div style="width:46px;" />
+								<p class="light-40">contract address</p>
+							</div>
+							<div style="height:4px;" />
+						</div>
+						<div class="tokens">
+							<div style="height:8px;" />
+							{#if job.tokens_accepted}
+								{#each job.tokens_accepted as network}
+									{#each network.tokens as token, i}
+										{#if network.name == chosen_network}
+											<div class="token">
+												<p class={i % 2 == 0 ? '' : 'light-60'}>{token.symbol}</p>
+												<div class="address">
+													<p class={i % 2 == 0 ? '' : 'light-60'}>{token.address}</p>
+													<div style="width:4px;" />
+													<img
+														src="icons/external.svg"
+														alt="External Link"
+														style="margin-top:-2px;"
+													/>
+												</div>
+											</div>
+											{#if i != network.tokens.length - 1}
+												<div style="height:8px;" />
+											{/if}
+										{/if}
+									{/each}
+								{/each}
+							{:else}
+								<p class="light-60">NO TOKEN INFO FOUND</p>
+							{/if}
+						</div>
 					</div>
 				</div>
 				<div style="height:12px;" />
@@ -217,5 +278,60 @@
 	}
 	.button:hover p {
 		color: var(--color-dark);
+	}
+	.network-tabs {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		border-width: 1px 1px 0px 1px;
+		border-style: solid;
+		border-color: var(--color-light-20);
+		cursor: pointer;
+	}
+	.network-tab:hover {
+		background-color: var(--color-primary);
+	}
+	.network-tab:hover p {
+		color: var(--color-dark);
+	}
+	.network-tab {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding: 8px 12px;
+		border-width: 0px 1px 0px 0px;
+		border-style: solid;
+		border-color: var(--color-light-20);
+	}
+	.token-container {
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--color-light-20);
+		padding: 12px;
+	}
+	.token-tabs {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+	.token-wrapper {
+		border-width: 0px 0px 1px 0px;
+		border-style: solid;
+		border-color: var(--color-light-20);
+	}
+	.token {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		cursor: pointer;
+	}
+	.token:hover {
+		background-color: var(--color-light-2);
+	}
+	.address {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
 	}
 </style>

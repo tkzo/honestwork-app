@@ -34,7 +34,19 @@ export type JobType = {
 	tags: Array<string>;
 	installments: number;
 	networks: Array<string>;
-	tokens: Array<string>;
+	tokens_accepted: Array<Network>;
 	sticky_duration: number;
 	highlight: number;
+};
+
+type Network = {
+	name: string;
+	id: number;
+	tokens: Array<Token>;
+};
+type Token = {
+	name: string;
+	symbol: string;
+	address: string;
+	max_allowed: number;
 };
