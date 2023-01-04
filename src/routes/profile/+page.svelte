@@ -2,7 +2,6 @@
 	/// <reference types="aws-sdk" />
 	import Skills from '$lib/components/profile/Skills.svelte';
 	import {
-		connectWallet,
 		userAddress,
 		userState,
 		token_abi,
@@ -25,6 +24,7 @@
 		changes_made,
 		submitting
 	} from '$lib/stores/State';
+	import Jobs from '$lib/components/profile/Jobs.svelte';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
@@ -689,6 +689,8 @@
 					<p class="tab link semibold yellow">jobs</p>
 				</div>
 			</section>
+			<div style="height: 16px" />
+			<Jobs jobs={data.jobs.json} />
 		{/if}
 	{:else if correct_address && $userState == 1}
 		<section>

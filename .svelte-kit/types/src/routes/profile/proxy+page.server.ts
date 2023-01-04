@@ -18,8 +18,9 @@ export const load = async ({ cookies }: Parameters<PageServerLoad>[0]) => {
 	) {
 		let user = await getUser(userAddress);
 		let skills = await getSkills(userAddress);
+		let jobs = await getJobs(userAddress);
 		user.address = userAddress;
-		return { user: user, skills: skills };
+		return { user: user, skills: skills, jobs: jobs };
 	} else {
 		throw redirect(301, '/create_account');
 	}
@@ -47,6 +48,18 @@ const getSkills = async (address: string) => {
 	if (response.ok) {
 		let json = await response.json();
 		return { json: json };
+	} else {
+		console.log('HTTP-Error: ' + response.status);
+		return response.status;
+	}
+};
+
+const getJobs = async (address: string) => {
+	const url = `${env.PRIVATE_HONESTWORK_API}jobs/${address}`;
+	let response = await fetch(url);
+	if (response.ok) {
+		let json = await response.json();
+		return { json };
 	} else {
 		console.log('HTTP-Error: ' + response.status);
 		return response.status;

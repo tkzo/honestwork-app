@@ -163,7 +163,7 @@
 		flex-wrap: wrap;
 	}
 	.hashtag {
-		padding: 8px;
+		padding: 4px 8px;
 		border-width: 1px;
 		border-style: solid;
 		border-color: var(--color-light-20);
