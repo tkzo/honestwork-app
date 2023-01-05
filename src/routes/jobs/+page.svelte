@@ -174,7 +174,7 @@
 		</div>
 	</div>
 	<div style="width:12px" />
-	<div class="skill">
+	<div class="job">
 		{#if active_job != null}
 			<JobPage job={active_job} />
 		{/if}
@@ -194,7 +194,7 @@
 		border-color: var(--color-light-10);
 		overflow-y: hidden;
 	}
-	.skill {
+	.job {
 		width: 520px;
 	}
 	.search-bar {

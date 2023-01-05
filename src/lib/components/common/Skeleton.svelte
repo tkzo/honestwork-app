@@ -1,9 +1,9 @@
 <script>
 	export let width = '100%';
-	export let height = '25px';
+	export let height = '16px';
 	export let borderRadius = '0px';
 	export let baseColor = 'rgb(4, 6, 10)';
-	export let highlightColor = 'rgb(16, 17, 18)';
+	export let highlightColor = 'rgb(20, 21, 22)';
 	export let animationLength = '1.2s';
 </script>
 

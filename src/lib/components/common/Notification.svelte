@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { userState, userConnected } from '$lib/stores/Network';
 	import { page } from '$app/stores';
+
+	// todo: define a global logic for notification component
 </script>
 
 <main>
-	{#if $userState != -1}
+	<!-- {#if $userState != -1}
 		{#if (!$userConnected || $userState == 0) && $page.route.id != ('/connect_wallet' && '/mint')}
 			<div class="bar">
 				<p class="light-80">you're in guest mode</p>
@@ -30,6 +32,17 @@
 				</a>
 			</div>
 		{/if}
+	{/if} -->
+	{#if $page.route.id == '/jobs'}
+		<div class="bar">
+			<p class="light-80">looking for awesome people for your project?</p>
+			<div style="width:8px" />
+			<a href="/new_job" class="post-link">
+				<p class="link underlined">post a job</p>
+				<div style="width:8px" />
+				<img src="/icons/post.svg" alt="post a job" />
+			</a>
+		</div>
 	{/if}
 </main>
 
@@ -40,9 +53,12 @@
 		flex-direction: column;
 		align-items: center;
 	}
+	.underlined {
+		text-decoration: underline;
+	}
 	.bar {
-		width: 520px;
-		border-width: 0px 1px 1px 1px;
+		width: 100%;
+		border-width: 0px 0px 1px 0px;
 		border-style: solid;
 		border-color: var(--color-light-10);
 		padding: 8px;
@@ -51,5 +67,10 @@
 		justify-content: center;
 		align-items: center;
 		box-sizing: border-box;
+	}
+	.post-link {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
 	}
 </style>

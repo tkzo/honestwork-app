@@ -77,7 +77,7 @@
 		height: 32px;
 	}
 	.logo-section {
-		height: 32px;
+		height: 100%;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -98,7 +98,7 @@
 		justify-content: center;
 	}
 	.right-section {
-		height: 32px;
+		height: 100%;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -106,7 +106,7 @@
 		box-sizing: border-box;
 	}
 	.wallet-section {
-		height: 32px;
+		height: 100%;
 		display: flex;
 		flex-direction: row;
 		align-items: center;

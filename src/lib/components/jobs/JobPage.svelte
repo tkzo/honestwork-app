@@ -5,6 +5,7 @@
 	import { nodeProvider } from '$lib/stores/Network';
 	import type { JobType } from '$lib/types/Types';
 	import { tokens } from '$lib/stores/Tokens';
+	import Notification from '$lib/components/common/Notification.svelte';
 
 	export let job: JobType;
 
@@ -64,18 +65,16 @@
 			<div style="width:8px;" />
 			<div class="info">
 				<div class="info-username">
-					{#if user?.show_ens && ens_name && ens_name != ''}
-						<p>{ens_name}</p>
+					{#if user?.show_ens}
+						{#if ens_name && ens_name != ''}
+							<p>{ens_name}</p>
+						{:else}
+							<Skeleton width="100px" />
+						{/if}
 					{:else if user?.username && user.username != ''}
 						<p>{user?.username}</p>
-					{:else}
-						<Skeleton width="100px" height="20px" />
 					{/if}
-					<div style="width:4px;" />
-
-					<img src="icons/external.svg" alt="External Link" style="margin-top:-2px;" />
 				</div>
-
 				<div style="height:4px;" />
 				<p class="light-60">{user?.title}</p>
 				<div style="height:4px;" />

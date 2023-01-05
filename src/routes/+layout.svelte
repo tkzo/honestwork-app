@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Navigation from '$lib/components/common/Navigation.svelte';
 	import Footer from '$lib/components/common/Footer.svelte';
-	// import Notification from '$lib/components/common/Notification.svelte';
+	import Notification from '$lib/components/common/Notification.svelte';
 	import { connecting, xmtpConnecting, userAddress } from '$lib/stores/Network';
-	import { onMount } from 'svelte';
+	// import { onMount } from 'svelte';
 	import { setLocalTheme, theme, themeLoaded } from '$lib/stores/Theme';
 	import { Buffer } from 'buffer';
 	import { Jumper } from 'svelte-loading-spinners';
@@ -28,9 +28,9 @@
 
 	globalThis.Buffer = Buffer;
 
-	$: onMount(async () => {
-		setLocalTheme();
-	});
+	// $: onMount(async () => {
+	// 	setLocalTheme();
+	// });
 </script>
 
 <svelte:head>
@@ -47,36 +47,36 @@
 		}
 	</script>
 	<link rel="stylesheet" href="/styles.css" />
-	{#if $themeLoaded}
+	<!-- {#if $themeLoaded}
 		<link rel="stylesheet" href={`/${$theme}.css`} />
-	{/if}
+	{/if} -->
+	<link rel="stylesheet" href="/dark.css" />
 </svelte:head>
 
 <main>
-	{#if $themeLoaded}
-		{#if $page.route.id !== '/'}
-			<Navigation />
-		{/if}
-		<div style="height:64px;" />
-		<!-- <Notification /> -->
-		{#if $connecting && $page.route.id !== '/'}
-			<div class="spinster">
-				<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
-				<div style="height: 12px;" />
-				<p class="light-60" style="animation: blinking 2s linear infinite;">connecting wallet...</p>
-			</div>
-		{:else if $xmtpConnecting && $page.route.id !== '/'}
-			<div class="spinster">
-				<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
-				<div style="height: 12px;" />
-				<p class="light-60" style="animation: blinking 2s linear infinite;">connecting xmtp...</p>
-			</div>
-		{:else}
-			<slot />
-		{/if}
-		{#if $page.route.id !== '/'}
-			<Footer />
-		{/if}
+	{#if $page.route.id !== '/'}
+		<Navigation />
+	{/if}
+	<div style="height:32px;" />
+	<Notification />
+	<div style="height:16px;" />
+	{#if $connecting && $page.route.id !== '/'}
+		<div class="spinster">
+			<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
+			<div style="height: 12px;" />
+			<p class="light-60" style="animation: blinking 2s linear infinite;">connecting wallet...</p>
+		</div>
+	{:else if $xmtpConnecting && $page.route.id !== '/'}
+		<div class="spinster">
+			<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
+			<div style="height: 12px;" />
+			<p class="light-60" style="animation: blinking 2s linear infinite;">connecting xmtp...</p>
+		</div>
+	{:else}
+		<slot />
+	{/if}
+	{#if $page.route.id !== '/'}
+		<Footer />
 	{/if}
 </main>
 
