@@ -58,13 +58,13 @@
 		background-color: var(--color-dark);
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		box-sizing: border-box;
 	}
 	.gm {
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		padding: 12px;
 		display: flex;
 		flex-direction: column;

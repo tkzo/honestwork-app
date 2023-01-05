@@ -5,6 +5,8 @@
 	import { onMount } from 'svelte';
 	import type { JobType } from '$lib/types/Types';
 
+	// todo: dispatch tag click event to parent search bar
+
 	export let job: JobType;
 
 	$: tags = [
@@ -74,7 +76,7 @@
 		cursor: pointer;
 		border-width: 1px 1px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 	}
 	section:hover {
 		background-color: var(--color-light-2);
@@ -99,7 +101,7 @@
 		padding: 4px 8px;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 	}
 	.hashtag:hover {
 		background-color: var(--color-primary);
@@ -113,7 +115,7 @@
 		justify-content: space-between;
 		border-width: 1px 0px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 	}
 	.tags {
 		display: flex;
@@ -123,6 +125,6 @@
 		padding: 8px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 	}
 </style>

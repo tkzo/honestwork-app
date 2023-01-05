@@ -57,7 +57,7 @@
 		background: var(--color-light-2);
 		border-width: 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: row;
@@ -78,7 +78,7 @@
 		padding: 8px 12px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		box-sizing: border-box;
 	}
 	.social-section {
@@ -87,7 +87,7 @@
 		padding: 8px 12px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		box-sizing: border-box;
 	}
 	.sitemap-section {
@@ -99,7 +99,7 @@
 		padding: 8px 12px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		box-sizing: border-box;
 	}
 	.network-section {
@@ -111,7 +111,7 @@
 		padding: 8px 12px;
 		border-width: 0px 0px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		box-sizing: border-box;
 	}
 	.left-container {

@@ -142,7 +142,7 @@
 		align-items: center;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		cursor: pointer;
 	}
 	.left-section {
@@ -158,7 +158,7 @@
 		width: 518px;
 		border-width: 1px 1px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		display: flex;
 		flex-direction: column;
 	}
@@ -167,7 +167,7 @@
 		height: 388px;
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 	}
 	.gallery-buttons {
 		display: flex;
@@ -179,13 +179,13 @@
 	.left-gallery-button {
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		padding: 8px 12px;
 	}
 	.right-gallery-button {
 		border-width: 0px 0px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		padding: 8px 12px;
 	}
 	.right-gallery-button:hover {
@@ -197,7 +197,7 @@
 	.description {
 		border-width: 1px 1px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		padding: 12px;
 	}
 	.link-container {
@@ -206,13 +206,13 @@
 		align-items: center;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 	}
 	.placeholder {
 		padding: 8px 12px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 	}
 	.wrapper {
 		position: relative;

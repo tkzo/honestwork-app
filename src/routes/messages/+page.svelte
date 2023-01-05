@@ -324,7 +324,7 @@
 		width: 320px;
 		border-width: 1px 1px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		box-sizing: content-box;
 		display: flex;
 		flex-direction: column;
@@ -337,8 +337,8 @@
 		align-items: center;
 		border-width: 1px 0px 1px 0px;
 		border-style: solid;
-		border-top-color: var(--color-light-20);
-		border-bottom-color: var(--color-light-20);
+		border-top-color: var(--color-light-10);
+		border-bottom-color: var(--color-light-10);
 		cursor: pointer;
 	}
 	.inbox-item:hover {
@@ -385,7 +385,7 @@
 		align-items: center;
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-bottom-color: var(--color-light-20);
+		border-bottom-color: var(--color-light-10);
 		cursor: pointer;
 	}
 	.chat {
@@ -393,7 +393,7 @@
 		height: calc(100vh - 128px);
 		border-style: solid;
 		border-width: 1px 1px 1px 1px;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
@@ -409,7 +409,7 @@
 	.gray-line {
 		border-style: solid;
 		border-width: 1px 1px 1px 0px;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 	}
 	.input-field {
 		display: flex;
@@ -418,7 +418,7 @@
 		align-items: center;
 		border-style: solid;
 		border-width: 1px 0px 0px 0px;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 	}
 	.send-button {
 		margin-right: 12px;
