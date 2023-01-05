@@ -6,7 +6,7 @@ export const setLocalTheme = () => {
 		let stored = localStorage.theme;
 		theme.set(stored);
 	} else {
-		theme.set('light');
+		theme.set('dark');
 	}
 	themeLoaded.set(true);
 };
