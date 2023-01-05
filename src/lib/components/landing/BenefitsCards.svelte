@@ -56,4 +56,15 @@
         color: var(--color-light);
         text-transform: none;
     }
+
+    @media (max-width:754px) {
+        .container {
+            flex-direction: column;
+        }
+    }
+    @media (max-width:550px) {
+        .benefits-card {
+            max-width: 280px;
+        }
+    }
 </style>
