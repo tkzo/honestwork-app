@@ -23,6 +23,7 @@
     .container {
         display: flex;
         justify-content: space-between;
+        gap: 24px;
         width: 100%;
     }
     .benefits-card {
@@ -32,15 +33,27 @@
         padding: 20px;
         gap: 22px;
         background: var(--color-dark);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid var(--color-light-10);
+        width:100%;
+        max-width: 340px;
     }
     .icon {
-
+        height: 56px;
+        width: 56px;
     }
     .title {
         text-transform: uppercase;
+        color: var(--color-dark);
+        background: var(--color-primary);
+        margin: 0;
     }
     .description {
-
+        font-family: 'Ubuntu Mono';
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 24px;
+        /* or 171% */
+        color: var(--color-light);
+        text-transform: none;
     }
 </style>
