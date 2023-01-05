@@ -191,7 +191,7 @@
 		width: 520px;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		overflow-y: hidden;
 	}
 	.skill {
@@ -200,7 +200,7 @@
 	.search-bar {
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -214,7 +214,7 @@
 		align-items: center;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		position: relative;
 	}
 	input {
@@ -296,7 +296,7 @@
 		padding: 8px;
 		border-width: 0px 0px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		flex: 1;
 	}
 </style>

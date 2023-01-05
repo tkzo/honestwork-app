@@ -44,7 +44,7 @@
 		width: 520px;
 		border-width: 0px 1px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		padding: 8px;
 		display: flex;
 		flex-direction: row;

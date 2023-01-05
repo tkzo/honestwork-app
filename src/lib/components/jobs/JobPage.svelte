@@ -103,8 +103,8 @@
 				</div>
 				<div style="height:12px;" />
 				<div class="payment-container">
-					<div class="network-tabs">
-						{#if job.tokens_accepted}
+					{#if job.tokens_accepted && job.tokens_accepted.length > 0}
+						<div class="network-tabs">
 							{#each job.tokens_accepted as network}
 								<div
 									class="network-tab"
@@ -116,8 +116,8 @@
 									</p>
 								</div>
 							{/each}
-						{/if}
-					</div>
+						</div>
+					{/if}
 					<div class="token-container">
 						<div class="token-wrapper">
 							<div class="token-tabs">
@@ -190,7 +190,7 @@
 		align-items: center;
 		border-width: 1px 1px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		cursor: pointer;
 		padding: 12px;
 	}
@@ -217,7 +217,7 @@
 	.description {
 		border-width: 1px 1px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		padding: 12px;
 	}
 	.link-container {
@@ -226,13 +226,13 @@
 		align-items: center;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 	}
 	.placeholder {
 		padding: 8px 12px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 	}
 	.wrapper {
 		position: relative;
@@ -269,7 +269,7 @@
 		justify-content: center;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		padding: 4px 8px;
 		cursor: pointer;
 	}
@@ -285,7 +285,7 @@
 		align-items: center;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		cursor: pointer;
 	}
 	.network-tab:hover {
@@ -301,12 +301,12 @@
 		padding: 8px 12px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 	}
 	.token-container {
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 		padding: 12px;
 	}
 	.token-tabs {
@@ -317,7 +317,7 @@
 	.token-wrapper {
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-20);
+		border-color: var(--color-light-10);
 	}
 	.token {
 		display: flex;

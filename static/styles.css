@@ -14,7 +14,7 @@
 body {
 	-ms-overflow-style: none; /* for Internet Explorer, Edge */
 	scrollbar-width: none; /* for Firefox */
-	overflow-y: hidden;
+	/* overflow-y: hidden; */
 	--svrollbar-track-width: 1px;
 	/* --svrollbar-track-background: #85b4b9; */
 	--svrollbar-track-opacity: 1;
@@ -37,7 +37,7 @@ body {
 	margin: 0;
 	background-color: var(--color-dark);
 	background-size: 100vw 100vh;
-	border-color: var(--color-light-20);
+	border-color: var(--color-light-10);
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
@@ -49,7 +49,7 @@ section {
 	background-color: var(--color-dark);
 	border-width: 1px;
 	border-style: solid;
-	border-color: var(--color-light-20);
+	border-color: var(--color-light-10);
 	box-sizing: border-box;
 }
 
@@ -58,7 +58,7 @@ section {
 	background-color: var(--color-dark);
 	border-width: 1px;
 	border-style: solid;
-	border-color: var(--color-light-20);
+	border-color: var(--color-light-10);
 	box-sizing: border-box;
 }
 
@@ -67,7 +67,7 @@ section {
 	background-color: var(--color-dark);
 	border-width: 0px 0px 1px 0px;
 	border-style: solid;
-	border-color: var(--color-light-20);
+	border-color: var(--color-light-10);
 	box-sizing: border-box;
 }
 
@@ -148,7 +148,7 @@ input {
 	box-sizing: border-box;
 	border-width: 1px;
 	border-style: solid;
-	border-color: var(--color-light-20);
+	border-color: var(--color-light-10);
 	font-size: 13px;
 	line-height: 16px;
 }
@@ -161,7 +161,7 @@ textarea {
 	box-sizing: border-box;
 	border-width: 1px;
 	border-style: solid;
-	border-color: var(--color-light-20);
+	border-color: var(--color-light-10);
 	font-size: 13px;
 	line-height: 20px;
 }
