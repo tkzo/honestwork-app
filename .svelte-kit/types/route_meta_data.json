@@ -12,6 +12,9 @@
 	"/api/skill/[sort]/[order]": [
 		"src/routes/api/skill/[sort]/[order]/+server.ts"
 	],
+	"/api/upload-job-url/[filename]": [
+		"src/routes/api/upload-job-url/[filename]/+server.ts"
+	],
 	"/api/upload-skill-url/[skill_slot]/[image_slot]/[filename]": [
 		"src/routes/api/upload-skill-url/[skill_slot]/[image_slot]/[filename]/+server.ts"
 	],
@@ -34,7 +37,9 @@
 		"src/routes/messages/+page.server.ts"
 	],
 	"/(subpages)/mint": [],
-	"/new_job": [],
+	"/new_job": [
+		"src/routes/new_job/+page.server.ts"
+	],
 	"/profile": [
 		"src/routes/profile/+page.server.ts"
 	],

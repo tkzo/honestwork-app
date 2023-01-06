@@ -23,6 +23,7 @@
 	let show_sorting_options = false;
 	let chosen_sorting_option = 0;
 
+	//todo: browser check for window.innerHeight
 	$: feedHeight = window.innerHeight - 128;
 	$: filteredSkills =
 		search_input != ''

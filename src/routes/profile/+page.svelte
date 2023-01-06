@@ -4,17 +4,12 @@
 	import {
 		userAddress,
 		userState,
-		token_abi,
-		token_address,
-		networkSigner,
 		nodeProvider,
 		connectNode,
 		userConnected
 	} from '$lib/stores/Network';
 	import { theme } from '$lib/stores/Theme';
 	import { onMount } from 'svelte';
-	import { ethers } from 'ethers';
-	import { goto } from '$app/navigation';
 	import { Jumper } from 'svelte-loading-spinners';
 	import { tweened } from 'svelte/motion';
 	import {
@@ -214,20 +209,6 @@
 	const deFocusInput = () => {
 		infobox_show = false;
 	};
-	const soulbind = async () => {
-		if ($userState == 1) {
-			try {
-				const contract = new ethers.Contract(token_address, token_abi, $networkSigner);
-				const tx = await contract.bind();
-				const receipt = await tx.wait();
-				if (receipt.status == 1) {
-					goto('/profile');
-				}
-			} catch (error) {
-				console.log(error);
-			}
-		}
-	};
 	//todo: update spaces cors policy with domain
 	const uploadProfileImage = async (e: any) => {
 		const file = e.target.files[0]!;
@@ -243,6 +224,7 @@
 	};
 	const submitProfile = async (e: any) => {
 		submitting.set(true);
+		//todo: proper handling
 		if (show_nft && !is_owner) {
 			console.log('Nope.');
 		} else {
@@ -692,17 +674,6 @@
 			<div style="height: 16px" />
 			<Jobs jobs={data.jobs.json} />
 		{/if}
-	{:else if correct_address && $userState == 1}
-		<section>
-			<div class="gm">
-				<div class="gm-inner">
-					<p>gm fren</p>
-				</div>
-			</div>
-			<div class="gm" on:click={soulbind} on:keydown>
-				<p class="yellow link">bind your nft</p>
-			</div>
-		</section>
 	{:else if correct_address != null}
 		<div style="height: 16px" />
 		<section style="width:520px">

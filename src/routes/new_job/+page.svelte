@@ -1,9 +1,55 @@
 <script lang="ts">
-	import { userAddress, userConnected, connectWallet, xmtpConnected } from '$lib/stores/Network';
+	import { userConnected, connectWallet, xmtpConnected } from '$lib/stores/Network';
+	import { JobInput } from '$lib/stores/Validation';
+
+	let jobForm: HTMLFormElement;
+	let ethereumForm: HTMLFormElement;
+	let polygonForm: HTMLFormElement;
+
+	const handleSubmit = (e: Event) => {
+		const formData = new FormData(e.target! as HTMLFormElement);
+		const formObj = Object.fromEntries(formData.entries());
+		let parsed = JobInput.safeParse(formObj);
+		// consume errors and show them to the user
+		if (!parsed.success) {
+			console.log(parsed.error);
+			return;
+		} else {
+			jobForm.submit();
+		}
+	};
+
+	let networks = [
+		{
+			name: 'ethereum',
+			id: 1
+		},
+		{
+			name: 'polygon',
+			id: 137
+		}
+	];
 </script>
 
 {#if $userConnected && $xmtpConnected}
-	{$userAddress}
+	<form on:submit|preventDefault={handleSubmit} bind:this={jobForm}>
+		<input type="text" name="user_address" placeholder="Enter name" />
+		<input type="text" name="title" placeholder="Enter title" />
+		<input type="text" name="description" placeholder="Enter description" />
+		<input type="text" name="token_paid" placeholder="Enter token paid" />
+		<input type="text" name="tags[]" placeholder="Enter tag" />
+		<input type="text" name="links" placeholder="Enter link" />
+		<input type="number" name="budget" placeholder="Enter budget" />
+		<input type="number" name="installments" placeholder="Enter installments" />
+		<input type="number" name="sticky_duration" placeholder="Enter sticky duration" />
+		<input type="number" name="highlight" placeholder="Enter highlit" />
+		<button>lets go</button>
+	</form>
+	{#each networks as network}
+		<input type="text" name={`network_name[${network.name}]`} />
+		<input type="number" name={`network_id[${network.id}]`} />
+	{/each}
+	<div class="payment_module" />
 {:else}
 	<section>
 		<div class="gm">
