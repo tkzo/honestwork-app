@@ -1,7 +1,4 @@
 <script lang="ts">
-	import { each } from "svelte/internal";
-
-
     let freelancer = false;
 
     // $: freelancer;
@@ -96,9 +93,9 @@
     ]
 </script>
 
+<button on:click={() => freelancer = false} class="button">Employer</button>
+<button on:click={() => freelancer = true} class="button">Freelancer</button>
 <div class="container">
-    <button on:click={() => freelancer = false} class="button">Employer</button>
-    <button on:click={() => freelancer = true} class="button">Freelancer</button>
     {#if !freelancer}
         {#each employersFeatureCards as card, index}
             <div class="features-card {index % 2 == 0 ? 'img-right' : 'img-left'}">
