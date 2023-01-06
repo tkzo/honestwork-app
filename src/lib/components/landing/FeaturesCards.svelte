@@ -1,120 +1,144 @@
 <script lang="ts">
+	import { each } from "svelte/internal";
+
+
     let freelancer = false;
 
     // $: freelancer;
+
+    type FeatureCard = {
+        title: string;
+        icon1: string;
+        icon1alt: string;
+        feature1: string;
+        icon2: string;
+        icon2alt: string;
+        feature2: string;
+        buttontext: string;
+        imgsrc: string;
+        imgalt:string;
+    }
+    let employersFeatureCards: FeatureCard[] = [
+        {
+        title: 'Post a job without a hassle',
+        icon1: 'icons/landing/dinosaur.svg',
+        icon1alt: 'Dinosaur icon',
+        feature1: 'Create a job listing for an unlimited duration',
+        icon2: 'icons/landing/script-text.svg',
+        icon2alt: 'Script text icon',
+        feature2: 'Start conversations with the best applicants through embedded messaging',
+        buttontext: 'Post a Job',
+        imgsrc: 'assets/landing/profile.png',
+        imgalt:'Profile',
+        },
+        {
+        title: 'Find the best talents',
+        icon1: 'icons/landing/dinosaur.svg',
+        icon1alt: 'Dinosaur icon',
+        feature1: 'Browse an extensive library of skills to find exactly what you need',
+        icon2: 'icons/landing/script-text.svg',
+        icon2alt: 'Script text icon',
+        feature2: 'Easily view previous work history and ratings on freelancers’ profile',
+        buttontext: 'Post a Job',
+        imgsrc: 'assets/landing/profile.png',
+        imgalt:'Profile',
+        },
+        {
+        title: 'Safe on-chain payments',
+        icon1: 'icons/landing/dinosaur.svg',
+        icon1alt: 'Dinosaur icon',
+        feature1: 'Pay with any on-chain token, including custom DAO tokens',
+        icon2: 'icons/landing/script-text.svg',
+        icon2alt: 'Script text icon',
+        feature2: 'Safe payments through a customized Escrow Contract',
+        buttontext: 'Post a Job',
+        imgsrc: 'assets/landing/profile.png',
+        imgalt:'Profile',
+        }
+    ]
+    let freelancersFeatureCards: FeatureCard[] = [
+        {
+        title: 'On-chain reputation',
+        icon1: 'icons/landing/dinosaur.svg',
+        icon1alt: 'Dinosaur icon',
+        feature1: 'Create unique profiles with ENS names and NFTs',
+        icon2: 'icons/landing/script-text.svg',
+        icon2alt: 'Script text icon',
+        feature2: 'HonestWork NFT stores your ratings and completed projects on-chain ',
+        buttontext: 'Explore Jobs',
+        imgsrc: 'assets/landing/profile.png',
+        imgalt:'Profile',
+        },
+        {
+        title: 'Get paid in crypto',
+        icon1: 'icons/landing/dinosaur.svg',
+        icon1alt: 'Dinosaur icon',
+        feature1: 'Job payment is safely kept in an Escrow Contract while you are working on the task',
+        icon2: 'icons/landing/script-text.svg',
+        icon2alt: 'Script text icon',
+        feature2: 'Get paid straight to your crypto wallet after successfully completing a task',
+        buttontext: 'Explore Jobs',
+        imgsrc: 'assets/landing/profile.png',
+        imgalt:'Profile',
+        },
+        {
+        title: 'Find premium web3 freelance jobs',
+        icon1: 'icons/landing/dinosaur.svg',
+        icon1alt: 'Dinosaur icon',
+        feature1: 'Choose from the wide library of jobs listings',
+        icon2: 'icons/landing/script-text.svg',
+        icon2alt: 'Script text icon',
+        feature2: 'List your skills and get noticed for what you do best',
+        buttontext: 'Explore Jobs',
+        imgsrc: 'assets/landing/profile.png',
+        imgalt:'Profile',
+        }
+    ]
 </script>
 
 <div class="container">
     <button on:click={() => freelancer = false} class="button">Employer</button>
     <button on:click={() => freelancer = true} class="button">Freelancer</button>
     {#if !freelancer}
-    <div class="features-card">
-        <div class="info">
-            <h3 class="title">Post a job without a hassle</h3>
-            <div class="description-container">
-                <div class="description">
-                    <img src="icons/landing/dinosaur.svg" alt="Dinosaur icon" class="icon">
-                    <p class="feature">Create a job listing for an unlimited duration</p>
+        {#each employersFeatureCards as card, index}
+            <div class="features-card {index % 2 == 0 ? 'img-right' : 'img-left'}">
+                <div class="info">
+                    <h3 class="title">{card.title}</h3>
+                    <div class="description-container">
+                        <div class="description">
+                            <img src={card.icon1} alt={card.icon1alt} class="icon">
+                            <p class="feature">{card.feature1}</p>
+                        </div>
+                        <div class="description">
+                            <img src={card.icon2} alt={card.icon2alt} class="icon">
+                            <p class="feature">{card.feature2}</p>
+                        </div>
+                    </div>
+                    <a href="/jobs" class="button">{card.buttontext}</a>
                 </div>
-                <div class="description">
-                    <img src="icons/landing/script-text.svg" alt="Script text icon" class="icon">
-                    <p class="feature">Start conversations with the best applicants through embedded messaging</p>
-                </div>
+                <img src={card.imgsrc} alt={card.imgalt} class="featured-image">
             </div>
-            <a href="/" class="button">Post a Job</a>
-        </div>
-        <img src="assets/landing/profile.png" alt="Profile" class="featured-image">
-    </div>
-
-    <div class="features-card reverse">
-        <div class="info">
-            <h3 class="title">Find the best talents</h3>
-            <div class="description-container">
-                <div class="description">
-                    <img src="icons/landing/dinosaur.svg" alt="Dinosaur icon" class="icon">
-                    <p class="feature">Create a job listing for an unlimited duration</p>
-                </div>
-                <div class="description">
-                    <img src="icons/landing/script-text.svg" alt="Script text icon" class="icon">
-                    <p class="feature">Start conversations with the best applicants through embedded messaging</p>
-                </div>
-            </div>
-            <a href="/" class="button">Post a Job</a>
-        </div>
-        <img src="assets/landing/profile.png" alt="Profile" class="featured-image">
-    </div>
-
-    <div class="features-card">
-        <div class="info">
-            <h3 class="title">Safe on-chain payments</h3>
-            <div class="description-container">
-                <div class="description">
-                    <img src="icons/landing/dinosaur.svg" alt="Dinosaur icon" class="icon">
-                    <p class="feature">Create a job listing for an unlimited duration</p>
-                </div>
-                <div class="description">
-                    <img src="icons/landing/script-text.svg" alt="Script text icon" class="icon">
-                    <p class="feature">Start conversations with the best applicants through embedded messaging</p>
-                </div>
-            </div>
-            <a href="/" class="button">Post a Job</a>
-        </div>
-        <img src="assets/landing/profile.png" alt="Profile" class="featured-image">
-    </div>
+        {/each}
     {:else}
-    <div class="features-card">
-        <div class="info">
-            <h3 class="title">On-chain reputation</h3>
-            <div class="description-container">
-                <div class="description">
-                    <img src="icons/landing/dinosaur.svg" alt="Dinosaur icon" class="icon">
-                    <p class="feature">Create a job listing for an unlimited duration</p>
+    {#each freelancersFeatureCards as card, index}
+        <div class="features-card {index % 2 == 0 ? 'img-right' : 'img-left'}">
+            <div class="info">
+                <h3 class="title">{card.title}</h3>
+                <div class="description-container">
+                    <div class="description">
+                        <img src={card.icon1} alt={card.icon1alt} class="icon">
+                        <p class="feature">{card.feature1}</p>
+                    </div>
+                    <div class="description">
+                        <img src={card.icon2} alt={card.icon2alt} class="icon">
+                        <p class="feature">{card.feature2}</p>
+                    </div>
                 </div>
-                <div class="description">
-                    <img src="icons/landing/script-text.svg" alt="Script text icon" class="icon">
-                    <p class="feature">Start conversations with the best applicants through embedded messaging</p>
-                </div>
+                <a href="/jobs" class="button">{card.buttontext}</a>
             </div>
-            <a href="/" class="button">Post a Job</a>
+            <img src={card.imgsrc} alt={card.imgalt} class="featured-image">
         </div>
-        <img src="assets/landing/profile.png" alt="Profile" class="featured-image">
-    </div>
-
-    <div class="features-card reverse">
-        <div class="info">
-            <h3 class="title">Get paid in crypto</h3>
-            <div class="description-container">
-                <div class="description">
-                    <img src="icons/landing/dinosaur.svg" alt="Dinosaur icon" class="icon">
-                    <p class="feature">Create a job listing for an unlimited duration</p>
-                </div>
-                <div class="description">
-                    <img src="icons/landing/script-text.svg" alt="Script text icon" class="icon">
-                    <p class="feature">Start conversations with the best applicants through embedded messaging</p>
-                </div>
-            </div>
-            <a href="/" class="button">Post a Job</a>
-        </div>
-        <img src="assets/landing/profile.png" alt="Profile" class="featured-image">
-    </div>
-
-    <div class="features-card">
-        <div class="info">
-            <h3 class="title">Find premium web3 freelance jobs</h3>
-            <div class="description-container">
-                <div class="description">
-                    <img src="icons/landing/dinosaur.svg" alt="Dinosaur icon" class="icon">
-                    <p class="feature">Create a job listing for an unlimited duration</p>
-                </div>
-                <div class="description">
-                    <img src="icons/landing/script-text.svg" alt="Script text icon" class="icon">
-                    <p class="feature">Start conversations with the best applicants through embedded messaging</p>
-                </div>
-            </div>
-            <a href="/" class="button">Post a Job</a>
-        </div>
-        <img src="assets/landing/profile.png" alt="Profile" class="featured-image">
-    </div>
+    {/each}
     {/if}
 </div>
 
@@ -128,20 +152,24 @@
     }
     .features-card {
         display: flex;
-        flex-direction: row;
-        align-items: flex-start;
+        align-items: center;
         gap: 57px;
         background: var(--color-dark);
         width:100%;
         max-width: 879px;
+        justify-content: flex-start;
     }
-    .reverse {
+    .img-right {
+        flex-direction: row;
+    }
+    .img-left {
         flex-direction: row-reverse;
     }
     .info {
         display: flex;
         flex-direction: column;
         gap: 40px;
+        width: 50%;
     }
     .icon {
         height: 32px;
@@ -187,6 +215,10 @@
         filter: drop-shadow(0px 0px 50px var(--color-primary));
         cursor: pointer;
         color: var(--color-primary);
+    }
+    .featured-image {
+        width: 100%;
+        max-width: 420px;
     }
 
     /* @media (max-width:754px) {
