@@ -3,6 +3,7 @@
 	import { connectWallet } from '$lib/stores/Network';
 	import { userConnected, xmtpConnected, userState } from '$lib/stores/Network';
 	import Skeleton from '$lib/components/common/Skeleton.svelte';
+	import FeaturesCards from '$lib/components/landing/FeaturesCards.svelte';
 	import BenefitsCards from '$lib/components/landing/BenefitsCards.svelte';
 
 	const track = async () => {
@@ -21,6 +22,8 @@
 		await connectWallet();
 		goto('/skills');
 	};
+
+
 </script>
 
 <svelte:head>
@@ -32,6 +35,7 @@
 	<div on:click={handleConnect} on:keydown>CONNECT WALLET</div>
 	<div on:click={() => goto('/skills')} on:keydown>START EXPLORING</div>
 	<div class="container">
+		<FeaturesCards />
 		<!-- <BenefitsCards /> -->
 	</div>
 {:else}
@@ -41,6 +45,6 @@
 <style>
 	.container {
 		max-width: 1000px;
-		padding: 0 20px;
+		padding: 20px;
 	}
 </style>
