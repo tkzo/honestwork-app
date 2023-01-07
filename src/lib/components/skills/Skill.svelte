@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
-	import type { UserType } from '$lib/types/Types';
+	import type { UserType } from '$lib/stores/Types';
 	import { onMount } from 'svelte';
 	export let title: string;
 	export let description: string;

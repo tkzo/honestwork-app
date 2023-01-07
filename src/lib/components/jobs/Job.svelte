@@ -2,10 +2,9 @@
 
 <script lang="ts">
 	import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
-	import type { UserType } from '$lib/types/Types';
+	import type { UserType } from '$lib/stores/Types';
 	import { onMount } from 'svelte';
 
-	export let username: string;
 	export let title: string;
 	export let description: string;
 	export let image_url: string;
@@ -13,8 +12,10 @@
 	export let installments: number;
 	export let chosen: boolean;
 	export let user_address: string;
+
 	export let rating: number;
 	export let user_title: string;
+	export let username: string;
 
 	//todo: make this dynamic
 	$: tags = [
@@ -94,11 +95,13 @@
 	</div>
 	<div class="tag-bar">
 		<div class="tags">
-			{#each tags as tag}
-				<div class="tag">
-					<p>{tag.value} <span class="light-40">{tag.key}</span></p>
-				</div>
-			{/each}
+			{#if tags && tags.length > 0}
+				{#each tags as tag}
+					<div class="tag">
+						<p>{tag.value} <span class="light-40">{tag.key}</span></p>
+					</div>
+				{/each}
+			{/if}
 		</div>
 	</div>
 </section>

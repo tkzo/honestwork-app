@@ -1,11 +1,10 @@
 <script lang="ts">
-	import type { UserType } from '$lib/types/Types';
+	import type { UserType } from '$lib/stores/Types';
 	import { Svrollbar } from 'svrollbar';
 	import Skeleton from '$lib/components/common/Skeleton.svelte';
 	import { nodeProvider } from '$lib/stores/Network';
-	import type { JobType } from '$lib/types/Types';
-	import { tokens } from '$lib/stores/Tokens';
-	import Notification from '$lib/components/common/Notification.svelte';
+	import type { JobType } from '$lib/stores/Types';
+	import { chains } from '$lib/stores/Chain';
 
 	export let job: JobType;
 
@@ -16,14 +15,14 @@
 	let nft_image: any;
 	let ens_name: string;
 	let placeholder_image = 'assets/xcopy.gif';
-	let chosen_network: string;
+	let chosen_network: number;
 
 	$: feedHeight = window.innerHeight - 136;
 	$: if (job) {
 		nft_image = '';
 		fetchUser();
 		if (job.tokens_accepted) {
-			chosen_network = job.tokens_accepted[0].name;
+			chosen_network = job.tokens_accepted[0].id;
 		}
 	}
 
@@ -45,6 +44,21 @@
 				console.log(err);
 			}
 		}
+	};
+
+	const getChainName = (chain_id: number) => {
+		const name = chains.find((chain) => chain.id == chain_id)?.name;
+		return name;
+	};
+	const getTokenName = (chain_id: number, address: string) => {
+		const tokens = chains.find((chain) => chain.id == chain_id)?.tokens;
+		const name = tokens?.find((token) => token.address == address)?.name;
+		return name;
+	};
+	const getTokenSymbol = (chain_id: number, address: string) => {
+		const tokens = chains.find((chain) => chain.id == chain_id)?.tokens;
+		const symbol = tokens?.find((token) => token.address == address)?.symbol;
+		return symbol;
 	};
 </script>
 
@@ -105,13 +119,9 @@
 					{#if job.tokens_accepted && job.tokens_accepted.length > 0}
 						<div class="network-tabs">
 							{#each job.tokens_accepted as network}
-								<div
-									class="network-tab"
-									on:click={() => (chosen_network = network.name)}
-									on:keydown
-								>
-									<p class={chosen_network == network.name ? 'yellow' : 'light-60'}>
-										{network.name}
+								<div class="network-tab" on:click={() => (chosen_network = network.id)} on:keydown>
+									<p class={chosen_network == network.id ? 'yellow' : 'light-60'}>
+										{getChainName(network.id)}
 									</p>
 								</div>
 							{/each}
@@ -130,25 +140,29 @@
 							<div style="height:8px;" />
 							{#if job.tokens_accepted}
 								{#each job.tokens_accepted as network}
-									{#each network.tokens as token, i}
-										{#if network.name == chosen_network}
-											<div class="token">
-												<p class={i % 2 == 0 ? '' : 'light-60'}>{token.symbol}</p>
-												<div class="address">
-													<p class={i % 2 == 0 ? '' : 'light-60'}>{token.address}</p>
-													<div style="width:4px;" />
-													<img
-														src="icons/external.svg"
-														alt="External Link"
-														style="margin-top:-2px;"
-													/>
+									{#if network.tokens && network.tokens.length > 0}
+										{#each network.tokens as token, i}
+											{#if network.id == chosen_network}
+												<div class="token">
+													<p class={i % 2 == 0 ? '' : 'light-60'}>
+														{getTokenSymbol(network.id, token.address)}
+													</p>
+													<div class="address">
+														<p class={i % 2 == 0 ? '' : 'light-60'}>{token.address}</p>
+														<div style="width:4px;" />
+														<img
+															src="icons/external.svg"
+															alt="External Link"
+															style="margin-top:-2px;"
+														/>
+													</div>
 												</div>
-											</div>
-											{#if i != network.tokens.length - 1}
-												<div style="height:8px;" />
+												{#if i != network.tokens.length - 1}
+													<div style="height:8px;" />
+												{/if}
 											{/if}
-										{/if}
-									{/each}
+										{/each}
+									{/if}
 								{/each}
 							{:else}
 								<p class="light-60">NO TOKEN INFO FOUND</p>
@@ -158,16 +172,18 @@
 				</div>
 				<div style="height:12px;" />
 				<div class="links">
-					{#each job.links as link}
-						<div class="link-container">
-							<p class="placeholder light-40">link</p>
-							<div style="width:8px;" />
-							<a href={link}>
-								<p class="light-80">{link}</p>
-							</a>
-						</div>
-						<div style="height:8px;" />
-					{/each}
+					{#if job.links && job.links.length > 0}
+						{#each job.links as link}
+							<div class="link-container">
+								<p class="placeholder light-40">link</p>
+								<div style="width:8px;" />
+								<a href={link}>
+									<p class="light-80">{link}</p>
+								</a>
+							</div>
+							<div style="height:8px;" />
+						{/each}
+					{/if}
 				</div>
 				<div style="height:32px;" />
 			</div>

@@ -2,7 +2,7 @@
 	import Skill from '$lib/components/skills/Skill.svelte';
 	import SkillPage from '$lib/components/skills/SkillPage.svelte';
 	import { Svrollbar } from 'svrollbar';
-	import type { SkillType } from '$lib/types/Types';
+	import type { SkillType } from '$lib/stores/Types';
 	import fuzzy from 'fuzzy';
 
 	export let data: any;

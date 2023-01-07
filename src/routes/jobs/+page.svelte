@@ -2,7 +2,7 @@
 	import Job from '$lib/components/jobs/Job.svelte';
 	import JobPage from '$lib/components/jobs/JobPage.svelte';
 	import { Svrollbar } from 'svrollbar';
-	import type { SkillType, JobType } from '$lib/types/Types';
+	import type { SkillType, JobType } from '$lib/stores/Types';
 	import fuzzy from 'fuzzy';
 
 	export let data: any;

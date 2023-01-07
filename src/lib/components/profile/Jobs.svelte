@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Job from '$lib/components/profile/Job.svelte';
 	import JobEdit from '$lib/components/profile/JobEdit.svelte';
-	import type { JobType } from '$lib/types/Types';
+	import type { JobType } from '$lib/stores/Types';
 	import { chosen_job_slot } from '$lib/stores/State';
 
 	export let jobs: JobType[] | null;

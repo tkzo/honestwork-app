@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SkillType, UserType } from '$lib/types/Types';
+	import type { SkillType, UserType } from '$lib/stores/Types';
 	import { Svrollbar } from 'svrollbar';
 	import Skeleton from '$lib/components/common/Skeleton.svelte';
 	import { nodeProvider } from '$lib/stores/Network';

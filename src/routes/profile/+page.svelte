@@ -384,11 +384,7 @@
 							<div style="display:flex;flex-direction:row;">
 								<input hidden type="checkbox" name="show_nft" bind:checked={show_nft} />
 								{#if show_nft}
-									<img
-										src={`${$theme == 'dark' ? 'icons/checked.svg' : 'icons/light/checked.svg'}`}
-										alt="Checked"
-										style="height:16px;width:16px;"
-									/>
+									<img src="icons/checked.svg" alt="Checked" style="height:16px;width:16px;" />
 									<div style="width:8px" />
 									<p class="yellow">use nft image</p>
 								{:else}
@@ -416,7 +412,7 @@
 								{#if ens_loading}
 									<div class="input-like">
 										<img
-											src={`${$theme == 'dark' ? 'icons/loader.svg' : 'icons/light/loader.svg'}`}
+											src="icons/loader.svg"
 											alt="loading"
 											class="rotating"
 											style="height:16px;width:16px;"
@@ -457,23 +453,13 @@
 							style="cursor:pointer;"
 						>
 							<input hidden type="checkbox" name="show_ens" bind:checked={show_ens} />
-							{#if show_ens}
-								<img
-									src={`${$theme == 'dark' ? 'icons/checked.svg' : 'icons/light/checked.svg'}`}
-									alt="Checked"
-									style="height:16px;width:16px;"
-								/>
-								<div style="width:8px" />
-								<p class="yellow">use ens name</p>
-							{:else}
-								<img
-									src={`${$theme == 'dark' ? 'icons/unchecked.svg' : 'icons/light/unchecked.svg'}`}
-									alt="Checked"
-									style="height:16px;width:16px;"
-								/>
-								<div style="width:8px" />
-								<p class="light-60">use ens name</p>
-							{/if}
+							<img
+								src={show_ens ? 'icons/checked.svg' : 'icons/unchecked.svg'}
+								alt="Checked"
+								style="height:16px;width:16px;"
+							/>
+							<div style="width:4px" />
+							<p class={show_ens ? 'yellow' : 'light-60'}>use ens name</p>
 						</div>
 						<div style="height: 12px" />
 						<div class="input-field">
@@ -643,7 +629,7 @@
 						<div class="save-changes">
 							{#if $submitting}
 								<img
-									src={`${$theme == 'dark' ? 'icons/loader.svg' : 'icons/light/loader.svg'}`}
+									src="icons/loader.svg"
 									alt="loading"
 									class="rotating"
 									style="height:16px;width:16px;"
