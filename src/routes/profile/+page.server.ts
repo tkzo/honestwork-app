@@ -4,6 +4,9 @@ import type { Actions } from './$types';
 import { env } from '$env/dynamic/private';
 import { ethers } from 'ethers';
 
+const apiUrl =
+	parseInt(env.PRODUCTION_ENV) == 1 ? env.PRIVATE_HONESTWORK_API : env.PRIVATE_LOCAL_HONESTWORK_API;
+
 export const load: PageServerLoad = async ({ cookies }) => {
 	const userAddress = cookies.get('honestwork_address')!;
 	const userSignature = cookies.get('honestwork_signature');
@@ -89,7 +92,7 @@ export const actions: Actions = {
 			links: [data.get('link-0'), data.get('link-1'), data.get('link-2')]
 		};
 
-		const url = `${env.PRIVATE_HONESTWORK_API}users/${userAddress}/${userSalt}/${userSignature}`;
+		const url = `${apiUrl}/users/${userAddress}/${userSalt}/${userSignature}`;
 		let response = await fetch(url, {
 			method: 'PATCH',
 			body: JSON.stringify(body),
@@ -191,9 +194,9 @@ export const actions: Actions = {
 				console.log(json);
 			}
 		} else {
-			const url = `${
-				env.PRIVATE_HONESTWORK_API
-			}skills/${userAddress}/${userSalt}/${userSignature}/${data.get('skill_slot')}`;
+			const url = `${apiUrl}/skills/${userAddress}/${userSalt}/${userSignature}/${data.get(
+				'skill_slot'
+			)}`;
 			let response = await fetch(url, {
 				method: 'PATCH',
 				body: JSON.stringify(body),

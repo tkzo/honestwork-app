@@ -12,14 +12,10 @@ export const JobInput = z.object({
 	timezone: z.enum(['EST', 'CST', 'MST', 'PST']),
 	tokens: z
 		.object({
-			network_name: z.string(),
-			network_id: z.number(),
+			chain_id: z.number(),
 			tokens: z
 				.object({
-					name: z.string(),
-					symbol: z.string(),
-					address: z.string(),
-					max_allowed: z.number()
+					address: z.string()
 				})
 				.array()
 		})

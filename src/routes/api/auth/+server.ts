@@ -15,7 +15,11 @@ export const GET: RequestHandler = ({ url, cookies }) => {
 };
 
 const validateSignature = async (address: string, userSignature: string, userSalt: string) => {
-	const url = `${env.PRIVATE_HONESTWORK_API}users/${address}`;
+	const apiUrl =
+		parseInt(env.PRODUCTION_ENV) == 1
+			? env.PRIVATE_HONESTWORK_API
+			: env.PRIVATE_LOCAL_HONESTWORK_API;
+	const url = `${apiUrl}/users/${address}`;
 	let response = await fetch(url);
 	if (response.ok) {
 		let json = await response.json();
