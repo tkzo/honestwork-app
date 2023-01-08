@@ -14,7 +14,7 @@ export const chains = [
 			{
 				name: 'usdc',
 				symbol: 'usdc',
-				address: '0x0000000000000000000000000000000000000000',
+				address: '0x0000000000000000000000000000000000000001',
 				max_allowed: 10000
 			}
 		]
@@ -32,7 +32,13 @@ export const chains = [
 			{
 				name: 'usdc',
 				symbol: 'usdc',
-				address: '0x0000000000000000000000000000000000000000',
+				address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+				max_allowed: 10000
+			},
+			{
+				name: 'fakeUSD',
+				symbol: 'fUSD',
+				address: '0x6bf83F1af0350407c6766Af32818603E9c08E182',
 				max_allowed: 10000
 			}
 		]

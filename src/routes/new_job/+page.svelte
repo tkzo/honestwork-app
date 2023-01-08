@@ -1,10 +1,23 @@
 <script lang="ts">
-	import { userConnected, connectWallet, xmtpConnected, userAddress } from '$lib/stores/Network';
+	import {
+		networkProvider,
+		token_abi,
+		userConnected,
+		connectWallet,
+		xmtpConnected,
+		userAddress
+	} from '$lib/stores/Network';
 	import { JobInput } from '$lib/stores/Validation';
-	import type { JobType, Network } from '$lib/stores/Types';
+	import type { JobType, Network, Token } from '$lib/stores/Types';
 	import { chains } from '$lib/stores/Constants';
 	import { placeholder_image, sticky_data } from '$lib/stores/Constants';
 	import { chosen_job_slot } from '$lib/stores/State';
+	import { shortcut } from '$lib/stores/Shortcut';
+	import { ethers } from 'ethers';
+	import Skeleton from '$lib/components/common/Skeleton.svelte';
+
+	//todo: upgrade tags when api is rdy
+	//add autosuggest from redis
 
 	type TokenSelection = {
 		chain_id: number;
@@ -17,10 +30,18 @@
 	let upload_url: Response;
 	let show_ens: boolean = false;
 	let show_sticky_menu: boolean = false;
+	let show_token_menu: boolean = false;
 	let sticky_duration: number = 7;
 	let links: string[] = [];
+	let tags: string[] = [];
+	let chosen_network: Network = chains[0];
+	let polygonTokens = chains.find((chain) => chain.id == 137)?.tokens!;
+	let chosen_payment_token = polygonTokens[0];
 
-	$: sticky_item = sticky_data.find((n) => n.duration == sticky_duration);
+	$: sticky_item = sticky_data.find((n) => n.duration == sticky_duration) ?? {
+		duration: 7,
+		price: 49
+	};
 
 	const handleSubmit = async (e: Event) => {
 		const formData = new FormData(e.target! as HTMLFormElement);
@@ -42,6 +63,7 @@
 		}
 
 		formObj.links = links;
+		formObj.tags = tags;
 
 		//todo: consume errors and show them to the user
 		let parsed = JobInput.safeParse(formObj);
@@ -67,7 +89,6 @@
 			console.log(data);
 		}
 	};
-
 	const uploadImage = async (e: any) => {
 		let target_file;
 		for (let t of e.target) {
@@ -94,7 +115,6 @@
 			}
 		}
 	};
-
 	const getUploadResponse = async (e: any) => {
 		const file = e.target.files[0]!;
 		if (file == null) return;
@@ -114,19 +134,64 @@
 	const handleLinkUpdate = (e: any, index: number) => {
 		links[index] = e.target.value;
 	};
-
-	// const handleTokenAdd = (e: any, chain_id: number, token_address: string) => {
-	// 	if (e.target?.checked) {
-	// 		tokens_selected.push({
-	// 			chain_id: chain_id,
-	// 			token_address: token_address
-	// 		});
-	// 	} else {
-	// 		tokens_selected = tokens_selected.filter(
-	// 			(token) => token.chain_id !== chain_id && token.token_address !== token_address
-	// 		);
-	// 	}
-	// };
+	const handleTagEntry = (e: any) => {
+		if (e.target?.value !== '' && e.pointerType != 'mouse') tags.push(e.target?.value);
+		tags = tags;
+	};
+	const handleRemoveTag = (index: number) => {
+		tags.splice(index, 1);
+		tags = tags;
+	};
+	const handleTokenUpdate = (address: string) => {
+		if (!getTokenState(address)) {
+			tokens_selected.push({
+				chain_id: chosen_network.id,
+				token_address: address
+			});
+		} else {
+			console.log('Before: ', tokens_selected);
+			tokens_selected = tokens_selected.filter(
+				(token) => token.chain_id == chosen_network.id && token.token_address !== address
+			);
+			console.log('After: ', tokens_selected);
+		}
+		tokens_selected = tokens_selected;
+	};
+	const getTokenName = (address: string) => {
+		let chain = chains.find((chain) => chain.id == chosen_network.id);
+		let tokenName = chain?.tokens.find((token) => token.address == address)?.name;
+		return tokenName;
+	};
+	const getTokenState = (address: string) => {
+		let t = tokens_selected.find(
+			(n) => n.chain_id == chosen_network.id && n.token_address == address
+		);
+		console.log('T:', t);
+		return t ? true : false;
+	};
+	const getTokenBalance = async (token_address: string) => {
+		if ($userConnected) {
+			try {
+				if (token_address == '0x0000000000000000000000000000000000000000') {
+					paymentTokenBalance = parseFloat(
+						ethers.utils.formatEther(await $networkProvider.getBalance($userAddress))
+					);
+					return;
+				}
+				const ERC20 = new ethers.Contract(token_address, token_abi, $networkProvider);
+				paymentTokenBalance = parseFloat(
+					ethers.utils.formatEther(await ERC20.balanceOf($userAddress))
+				);
+			} catch (e) {
+				console.log(e);
+			}
+		}
+	};
+	let paymentTokenBalance = 0;
+	const handlePaymentTokenUpdate = (token: any) => {
+		chosen_payment_token = token;
+		show_token_menu = false;
+	};
 </script>
 
 <main>
@@ -253,7 +318,7 @@
 			<div style="height:24px" />
 
 			<div class="description-bar">
-				<div class="description-title"><p class="light-40">bio</p></div>
+				<div class="description-title"><p class="light-40">job description</p></div>
 				<p class="chars light-60"><span class="yellow">0</span>/10</p>
 			</div>
 			<div class="description">
@@ -277,6 +342,33 @@
 				{/if}
 			{/each}
 
+			<div style="height:24px" />
+
+			<div class="input-field">
+				<div class="placeholder">
+					<p class="light-40">tags</p>
+				</div>
+				<input
+					class="flex-input"
+					type="text"
+					use:shortcut={{ code: 'Enter' }}
+					on:click={(e) => handleTagEntry(e)}
+				/>
+			</div>
+			<div style="height:8px" />
+
+			{#if tags.length > 0}
+				<div class="tags">
+					{#each tags as tag, i}
+						<div class="tag" on:click={() => handleRemoveTag(i)} on:keydown>
+							<p class="light-60">{tag}</p>
+							<!-- <img src="icons/close.svg" alt="Close" /> -->
+							<div class="close-icon" />
+						</div>
+					{/each}
+				</div>
+			{/if}
+
 			<!-- <input type="text" name="description" placeholder="Enter description" />
 			<input
 				type="text"
@@ -284,26 +376,125 @@
 				placeholder="Enter token paid"
 				value="0x6bf83F1af0350407c6766Af32818603E9c08E182"
 			/>
-			<input type="number" name="budget" placeholder="Enter budget" value={0} />
-			<input type="number" name="installments" placeholder="Enter installments" />
-			<input type="number" name="sticky_duration" placeholder="Enter sticky duration" />
-			<input type="number" name="highlight" placeholder="Enter highlit" />
+
 			<button>lets go</button> -->
+
+			<div class="networks-tab">
+				{#each chains as network, i}
+					<div class="network" on:click={() => (chosen_network = network)} on:keydown>
+						<p class={chosen_network == network ? 'yellow' : 'light-60'}>{network.name}</p>
+					</div>
+				{/each}
+			</div>
+
+			<div class="tokens-table">
+				<div class="tokens-bar">
+					<p class="light-40">legit tokens</p>
+					<p class="light-40">addresses</p>
+				</div>
+				<div class="tokens">
+					<div style="height:8px" />
+					{#each chosen_network.tokens as token, i}
+						<div class="token" on:click={() => handleTokenUpdate(token.address)} on:keydown>
+							<div class="token-left">
+								{#if tokens_selected && getTokenState(token.address)}
+									<img src="icons/checked.svg" alt="Check" />
+								{:else}
+									<img src="icons/unchecked_passive.svg" alt="Plus" />
+								{/if}
+								<div style="width:4px" />
+								<p class={tokens_selected && getTokenState(token.address) ? '' : 'light-60'}>
+									{getTokenName(token.address)}
+								</p>
+							</div>
+							<p class={tokens_selected && getTokenState(token.address) ? '' : 'light-60'}>
+								{token.address}
+							</p>
+						</div>
+						{#if i < chosen_network.tokens.length - 1}
+							<div style="height:8px" />
+						{/if}
+					{/each}
+				</div>
+			</div>
+
 			<button type="submit"><p>lets go</p></button>
 		</form>
+		<div class="payment-section">
+			<div class="receipt">
+				<div class="receipt-item">
+					<p class="light-40">service fee</p>
+					<p>+$10</p>
+				</div>
+				<div style="height:8px" />
 
-		<!-- {#each chains as network}
-		<div class="tab">{network.name}</div>
-		{#each network.tokens as token}
-			<input
-				type="checkbox"
-				id={`token_name[${token.name}]`}
-				on:change={(e) => handleTokenAdd(e, network.id, token.address)}
-			/>
-			<label for={`token_name[${token.name}]`}>{token.name}</label>
-		{/each}
-	{/each}
-	<div class="payment_module" /> -->
+				<div class="receipt-item">
+					<p class="light-40">sticky fee</p>
+					<p>+${sticky_item?.price}</p>
+				</div>
+				<div style="height:12px" />
+				<div class="receipt-item receipt-total">
+					<p class="light-60">total</p>
+					<p class="yellow">${sticky_item.price + 10}</p>
+				</div>
+			</div>
+
+			<div class="payment-module">
+				<div class="token-selector input-field">
+					<div class="placeholder">
+						<p class="light-60">token</p>
+					</div>
+					<div class="sticky">
+						<div
+							class="sticky-chosen"
+							on:click={() => (show_token_menu = !show_token_menu)}
+							on:keydown
+						>
+							<p>
+								{chosen_payment_token?.symbol ? chosen_payment_token.symbol : 'choose token'}
+							</p>
+							<img
+								src={show_token_menu ? 'icons/chevron_active.svg' : 'icons/chevron_passive.svg'}
+								alt="Check"
+								style="width: 10px; "
+							/>
+						</div>
+						{#if show_token_menu}
+							<div class="sticky-menu">
+								{#if polygonTokens}
+									{#each polygonTokens as token}
+										<div
+											class="sticky-item"
+											on:click={() => handlePaymentTokenUpdate(token)}
+											on:keydown
+										>
+											<p>{token.symbol}</p>
+										</div>
+									{/each}
+								{/if}
+							</div>
+						{/if}
+					</div>
+				</div>
+				<div style="height:8px" />
+				<div class="balance receipt-item">
+					<p class="light-40">your balance</p>
+					{#if chosen_payment_token}
+						{#await getTokenBalance(chosen_payment_token?.address)}
+							<Skeleton height="16px" width="100px" />
+						{:then balance}
+							<p>{paymentTokenBalance.toFixed(2)}</p>
+						{/await}
+					{/if}
+				</div>
+				<div style="height:12px" />
+				<div class="payment-button link">
+					<p class="yellow link">
+						pay ${sticky_item.price + 10} with {chosen_payment_token.symbol}
+					</p>
+				</div>
+			</div>
+		</div>
 	{:else}
 		<section>
 			<div class="gm">
@@ -520,5 +711,158 @@
 		box-sizing: border-box;
 		padding: 8px;
 		resize: none;
+	}
+	.tags {
+		width: calc(100% - 100px);
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+	.tag {
+		padding: 8px;
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--color-light-10);
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		cursor: pointer;
+	}
+	.tag:hover {
+		background-color: var(--color-light-2);
+	}
+	.tag > p {
+		font-size: 11px;
+		line-height: 12px;
+	}
+	.tag:hover .close-icon {
+		background: url('icons/close.svg');
+	}
+	.close-icon {
+		height: 16px;
+		width: 16px;
+		margin-left: 4px;
+		background: url('icons/close_passive.svg');
+	}
+	.networks-tab {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		border-width: 1px 1px 0px 1px;
+		border-style: solid;
+		border-color: var(--color-light-10);
+		box-sizing: border-box;
+	}
+	.network {
+		padding: 8px;
+		border-width: 0px 1px 0px 0px;
+		border-style: solid;
+		border-color: var(--color-light-10);
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		cursor: pointer;
+	}
+	.tokens {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.token {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		cursor: pointer;
+	}
+	.token p {
+		pointer-events: none;
+	}
+	.token-left {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+	.tokens-table {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		padding: 12px;
+		box-sizing: border-box;
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--color-light-10);
+	}
+	.tokens-bar {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		border-width: 0px 0px 1px 0px;
+		border-style: solid;
+		border-color: var(--color-light-10);
+		padding: 0px 0px 8px 0px;
+	}
+	.payment-section {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: space-between;
+	}
+	.receipt {
+		width: 256px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		box-sizing: border-box;
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--color-light-10);
+		padding: 12px;
+	}
+	.receipt-item {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.receipt-total {
+		border-width: 1px 0px 0px 0px;
+		border-style: solid;
+		border-color: var(--color-light-10);
+		padding: 8px 0px 0px 0px;
+	}
+	.payment-module {
+		width: 256px;
+		display: flex;
+		flex-direction: column;
+	}
+	.sticky {
+		width: 100%;
+	}
+	.payment-button {
+		width: 100%;
+		padding: 8px;
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--color-primary);
+		box-sizing: border-box;
+		cursor: pointer;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.payment-button:hover > p {
+		color: var(--color-dark);
 	}
 </style>

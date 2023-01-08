@@ -4,7 +4,7 @@
 	import Skeleton from '$lib/components/common/Skeleton.svelte';
 	import { nodeProvider } from '$lib/stores/Network';
 	import type { JobType } from '$lib/stores/Types';
-	import { chains } from '$lib/stores/Chain';
+	import { chains } from '$lib/stores/Constants';
 
 	export let job: JobType;
 
