@@ -12,7 +12,7 @@
 <main>
 	<div class="logo-section">
 		<a href="/">
-			<p class="yellow semibold link">HONESTWORK</p>
+			<p class="yellow semibold link">h0nestw0rk</p>
 		</a>
 		<div style="width:8px" />
 		<p class="light-40">v0.10</p>

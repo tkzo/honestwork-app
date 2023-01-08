@@ -48,5 +48,47 @@ export const chains = [
 export const sticky_data = [
 	{ duration: 7, price: 49 },
 	{ duration: 14, price: 69 },
-	{ duration: 30, price: 99 }
+	{ duration: 30, price: 99 },
+	{ duration: 0, price: 0 }
 ];
+
+export const form_limitations = {
+	job: {
+		username: {
+			min: 5,
+			max: 40
+		},
+		title: {
+			min: 5,
+			max: 40
+		},
+		description: {
+			rows: 20,
+			min: 100,
+			max: 1000
+		},
+		tags: {
+			min: 1,
+			max: 3
+		},
+		links: {
+			min: 1,
+			max: 3
+		},
+		budget: {
+			min: 1000,
+			max: 1000000
+		},
+		installments: {
+			min: 2,
+			max: 3
+		},
+		timezone: {
+			min: -12,
+			max: 12
+		},
+		tokens_accepted: {
+			min: 1
+		}
+	}
+};

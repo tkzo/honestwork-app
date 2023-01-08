@@ -20,30 +20,27 @@ export const actions = {
 		const address = data.get('address');
 		const salt = data.get('salt');
 		const signature = data.get('signature');
-		console.log('Eh?');
 		if (salt && signature && address) {
-			console.log('Eh?');
-
-			const url = `${env.PRIVATE_HONESTWORK_API}users/${address}/${salt}/${signature}`;
+			const apiUrl =
+				parseInt(env.PRODUCTION_ENV) == 1
+					? env.PRIVATE_HONESTWORK_API
+					: env.PRIVATE_LOCAL_HONESTWORK_API;
+			const url = `${apiUrl}/users/${address}/${salt}/${signature}`;
 			let response = await fetch(url, {
 				method: 'POST'
 			});
 			let text = await response.text();
 			if (text != `"User doesn't have NFT."`) {
-				console.log('Eh?');
-
 				cookies.set('honestwork_address', address.toString(), {
-					// domain: 'honestwork.app',
+					domain: parseInt(env.PRODUCTION_ENV) == 1 ? 'honestwork.app' : 'localhost',
 					expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000),
 					secure: true,
 					httpOnly: true,
 					sameSite: true,
 					path: '/'
 				});
-				const userAddress = cookies.get('honestwork_address', {});
-				console.log('User address: ' + userAddress);
 				cookies.set('honestwork_salt', salt.toString(), {
-					// domain: 'honestwork.app',
+					domain: parseInt(env.PRODUCTION_ENV) == 1 ? 'honestwork.app' : 'localhost',
 					expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000),
 					secure: true,
 					httpOnly: true,
@@ -51,7 +48,7 @@ export const actions = {
 					path: '/'
 				});
 				cookies.set('honestwork_signature', signature.toString(), {
-					// domain: 'honestwork.app',
+					domain: parseInt(env.PRODUCTION_ENV) == 1 ? 'honestwork.app' : 'localhost',
 					expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000),
 					secure: true,
 					httpOnly: true,

@@ -49,7 +49,6 @@ export const connectWallet = async () => {
 
 		// membership state
 		await fetchUserState(signer, addr);
-
 		// set network/account change listeners
 		setListeners();
 
@@ -91,6 +90,7 @@ const fetchUserState = async (signer, addr) => {
 		const contract = new ethers.Contract(token_address, token_abi, signer);
 		let state = await contract.getUserState(addr);
 		userState.set(state);
+		console.log('State', state);
 	} catch (err) {
 		console.log(err);
 	}

@@ -188,11 +188,11 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 ::placeholder {
-	color: var(--color-light-80);
+	color: var(--color-light-20);
 }
 
 textarea::placeholder {
-	color: var(--color-light-60);
+	color: var(--color-light-20);
 }
 
 ::-moz-selection {

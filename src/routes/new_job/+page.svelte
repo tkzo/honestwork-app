@@ -1,6 +1,7 @@
 <script lang="ts">
 	import {
 		networkProvider,
+		networkSigner,
 		token_abi,
 		userConnected,
 		connectWallet,
@@ -15,6 +16,10 @@
 	import { shortcut } from '$lib/stores/Shortcut';
 	import { ethers } from 'ethers';
 	import Skeleton from '$lib/components/common/Skeleton.svelte';
+	import { env } from '$env/dynamic/public';
+	import { joblisting_abi } from '$lib/stores/ABI';
+	import { form_limitations } from '$lib/stores/Constants';
+	import { Svrollbar } from 'svrollbar';
 
 	//todo: upgrade tags when api is rdy
 	//add autosuggest from redis
@@ -37,11 +42,22 @@
 	let chosen_network: Network = chains[0];
 	let polygonTokens = chains.find((chain) => chain.id == 137)?.tokens!;
 	let chosen_payment_token = polygonTokens[0];
+	let paymentTokenBalance = 0;
+	let userPaying = false;
+	let userSigned = false;
+	let tag_input: HTMLInputElement;
+	let userPaid: boolean = false;
 
-	$: sticky_item = sticky_data.find((n) => n.duration == sticky_duration) ?? {
-		duration: 7,
-		price: 49
-	};
+	let username_length = 0;
+	let username_element: HTMLInputElement;
+
+	let title_length = 0;
+	let title_element: HTMLInputElement;
+
+	let description_length = 0;
+	let description_element: HTMLTextAreaElement;
+
+	$: sticky_item = sticky_data.find((n) => n.duration == sticky_duration) ?? sticky_data[0];
 
 	const handleSubmit = async (e: Event) => {
 		const formData = new FormData(e.target! as HTMLFormElement);
@@ -137,6 +153,7 @@
 	const handleTagEntry = (e: any) => {
 		if (e.target?.value !== '' && e.pointerType != 'mouse') tags.push(e.target?.value);
 		tags = tags;
+		tag_input.value = '';
 	};
 	const handleRemoveTag = (index: number) => {
 		tags.splice(index, 1);
@@ -149,11 +166,9 @@
 				token_address: address
 			});
 		} else {
-			console.log('Before: ', tokens_selected);
 			tokens_selected = tokens_selected.filter(
 				(token) => token.chain_id == chosen_network.id && token.token_address !== address
 			);
-			console.log('After: ', tokens_selected);
 		}
 		tokens_selected = tokens_selected;
 	};
@@ -166,7 +181,6 @@
 		let t = tokens_selected.find(
 			(n) => n.chain_id == chosen_network.id && n.token_address == address
 		);
-		console.log('T:', t);
 		return t ? true : false;
 	};
 	const getTokenBalance = async (token_address: string) => {
@@ -187,13 +201,41 @@
 			}
 		}
 	};
-	let paymentTokenBalance = 0;
 	const handlePaymentTokenUpdate = (token: any) => {
 		chosen_payment_token = token;
 		show_token_menu = false;
 	};
+	const pay = async () => {
+		if ($userConnected) {
+			userPaying = true;
+			let price = ethers.utils.parseEther(sticky_item.price.toString());
+			try {
+				const joblistingContract = new ethers.Contract(
+					env.PUBLIC_JOB_LISTING_CONTRACT_ADDRESS,
+					joblisting_abi,
+					$networkSigner
+				);
+				let tx = await joblistingContract.payForListing(chosen_payment_token.address, price._hex);
+				let receipt = await tx.wait();
+				if (receipt.status == 1) {
+					console.log('Payment successful!');
+				}
+			} catch (e) {
+				console.log(e);
+			}
+			userPaying = false;
+			userPaid = true;
+			//todo: get user signature before submit
+
+			userSigned = true;
+		}
+	};
+	const updateInputLengths = () => {
+		username_length = username_element?.value.length;
+	};
 </script>
 
+<Svrollbar />
 <main>
 	{#if $userConnected && $xmtpConnected}
 		<form method="POST" on:submit|preventDefault={handleSubmit} bind:this={jobForm}>
@@ -228,7 +270,21 @@
 						<div class="placeholder">
 							<p class="light-40">name</p>
 						</div>
-						<input name="username" class="flex-input" type="text" />
+						<input
+							name="username"
+							class="flex-input"
+							type="text"
+							on:keyup={() => (username_length = username_element.value.length)}
+							bind:this={username_element}
+							minlength={form_limitations.job.username.min}
+							maxlength={form_limitations.job.username.max}
+							placeholder="Enter company/username"
+						/>
+						<div class="limit">
+							<p class="light-60">
+								<span class="yellow">{username_length}</span>/{form_limitations.job.username.max}
+							</p>
+						</div>
 					</div>
 
 					<div style="height:8px;" />
@@ -252,7 +308,21 @@
 						<div class="placeholder">
 							<p class="light-40">title</p>
 						</div>
-						<input name="title" class="flex-input" type="text" />
+						<input
+							name="title"
+							class="flex-input"
+							type="text"
+							on:keyup={() => (title_length = title_element.value.length)}
+							bind:this={title_element}
+							minlength={form_limitations.job.title.min}
+							maxlength={form_limitations.job.title.max}
+							placeholder="Enter a title for you job listing"
+						/>
+						<div class="limit">
+							<p class="light-60">
+								<span class="yellow">{title_length}</span>/{form_limitations.job.title.max}
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -261,28 +331,54 @@
 				<div class="placeholder">
 					<p class="light-40">email</p>
 				</div>
-				<input name="email" class="flex-input" type="text" />
+				<input
+					name="email"
+					class="flex-input"
+					type="text"
+					placeholder="Enter email for notifications"
+				/>
 			</div>
 			<div style="height:8px" />
 			<div class="input-field">
 				<div class="placeholder">
 					<p class="light-40">timezone <span class="light-60">(utc)</span></p>
 				</div>
-				<input name="timezone" class="flex-input" type="number" min="-12" max="12" />
+				<input
+					name="timezone"
+					class="flex-input"
+					type="number"
+					min={form_limitations.job.timezone.min}
+					max={form_limitations.job.timezone.max}
+					placeholder="Between -12 and 12"
+				/>
 			</div>
 			<div style="height:8px" />
 			<div class="input-field">
 				<div class="placeholder">
 					<p class="light-40">budget <span class="light-60">($)</span></p>
 				</div>
-				<input name="budget" class="flex-input" type="number" min="1000" max="1000000" />
+				<input
+					name="budget"
+					class="flex-input"
+					type="number"
+					min={form_limitations.job.budget.min}
+					max={form_limitations.job.budget.max}
+					placeholder="Between $1000 and $1,000,000"
+				/>
 			</div>
 			<div style="height:8px" />
 			<div class="input-field">
 				<div class="placeholder">
 					<p class="light-40">installments</p>
 				</div>
-				<input name="installments" class="flex-input" type="number" min="2" max="5" />
+				<input
+					name="installments"
+					class="flex-input"
+					type="number"
+					min={form_limitations.job.installments.min}
+					max={form_limitations.job.installments.max}
+					placeholder="Between 2 and 5"
+				/>
 			</div>
 			<div style="height:8px" />
 			<div class="input-field">
@@ -311,22 +407,30 @@
 							<div class="sticky-item" on:click={() => setSticky(30)} on:keydown>
 								<p>30 days<span class="light-60">($99)</span></p>
 							</div>
+							<div class="sticky-item" on:click={() => setSticky(0)} on:keydown>
+								<p>no sticky<span class="light-60">(ngmi)</span></p>
+							</div>
 						</div>
 					{/if}
 				</div>
 			</div>
 			<div style="height:24px" />
-
 			<div class="description-bar">
 				<div class="description-title"><p class="light-40">job description</p></div>
-				<p class="chars light-60"><span class="yellow">0</span>/10</p>
+				<p class="light-60">
+					<span class="yellow">{description_element?.value.length}</span>/{form_limitations.job
+						.description.max}
+				</p>
 			</div>
 			<div class="description">
 				<textarea
 					name="description"
-					rows="20"
-					maxlength="1000"
+					rows={form_limitations.job.description.rows}
+					minlength={form_limitations.job.description.min}
+					maxlength={form_limitations.job.description.max}
 					placeholder="enter description..."
+					bind:this={description_element}
+					on:keyup={() => (username_length = username_element.value.length)}
 				/>
 			</div>
 			<div style="height:24px" />
@@ -335,15 +439,18 @@
 					<div class="placeholder">
 						<p class="light-40">link</p>
 					</div>
-					<input class="flex-input" type="text" on:input={(e) => handleLinkUpdate(e, i)} />
+					<input
+						class="flex-input"
+						type="text"
+						on:input={(e) => handleLinkUpdate(e, i)}
+						placeholder="enter at least 1 link"
+					/>
 				</div>
 				{#if i < 2}
 					<div style="height:8px" />
 				{/if}
 			{/each}
-
 			<div style="height:24px" />
-
 			<div class="input-field">
 				<div class="placeholder">
 					<p class="light-40">tags</p>
@@ -353,10 +460,11 @@
 					type="text"
 					use:shortcut={{ code: 'Enter' }}
 					on:click={(e) => handleTagEntry(e)}
+					bind:this={tag_input}
+					placeholder="enter at least 1 tag"
 				/>
 			</div>
 			<div style="height:8px" />
-
 			{#if tags.length > 0}
 				<div class="tags">
 					{#each tags as tag, i}
@@ -368,17 +476,7 @@
 					{/each}
 				</div>
 			{/if}
-
-			<!-- <input type="text" name="description" placeholder="Enter description" />
-			<input
-				type="text"
-				name="token_paid"
-				placeholder="Enter token paid"
-				value="0x6bf83F1af0350407c6766Af32818603E9c08E182"
-			/>
-
-			<button>lets go</button> -->
-
+			<div style="height:24px" />
 			<div class="networks-tab">
 				{#each chains as network, i}
 					<div class="network" on:click={() => (chosen_network = network)} on:keydown>
@@ -417,84 +515,96 @@
 					{/each}
 				</div>
 			</div>
+			<div style="height:8px" />
 
-			<button type="submit"><p>lets go</p></button>
-		</form>
-		<div class="payment-section">
-			<div class="receipt">
-				<div class="receipt-item">
-					<p class="light-40">service fee</p>
-					<p>+$10</p>
-				</div>
-				<div style="height:8px" />
-
-				<div class="receipt-item">
-					<p class="light-40">sticky fee</p>
-					<p>+${sticky_item?.price}</p>
-				</div>
-				<div style="height:12px" />
-				<div class="receipt-item receipt-total">
-					<p class="light-60">total</p>
-					<p class="yellow">${sticky_item.price + 10}</p>
-				</div>
-			</div>
-
-			<div class="payment-module">
-				<div class="token-selector input-field">
-					<div class="placeholder">
-						<p class="light-60">token</p>
+			<div class="payment-section">
+				<div class="receipt">
+					<div class="receipt-item">
+						<p class="light-40">service fee</p>
+						<p>+$10</p>
 					</div>
-					<div class="sticky">
-						<div
-							class="sticky-chosen"
-							on:click={() => (show_token_menu = !show_token_menu)}
-							on:keydown
-						>
-							<p>
-								{chosen_payment_token?.symbol ? chosen_payment_token.symbol : 'choose token'}
-							</p>
-							<img
-								src={show_token_menu ? 'icons/chevron_active.svg' : 'icons/chevron_passive.svg'}
-								alt="Check"
-								style="width: 10px; "
-							/>
+					<div style="height:8px" />
+
+					<div class="receipt-item">
+						<p class="light-40">sticky fee</p>
+						<p>+${sticky_item?.price}</p>
+					</div>
+					<div style="height:12px" />
+					<div class="receipt-item receipt-total">
+						<p class="light-60">total</p>
+						<p class="yellow">${sticky_item.price + 10}</p>
+					</div>
+				</div>
+
+				<div class="payment-module">
+					<div class="token-selector input-field">
+						<div class="placeholder">
+							<p class="light-60">token</p>
 						</div>
-						{#if show_token_menu}
-							<div class="sticky-menu">
-								{#if polygonTokens}
-									{#each polygonTokens as token}
-										<div
-											class="sticky-item"
-											on:click={() => handlePaymentTokenUpdate(token)}
-											on:keydown
-										>
-											<p>{token.symbol}</p>
-										</div>
-									{/each}
-								{/if}
+						<div class="sticky">
+							<div
+								class="sticky-chosen"
+								on:click={() => (show_token_menu = !show_token_menu)}
+								on:keydown
+							>
+								<p>
+									{chosen_payment_token?.symbol ? chosen_payment_token.symbol : 'choose token'}
+								</p>
+								<img
+									src={show_token_menu ? 'icons/chevron_active.svg' : 'icons/chevron_passive.svg'}
+									alt="Check"
+									style="width: 10px; "
+								/>
 							</div>
+							{#if show_token_menu}
+								<div class="sticky-menu">
+									{#if polygonTokens}
+										{#each polygonTokens as token}
+											<div
+												class="sticky-item"
+												on:click={() => handlePaymentTokenUpdate(token)}
+												on:keydown
+											>
+												<p>{token.symbol}</p>
+											</div>
+										{/each}
+									{/if}
+								</div>
+							{/if}
+						</div>
+					</div>
+					<div style="height:8px" />
+					<div class="balance receipt-item">
+						<p class="light-40">your balance</p>
+						{#if chosen_payment_token}
+							{#await getTokenBalance(chosen_payment_token?.address)}
+								<Skeleton height="16px" width="100px" />
+							{:then balance}
+								<p>{paymentTokenBalance.toFixed(2)}</p>
+							{/await}
 						{/if}
 					</div>
-				</div>
-				<div style="height:8px" />
-				<div class="balance receipt-item">
-					<p class="light-40">your balance</p>
-					{#if chosen_payment_token}
-						{#await getTokenBalance(chosen_payment_token?.address)}
-							<Skeleton height="16px" width="100px" />
-						{:then balance}
-							<p>{paymentTokenBalance.toFixed(2)}</p>
-						{/await}
+					<div style="height:12px" />
+					{#if userPaying}
+						<div class="payment-button">
+							<img src="icons/loader.svg" alt="loading" class="rotating" />
+							<div style="width:8px" />
+							<p class="yellow">transaction in progress...</p>
+						</div>
+					{:else if userPaid}
+						<div class="payment-button">
+							<button type="submit"><p>publish job listing</p></button>
+						</div>
+					{:else}
+						<div class="payment-button payment-button-hover link" on:click={pay} on:keydown>
+							<p class="yellow link">
+								pay ${sticky_item.price + 10} with {chosen_payment_token.symbol}
+							</p>
+						</div>
 					{/if}
 				</div>
-				<div style="height:12px" />
-				<div class="payment-button link">
-					<p class="yellow link">
-						pay ${sticky_item.price + 10} with {chosen_payment_token.symbol}
-					</p>
-				</div>
 			</div>
-		</div>
+		</form>
 	{:else}
 		<section>
 			<div class="gm">
@@ -631,6 +741,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		position: relative;
 	}
 	.sticky {
 		flex: 1;
@@ -859,10 +970,18 @@
 		box-sizing: border-box;
 		cursor: pointer;
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
+		justify-content: center;
 		align-items: center;
 	}
-	.payment-button:hover > p {
+	.payment-button-hover:hover > p {
 		color: var(--color-dark);
+	}
+	button {
+		color: var(--color-primary);
+	}
+	.limit {
+		position: absolute;
+		right: 12px;
 	}
 </style>

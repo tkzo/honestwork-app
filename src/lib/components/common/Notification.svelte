@@ -43,6 +43,18 @@
 				<img src="/icons/post.svg" alt="post a job" />
 			</a>
 		</div>
+	{:else if $page.route.id == '/new_job'}
+		{#if $userState == -1}
+			<div class="bar">
+				<p class="light-40">grab an nft to get airdrop tokens from your activities!</p>
+				<div style="width:8px" />
+				<a href="/new_job" class="post-link">
+					<p class="link underlined">mint and start accumulating</p>
+					<div style="width:8px" />
+					<img src="/icons/trending.svg" alt="post a job" />
+				</a>
+			</div>
+		{/if}
 	{/if}
 </main>
 
