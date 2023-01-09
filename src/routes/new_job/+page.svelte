@@ -21,6 +21,7 @@
 	import { form_limitations } from '$lib/stores/Constants';
 	import { Svrollbar } from 'svrollbar';
 	import { toast } from '@zerodevx/svelte-toast';
+	import { goto } from '$app/navigation';
 
 	//todo: upgrade tags when api is rdy
 	//add autosuggest from redis
@@ -30,6 +31,7 @@
 		token_address: string;
 	};
 
+	let service_fee = 10; // in $
 	let jobForm: HTMLFormElement;
 	let tokens_selected: TokenSelection[] = [];
 	let image_url: string | undefined = undefined;
@@ -48,19 +50,21 @@
 	let userSigned = false;
 	let tag_input: HTMLInputElement;
 	let userPaid: boolean = false;
-
 	let username_length = 0;
 	let username_element: HTMLInputElement;
-
 	let title_length = 0;
 	let title_element: HTMLInputElement;
-
 	let description_length = 0;
 	let description_element: HTMLTextAreaElement;
+	let tx_hash = '';
+	let timezone: number;
+	let userPublishing = false;
+	let userPublished = false;
 
 	$: sticky_item = sticky_data.find((n) => n.duration == sticky_duration) ?? sticky_data[0];
 
 	const handleSubmit = async (e: Event) => {
+		userPublishing = true;
 		const formData = new FormData(e.target! as HTMLFormElement);
 		let formObj: JobType = {} as JobType;
 		formObj = Object.fromEntries(formData.entries()) as unknown as JobType;
@@ -81,6 +85,8 @@
 
 		formObj.links = links;
 		formObj.tags = tags;
+		formObj.sticky_duration = sticky_duration.toString();
+		formObj.timezone = timezone >= 0 ? `UTC+${timezone}` : `UTC-${timezone}`;
 
 		//todo: consume errors and show them to the user
 		let parsed = JobInput.safeParse(formObj);
@@ -103,8 +109,13 @@
 			};
 			let res = await fetch(url, options);
 			let data = await res.json();
-			console.log(data);
+			if (data == 'success') {
+				userPublished = true;
+				toast.push(`<p class="light-60">Job listing published.</p>`);
+			}
 		}
+		userPublishing = false;
+		goto('/jobs');
 	};
 	const uploadImage = async (e: any) => {
 		let target_file;
@@ -193,6 +204,7 @@
 					);
 					return;
 				}
+
 				const ERC20 = new ethers.Contract(token_address, token_abi, $networkProvider);
 				paymentTokenBalance = parseFloat(
 					ethers.utils.formatEther(await ERC20.balanceOf($userAddress))
@@ -209,7 +221,10 @@
 	const pay = async () => {
 		if ($userConnected) {
 			userPaying = true;
-			let price = ethers.utils.parseEther(sticky_item.price.toString());
+			let amount_to_pay = sticky_item.price + service_fee;
+			console.log('Amount to pay:', amount_to_pay);
+			let price = ethers.utils.parseEther(amount_to_pay.toString());
+			console.log('Price:', price);
 			try {
 				const joblistingContract = new ethers.Contract(
 					env.PUBLIC_JOB_LISTING_CONTRACT_ADDRESS,
@@ -217,25 +232,19 @@
 					$networkSigner
 				);
 				let tx = await joblistingContract.payForListing(chosen_payment_token.address, price._hex);
+				tx_hash = tx.hash;
 				let receipt = await tx.wait();
 				if (receipt.status == 1) {
-					toast.push(`<p>Payment successful!</p>`);
+					toast.push(`<p class="light-60">Payment successful!</p>`);
 				}
 				userPaid = true;
 			} catch (e: any) {
 				toast.push(
-					`<p class="light-60"><span style="color:var(--color-error)">ERR: </span>${e.code}</p>`,
-					{ theme: {} }
+					`<p class="light-60"><span style="color:var(--color-error)">ERR: </span>${e.reason}</p>`
 				);
 			}
 			userPaying = false;
-			//todo: get user signature before submit
-
-			// userSigned = true;
 		}
-	};
-	const updateInputLengths = () => {
-		username_length = username_element?.value.length;
 	};
 </script>
 
@@ -245,6 +254,8 @@
 		<form method="POST" on:submit|preventDefault={handleSubmit} bind:this={jobForm}>
 			<input hidden type="number" name="job_slot" value={$chosen_job_slot} />
 			<input hidden type="text" name="user_address" value={$userAddress} />
+			<input hidden type="text" name="tx_hash" value={tx_hash} />
+			<input hidden type="text" name="token_paid" value={chosen_payment_token.address} />
 
 			<div class="image-section">
 				<div
@@ -348,12 +359,12 @@
 					<p class="light-40">timezone <span class="light-60">(utc)</span></p>
 				</div>
 				<input
-					name="timezone"
 					class="flex-input"
 					type="number"
 					min={form_limitations.job.timezone.min}
 					max={form_limitations.job.timezone.max}
 					placeholder="Between -12 and 12"
+					bind:value={timezone}
 				/>
 			</div>
 			<div style="height:8px" />
@@ -426,8 +437,7 @@
 			<div class="description-bar">
 				<div class="description-title"><p class="light-40">job description</p></div>
 				<p class="light-60">
-					<span class="yellow">{description_element?.value.length}</span>/{form_limitations.job
-						.description.max}
+					<span class="yellow">{description_length}</span>/{form_limitations.job.description.max}
 				</p>
 			</div>
 			<div class="description">
@@ -438,7 +448,7 @@
 					maxlength={form_limitations.job.description.max}
 					placeholder="enter description..."
 					bind:this={description_element}
-					on:keyup={() => (username_length = username_element.value.length)}
+					on:keyup={() => (description_length = description_element.value.length)}
 				/>
 			</div>
 			<div style="height:24px" />
@@ -599,7 +609,13 @@
 							<div style="width:8px" />
 							<p class="yellow">transaction in progress...</p>
 						</div>
-					{:else if userPaid}
+					{:else if userPublishing}
+						<div class="payment-button">
+							<img src="icons/loader.svg" alt="loading" class="rotating" />
+							<div style="width:8px" />
+							<p class="yellow">publishing job listing...</p>
+						</div>
+					{:else if userPaid && !userPublished}
 						<div class="payment-button">
 							<button type="submit"><p>publish job listing</p></button>
 						</div>

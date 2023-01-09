@@ -55,14 +55,14 @@
 </svelte:head>
 
 <main>
+	<div class="toast-container">
+		<SvelteToast options={{ duration: 8000, intro: { y: -20 } }} />
+	</div>
 	{#if $page.route.id !== '/'}
 		<Navigation />
 	{/if}
 	<div style="height:32px;" />
 	<Notification />
-	<div class="toast-container">
-		<SvelteToast options={{ duration: 8000, intro: { x: 20 } }} />
-	</div>
 	<div style="height:16px;" />
 	{#if $connecting && $page.route.id !== '/'}
 		<div class="spinster">
@@ -79,6 +79,7 @@
 	{:else}
 		<slot />
 	{/if}
+
 	{#if $page.route.id !== '/'}
 		<Footer />
 	{/if}

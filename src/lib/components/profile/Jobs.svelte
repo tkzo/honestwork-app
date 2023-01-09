@@ -6,10 +6,6 @@
 
 	export let jobs: JobType[] | null;
 
-	$: if (jobs) {
-		console.log('Jobs:', jobs);
-	}
-
 	const handleJobAdd = () => {};
 	const handleJobEdit = (slot: number) => {};
 </script>

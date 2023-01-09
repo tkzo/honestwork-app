@@ -17,8 +17,11 @@
 	--toastMsgPadding: 12px;
 	--toastMinHeight: 100%;
 	--toastContainerTop: 36px;
+	--toastContainerRight: 16px;
 	--toastBoxShadow: none;
 	--toastWidth: auto;
+	--toastBarBackground: var(--color-primary);
+	--toastBtnFont: 12px;
 }
 
 .toast-container {

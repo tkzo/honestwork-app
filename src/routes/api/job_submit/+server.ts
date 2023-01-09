@@ -9,15 +9,9 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 	let data = await request.json();
 
 	let cloud_url;
-	if (data.get('file_url') != '') {
+	if (data.file_url != '') {
 		cloud_url =
-			env.PRIVATE_SPACES_URL +
-			'/' +
-			userAddress +
-			'/' +
-			data.get('job_slot') +
-			'/' +
-			data.get('file_url');
+			env.PRIVATE_SPACES_URL + '/' + userAddress + '/' + data.job_slot + '/' + data.file_url;
 	}
 
 	const body = {
@@ -32,14 +26,15 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		sticky_duration: parseInt(data.sticky_duration),
 		links: data.links,
 		highlight: parseInt(data.highlight),
-		tokens_accepted: data.tokens_accepted
+		tokens_accepted: data.tokens_accepted,
+		tx_hash: data.tx_hash
 	};
 
 	const apiUrl =
 		parseInt(env.PRODUCTION_ENV) == 1
 			? env.PRIVATE_HONESTWORK_API
 			: env.PRIVATE_LOCAL_HONESTWORK_API;
-	const url = `${apiUrl}/jobs/${userAddress}/${userSalt}/${userSignature}`;
+	const url = `${apiUrl}/jobs/${userAddress}/${userSalt}/${userSignature}/`;
 	const options = {
 		method: 'POST',
 		body: JSON.stringify(body),
@@ -47,6 +42,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 			'Content-Type': 'application/json'
 		}
 	};
+
 	let response = await fetch(url, options);
 	return response;
 };

@@ -63,8 +63,6 @@ export const JobInput = z.object({
 				.array()
 		})
 		.array(),
-	sticky_duration: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
-		message: 'Expected number, received a string'
-	})
+	sticky_duration: z.enum(['7', '14', '30', '0'])
 });
 export type JobInput = z.infer<typeof JobInput>;

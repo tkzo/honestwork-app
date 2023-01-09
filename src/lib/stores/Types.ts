@@ -34,8 +34,8 @@ export type JobType = {
 	tags: Array<string>;
 	installments: number;
 	tokens_accepted: Array<Network>;
-	sticky_duration: number;
-	highlight: number;
+	sticky_duration: string;
+	timezone: string;
 };
 
 export type Network = {
