@@ -10,6 +10,25 @@
 		url('fonts/ProtoMono-SemiBoldShadow.otf') format('otf');
 } */
 
+:root {
+	--toastBackground: var(--color-light-2);
+	--toastBorder: 1px solid var(--color-light-10);
+	--toastBarHeight: 2px;
+	--toastMsgPadding: 12px;
+	--toastMinHeight: 100%;
+	--toastContainerTop: 36px;
+	--toastBoxShadow: none;
+	--toastWidth: auto;
+}
+
+.toast-container {
+	font-style: normal;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 16px;
+	color: var(--color-primary);
+}
+
 /* hide scrollbar but allow scrolling */
 body {
 	-ms-overflow-style: none; /* for Internet Explorer, Edge */
@@ -77,7 +96,7 @@ p {
 	font-size: 12px;
 	line-height: 16px;
 	margin: 0px;
-	text-transform: uppercase;
+	/* text-transform: uppercase; */
 }
 
 a {

@@ -20,6 +20,7 @@
 	import { joblisting_abi } from '$lib/stores/ABI';
 	import { form_limitations } from '$lib/stores/Constants';
 	import { Svrollbar } from 'svrollbar';
+	import { toast } from '@zerodevx/svelte-toast';
 
 	//todo: upgrade tags when api is rdy
 	//add autosuggest from redis
@@ -218,16 +219,19 @@
 				let tx = await joblistingContract.payForListing(chosen_payment_token.address, price._hex);
 				let receipt = await tx.wait();
 				if (receipt.status == 1) {
-					console.log('Payment successful!');
+					toast.push(`<p>Payment successful!</p>`);
 				}
-			} catch (e) {
-				console.log(e);
+				userPaid = true;
+			} catch (e: any) {
+				toast.push(
+					`<p class="light-60"><span style="color:var(--color-error)">ERR: </span>${e.code}</p>`,
+					{ theme: {} }
+				);
 			}
 			userPaying = false;
-			userPaid = true;
 			//todo: get user signature before submit
 
-			userSigned = true;
+			// userSigned = true;
 		}
 	};
 	const updateInputLengths = () => {
@@ -394,7 +398,11 @@
 						<p>
 							{sticky_item?.duration} days<span class="light-60">(${sticky_item?.price})</span>
 						</p>
-						<img src="icons/chevron_active.svg" alt="Dropdown" style="width:10px;" />
+						<img
+							src={show_sticky_menu ? 'icons/chevron_active.svg' : 'icons/chevron_passive.svg'}
+							alt="Dropdown"
+							style="width:10px;"
+						/>
 					</div>
 					{#if show_sticky_menu}
 						<div class="sticky-menu">
@@ -487,7 +495,7 @@
 
 			<div class="tokens-table">
 				<div class="tokens-bar">
-					<p class="light-40">legit tokens</p>
+					<p class="light-40">accept tokens</p>
 					<p class="light-40">addresses</p>
 				</div>
 				<div class="tokens">
@@ -605,6 +613,7 @@
 				</div>
 			</div>
 		</form>
+		<div style="height:128px" />
 	{:else}
 		<section>
 			<div class="gm">
@@ -624,7 +633,6 @@
 			</div>
 		</section>
 	{/if}
-	<div style="height:64px" />
 </main>
 
 <style>

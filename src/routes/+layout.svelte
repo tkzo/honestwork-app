@@ -9,6 +9,7 @@
 	import { Jumper } from 'svelte-loading-spinners';
 	import { page } from '$app/stores';
 	import LogRocket from 'logrocket';
+	import { SvelteToast } from '@zerodevx/svelte-toast';
 
 	LogRocket.init('2wdgml/honestwork');
 	$: if ($userAddress && $userAddress != '') {
@@ -59,6 +60,9 @@
 	{/if}
 	<div style="height:32px;" />
 	<Notification />
+	<div class="toast-container">
+		<SvelteToast options={{ duration: 8000, intro: { x: 20 } }} />
+	</div>
 	<div style="height:16px;" />
 	{#if $connecting && $page.route.id !== '/'}
 		<div class="spinster">
