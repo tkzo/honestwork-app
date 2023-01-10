@@ -4,6 +4,7 @@
 	import { userConnected, xmtpConnected, userState } from '$lib/stores/Network';
 	import Skeleton from '$lib/components/common/Skeleton.svelte';
 	import BenefitsCards from '$lib/components/landing/BenefitsCards.svelte';
+	import Faq from '$lib/components/landing/faq.svelte';
 
 	const track = async () => {
 		if (typeof window !== 'undefined' && window) {
@@ -33,6 +34,8 @@
 	<div on:click={() => goto('/skills')} on:keydown>START EXPLORING</div>
 	<div class="container">
 		<!-- <BenefitsCards /> -->
+		<Faq />
+
 	</div>
 {:else}
 	<Skeleton width="200px" borderRadius="0px" />
