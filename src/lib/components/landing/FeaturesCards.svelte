@@ -61,7 +61,7 @@
         feature1: 'Create unique profiles with ENS names and NFTs',
         icon2: 'icons/landing/script-text.svg',
         icon2alt: 'Script text icon',
-        feature2: 'HonestWork NFT stores your ratings and completed projects on-chain ',
+        feature2: 'HonestWork NFT stores your ratings and completed projects on-chain',
         buttontext: 'Explore Jobs',
         imgsrc: 'assets/landing/profile.png',
         imgalt:'Profile',
@@ -113,29 +113,33 @@
                     </div>
                     <a href="/jobs" class="button">{card.buttontext}</a>
                 </div>
-                <img src={card.imgsrc} alt={card.imgalt} class="featured-image">
+                <div class="img-container">
+                    <img src={card.imgsrc} alt={card.imgalt} class="featured-image">
+                </div>            
             </div>
         {/each}
     {:else}
-    {#each freelancersFeatureCards as card, index}
-        <div class="features-card {index % 2 == 0 ? 'img-right' : 'img-left'}">
-            <div class="info">
-                <h3 class="title">{card.title}</h3>
-                <div class="description-container">
-                    <div class="description">
-                        <img src={card.icon1} alt={card.icon1alt} class="icon">
-                        <p class="feature">{card.feature1}</p>
+        {#each freelancersFeatureCards as card, index}
+            <div class="features-card {index % 2 == 0 ? 'img-right' : 'img-left'}">
+                <div class="info">
+                    <h3 class="title">{card.title}</h3>
+                    <div class="description-container">
+                        <div class="description">
+                            <img src={card.icon1} alt={card.icon1alt} class="icon">
+                            <p class="feature">{card.feature1}</p>
+                        </div>
+                        <div class="description">
+                            <img src={card.icon2} alt={card.icon2alt} class="icon">
+                            <p class="feature">{card.feature2}</p>
+                        </div>
                     </div>
-                    <div class="description">
-                        <img src={card.icon2} alt={card.icon2alt} class="icon">
-                        <p class="feature">{card.feature2}</p>
-                    </div>
+                    <a href="/jobs" class="button">{card.buttontext}</a>
                 </div>
-                <a href="/jobs" class="button">{card.buttontext}</a>
+                <div class="img-container">
+                    <img src={card.imgsrc} alt={card.imgalt} class="featured-image">
+                </div>
             </div>
-            <img src={card.imgsrc} alt={card.imgalt} class="featured-image">
-        </div>
-    {/each}
+        {/each}
     {/if}
 </div>
 
@@ -154,7 +158,7 @@
         background: var(--color-dark);
         width:100%;
         max-width: 879px;
-        justify-content: flex-start;
+        justify-content: space-between;
     }
     .img-right {
         flex-direction: row;
@@ -182,6 +186,7 @@
         flex-direction: column;
         gap: 24px;
         justify-content: flex-start;
+        width: 100%;
     }
     .description {
         display: flex;
@@ -212,6 +217,9 @@
         filter: drop-shadow(0px 0px 50px var(--color-primary));
         cursor: pointer;
         color: var(--color-primary);
+    }
+    .img-container{
+        width: 50%;
     }
     .featured-image {
         width: 100%;

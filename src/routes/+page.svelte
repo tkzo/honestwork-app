@@ -45,6 +45,5 @@
 <style>
 	.container {
 		max-width: 1000px;
-		padding: 20px;
 	}
 </style>
