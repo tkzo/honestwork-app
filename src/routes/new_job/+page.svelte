@@ -31,6 +31,8 @@
 		token_address: string;
 	};
 
+	let file_url: string;
+
 	let service_fee = 10; // in $
 	let jobForm: HTMLFormElement;
 	let tokens_selected: TokenSelection[] = [];
@@ -60,6 +62,7 @@
 	let timezone: number;
 	let userPublishing = false;
 	let userPublished = false;
+	let parsed_filename: string;
 
 	$: sticky_item = sticky_data.find((n) => n.duration == sticky_duration) ?? sticky_data[0];
 
@@ -88,17 +91,18 @@
 		formObj.sticky_duration = sticky_duration.toString();
 		formObj.timezone = timezone >= 0 ? `UTC+${timezone}` : `UTC-${timezone}`;
 
+		console.log('Form obj:', formObj);
+
 		//todo: consume errors and show them to the user
 		let parsed = JobInput.safeParse(formObj);
 		if (!parsed.success) {
 			console.log(parsed.error);
 			return;
 		} else {
+			uploadImage(e);
+			formObj.image_url = parsed_filename;
 			jobForm.tokens_accepted = JSON.stringify(formObj.tokens_accepted);
 			let stringified = JSON.stringify(formObj);
-
-			uploadImage(e);
-
 			const url = '/api/job_submit';
 			const options = {
 				method: 'POST',
@@ -118,6 +122,7 @@
 		goto('/jobs');
 	};
 	const uploadImage = async (e: any) => {
+		console.log('Upload img event:', e);
 		let target_file;
 		for (let t of e.target) {
 			if (t.files) {
@@ -126,6 +131,8 @@
 		}
 		if (target_file.files.length != 0) {
 			const file = target_file.files[0]!;
+			console.log('MYFILENAME:', file.name);
+			parsed_filename = file.name;
 			const { url, fields } = await upload_url.json();
 			const formData = new FormData();
 			Object.entries({ ...fields, file }).forEach(([key, value]) => {
@@ -152,7 +159,7 @@
 		};
 		reader.readAsDataURL(file);
 
-		const res = await fetch(`/api/upload-url/${e.target.files[0].name}`);
+		const res = await fetch(`/api/upload-job-url/${e.target.files[0].name}/${$userAddress}`);
 		upload_url = res;
 	};
 	const setSticky = (duration: number) => {
@@ -256,7 +263,7 @@
 			<input hidden type="text" name="user_address" value={$userAddress} />
 			<input hidden type="text" name="tx_hash" value={tx_hash} />
 			<input hidden type="text" name="token_paid" value={chosen_payment_token.address} />
-
+			<input hidden type="text" name="file_url" value={file_url} />
 			<div class="image-section">
 				<div
 					class="image-card"
@@ -271,12 +278,11 @@
 						<p class="yellow">UPLOAD IMAGE</p>
 					</div>
 					<input
-						name="file_url"
 						class="file-input"
 						type="file"
 						accept="image/png, image/jpeg"
 						on:change={getUploadResponse}
-						bind:value={image_url}
+						bind:value={file_url}
 					/>
 				</div>
 				<div style="width:8px;" />

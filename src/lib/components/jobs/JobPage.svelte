@@ -5,6 +5,7 @@
 	import { nodeProvider } from '$lib/stores/Network';
 	import type { JobType } from '$lib/stores/Types';
 	import { chains } from '$lib/stores/Constants';
+	import { browser } from '$app/environment';
 
 	export let job: JobType;
 
@@ -12,14 +13,12 @@
 	let contents: Element;
 
 	let user: UserType;
-	let nft_image: any;
-	let ens_name: string;
 	let placeholder_image = 'assets/xcopy.gif';
 	let chosen_network: number;
 
-	$: feedHeight = window.innerHeight - 136;
-	$: if (job) {
-		nft_image = '';
+	let feedHeight = 0;
+	$: if (browser) feedHeight = window.innerHeight - 136;
+	$: if (job && browser) {
 		fetchUser();
 		if (job.tokens_accepted) {
 			chosen_network = job.tokens_accepted[0].id;
@@ -29,23 +28,7 @@
 	const fetchUser = async () => {
 		const res = await fetch(`/api/user/${job.user_address}`);
 		user = await res.json();
-		await getNft();
-		ens_name = await $nodeProvider.lookupAddress(job.user_address);
 	};
-	const getNft = async () => {
-		if (user.nft_address && user.nft_id) {
-			try {
-				const response = await fetch(`api/alchemy/${user.nft_address}/${user.nft_id}`);
-				if (response.ok) {
-					const data = await response.json();
-					nft_image = data.image;
-				}
-			} catch (err) {
-				console.log(err);
-			}
-		}
-	};
-
 	const getChainName = (chain_id: number) => {
 		const name = chains.find((chain) => chain.id == chain_id)?.name;
 		return name;
@@ -65,32 +48,14 @@
 <main>
 	<div class="profile-bar">
 		<div class="left-section">
-			<img
-				class="pfp"
-				src={user?.show_nft
-					? nft_image && nft_image != ''
-						? nft_image
-						: placeholder_image
-					: user?.image_url && user.image_url != ''
-					? user.image_url
-					: placeholder_image}
-				alt=""
-			/>
+			<img class="pfp" src={job.image_url ?? placeholder_image} alt="" />
 			<div style="width:8px;" />
 			<div class="info">
 				<div class="info-username">
-					{#if user?.show_ens}
-						{#if ens_name && ens_name != ''}
-							<p>{ens_name}</p>
-						{:else}
-							<Skeleton width="100px" />
-						{/if}
-					{:else if user?.username && user.username != ''}
-						<p>{user?.username}</p>
-					{/if}
+					<p>{job.username}</p>
 				</div>
 				<div style="height:4px;" />
-				<p class="light-60">{user?.title}</p>
+				<p class="light-60">{job.title}</p>
 				<div style="height:4px;" />
 				<p>4.8<span class="light-60">(377)</span></p>
 			</div>

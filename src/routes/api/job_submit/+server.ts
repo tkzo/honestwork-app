@@ -8,10 +8,23 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
 	let data = await request.json();
 
+	const apiUrl =
+		parseInt(env.PRODUCTION_ENV) == 1
+			? env.PRIVATE_HONESTWORK_API
+			: env.PRIVATE_LOCAL_HONESTWORK_API;
+	const hwapiUrl = `${apiUrl}/jobs/${userAddress}`;
+	const jobs_response = await fetch(hwapiUrl, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	});
+	const jobs = await jobs_response.json();
+	const index = jobs != null ? jobs.length : 0;
+
 	let cloud_url;
-	if (data.file_url != '') {
-		cloud_url =
-			env.PRIVATE_SPACES_URL + '/' + userAddress + '/' + data.job_slot + '/' + data.file_url;
+	if (data.image_url != '') {
+		cloud_url = env.PRIVATE_SPACES_URL + '/' + userAddress + '/job/' + index + '/' + data.image_url;
 	}
 
 	const body = {
@@ -27,13 +40,12 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		links: data.links,
 		highlight: parseInt(data.highlight),
 		tokens_accepted: data.tokens_accepted,
-		tx_hash: data.tx_hash
+		tx_hash: data.tx_hash,
+		tags: data.tags,
+		timezone: data.timezone,
+		created_at: new Date().getTime()
 	};
 
-	const apiUrl =
-		parseInt(env.PRODUCTION_ENV) == 1
-			? env.PRIVATE_HONESTWORK_API
-			: env.PRIVATE_LOCAL_HONESTWORK_API;
 	const url = `${apiUrl}/jobs/${userAddress}/${userSalt}/${userSignature}/`;
 	const options = {
 		method: 'POST',

@@ -15,8 +15,8 @@
 	"/api/skill/[sort]/[order]": [
 		"src/routes/api/skill/[sort]/[order]/+server.ts"
 	],
-	"/api/upload-job-url/[filename]": [
-		"src/routes/api/upload-job-url/[filename]/+server.ts"
+	"/api/upload-job-url/[filename]/[address]": [
+		"src/routes/api/upload-job-url/[filename]/[address]/+server.ts"
 	],
 	"/api/upload-skill-url/[skill_slot]/[image_slot]/[filename]": [
 		"src/routes/api/upload-skill-url/[skill_slot]/[image_slot]/[filename]/+server.ts"

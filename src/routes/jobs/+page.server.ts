@@ -11,8 +11,6 @@ export const load: PageServerLoad = async ({}) => {
 	let response = await fetch(url);
 	if (response.ok) {
 		let json = await response.json();
-		console.log(json);
-
 		return { json: json };
 	} else {
 		console.log('HTTP-Error: ' + response.status);

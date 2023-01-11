@@ -1,42 +1,35 @@
 <svelte:options immutable={true} />
 
 <script lang="ts">
-	import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
-	import type { UserType } from '$lib/stores/Types';
+	import type { JobType, UserType } from '$lib/stores/Types';
 	import { onMount } from 'svelte';
 
-	export let title: string;
-	export let description: string;
-	export let image_url: string;
-	export let budget: number;
-	export let installments: number;
+	// export let title: string;
+	// export let description: string;
+	// export let image_url: string;
+	// export let budget: number;
+	// export let installments: number;
 	export let chosen: boolean;
-	export let user_address: string;
+	// export let user_address: string;
+	// export let username: string;
+	// export let hashtags: Array<string>;
 
-	export let rating: number;
-	export let user_title: string;
-	export let username: string;
+	export let job: JobType;
+	let hashtags = job.tags;
 
-	//todo: make this dynamic
-	$: tags = [
-		{
-			key: 'jobs created',
-			value: '666'
-		},
+	$: infos = [
 		{
 			key: 'installments',
-			value: installments
+			value: job.installments
 		},
 		{
 			key: 'budget',
-			value: '$' + budget.toString().slice(0, 6)
+			value: '$' + job.budget.toString().slice(0, 6)
 		}
 	];
 
-	let hashtags = ['UI/UX', 'LOGO DESIGN', 'BRANDING'];
-
 	$: trimmed_description =
-		description.length > 300 ? description.slice(0, 300) + '...' : description;
+		job.description.length > 300 ? job.description.slice(0, 300) + '...' : job.description;
 	let placeholder_image = 'assets/xcopy.gif';
 
 	onMount(() => {
@@ -44,61 +37,50 @@
 	});
 
 	const fetchUser = async () => {
-		const res = await fetch(`/api/user/${user_address}`);
+		const res = await fetch(`/api/user/${job.user_address}`);
 		user = await res.json();
 	};
 	let user: UserType;
 	//todo: show placeholder until image is loaded
-	let image_component: HTMLImageElement;
 </script>
 
 <section class={chosen ? 'chosen' : ''}>
 	<div class="title-bar">
 		<div class="tags">
 			<div class="tag">
-				<p class="yellow">{username}</p>
+				<p class="yellow">{job.username ?? user.username}</p>
 			</div>
 			<div class="tag">
-				<p class="light-60">{user_title}</p>
-			</div>
-			<div class="tag">
-				<p>{rating}<span class="light-60">(366)</span></p>
+				<p>{job.title}</p>
 			</div>
 		</div>
 	</div>
 	<div class="contents">
-		<img
-			src={image_url ?? placeholder_image}
-			alt="gallery"
-			class="preview-image"
-			bind:this={image_component}
-		/>
+		<img src={job.image_url ?? placeholder_image} alt="gallery" class="preview-image" />
 		<div style="width:12px;" />
 		<div class="content">
-			<div>
-				<p>{title}</p>
-				<div style="height:4px" />
-				<div class="body-text light-60">{trimmed_description}</div>
-			</div>
+			<div class="body-text light-60">{trimmed_description}</div>
 			<div style="height: 16px" />
 			<div class="hashtags">
-				{#each hashtags as hashtag}
-					<div class="hashtag">
-						<p class="light-60">{hashtag}</p>
-					</div>
-					{#if hashtag != hashtags[hashtags.length - 1]}
-						<div style="width: 4px" />
-					{/if}
-				{/each}
+				{#if hashtags && hashtags.length > 0}
+					{#each hashtags as hashtag}
+						<div class="hashtag">
+							<p class="light-60">{hashtag}</p>
+						</div>
+						{#if hashtag != hashtags[hashtags.length - 1]}
+							<div style="width: 4px" />
+						{/if}
+					{/each}
+				{/if}
 			</div>
 		</div>
 	</div>
 	<div class="tag-bar">
 		<div class="tags">
-			{#if tags && tags.length > 0}
-				{#each tags as tag}
+			{#if infos && infos.length > 0}
+				{#each infos as info}
 					<div class="tag">
-						<p>{tag.value} <span class="light-40">{tag.key}</span></p>
+						<p>{info.value} <span class="light-40">{info.key}</span></p>
 					</div>
 				{/each}
 			{/if}

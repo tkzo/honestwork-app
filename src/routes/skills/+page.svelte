@@ -4,6 +4,7 @@
 	import { Svrollbar } from 'svrollbar';
 	import type { SkillType } from '$lib/stores/Types';
 	import fuzzy from 'fuzzy';
+	import { browser } from '$app/environment';
 
 	export let data: any;
 	export let viewport: Element;
@@ -23,7 +24,8 @@
 	let show_sorting_options = false;
 	let chosen_sorting_option = 0;
 
-	$: feedHeight = window.innerHeight - 128;
+	let feedHeight = 0;
+	$: if (browser) feedHeight = window.innerHeight - 128;
 	$: filteredSkills =
 		search_input != ''
 			? fuzzy

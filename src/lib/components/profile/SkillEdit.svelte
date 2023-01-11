@@ -415,6 +415,8 @@
 		rows="20"
 		maxlength="1000"
 		placeholder="enter skill description..."
+		wrap="hard"
+		cols="77"
 		bind:this={myTextarea}
 		bind:value={description_text}
 		on:keyup={updateDescription}

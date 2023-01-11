@@ -3,6 +3,7 @@
 	import { Svrollbar } from 'svrollbar';
 	import Skeleton from '$lib/components/common/Skeleton.svelte';
 	import { nodeProvider } from '$lib/stores/Network';
+	import { browser } from '$app/environment';
 
 	export let skill: SkillType;
 
@@ -15,8 +16,9 @@
 	let ens_name: string;
 	let placeholder_image = 'assets/xcopy.gif';
 
-	$: feedHeight = window.innerHeight - 136;
-	$: if (skill) {
+	let feedHeight = 0;
+	$: if (browser) feedHeight = window.innerHeight - 136;
+	$: if (skill && browser) {
 		nft_image = '';
 		resetState();
 		fetchUser();

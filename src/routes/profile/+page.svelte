@@ -26,6 +26,8 @@
 
 	export let data: any;
 
+	$: console.log('File url on profile comp:', file_url);
+
 	type InputSettings = {
 		title: string;
 		infobox_distance: number;
@@ -388,13 +390,7 @@
 									<div style="width:8px" />
 									<p class="yellow">use nft image</p>
 								{:else}
-									<img
-										src={`${
-											$theme == 'dark' ? 'icons/unchecked.svg' : 'icons/light/unchecked.svg'
-										}`}
-										alt="Checked"
-										style="height:16px;width:16px;"
-									/>
+									<img src="icons/unchecked.svg" alt="Checked" style="height:16px;width:16px;" />
 									<div style="width:8px" />
 									<p class="light-60">use nft image</p>
 								{/if}

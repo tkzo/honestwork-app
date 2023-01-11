@@ -1,5 +1,4 @@
 import { z } from 'zod';
-
 export const JobInput = z.object({
 	user_address: z.string().min(5).max(50),
 	token_paid: z.string(),
@@ -7,10 +6,6 @@ export const JobInput = z.object({
 	description: z.string().min(100).max(1000),
 	tags: z.string().array().min(1).max(3),
 	links: z.string().array().min(1).max(3),
-
-	//todo: how to check max allowed amounts for each network/token combo?
-	// $1000-$1,000,000 set for now as a soft check on frontend
-
 	budget: z
 		.string()
 		.refine((val) => !Number.isNaN(parseInt(val, 10)), {

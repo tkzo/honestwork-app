@@ -4,6 +4,7 @@
 	import { Svrollbar } from 'svrollbar';
 	import type { SkillType, JobType } from '$lib/stores/Types';
 	import fuzzy from 'fuzzy';
+	import { browser } from '$app/environment';
 
 	export let data: any;
 	export let viewport: Element;
@@ -22,9 +23,9 @@
 	];
 	let show_sorting_options = false;
 	let chosen_sorting_option = 0;
+	let feedHeight = 0;
 
-	//todo: browser check for window.innerHeight
-	$: feedHeight = window.innerHeight - 128;
+	$: if (browser) feedHeight = window.innerHeight - 128;
 	$: filteredSkills =
 		search_input != ''
 			? fuzzy
@@ -155,18 +156,7 @@
 							}}
 							on:keydown
 						>
-							<Job
-								chosen={job == active_job}
-								username="Consensys"
-								user_title="Web3 Infrastructure Provider"
-								title={job.title}
-								description={job.description}
-								image_url="/assets/consensys.png"
-								budget={job.budget}
-								user_address={job.user_address}
-								installments={3}
-								rating={5.0}
-							/>
+							<Job chosen={job == active_job} {job} />
 						</div>
 					{/each}
 				</div>

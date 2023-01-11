@@ -47,11 +47,6 @@
 			gtag('config', 'G-3X3Y5X23HN');
 		}
 	</script>
-	<link rel="stylesheet" href="/styles.css" />
-	<!-- {#if $themeLoaded}
-		<link rel="stylesheet" href={`/${$theme}.css`} />
-	{/if} -->
-	<link rel="stylesheet" href="/dark.css" />
 </svelte:head>
 
 <main>
