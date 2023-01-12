@@ -33,7 +33,14 @@
 	<div class="right-section">
 		{#if $userConnected && $xmtpConnected}
 			<a class="messages" href="/messages">
-				<p class="light-40 link">messages</p>
+				<p class={$page.route.id == '/messages' ? 'yellow' : 'light-60 link'}>
+					messages(<span class="yellow">4</span>)
+				</p>
+			</a>
+		{/if}
+		{#if $userConnected}
+			<a class="messages" href="/listings">
+				<p class={$page.route.id == '/listings' ? 'yellow' : 'light-60 link'}>listings</p>
 			</a>
 		{/if}
 		<div class="wallet-section">
@@ -44,12 +51,8 @@
 				<div style="width:4px" />
 				<p class="yellow semibold link" on:click={connectWallet} on:keydown>connect</p>
 			{:else}
-				<p class="light-40">
-					{$userAddress.substring(0, 6)}...{$userAddress.substring($userAddress.length - 4)}
-				</p>
-				<div style="width:8px" />
 				<a href={`/profile`}>
-					<p class="yellow semibold link">profile</p>
+					<p class={$page.route.id == '/profile' ? 'yellow' : 'light-60 link'}>profile</p>
 				</a>
 			{/if}
 		</div>

@@ -2,12 +2,17 @@
 	import Job from '$lib/components/profile/Job.svelte';
 	import JobEdit from '$lib/components/profile/JobEdit.svelte';
 	import type { JobType } from '$lib/stores/Types';
-	import { chosen_job_slot } from '$lib/stores/State';
+	import { chosen_job_slot, job_add } from '$lib/stores/State';
 
 	export let jobs: JobType[] | null;
 
-	const handleJobAdd = () => {};
-	const handleJobEdit = (slot: number) => {};
+	const handleJobAdd = () => {
+		chosen_job_slot.set(jobs?.length ?? 0);
+		job_add.set(true);
+	};
+	const handleJobEdit = (slot: number) => {
+		chosen_job_slot.set(slot);
+	};
 </script>
 
 {#if $chosen_job_slot == -1}

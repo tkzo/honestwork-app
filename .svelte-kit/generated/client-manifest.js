@@ -20,11 +20,11 @@ export const dictionary = {
 	"/(subpages)/connect_wallet": [~3],
 	"/(subpages)/create_account": [~4],
 	"/jobs": [~6],
-	"/messages": [~7],
+	"/listings": [~7],
+	"/messages": [~8],
 	"/(subpages)/mint": [5],
-	"/new_job": [~8],
-	"/profile": [~9],
-	"/projects": [10],
+	"/new_job": [~9],
+	"/profile": [~10],
 	"/skills": [~11]
 };
 

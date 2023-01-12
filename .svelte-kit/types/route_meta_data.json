@@ -6,8 +6,14 @@
 	"/api/auth": [
 		"src/routes/api/auth/+server.ts"
 	],
+	"/api/job_apply/[address]/[slot]": [
+		"src/routes/api/job_apply/[address]/[slot]/+server.ts"
+	],
 	"/api/job_submit": [
 		"src/routes/api/job_submit/+server.ts"
+	],
+	"/api/job/[sort]/[order]": [
+		"src/routes/api/job/[sort]/[order]/+server.ts"
 	],
 	"/api/search": [
 		"src/routes/api/search/+server.ts"
@@ -36,6 +42,9 @@
 	"/jobs": [
 		"src/routes/jobs/+page.server.ts"
 	],
+	"/listings": [
+		"src/routes/listings/+page.server.ts"
+	],
 	"/messages": [
 		"src/routes/messages/+page.server.ts"
 	],
@@ -46,7 +55,6 @@
 	"/profile": [
 		"src/routes/profile/+page.server.ts"
 	],
-	"/projects": [],
 	"/skills": [
 		"src/routes/skills/+page.server.ts"
 	]

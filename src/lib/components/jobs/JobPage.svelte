@@ -1,47 +1,60 @@
 <script lang="ts">
-	import type { UserType } from '$lib/stores/Types';
 	import { Svrollbar } from 'svrollbar';
-	import Skeleton from '$lib/components/common/Skeleton.svelte';
-	import { nodeProvider } from '$lib/stores/Network';
 	import type { JobType } from '$lib/stores/Types';
 	import { chains } from '$lib/stores/Constants';
 	import { browser } from '$app/environment';
+	import { placeholder_image } from '$lib/stores/Constants';
+	import { userAddress, userConnected } from '$lib/stores/Network';
+	import { toast } from '@zerodevx/svelte-toast';
 
 	export let job: JobType;
 
 	let viewport: Element;
 	let contents: Element;
-
-	let user: UserType;
-	let placeholder_image = 'assets/xcopy.gif';
 	let chosen_network: number;
 
 	let feedHeight = 0;
 	$: if (browser) feedHeight = window.innerHeight - 136;
 	$: if (job && browser) {
-		fetchUser();
 		if (job.tokens_accepted) {
 			chosen_network = job.tokens_accepted[0].id;
 		}
 	}
 
-	const fetchUser = async () => {
-		const res = await fetch(`/api/user/${job.user_address}`);
-		user = await res.json();
-	};
 	const getChainName = (chain_id: number) => {
 		const name = chains.find((chain) => chain.id == chain_id)?.name;
-		return name;
-	};
-	const getTokenName = (chain_id: number, address: string) => {
-		const tokens = chains.find((chain) => chain.id == chain_id)?.tokens;
-		const name = tokens?.find((token) => token.address == address)?.name;
 		return name;
 	};
 	const getTokenSymbol = (chain_id: number, address: string) => {
 		const tokens = chains.find((chain) => chain.id == chain_id)?.tokens;
 		const symbol = tokens?.find((token) => token.address == address)?.symbol;
 		return symbol;
+	};
+	//todo: allow only once (validate on api as well)
+	const handleApply = async () => {
+		if ($userConnected) {
+			try {
+				const url = `api/job_apply/${job.user_address}/${job.slot}`;
+				const response = await fetch(url, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						user_address: $userAddress,
+						job_id: `job:${job.user_address}:${job.slot}`,
+						cover_letter: `lord,pls take me.`
+					})
+				});
+				const data = await response.json();
+				console.log('Result:', data);
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Application received</p>`
+				);
+			} catch (e) {
+				console.log(e);
+			}
+		}
 	};
 </script>
 
@@ -61,7 +74,7 @@
 			</div>
 		</div>
 		<div class="right-section">
-			<div class="button">
+			<div class="button" on:click={handleApply} on:keydown>
 				<p class="yellow">apply to this job</p>
 			</div>
 			<div style="height:8px" />

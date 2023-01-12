@@ -1,20 +1,15 @@
 <script lang="ts">
-	import { userState } from '$lib/stores/Network';
-	import { page } from '$app/stores';
-
-	export let bodytext: string;
-	export let cta: string;
-	export let icon: string;
+	export let notification: { bodytext: string; cta: string; icon: string };
 </script>
 
 <main>
 	<div class="bar">
-		<p class="light-80">{bodytext}</p>
+		<p class="light-80">{notification.bodytext}</p>
 		<div style="width:8px" />
 		<a href="/new_job" class="post-link">
-			<p class="link underlined">{cta}</p>
+			<p class="link underlined">{notification.cta}</p>
 			<div style="width:8px" />
-			<img src={icon} alt={cta} />
+			<img src={notification.icon} alt={notification.cta} />
 		</a>
 	</div>
 </main>

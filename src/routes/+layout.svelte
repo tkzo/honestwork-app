@@ -26,6 +26,24 @@
 		}
 	};
 	globalThis.Buffer = Buffer;
+
+	let notifications = {
+		postjob: {
+			bodytext: 'looking for awesome people for your project?',
+			cta: 'post a job',
+			icon: '/icons/post.svg'
+		},
+		mint: {
+			bodytext: 'grab an nft to get airdrop tokens from your activities!',
+			cta: 'mint and start accumulating',
+			icon: '/icons/trending.svg'
+		},
+		upgrade: {
+			bodytext: 'you can list even more awesome skills by upgrading your nft!',
+			cta: 'upgrade now',
+			icon: '/icons/zap.svg'
+		}
+	};
 </script>
 
 <svelte:head>
@@ -51,27 +69,17 @@
 		<Navigation />
 	{/if}
 	<div style="height:32px;" />
-	{#if $page.route.id == '/jobs' || $page.route.id == '/skills'}
-		<Notification
-			bodytext="looking for awesome people for your project?"
-			cta="post a job"
-			icon="/icons/post.svg"
-		/>
+	{#if $page.route.id == '/jobs' || $page.route.id == '/skills' || $page.route.id == '/listings'}
+		<Notification notification={notifications.postjob} />
 		<div style="height:16px;" />
 	{:else if $page.route.id == '/new_job'}
-		<Notification
-			bodytext="grab an nft to get airdrop tokens from your activities!"
-			cta="mint and start accumulating"
-			icon="/icons/trending.svg"
-		/>
+		<Notification notification={notifications.mint} />
+		<div style="height:16px;" />
+	{:else if $page.route.id == '/profile'}
+		<Notification notification={notifications.upgrade} />
+		<div style="height:16px;" />
 	{/if}
-	<!-- {#if $connecting && $page.route.id !== '/'}
-		<Connection text="establishing wallet connection" />
-	{:else if $xmtpConnecting && $page.route.id !== '/'}
-		<Connection text="establishing xmtp connection" />
-	{:else} -->
 	<slot />
-	<!-- {/if} -->
 	{#if $page.route.id !== '/'}
 		<Footer />
 	{/if}

@@ -3,7 +3,7 @@
 <script lang="ts">
 	import type { JobType, UserType } from '$lib/stores/Types';
 	import { onMount } from 'svelte';
-	import { placeholder_image } from '$lib/stores/Constants';
+	import { placeholder_image, sticky_data } from '$lib/stores/Constants';
 
 	export let chosen: boolean;
 	export let job: JobType;
@@ -20,10 +20,15 @@
 		{
 			key: 'budget',
 			value: '$' + job.budget.toString().slice(0, 6)
+		},
+		{
+			key: 'date',
+			value: humandate
 		}
 	];
 	$: trimmed_description =
 		job.description.length > 300 ? job.description.slice(0, 300) + '...' : job.description;
+	$: humandate = new Date(job.created_at).toLocaleDateString();
 
 	onMount(() => {
 		fetchUser();
@@ -38,13 +43,21 @@
 <section class={chosen ? 'chosen' : ''}>
 	<div class="title-bar">
 		<div class="tags">
-			<div class="tag">
-				<p class="yellow">
-					{job.username ?? user.username}
-				</p>
-			</div>
+			{#if parseInt(job.sticky_duration) >= 7}
+				<div class="tag">
+					<p class="yellow">
+						sticky post <span class="light-60">{job.sticky_duration} days</span>(<span
+							>${sticky_data.find((n) => n.duration == parseInt(job.sticky_duration))}</span
+						>)
+					</p>
+				</div>
+			{/if}
+
 			<div class="tag">
 				<p>{job.title}</p>
+			</div>
+			<div class="tag">
+				<p><span class="yellow">24 </span>applicants</p>
 			</div>
 		</div>
 	</div>
@@ -73,7 +86,7 @@
 			{#if infos && infos.length > 0}
 				{#each infos as info}
 					<div class="tag">
-						<p>{info.value} <span class="light-40">{info.key}</span></p>
+						<p><span class="light-40">{info.key}</span> {info.value}</p>
 					</div>
 				{/each}
 			{/if}

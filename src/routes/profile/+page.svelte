@@ -19,12 +19,15 @@
 		submitting
 	} from '$lib/stores/State';
 	import Jobs from '$lib/components/profile/Jobs.svelte';
-	import { Svroller } from 'svrollbar';
+	import { Svrollbar } from 'svrollbar';
+	import { browser } from '$app/environment';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
 
 	export let data: any;
+	export let viewport: Element;
+	export let contents: Element;
 
 	type InputSettings = {
 		title: string;
@@ -71,6 +74,7 @@
 	let bio_length: number;
 	let bio_limit = 1000;
 	let infobox_marginleft = '532px';
+	let feedHeight = 0;
 
 	onMount(async () => {
 		await getNft();
@@ -78,6 +82,9 @@
 		updateInputLengths();
 	});
 
+	$: if (browser) {
+		feedHeight = window.innerHeight - 96;
+	}
 	$: if ($userConnected && show_ens) {
 		setEnsName();
 	}
@@ -291,15 +298,6 @@
 		title_input_length = title_input_element?.value.length ?? data.user.title.length;
 		bio_length = bio_element?.value.length ?? data.user.bio.length;
 	};
-	import { browser } from '$app/environment';
-
-	export let viewport: Element;
-	export let contents: Element;
-
-	let feedHeight = 0;
-	$: if (browser) {
-		feedHeight = window.innerHeight - 64;
-	}
 </script>
 
 <svelte:head>
@@ -315,7 +313,6 @@
 	>
 		<div bind:this={contents} class="contents" style={`width:520px;`}>
 			<div style="height: 16px" />
-
 			{#if $userAddress.toLowerCase() == data.user.address.toLowerCase() && $userState > 1}
 				{#if chosenTab == 'profile'}
 					<form
@@ -330,8 +327,12 @@
 								<p class="tab link semibold light-60" on:click={() => toggle('skills')} on:keydown>
 									skills
 								</p>
-								<p class="tab link semibold light-60" on:click={() => toggle('jobs')} on:keydown>
-									jobs
+								<p
+									class="tab link semibold light-60"
+									on:click={() => toggle('job history')}
+									on:keydown
+								>
+									job history
 								</p>
 							</div>
 
@@ -626,8 +627,12 @@
 										profile
 									</p>
 									<p class="tab link semibold yellow">skills</p>
-									<p class="tab link semibold light-60" on:click={() => toggle('jobs')} on:keydown>
-										jobs
+									<p
+										class="tab link semibold light-60"
+										on:click={() => toggle('job history')}
+										on:keydown
+									>
+										job history
 									</p>
 								</div>
 							</section>
@@ -664,7 +669,7 @@
 						<div style="height: 16px" />
 						<Skills {data} />
 					</form>
-				{:else if chosenTab == 'jobs'}
+				{:else if chosenTab == 'job history'}
 					<section class="bar">
 						<div class="tabs">
 							<p class="tab link semibold light-60" on:click={() => toggle('profile')} on:keydown>
@@ -673,11 +678,9 @@
 							<p class="tab link semibold light-60" on:click={() => toggle('skills')} on:keydown>
 								skills
 							</p>
-							<p class="tab link semibold yellow">jobs</p>
+							<p class="tab link semibold yellow">job history</p>
 						</div>
 					</section>
-					<div style="height: 16px" />
-					<Jobs jobs={data.jobs.json} />
 				{/if}
 			{:else}
 				<div style="height: 16px" />
@@ -694,6 +697,7 @@
 			{/if}
 		</div>
 	</div>
+	<Svrollbar {viewport} {contents} />
 </main>
 
 <style>
@@ -863,13 +867,16 @@
 		justify-content: flex-end;
 		align-items: center;
 	}
+
 	.wrapper {
 		position: relative;
 		-ms-overflow-style: none; /* for Internet Explorer, Edge */
 		scrollbar-width: none; /* for Firefox */
 		overflow-y: scroll;
 		--svrollbar-track-width: 1px;
+		/* --svrollbar-track-background: #85b4b9; */
 		--svrollbar-track-opacity: 1;
+
 		--svrollbar-thumb-width: 10px;
 		--svrollbar-thumb-background: #d9ab55;
 		--svrollbar-thumb-opacity: 1;
@@ -879,6 +886,8 @@
 		position: relative;
 		overflow: scroll;
 		box-sizing: border-box;
+
+		/* hide scrollbar */
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 		display: flex;
@@ -887,6 +896,7 @@
 	}
 
 	.viewport::-webkit-scrollbar {
+		/* hide scrollbar */
 		display: none;
 	}
 </style>

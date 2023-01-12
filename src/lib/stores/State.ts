@@ -13,3 +13,4 @@ export let changes_made = writable(false);
 export let submitting = writable(false);
 export let new_conversation_address = writable('');
 export let new_conversation_metadata = writable(metadata);
+export let job_add = writable(false);

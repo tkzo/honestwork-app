@@ -104,13 +104,14 @@ p {
 
 a {
 	font-weight: 400;
-	color: var(--color-primary);
 	text-decoration: none;
+	color: var(--color-light);
 	cursor: pointer;
 }
 
 a:visited {
 	text-decoration: none;
+	color: none;
 }
 
 .semibold {

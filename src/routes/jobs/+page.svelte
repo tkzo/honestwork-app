@@ -27,7 +27,6 @@
 
 	$: if (browser) {
 		feedHeight = window.innerHeight - 144;
-		console.log('Set height:', feedHeight);
 	}
 	$: filteredSkills =
 		search_input != ''
