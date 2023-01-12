@@ -36,7 +36,7 @@
 body {
 	-ms-overflow-style: none; /* for Internet Explorer, Edge */
 	scrollbar-width: none; /* for Firefox */
-	/* overflow-y: hidden; */
+	overflow-y: hidden;
 	--svrollbar-track-width: 1px;
 	/* --svrollbar-track-background: #85b4b9; */
 	--svrollbar-track-opacity: 1;

@@ -87,10 +87,12 @@ export const connectNode = async () => {
 
 const fetchUserState = async (signer, addr) => {
 	try {
+		console.log('Token addr:', token_address);
+		console.log('Signer:', signer);
 		const contract = new ethers.Contract(token_address, token_abi, signer);
 		let state = await contract.getUserState(addr);
 		userState.set(state);
-		console.log('State', state);
+		console.log('STATE SET AS ', state);
 	} catch (err) {
 		console.log(err);
 	}

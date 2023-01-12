@@ -10,7 +10,7 @@
 	--color-light-2: #0a0a0b;
 	--color-primary: #ffd369;
 	--color-error: red;
-	--color-success: green;
+	--color-success: #17f470;
 	font-family: 'Proto Mono', monospace;
 	color: var(--color-light);
 }

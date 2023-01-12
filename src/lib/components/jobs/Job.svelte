@@ -3,20 +3,15 @@
 <script lang="ts">
 	import type { JobType, UserType } from '$lib/stores/Types';
 	import { onMount } from 'svelte';
+	import { placeholder_image } from '$lib/stores/Constants';
 
-	// export let title: string;
-	// export let description: string;
-	// export let image_url: string;
-	// export let budget: number;
-	// export let installments: number;
 	export let chosen: boolean;
-	// export let user_address: string;
-	// export let username: string;
-	// export let hashtags: Array<string>;
-
 	export let job: JobType;
+
+	let user: UserType;
 	let hashtags = job.tags;
 
+	// todo: inline this
 	$: infos = [
 		{
 			key: 'installments',
@@ -27,10 +22,8 @@
 			value: '$' + job.budget.toString().slice(0, 6)
 		}
 	];
-
 	$: trimmed_description =
 		job.description.length > 300 ? job.description.slice(0, 300) + '...' : job.description;
-	let placeholder_image = 'assets/xcopy.gif';
 
 	onMount(() => {
 		fetchUser();
@@ -40,8 +33,6 @@
 		const res = await fetch(`/api/user/${job.user_address}`);
 		user = await res.json();
 	};
-	let user: UserType;
-	//todo: show placeholder until image is loaded
 </script>
 
 <section class={chosen ? 'chosen' : ''}>

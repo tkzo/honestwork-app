@@ -8,7 +8,6 @@
 		connectNode,
 		userConnected
 	} from '$lib/stores/Network';
-	import { theme } from '$lib/stores/Theme';
 	import { onMount } from 'svelte';
 	import { Jumper } from 'svelte-loading-spinners';
 	import { tweened } from 'svelte/motion';
@@ -20,13 +19,12 @@
 		submitting
 	} from '$lib/stores/State';
 	import Jobs from '$lib/components/profile/Jobs.svelte';
+	import { Svroller } from 'svrollbar';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
 
 	export let data: any;
-
-	$: console.log('File url on profile comp:', file_url);
 
 	type InputSettings = {
 		title: string;
@@ -39,7 +37,6 @@
 		infobox_content: 'your username will be used to identify you on the platform.'
 	};
 	let placeholder_image = 'assets/xcopy.gif';
-	let correct_address: boolean;
 	let link_0: string = data.user.links != null ? data.user.links[0] : '';
 	let link_1: string = data.user.links != null ? data.user.links[1] : '';
 	let link_2: string = data.user.links != null ? data.user.links[2] : '';
@@ -78,7 +75,6 @@
 	onMount(async () => {
 		await getNft();
 		//todo: move to layout
-		correct_address = $userAddress.toLowerCase() == data.user.address.toLowerCase();
 		updateInputLengths();
 	});
 
@@ -295,6 +291,15 @@
 		title_input_length = title_input_element?.value.length ?? data.user.title.length;
 		bio_length = bio_element?.value.length ?? data.user.bio.length;
 	};
+	import { browser } from '$app/environment';
+
+	export let viewport: Element;
+	export let contents: Element;
+
+	let feedHeight = 0;
+	$: if (browser) {
+		feedHeight = window.innerHeight - 64;
+	}
 </script>
 
 <svelte:head>
@@ -302,378 +307,393 @@
 	<meta name="description" content="HonestWork Profile Page" />
 </svelte:head>
 
-<main>
-	{#if correct_address && $userState > 1}
-		{#if chosenTab == 'profile'}
-			<form
-				method="POST"
-				bind:this={profileForm}
-				on:submit|preventDefault={submitProfile}
-				action="?/profile"
-			>
-				<section class="bar">
-					<div class="tabs">
-						<p class="tab link semibold yellow">profile</p>
-						<p class="tab link semibold light-60" on:click={() => toggle('skills')} on:keydown>
-							skills
-						</p>
-						<p class="tab link semibold light-60" on:click={() => toggle('jobs')} on:keydown>
-							jobs
-						</p>
-					</div>
+<main class="wrapper">
+	<div
+		bind:this={viewport}
+		class="viewport"
+		style={`width:100%; height:${feedHeight.toString() + 'px'}`}
+	>
+		<div bind:this={contents} class="contents" style={`width:520px;`}>
+			<div style="height: 16px" />
 
-					<button
-						class={` semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
-						style={`opacity: ${$blink}`}
+			{#if $userAddress.toLowerCase() == data.user.address.toLowerCase() && $userState > 1}
+				{#if chosenTab == 'profile'}
+					<form
+						method="POST"
+						bind:this={profileForm}
+						on:submit|preventDefault={submitProfile}
+						action="?/profile"
 					>
-						save changes</button
-					>
-				</section>
-				<div style="height: 16px" />
-				<section
-					class="infobox"
-					style={`margin-top:${inputSettings.infobox_distance}px; opacity:${
-						infobox_show ? '1' : '0'
-					}; margin-left:${infobox_marginleft}`}
-				>
-					<p
-						class="light-60"
-						style={`color:${
-							!is_owner && inputSettings.title == 'nft_id' && !fetching_image ? 'red' : ''
-						}`}
-					>
-						{inputSettings.infobox_content}
-					</p>
-				</section>
-				<div class="info">
-					<div class="left-section">
-						<section>
-							<img
-								src={show_nft ? nft_image : image_url ?? placeholder_image}
-								alt="Profile"
-								placeholder={placeholder_image}
-							/>
+						<section class="bar">
+							<div class="tabs">
+								<p class="tab link semibold yellow">profile</p>
+								<p class="tab link semibold light-60" on:click={() => toggle('skills')} on:keydown>
+									skills
+								</p>
+								<p class="tab link semibold light-60" on:click={() => toggle('jobs')} on:keydown>
+									jobs
+								</p>
+							</div>
+
+							<button
+								class={` semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
+								style={`opacity: ${$blink}`}
+							>
+								save changes</button
+							>
 						</section>
-						<div class="input-field file-input-container">
-							<input
-								name="file_url"
-								class="file-input"
-								type="file"
-								accept="image/png, image/jpeg"
-								on:change={uploadProfileImage}
-								bind:value={file_url}
-								on:mouseover={() => {
-									focusInput('image');
-									infobox_marginleft = '-252px';
-								}}
-								on:focus
-								on:mouseleave={() => {
-									deFocusInput();
-									infobox_marginleft = '532px';
-								}}
-							/>
-							<input hidden type="text" name="image_url" bind:value={image_url} />
-							<div class="pseudo-file-input-container">
-								<p class="pseudo-file-input">UPLOAD FILE</p>
-							</div>
-						</div>
-						<div
-							class="input-field file-input-container nft-checkbox"
-							on:click={() => (show_nft = !show_nft)}
-							on:keydown
-							style="cursor:pointer; padding:8px;"
+						<div style="height: 16px" />
+						<section
+							class="infobox"
+							style={`margin-top:${inputSettings.infobox_distance}px; opacity:${
+								infobox_show ? '1' : '0'
+							}; margin-left:${infobox_marginleft}`}
 						>
-							<div style="display:flex;flex-direction:row;">
-								<input hidden type="checkbox" name="show_nft" bind:checked={show_nft} />
-								{#if show_nft}
-									<img src="icons/checked.svg" alt="Checked" style="height:16px;width:16px;" />
-									<div style="width:8px" />
-									<p class="yellow">use nft image</p>
-								{:else}
-									<img src="icons/unchecked.svg" alt="Checked" style="height:16px;width:16px;" />
-									<div style="width:8px" />
-									<p class="light-60">use nft image</p>
-								{/if}
+							<p
+								class="light-60"
+								style={`color:${
+									!is_owner && inputSettings.title == 'nft_id' && !fetching_image ? 'red' : ''
+								}`}
+							>
+								{inputSettings.infobox_content}
+							</p>
+						</section>
+						<div class="info">
+							<div class="left-section">
+								<section>
+									<img
+										src={show_nft ? nft_image : image_url ?? placeholder_image}
+										alt="Profile"
+										placeholder={placeholder_image}
+									/>
+								</section>
+								<div class="input-field file-input-container">
+									<input
+										name="file_url"
+										class="file-input"
+										type="file"
+										accept="image/png, image/jpeg"
+										on:change={uploadProfileImage}
+										bind:value={file_url}
+										on:mouseover={() => {
+											focusInput('image');
+											infobox_marginleft = '-252px';
+										}}
+										on:focus
+										on:mouseleave={() => {
+											deFocusInput();
+											infobox_marginleft = '532px';
+										}}
+									/>
+									<input hidden type="text" name="image_url" bind:value={image_url} />
+									<div class="pseudo-file-input-container">
+										<p class="pseudo-file-input">UPLOAD FILE</p>
+									</div>
+								</div>
+								<div
+									class="input-field file-input-container nft-checkbox"
+									on:click={() => (show_nft = !show_nft)}
+									on:keydown
+									style="cursor:pointer; padding:8px;"
+								>
+									<div style="display:flex;flex-direction:row;">
+										<input hidden type="checkbox" name="show_nft" bind:checked={show_nft} />
+										{#if show_nft}
+											<img src="icons/checked.svg" alt="Checked" style="height:16px;width:16px;" />
+											<div style="width:8px" />
+											<p class="yellow">use nft image</p>
+										{:else}
+											<img
+												src="icons/unchecked.svg"
+												alt="Checked"
+												style="height:16px;width:16px;"
+											/>
+											<div style="width:8px" />
+											<p class="light-60">use nft image</p>
+										{/if}
+									</div>
+								</div>
+							</div>
+
+							<div style="width: 12px" />
+							<div class="input-fields">
+								<div class="input-field">
+									<div class="placeholder">
+										<p class="light-40">username</p>
+									</div>
+									{#if show_ens}
+										{#if ens_loading}
+											<div class="input-like">
+												<img
+													src="icons/loader.svg"
+													alt="loading"
+													class="rotating"
+													style="height:16px;width:16px;"
+												/>
+												<div style="width:4px" />
+												<p>loading ens...</p>
+											</div>
+										{:else}
+											<div class="input-like">
+												{ens_name}
+											</div>
+										{/if}
+									{/if}
+									<input
+										name="username"
+										class="flex-input"
+										type="text"
+										hidden={show_ens}
+										placeholder={data.user.username}
+										maxlength={username_input_limit}
+										bind:value={username}
+										bind:this={username_input_element}
+										on:focus={() => focusInput('username')}
+										on:focusout={() => deFocusInput()}
+										on:keyup={updateInputLengths}
+									/>
+									{#if !show_ens}
+										<div class="limit">
+											<p>
+												<span class="yellow">{username_input_length}</span>/{username_input_limit}
+											</p>
+										</div>
+									{/if}
+								</div>
+								<div style="height: 8px" />
+								<div
+									class="input-field"
+									on:click={() => (show_ens = !show_ens)}
+									on:keydown
+									style="cursor:pointer;"
+								>
+									<input hidden type="checkbox" name="show_ens" bind:checked={show_ens} />
+									<img
+										src={show_ens ? 'icons/checked.svg' : 'icons/unchecked.svg'}
+										alt="Checked"
+										style="height:16px;width:16px;"
+									/>
+									<div style="width:4px" />
+									<p class={show_ens ? 'yellow' : 'light-60'}>use ens name</p>
+								</div>
+								<div style="height: 12px" />
+								<div class="input-field">
+									<div class="placeholder">
+										<p class="light-40">title</p>
+									</div>
+									<input
+										name="title"
+										class="flex-input"
+										type="text"
+										placeholder={data.user.title}
+										maxlength={title_input_limit}
+										bind:value={title}
+										bind:this={title_input_element}
+										on:focus={() => focusInput('title')}
+										on:focusout={() => deFocusInput()}
+										on:keyup={updateInputLengths}
+									/>
+									<div class="limit">
+										<p><span class="yellow">{title_input_length}</span>/{title_input_limit}</p>
+									</div>
+								</div>
+								<div style="height: 8px" />
+								<div class="input-field">
+									<div class="placeholder">
+										<p class="light-40">email</p>
+									</div>
+									<input
+										name="email"
+										class="flex-input"
+										type="email"
+										bind:value={email}
+										placeholder={data.user.email}
+										on:focus={() => focusInput('email')}
+										on:focusout={() => deFocusInput()}
+									/>
+								</div>
+								<div style="height: 8px" />
+								<div class="input-field">
+									<div class="placeholder">
+										<p class="light-40">nft address</p>
+									</div>
+									<input
+										name="nft_address"
+										class="flex-input"
+										type="text"
+										bind:value={nft_address}
+										placeholder={data.user.nft_address}
+										on:focus={() => focusInput('nft_address')}
+										on:focusout={() => deFocusInput()}
+									/>
+								</div>
+								<div style="height: 8px" />
+								<div class="input-field">
+									<div class="placeholder">
+										<p class="light-40">nft id</p>
+									</div>
+									<input
+										name="nft_id"
+										class={`flex-input no-spinner ${
+											!fetching_image ? (is_owner ? 'success' : 'error') : ''
+										}`}
+										type="number"
+										bind:value={nft_id}
+										placeholder={data.user.nft_id}
+										on:input={() => getNft()}
+										on:focus={() => focusInput('nft_id')}
+										on:focusout={() => deFocusInput()}
+									/>
+								</div>
+
+								<div style="height:8px" />
 							</div>
 						</div>
-					</div>
-
-					<div style="width: 12px" />
-					<div class="input-fields">
-						<div class="input-field">
-							<div class="placeholder">
-								<p class="light-40">username</p>
+						<div style="height: 16px" />
+						<div class="links">
+							<div class="input-field">
+								<div class="placeholder">
+									<p class="light-40">link</p>
+								</div>
+								<input
+									name={`link-0`}
+									class="flex-input"
+									type="text"
+									placeholder={link_0}
+									bind:value={link_0}
+								/>
 							</div>
-							{#if show_ens}
-								{#if ens_loading}
-									<div class="input-like">
+							<div style="height: 8px" />
+							<div class="input-field">
+								<div class="placeholder">
+									<p class="light-40">link</p>
+								</div>
+								<input
+									name={`link-1`}
+									class="flex-input"
+									type="text"
+									placeholder={link_1}
+									bind:value={link_1}
+								/>
+							</div>
+							<div style="height: 8px" />
+							<div class="input-field">
+								<div class="placeholder">
+									<p class="light-40">link</p>
+								</div>
+								<input
+									name={`link-2`}
+									class="flex-input"
+									type="text"
+									placeholder={link_2}
+									bind:value={link_2}
+								/>
+							</div>
+						</div>
+						<div style="height: 16px" />
+						<div class="description-bar">
+							<section class="description-title"><p class="light-40">bio</p></section>
+							<p class="chars light-60"><span class="yellow">{bio_length}</span>/{bio_limit}</p>
+						</div>
+						<div class="bio">
+							<textarea
+								name="bio"
+								rows="20"
+								maxlength="1000"
+								placeholder="enter bio here..."
+								bind:value={bio}
+								bind:this={bio_element}
+								on:keyup={updateInputLengths}
+							/>
+						</div>
+					</form>
+				{:else if chosenTab == 'skills'}
+					<form
+						method="POST"
+						bind:this={skillsForm}
+						on:submit|preventDefault={submitSkills}
+						action="?/skills"
+					>
+						<input hidden name="skill_method" value={$skill_add ? 'add' : 'edit'} />
+						{#if $chosen_skill_slot == -1}
+							<section class="bar">
+								<div class="tabs">
+									<p
+										class="tab link semibold light-60"
+										on:click={() => toggle('profile')}
+										on:keydown
+									>
+										profile
+									</p>
+									<p class="tab link semibold yellow">skills</p>
+									<p class="tab link semibold light-60" on:click={() => toggle('jobs')} on:keydown>
+										jobs
+									</p>
+								</div>
+							</section>
+						{:else}
+							<section class="bar">
+								<div class="tabs">
+									<p
+										class="tab link semibold light-60"
+										on:click={() => {
+											toggle('skills');
+											chosen_skill_slot.set(-1);
+										}}
+										on:keydown
+									>
+										back to skills
+									</p>
+								</div>
+								<div class="save-changes">
+									{#if $submitting}
 										<img
 											src="icons/loader.svg"
 											alt="loading"
 											class="rotating"
 											style="height:16px;width:16px;"
 										/>
-										<div style="width:4px" />
-										<p>loading ens...</p>
-									</div>
-								{:else}
-									<div class="input-like">
-										{ens_name}
-									</div>
-								{/if}
-							{/if}
-							<input
-								name="username"
-								class="flex-input"
-								type="text"
-								hidden={show_ens}
-								placeholder={data.user.username}
-								maxlength={username_input_limit}
-								bind:value={username}
-								bind:this={username_input_element}
-								on:focus={() => focusInput('username')}
-								on:focusout={() => deFocusInput()}
-								on:keyup={updateInputLengths}
-							/>
-							{#if !show_ens}
-								<div class="limit">
-									<p><span class="yellow">{username_input_length}</span>/{username_input_limit}</p>
+										<div style="width:4px;" />
+									{/if}
+									<button class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
+										>save changes</button
+									>
 								</div>
-							{/if}
-						</div>
-						<div style="height: 8px" />
-						<div
-							class="input-field"
-							on:click={() => (show_ens = !show_ens)}
-							on:keydown
-							style="cursor:pointer;"
-						>
-							<input hidden type="checkbox" name="show_ens" bind:checked={show_ens} />
-							<img
-								src={show_ens ? 'icons/checked.svg' : 'icons/unchecked.svg'}
-								alt="Checked"
-								style="height:16px;width:16px;"
-							/>
-							<div style="width:4px" />
-							<p class={show_ens ? 'yellow' : 'light-60'}>use ens name</p>
-						</div>
-						<div style="height: 12px" />
-						<div class="input-field">
-							<div class="placeholder">
-								<p class="light-40">title</p>
-							</div>
-							<input
-								name="title"
-								class="flex-input"
-								type="text"
-								placeholder={data.user.title}
-								maxlength={title_input_limit}
-								bind:value={title}
-								bind:this={title_input_element}
-								on:focus={() => focusInput('title')}
-								on:focusout={() => deFocusInput()}
-								on:keyup={updateInputLengths}
-							/>
-							<div class="limit">
-								<p><span class="yellow">{title_input_length}</span>/{title_input_limit}</p>
-							</div>
-						</div>
-						<div style="height: 8px" />
-						<div class="input-field">
-							<div class="placeholder">
-								<p class="light-40">email</p>
-							</div>
-							<input
-								name="email"
-								class="flex-input"
-								type="email"
-								bind:value={email}
-								placeholder={data.user.email}
-								on:focus={() => focusInput('email')}
-								on:focusout={() => deFocusInput()}
-							/>
-						</div>
-						<div style="height: 8px" />
-						<div class="input-field">
-							<div class="placeholder">
-								<p class="light-40">nft address</p>
-							</div>
-							<input
-								name="nft_address"
-								class="flex-input"
-								type="text"
-								bind:value={nft_address}
-								placeholder={data.user.nft_address}
-								on:focus={() => focusInput('nft_address')}
-								on:focusout={() => deFocusInput()}
-							/>
-						</div>
-						<div style="height: 8px" />
-						<div class="input-field">
-							<div class="placeholder">
-								<p class="light-40">nft id</p>
-							</div>
-							<input
-								name="nft_id"
-								class={`flex-input no-spinner ${
-									!fetching_image ? (is_owner ? 'success' : 'error') : ''
-								}`}
-								type="number"
-								bind:value={nft_id}
-								placeholder={data.user.nft_id}
-								on:input={() => getNft()}
-								on:focus={() => focusInput('nft_id')}
-								on:focusout={() => deFocusInput()}
-							/>
-						</div>
-
-						<div style="height:8px" />
-					</div>
-				</div>
-				<div style="height: 16px" />
-				<div class="links">
-					<div class="input-field">
-						<div class="placeholder">
-							<p class="light-40">link</p>
-						</div>
-						<input
-							name={`link-0`}
-							class="flex-input"
-							type="text"
-							placeholder={link_0}
-							bind:value={link_0}
-						/>
-					</div>
-					<div style="height: 8px" />
-					<div class="input-field">
-						<div class="placeholder">
-							<p class="light-40">link</p>
-						</div>
-						<input
-							name={`link-1`}
-							class="flex-input"
-							type="text"
-							placeholder={link_1}
-							bind:value={link_1}
-						/>
-					</div>
-					<div style="height: 8px" />
-					<div class="input-field">
-						<div class="placeholder">
-							<p class="light-40">link</p>
-						</div>
-						<input
-							name={`link-2`}
-							class="flex-input"
-							type="text"
-							placeholder={link_2}
-							bind:value={link_2}
-						/>
-					</div>
-				</div>
-				<div style="height: 16px" />
-				<div class="description-bar">
-					<section class="description-title"><p class="light-40">bio</p></section>
-					<p class="chars light-60"><span class="yellow">{bio_length}</span>/{bio_limit}</p>
-				</div>
-				<div class="bio">
-					<textarea
-						name="bio"
-						rows="20"
-						maxlength="1000"
-						placeholder="enter bio here..."
-						bind:value={bio}
-						bind:this={bio_element}
-						on:keyup={updateInputLengths}
-					/>
-				</div>
-			</form>
-		{:else if chosenTab == 'skills'}
-			<form
-				method="POST"
-				bind:this={skillsForm}
-				on:submit|preventDefault={submitSkills}
-				action="?/skills"
-			>
-				<input hidden name="skill_method" value={$skill_add ? 'add' : 'edit'} />
-				{#if $chosen_skill_slot == -1}
+							</section>
+						{/if}
+						<div style="height: 16px" />
+						<Skills {data} />
+					</form>
+				{:else if chosenTab == 'jobs'}
 					<section class="bar">
 						<div class="tabs">
 							<p class="tab link semibold light-60" on:click={() => toggle('profile')} on:keydown>
 								profile
 							</p>
-							<p class="tab link semibold yellow">skills</p>
-							<p class="tab link semibold light-60" on:click={() => toggle('jobs')} on:keydown>
-								jobs
+							<p class="tab link semibold light-60" on:click={() => toggle('skills')} on:keydown>
+								skills
 							</p>
+							<p class="tab link semibold yellow">jobs</p>
 						</div>
 					</section>
-				{:else}
-					<section class="bar">
-						<div class="tabs">
-							<p
-								class="tab link semibold light-60"
-								on:click={() => {
-									toggle('skills');
-									chosen_skill_slot.set(-1);
-								}}
-								on:keydown
-							>
-								back to skills
-							</p>
-						</div>
-						<div class="save-changes">
-							{#if $submitting}
-								<img
-									src="icons/loader.svg"
-									alt="loading"
-									class="rotating"
-									style="height:16px;width:16px;"
-								/>
-								<div style="width:4px;" />
-							{/if}
-							<button class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
-								>save changes</button
-							>
-						</div>
-					</section>
+					<div style="height: 16px" />
+					<Jobs jobs={data.jobs.json} />
 				{/if}
+			{:else}
 				<div style="height: 16px" />
-				<Skills {data} />
-			</form>
-		{:else if chosenTab == 'jobs'}
-			<section class="bar">
-				<div class="tabs">
-					<p class="tab link semibold light-60" on:click={() => toggle('profile')} on:keydown>
-						profile
-					</p>
-					<p class="tab link semibold light-60" on:click={() => toggle('skills')} on:keydown>
-						skills
-					</p>
-					<p class="tab link semibold yellow">jobs</p>
-				</div>
-			</section>
-			<div style="height: 16px" />
-			<Jobs jobs={data.jobs.json} />
-		{/if}
-	{:else if correct_address != null}
-		<div style="height: 16px" />
-		<section style="width:520px">
-			<div class="gm">
-				<div class="gm-inner">
-					<p class="yellow">wrong account</p>
-				</div>
-			</div>
-			<div class="gm">
-				<p>switch to <span class="yellow">{data.user.address}</span> to see this page.</p>
-			</div>
-		</section>
-	{:else}
-		<div class="spinner">
-			<div style="height: 36px;" />
-			<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
+				<section style="width:520px">
+					<div class="gm">
+						<div class="gm-inner">
+							<p class="yellow">wrong account</p>
+						</div>
+					</div>
+					<div class="gm">
+						<p>switch to <span class="yellow">{data.user.address}</span> to see this page.</p>
+					</div>
+				</section>
+			{/if}
 		</div>
-	{/if}
+	</div>
 </main>
 
 <style>
@@ -842,5 +862,31 @@
 		flex-direction: row;
 		justify-content: flex-end;
 		align-items: center;
+	}
+	.wrapper {
+		position: relative;
+		-ms-overflow-style: none; /* for Internet Explorer, Edge */
+		scrollbar-width: none; /* for Firefox */
+		overflow-y: scroll;
+		--svrollbar-track-width: 1px;
+		--svrollbar-track-opacity: 1;
+		--svrollbar-thumb-width: 10px;
+		--svrollbar-thumb-background: #d9ab55;
+		--svrollbar-thumb-opacity: 1;
+	}
+
+	.viewport {
+		position: relative;
+		overflow: scroll;
+		box-sizing: border-box;
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.viewport::-webkit-scrollbar {
+		display: none;
 	}
 </style>

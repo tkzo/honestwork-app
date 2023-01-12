@@ -247,32 +247,16 @@
 		flex-direction: row;
 		align-items: center;
 	}
-	.wrapper {
-		position: relative;
-		-ms-overflow-style: none; /* for Internet Explorer, Edge */
-		scrollbar-width: none; /* for Firefox */
-		overflow-y: scroll;
-		--svrollbar-track-width: 1px;
-		/* --svrollbar-track-background: #85b4b9; */
-		--svrollbar-track-opacity: 1;
-
-		--svrollbar-thumb-width: 10px;
-		--svrollbar-thumb-background: #d9ab55;
-		--svrollbar-thumb-opacity: 1;
-	}
 
 	.viewport {
 		position: relative;
 		overflow: scroll;
 		box-sizing: border-box;
-
-		/* hide scrollbar */
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}
 
 	.viewport::-webkit-scrollbar {
-		/* hide scrollbar */
 		display: none;
 	}
 	.sorting-dropdown {

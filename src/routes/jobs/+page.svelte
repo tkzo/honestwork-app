@@ -25,7 +25,10 @@
 	let chosen_sorting_option = 0;
 	let feedHeight = 0;
 
-	$: if (browser) feedHeight = window.innerHeight - 128;
+	$: if (browser) {
+		feedHeight = window.innerHeight - 144;
+		console.log('Set height:', feedHeight);
+	}
 	$: filteredSkills =
 		search_input != ''
 			? fuzzy
@@ -69,7 +72,7 @@
 </svelte:head>
 
 <main>
-	<div class="feed">
+	<div class="feed" style={`height:${feedHeight + 32}px`}>
 		<div class="search-bar">
 			<div class="input-container">
 				<img
@@ -177,6 +180,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		overflow-y: hidden;
 	}
 	.feed {
 		width: 520px;
@@ -184,6 +188,7 @@
 		border-style: solid;
 		border-color: var(--color-light-10);
 		overflow-y: hidden;
+		height: auto;
 	}
 	.job {
 		width: 520px;

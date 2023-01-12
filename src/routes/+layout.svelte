@@ -2,15 +2,14 @@
 	import Navigation from '$lib/components/common/Navigation.svelte';
 	import Footer from '$lib/components/common/Footer.svelte';
 	import Notification from '$lib/components/common/Notification.svelte';
-	import { connecting, xmtpConnecting, userAddress } from '$lib/stores/Network';
-	// import { onMount } from 'svelte';
-	import { setLocalTheme, theme, themeLoaded } from '$lib/stores/Theme';
+	import { userAddress } from '$lib/stores/Network';
 	import { Buffer } from 'buffer';
-	import { Jumper } from 'svelte-loading-spinners';
 	import { page } from '$app/stores';
 	import LogRocket from 'logrocket';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
+	import Connection from '$lib/components/common/Connection.svelte';
 
+	// trackers
 	LogRocket.init('2wdgml/honestwork');
 	$: if ($userAddress && $userAddress != '') {
 		logrocketIdentify();
@@ -26,12 +25,7 @@
 			});
 		}
 	};
-
 	globalThis.Buffer = Buffer;
-
-	// $: onMount(async () => {
-	// 	setLocalTheme();
-	// });
 </script>
 
 <svelte:head>
@@ -57,24 +51,27 @@
 		<Navigation />
 	{/if}
 	<div style="height:32px;" />
-	<Notification />
-	<div style="height:16px;" />
-	{#if $connecting && $page.route.id !== '/'}
-		<div class="spinster">
-			<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
-			<div style="height: 12px;" />
-			<p class="light-60" style="animation: blinking 2s linear infinite;">connecting wallet...</p>
-		</div>
-	{:else if $xmtpConnecting && $page.route.id !== '/'}
-		<div class="spinster">
-			<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
-			<div style="height: 12px;" />
-			<p class="light-60" style="animation: blinking 2s linear infinite;">connecting xmtp...</p>
-		</div>
-	{:else}
-		<slot />
+	{#if $page.route.id == '/jobs' || $page.route.id == '/skills'}
+		<Notification
+			bodytext="looking for awesome people for your project?"
+			cta="post a job"
+			icon="/icons/post.svg"
+		/>
+		<div style="height:16px;" />
+	{:else if $page.route.id == '/new_job'}
+		<Notification
+			bodytext="grab an nft to get airdrop tokens from your activities!"
+			cta="mint and start accumulating"
+			icon="/icons/trending.svg"
+		/>
 	{/if}
-
+	<!-- {#if $connecting && $page.route.id !== '/'}
+		<Connection text="establishing wallet connection" />
+	{:else if $xmtpConnecting && $page.route.id !== '/'}
+		<Connection text="establishing xmtp connection" />
+	{:else} -->
+	<slot />
+	<!-- {/if} -->
 	{#if $page.route.id !== '/'}
 		<Footer />
 	{/if}
@@ -88,12 +85,5 @@
 		flex-direction: column;
 		align-items: center;
 		background-color: var(--color-dark);
-	}
-	.spinster {
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		margin-top: 24px;
 	}
 </style>

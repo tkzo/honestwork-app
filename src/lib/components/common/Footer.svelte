@@ -1,6 +1,6 @@
 <script>
 	import { chainName } from '$lib/stores/Network';
-	import { theme, toggleTheme } from '$lib/stores/Theme';
+	import { xmtpConnected, xmtpConnecting } from '$lib/stores/Network';
 	let pages = [
 		{ name: 'faq', path: '/' },
 		{ name: 'terms', path: '/' },
@@ -25,25 +25,33 @@
 			{/each}
 		</div>
 		<div class="social-section">
-			<img src={`icons/${$theme == 'light' ? 'light/' : ''}github.svg`} alt="Github" />
+			<img src={`icons/github.svg`} alt="Github" />
 			<div style="width:8px" />
-			<img src={`icons/${$theme == 'light' ? 'light/' : ''}twitter.svg`} alt="Twitter" />
+			<img src={`icons/twitter.svg`} alt="Twitter" />
 			<div style="width:8px" />
-			<img src={`icons/${$theme == 'light' ? 'light/' : ''}discord.svg`} alt="Discord" />
+			<img src={`icons/discord.svg`} alt="Discord" />
 		</div>
 	</div>
 	<div class="right-container">
 		<div class="network-section">
-			<p class="light-40 semibold">NETWORK <span class="yellow">{$chainName}</span></p>
+			<p class="light-40 semibold">
+				NETWORK <span class="yellow">{$chainName != '' ? $chainName : 'n/a'}</span>
+			</p>
 		</div>
 		<div class="network-section">
-			<p
-				class="light-40 semibold link"
-				on:click={() => toggleTheme($theme == 'light' ? 'dark' : 'light')}
-				on:keydown
-			>
-				{$theme == 'light' ? 'dark mode' : 'light mode'}
-			</p>
+			{#if !$xmtpConnecting}
+				<div style="width:4px" />
+				<p class="light-40 semibold link">
+					xmtp <span
+						style={$xmtpConnected ? 'color:var(--color-success)' : 'color:var(--color-primary)'}
+						>{$xmtpConnected ? 'active' : 'n/a'}</span
+					>
+				</p>
+			{:else}
+				<p class="light-40 semibold link">xmtp</p>
+				<div style="width:4px" />
+				<img src="icons/loader.svg" alt="loading" class="rotating" />
+			{/if}
 		</div>
 	</div>
 </main>
@@ -70,7 +78,7 @@
 		height: 32px;
 	}
 	.brand-section {
-		height: 32px;
+		height: 100%;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -91,7 +99,7 @@
 		box-sizing: border-box;
 	}
 	.sitemap-section {
-		height: 32px;
+		height: 100%;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -103,7 +111,7 @@
 		box-sizing: border-box;
 	}
 	.network-section {
-		height: 32px;
+		height: 100%;
 		display: flex;
 		flex-direction: row;
 		align-items: center;

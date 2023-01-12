@@ -68,6 +68,10 @@
 			<div class="button">
 				<p class="light-60">add to watchlist</p>
 			</div>
+			<div style="height:8px" />
+			<div class="button">
+				<p class="light-60">share job</p>
+			</div>
 		</div>
 	</div>
 	<div class="wrapper">
@@ -167,7 +171,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		align-items: center;
+		align-items: flex-start;
 		border-width: 1px 1px 1px 1px;
 		border-style: solid;
 		border-color: var(--color-light-10);
@@ -180,8 +184,8 @@
 		align-items: flex-start;
 	}
 	.pfp {
-		width: 60px;
-		height: 60px;
+		width: 94px;
+		height: 94px;
 	}
 	.info {
 		display: flex;
