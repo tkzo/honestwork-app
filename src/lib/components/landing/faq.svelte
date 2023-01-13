@@ -1,6 +1,15 @@
 <script lang="ts">
-	import { each } from "svelte/internal";
+    import { gsap } from "gsap";
+    let open = false;
 
+    const setOpen = () => {
+    if (!open) {
+      gsap.to(`.chevron-${card.question}`, { rotation: 90, duration: 0.3 });
+    } else {
+      gsap.to(`.chevron-${card.question}`, { rotation: 0, duration: 0.3 });
+    }
+    open = !open;
+  };
 
 
     type FAQCard = {
@@ -23,7 +32,54 @@
     ]
 </script>
 
-{#each FAQCards as card}
-    <div class="question">{card.question}</div>
-    <div class="answer">{card.answer}</div>  
-{/each} 
+<div class="container">
+    {#each FAQCards as card, index}
+    <div on:click={setOpen} on:keydown={setOpen} style="cursor:pointer;" class="faq-card">
+        <div class="question-box">
+            <div class="question">{card.question}</div>
+            <img src="icons/landing/chevron.svg" alt="Chevron" class={`chevron-{${card.question}}`} />
+        </div>
+            {#if open}
+                <div style="height: 24px"></div>
+                <div class="answer">{card.answer}</div>  
+            {/if}
+    </div>
+    {/each} 
+</div>
+
+<style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 961px;
+    }
+    .faq-card {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        border: 1px solid var(--color-light-20);
+        padding: 14px 20px;
+    }
+    .question-box{
+        width: 100%;
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+    }
+    .question {
+        font-family: 'Proto Mono';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 16px;
+    }
+    .answer {
+        font-family: 'Ubuntu Mono';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        color: var(--color-light-60);
+    }
+</style>
