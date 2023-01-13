@@ -2,36 +2,12 @@ export let placeholder_image = 'assets/xcopy.gif';
 
 export const chains = [
 	{
-		name: 'polygon',
-		id: 137,
+		name: 'binance',
+		id: 56,
 		tokens: [
 			{
-				name: 'matic',
-				symbol: 'matic',
-				address: '0x0000000000000000000000000000000000000000',
-				max_allowed: 1000000
-			},
-			{
-				name: 'usdc',
-				symbol: 'usdc',
-				address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
-				max_allowed: 1000000
-			},
-			{
-				name: 'usdt',
-				symbol: 'usdt',
-				address: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
-				max_allowed: 1000000
-			},
-			{
-				name: 'wrapped eth',
-				symbol: 'weth',
-				address: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
-				max_allowed: 1000000
-			},
-			{
-				name: 'fakeUSD',
-				symbol: 'fUSD',
+				name: 'MockToken',
+				symbol: 'MCKT',
 				address: '0x6bf83F1af0350407c6766Af32818603E9c08E182',
 				max_allowed: 1000000
 			}

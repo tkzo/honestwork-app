@@ -50,10 +50,8 @@ export const connectWallet = async () => {
 		userConnected.set(true);
 
 		// membership state
-		await fetchUserState();
 		// set network/account change listeners
 		setListeners();
-
 		connecting.set(false);
 
 		// xmtp connection
@@ -64,6 +62,7 @@ export const connectWallet = async () => {
 			xmtpConnecting.set(false);
 			xmtpConnected.set(true);
 		}
+		await fetchUserState();
 	} catch (err) {
 		console.log('error:', err);
 	}
@@ -77,26 +76,6 @@ const setListeners = () => {
 		window.location.reload();
 	});
 };
-
-export const connectNode = async () => {
-	try {
-		const provider = new ethers.providers.JsonRpcProvider(env.PUBLIC_ETHEREUM_RPC);
-		nodeProvider.set(provider);
-	} catch (err) {
-		console.log('error:', err);
-	}
-};
-
-const fetchUserState = async () => {
-	try {
-		const contract = new ethers.Contract(token_address, token_abi, get(networkSigner));
-		let state = await contract.getUserState(get(userAddress));
-		userState.set(state);
-	} catch (err) {
-		console.log(err);
-	}
-};
-
 export const token_abi = [
 	{
 		inputs: [
@@ -485,5 +464,23 @@ export const token_abi = [
 		type: 'function'
 	}
 ];
+export const connectNode = async () => {
+	try {
+		const provider = new ethers.providers.JsonRpcProvider(env.PUBLIC_ETHEREUM_RPC);
+		nodeProvider.set(provider);
+	} catch (err) {
+		console.log('error:', err);
+	}
+};
+
+const fetchUserState = async () => {
+	try {
+		const contract = new ethers.Contract(token_address, token_abi, get(networkSigner));
+		let state = await contract.getUserState(get(userAddress));
+		userState.set(state);
+	} catch (err) {
+		console.log(err);
+	}
+};
 
 connectNode();

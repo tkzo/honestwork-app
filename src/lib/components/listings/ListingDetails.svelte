@@ -43,7 +43,7 @@
 	let links: string[] = job.links;
 	let tags: string[] = job.tags;
 	let chosen_network: Network = chains[0];
-	let polygonTokens = chains.find((chain) => chain.id == 137)?.tokens!;
+	let polygonTokens = chains.find((chain) => chain.id == 56)?.tokens!;
 	let chosen_payment_token = polygonTokens[0];
 	let tag_input: HTMLInputElement;
 	let username_length = 0;
