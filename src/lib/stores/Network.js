@@ -4,6 +4,8 @@ import { env } from '$env/dynamic/public';
 import { Client } from '@xmtp/xmtp-js';
 import { get } from 'svelte/store';
 
+//todo: typescript
+
 export let userConnected = writable(false);
 export let userAddress = writable('');
 export let networkProvider = writable();
@@ -87,17 +89,9 @@ export const connectNode = async () => {
 
 const fetchUserState = async () => {
 	try {
-		console.log(
-			'fetching user state',
-			token_address,
-			token_abi,
-			get(networkSigner),
-			get(userAddress)
-		);
 		const contract = new ethers.Contract(token_address, token_abi, get(networkSigner));
 		let state = await contract.getUserState(get(userAddress));
 		userState.set(state);
-		console.log('State:', state);
 	} catch (err) {
 		console.log(err);
 	}
