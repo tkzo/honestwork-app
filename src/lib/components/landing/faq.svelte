@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Question from "./Question.svelte";
+	import Question from "$lib/components/landing/Question.svelte";
 
     type FAQCard = {
         id:number;
@@ -60,10 +60,10 @@
         font-size: 28px;
         line-height: 28px;
         color: var(--color-primary);
-        text-shadow: 0px 0px 50px rgba(255, 211, 105, 0.5);
         text-align: center;
         margin: 0 0 24px;
-        border-bottom: 1px solid var(--color-light-20);
         padding: 0 0 12px;
+        border-bottom: 1px solid var(--color-light-20);
+        text-shadow: 0px 0px 50px rgba(255, 211, 105, 0.5);
     }
 </style>
