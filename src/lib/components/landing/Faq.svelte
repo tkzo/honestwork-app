@@ -43,7 +43,6 @@
     <h2>FAQ</h2>
     {#each FAQCards as card}
         <Question card={card} />
-        be normal pls
     {/each} 
 </div>
 
