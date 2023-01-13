@@ -1,5 +1,6 @@
 <script lang="ts">
     import { gsap } from "gsap";
+    import { slide } from "svelte/transition";
     let open = false;
     export let card: any;
 
@@ -21,8 +22,10 @@
             <img src="icons/landing/chevron.svg" alt="Chevron" class={`chevron-${card.id}`} />
         </div>
             {#if open}
+            <div transition:slide={{ duration: 400 }}>
                 <div style="height: 24px"></div>
-                <div class="answer">{card.answer}</div>  
+                <div class="answer">{card.answer}</div>
+            </div>  
             {/if}
     </div>
 

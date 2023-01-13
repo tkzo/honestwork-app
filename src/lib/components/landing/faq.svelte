@@ -14,13 +14,27 @@
         },
         {
             id:2,
-            question:'Why do I need HonestWork NFT?',
-            answer: 'With HonestWork NFT, you can create a freelancer profile and apply for jobs. Additionally, HonestWork NFT is your work experience record on-chain. Ratings and finished projects are saved inside your HonestWork NFT, and they are yours to keep even when you stop using our platform.'
+            question:'How to get HonestWork NFT?',
+            answer: 'You can mint HonestWork NFT in the HonestWork app or buy it on the NFT marketplace (e.g. OpenSea) if available.'
         },
         {
             id:3,
-            question:'How to get HonestWork NFT?',
-            answer: 'You can mint HonestWork NFT in the HonestWork app or buy it on NFT marketplace (e.g. OpenSea) if available.'
+            question:'How to get a freelance job in HonestWork?',
+            answer: 'You can apply to the existing jobs on the “Jobs” page or receive offers based on the skills listed on your profile.'
+        },
+        {
+            id:4,
+            question:'How will I receive payment for the delivered project?',
+            answer: 'After the employer accepts the delivered project, you can claim the payment by clicking the “Claim” button in the chat. You’ll receive the payment in your crypto wallet.'        },
+        {
+            id:5,
+            question:'How to post a job in HonestWork?',
+            answer: 'You can post a job by clicking the “Post a Job” button on the Jobs page. After filling out the job listing form, you’ll be asked to connect with your crypto wallet and approve the transaction for the service fee. After a successful transaction, your job listing will appear on the Jobs page.'
+        },
+        {
+            id:6,
+            question:'How to pay for work?',
+            answer: 'When you make a deal with a freelancer, you’ll be prompted to create a smart contract that solidifies the deal. To create the smart contract, you’ll need to pay the agreed-upon amount and success fee. Payment will be safely stored in the Escrow Contract until you unlock it so the freelancer can claim it.'
         }
     ]
 </script>
