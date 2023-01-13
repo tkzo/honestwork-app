@@ -1,9 +1,11 @@
 <script lang="ts">
     import { gsap } from "gsap";
     import { slide } from "svelte/transition";
-    let open = false;
-    export let card: any;
 
+    export let card: any;
+    
+    let open = false;
+    
     const setOpen = () => {
     if (!open) {
       gsap.to(`.chevron-${card.id}`, { rotation: -180, duration: 0.5 });
