@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Job from '$lib/components/profile/Job.svelte';
-	import JobEdit from '$lib/components/profile/JobEdit.svelte';
 	import type { JobType } from '$lib/stores/Types';
 	import { chosen_job_slot, job_add } from '$lib/stores/State';
 
@@ -32,8 +31,6 @@
 			{/if}
 		{/each}
 	{/if}
-{:else}
-	<JobEdit />
 {/if}
 
 <style>
