@@ -30,18 +30,14 @@
     </div>
 
 <style>
-    .container {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        width: 961px;
-    }
     .faq-card {
         display: flex;
         flex-direction: column;
         box-sizing: border-box;
         border: 1px solid var(--color-light-20);
         padding: 14px 20px;
+        width: 100%;
+        max-width: 961px;
     }
     .question-box{
         width: 100%;

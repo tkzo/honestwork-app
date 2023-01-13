@@ -40,7 +40,8 @@
 </script>
 
 <div class="container">
-    {#each FAQCards as card, index}
+    <h2>FAQ</h2>
+    {#each FAQCards as card}
         <Question card={card} />
     {/each} 
 </div>
@@ -50,6 +51,19 @@
         display: flex;
         flex-direction: column;
         gap: 12px;
-        width: 961px;
+        width: 80vw;
+    }
+    h2 {
+        font-family: 'Proto Mono';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 28px;
+        line-height: 28px;
+        color: var(--color-primary);
+        text-shadow: 0px 0px 50px rgba(255, 211, 105, 0.5);
+        text-align: center;
+        margin: 0 0 24px;
+        border-bottom: 1px solid var(--color-light-20);
+        padding: 0 0 12px;
     }
 </style>

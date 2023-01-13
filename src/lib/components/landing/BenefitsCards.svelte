@@ -57,9 +57,10 @@
         text-transform: none;
     }
 
-    @media (max-width:754px) {
+    @media (max-width:780px) {
         .container {
             flex-direction: column;
+            align-items: center;
         }
     }
     @media (max-width:550px) {
