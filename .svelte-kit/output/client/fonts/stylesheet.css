@@ -9,7 +9,7 @@
 }
 
 @font-face {
-	font-family: 'proto_monomedium';
+	font-family: 'Proto Mono Medium';
 	src: url('protomono-medium-webfont.woff2') format('woff2'),
 		url('protomono-medium-webfont.woff') format('woff');
 	font-weight: normal;
@@ -25,7 +25,7 @@
 }
 
 @font-face {
-	font-family: 'proto_monosemi_bold';
+	font-family: 'Proto Mono Semibold';
 	src: url('protomono-semibold-webfont.woff2') format('woff2'),
 		url('protomono-semibold-webfont.woff') format('woff');
 	font-weight: normal;

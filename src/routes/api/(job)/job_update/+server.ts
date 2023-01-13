@@ -7,7 +7,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 	const userSalt = cookies.get('honestwork_salt');
 
 	let data = await request.json();
-	console.log('Endpoint data:', data);
 
 	const apiUrl =
 		parseInt(env.PRODUCTION_ENV) == 1

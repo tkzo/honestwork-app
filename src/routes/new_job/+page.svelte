@@ -100,8 +100,6 @@
 		formObj.sticky_duration = sticky_duration.toString();
 		formObj.timezone = timezone >= 0 ? `UTC+${timezone}` : `UTC-${timezone}`;
 
-		console.log('Form obj:', formObj);
-
 		//todo: consume errors and show them to the user
 		let parsed = JobInput.safeParse(formObj);
 		if (!parsed.success) {
@@ -131,7 +129,6 @@
 		goto('/jobs');
 	};
 	const uploadImage = async (e: any) => {
-		console.log('Upload img event:', e);
 		let target_file;
 		for (let t of e.target) {
 			if (t.files) {
@@ -140,7 +137,6 @@
 		}
 		if (target_file.files.length != 0) {
 			const file = target_file.files[0]!;
-			console.log('MYFILENAME:', file.name);
 			parsed_filename = file.name;
 			const { url, fields } = await upload_url.json();
 			const formData = new FormData();
@@ -238,9 +234,7 @@
 		if ($userConnected) {
 			userPaying = true;
 			let amount_to_pay = sticky_item.price + service_fee;
-			console.log('Amount to pay:', amount_to_pay);
 			let price = ethers.utils.parseEther(amount_to_pay.toString());
-			console.log('Price:', price);
 			try {
 				const joblistingContract = new ethers.Contract(
 					env.PUBLIC_JOB_LISTING_CONTRACT_ADDRESS,

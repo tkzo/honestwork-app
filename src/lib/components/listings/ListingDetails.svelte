@@ -74,15 +74,12 @@
 		`UTC${timezone > 0 ? '+' : '-'}${timezone}` != job.timezone
 	) {
 		changes_made.set(true);
-		console.log('Changes made:', $changes_made);
 	} else {
 		changes_made.set(false);
-		console.log('Changes made:', $changes_made);
 	}
 	$: sticky_item = sticky_data.find((n) => n.duration == sticky_duration) ?? sticky_data[0];
 
 	const handleSubmit = async (e: Event) => {
-		console.log('AAAH');
 		const formData = new FormData(e.target! as HTMLFormElement);
 		let formObj: JobType = {} as JobType;
 		formObj = Object.fromEntries(formData.entries()) as unknown as JobType;
@@ -105,8 +102,6 @@
 		formObj.tags = tags;
 		formObj.sticky_duration = sticky_duration.toString();
 		formObj.timezone = timezone >= 0 ? `UTC+${timezone}` : `UTC-${timezone}`;
-
-		console.log('Form obj:', formObj);
 
 		//todo: consume errors and show them to the user
 		let parsed = JobInput.safeParse(formObj);
@@ -135,7 +130,6 @@
 		changes_made.set(false);
 	};
 	const uploadImage = async (e: any) => {
-		console.log('Upload img event:', e);
 		let target_file;
 		for (let t of e.target) {
 			if (t.files) {
@@ -144,7 +138,6 @@
 		}
 		if (target_file.files.length != 0) {
 			const file = target_file.files[0]!;
-			console.log('MYFILENAME:', file.name);
 			parsed_filename = file.name;
 			const { url, fields } = await upload_url.json();
 			const formData = new FormData();

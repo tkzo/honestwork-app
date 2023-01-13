@@ -8,6 +8,7 @@
 	import LogRocket from 'logrocket';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import Connection from '$lib/components/common/Connection.svelte';
+	import { notifications } from '$lib/stores/Constants';
 
 	// trackers
 	LogRocket.init('2wdgml/honestwork');
@@ -26,24 +27,6 @@
 		}
 	};
 	globalThis.Buffer = Buffer;
-
-	let notifications = {
-		postjob: {
-			bodytext: 'looking for awesome people for your project?',
-			cta: 'post a job',
-			icon: '/icons/post.svg'
-		},
-		mint: {
-			bodytext: 'grab an nft to get airdrop tokens from your activities!',
-			cta: 'mint and start accumulating',
-			icon: '/icons/trending.svg'
-		},
-		upgrade: {
-			bodytext: 'you can list even more awesome skills by upgrading your nft!',
-			cta: 'upgrade now',
-			icon: '/icons/zap.svg'
-		}
-	};
 </script>
 
 <svelte:head>

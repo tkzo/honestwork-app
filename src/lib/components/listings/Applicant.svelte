@@ -11,7 +11,6 @@
 
 	$: if ($userConnected) {
 		setup();
-		console.log('hello');
 	}
 
 	const setup = async () => {

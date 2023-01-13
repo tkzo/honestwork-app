@@ -47,7 +47,6 @@
 					})
 				});
 				const data = await response.json();
-				console.log('Result:', data);
 				if (data == 'success') {
 					toast.push(
 						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Application received</p>`
@@ -88,11 +87,11 @@
 				<p class="light-60">add to watchlist</p>
 			</div>
 			<div style="height:8px" />
-			<div class="button">
+			<a class="button" href={`job/${job.user_address}/${job.slot}`}>
 				<p class="light-60">share job</p>
 				<div style="width:4px;" />
 				<img src="icons/external.svg" alt="share" style="margin-top:-2px;" />
-			</div>
+			</a>
 		</div>
 	</div>
 	<div class="wrapper">

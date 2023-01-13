@@ -39,6 +39,24 @@ export const chains = [
 	}
 ];
 
+export const notifications = {
+	postjob: {
+		bodytext: 'looking for awesome people for your project?',
+		cta: 'post a job',
+		icon: '/icons/post.svg'
+	},
+	mint: {
+		bodytext: 'grab an nft to get airdrop tokens from your activities!',
+		cta: 'mint and start accumulating',
+		icon: '/icons/trending.svg'
+	},
+	upgrade: {
+		bodytext: 'you can list even more awesome skills by upgrading your nft!',
+		cta: 'upgrade now',
+		icon: '/icons/zap.svg'
+	}
+};
+
 export const sticky_data = [
 	{ duration: 7, price: 49 },
 	{ duration: 14, price: 69 },

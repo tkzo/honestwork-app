@@ -32,6 +32,18 @@
 	color: var(--color-primary);
 }
 
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
 /* hide scrollbar but allow scrolling */
 body {
 	-ms-overflow-style: none; /* for Internet Explorer, Edge */

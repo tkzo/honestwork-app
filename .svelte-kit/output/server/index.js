@@ -1,4 +1,5 @@
 import { c as create_ssr_component, s as setContext, v as validate_component, m as missing_component } from "./chunks/index.js";
+import { D as DEV } from "./chunks/prod-ssr.js";
 import { H as HttpError, R as Redirect, e as error, A as ActionFailure, j as json } from "./chunks/index2.js";
 import * as devalue from "devalue";
 import { w as writable, r as readable, s as set_public_env } from "./chunks/env-public.js";
@@ -7,7 +8,6 @@ import * as set_cookie_parser from "set-cookie-parser";
 import { s as set_private_env } from "./chunks/env-private.js";
 function afterUpdate() {
 }
-const DEV = false;
 function set_building(value) {
 }
 const Root = create_ssr_component(($$result, $$props, $$bindings, slots) => {
@@ -2291,7 +2291,7 @@ function set_paths(paths) {
   base = paths.base;
   assets = paths.assets || base;
 }
-const app_template = ({ head, body, assets: assets2, nonce }) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<link rel="icon" href="' + assets2 + '/favicon.png" />\n		<link rel="stylesheet" href="fonts/stylesheet.css" type="text/css" charset="utf-8" />\n		<link rel="preconnect" href="https://fonts.googleapis.com" />\n		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />\n		<link\n			href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap"\n			rel="stylesheet"\n		/>\n		<meta name="viewport" content="width=device-width" />\n		' + head + '\n		<!-- <script src="js/fuzzy/fuzzy.js"></script> -->\n	</head>\n\n	<body>\n		<div style="display: contents">' + body + "</div>\n	</body>\n</html>\n";
+const app_template = ({ head, body, assets: assets2, nonce }) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<link rel="icon" href="' + assets2 + '/favicon.png" />\n		<link rel="stylesheet" href="fonts/stylesheet.css" type="text/css" charset="utf-8" />\n		<link rel="stylesheet" href="styles.css" type="text/css" charset="utf-8" />\n		<link rel="stylesheet" href="dark.css" type="text/css" charset="utf-8" />\n\n		<link rel="preconnect" href="https://fonts.googleapis.com" />\n		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />\n		<link\n			href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap"\n			rel="stylesheet"\n		/>\n		<meta name="viewport" content="width=device-width" />\n		' + head + '\n	</head>\n\n	<body>\n		<div style="display: contents">' + body + "</div>\n	</body>\n</html>\n";
 const error_template = ({ status, message }) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<title>' + message + `</title>
 
 		<style>
@@ -2371,7 +2371,7 @@ class Server {
       app_template,
       app_template_contains_nonce: false,
       error_template,
-      version: "1671983695709"
+      version: "1673628099754"
     };
   }
   async init({ env }) {

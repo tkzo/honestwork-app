@@ -146,26 +146,28 @@
 			>
 				<div bind:this={contents} class="contents">
 					<div style="height:8px" />
-					{#each filteredSkills as skill, index}
-						{#if index == 0}
-							<div style="height:0px" bind:this={ghost_component} />
-						{/if}
-						<div
-							on:click={() => {
-								active_skill = skill;
-							}}
-							on:keydown
-						>
-							<Skill
-								chosen={skill == active_skill}
-								title={skill.title}
-								description={skill.description}
-								image_urls={skill.image_urls}
-								minimum_price={skill.minimum_price}
-								user_address={skill.user_address}
-							/>
-						</div>
-					{/each}
+					{#if filteredSkills && filteredSkills.length > 0}
+						{#each filteredSkills as skill, index}
+							{#if index == 0}
+								<div style="height:0px" bind:this={ghost_component} />
+							{/if}
+							<div
+								on:click={() => {
+									active_skill = skill;
+								}}
+								on:keydown
+							>
+								<Skill
+									chosen={skill == active_skill}
+									title={skill.title}
+									description={skill.description}
+									image_urls={skill.image_urls}
+									minimum_price={skill.minimum_price}
+									user_address={skill.user_address}
+								/>
+							</div>
+						{/each}
+					{/if}
 				</div>
 			</div>
 			<Svrollbar {viewport} {contents} on:show={updateScrollState} />
