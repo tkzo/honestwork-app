@@ -7,7 +7,7 @@
 		<p class="light-80">{notification.bodytext}</p>
 		<div style="width:8px" />
 		<a href="/new_job" class="post-link">
-			<p class="link underlined">{notification.cta}</p>
+			<p class="yellow link underlined">{notification.cta}</p>
 			<div style="width:8px" />
 			<img src={notification.icon} alt={notification.cta} />
 		</a>

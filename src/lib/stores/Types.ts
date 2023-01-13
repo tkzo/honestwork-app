@@ -26,6 +26,7 @@ export type UserType = {
 export type JobType = {
 	slot: number;
 	user_address: string;
+	email: string;
 	username: string;
 	created_at: number;
 	title: string;

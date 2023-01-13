@@ -4,6 +4,8 @@
 	import { Svrollbar } from 'svrollbar';
 	import type { JobType } from '$lib/stores/Types';
 	import { browser } from '$app/environment';
+	import { chosen_job_slot } from '$lib/stores/State';
+	import { onMount } from 'svelte';
 
 	export let data: any;
 	export let viewport: Element;
@@ -15,8 +17,15 @@
 	$: if (browser) {
 		feedHeight = window.innerHeight - 112;
 	}
-	$: active_job = data?.jobs.json[0];
-	$: console.log('Active job:', active_job);
+
+	onMount(() => {
+		handleJobSelect(data?.jobs.json[0]);
+	});
+
+	const handleJobSelect = (job: JobType) => {
+		active_job = job;
+		chosen_job_slot.set(job.slot);
+	};
 </script>
 
 <svelte:head>
@@ -38,7 +47,7 @@
 						{#each data.jobs.json as job, index}
 							<div
 								on:click={() => {
-									active_job = job;
+									handleJobSelect(job);
 								}}
 								on:keydown
 							>

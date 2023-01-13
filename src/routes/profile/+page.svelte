@@ -77,6 +77,7 @@
 	let feedHeight = 0;
 
 	onMount(async () => {
+		changes_made.set(false);
 		await getNft();
 		//todo: move to layout
 		updateInputLengths();

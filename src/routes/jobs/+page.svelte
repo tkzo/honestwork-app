@@ -148,19 +148,21 @@
 			>
 				<div bind:this={contents} class="contents">
 					<div style="height:8px" />
-					{#each filteredSkills as job, index}
-						{#if index == 0}
-							<div style="height:0px" bind:this={ghost_component} />
-						{/if}
-						<div
-							on:click={() => {
-								active_job = job;
-							}}
-							on:keydown
-						>
-							<Job chosen={job == active_job} {job} />
-						</div>
-					{/each}
+					{#if filteredSkills && filteredSkills.length > 0}
+						{#each filteredSkills as job, index}
+							{#if index == 0}
+								<div style="height:0px" bind:this={ghost_component} />
+							{/if}
+							<div
+								on:click={() => {
+									active_job = job;
+								}}
+								on:keydown
+							>
+								<Job chosen={job == active_job} {job} />
+							</div>
+						{/each}
+					{/if}
 				</div>
 			</div>
 			<Svrollbar {viewport} {contents} on:show={updateScrollState} />

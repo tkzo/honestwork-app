@@ -48,9 +48,15 @@
 				});
 				const data = await response.json();
 				console.log('Result:', data);
-				toast.push(
-					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Application received</p>`
-				);
+				if (data == 'success') {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Application received</p>`
+					);
+				} else {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
+					);
+				}
 			} catch (e) {
 				console.log(e);
 			}
@@ -84,6 +90,8 @@
 			<div style="height:8px" />
 			<div class="button">
 				<p class="light-60">share job</p>
+				<div style="width:4px;" />
+				<img src="icons/external.svg" alt="share" style="margin-top:-2px;" />
 			</div>
 		</div>
 	</div>

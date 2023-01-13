@@ -23,7 +23,7 @@ export const dictionary = {
 	"/listings": [~7],
 	"/messages": [~8],
 	"/(subpages)/mint": [5],
-	"/new_job": [~9],
+	"/new_job": [9],
 	"/profile": [~10],
 	"/skills": [~11]
 };

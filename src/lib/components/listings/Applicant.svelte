@@ -3,7 +3,7 @@
 	import { userConnected, connectNode, nodeProvider, userAddress } from '$lib/stores/Network';
 	import { placeholder_image } from '$lib/stores/Constants';
 	import { slide } from 'svelte/transition';
-	import { elasticOut, cubicOut, expoOut } from 'svelte/easing';
+	import { expoOut } from 'svelte/easing';
 
 	export let applicant: ApplicantType;
 
@@ -24,7 +24,7 @@
 	let ens_loading = false;
 	let nft_image: string | null = null;
 	let ens_name: string | null = null;
-	let drawer_open = true;
+	let drawer_open = false;
 
 	const fetchUser = async () => {
 		const response = await fetch(`/api/user/${applicant.user_address}`);
@@ -102,7 +102,7 @@
 			</div>
 		</div>
 		{#if drawer_open}
-			<div class="drawer_container" transition:slide={{ duration: 500, easing: expoOut }}>
+			<div class="drawer_container" in:slide={{ duration: 500, easing: expoOut }}>
 				<div class="bio">
 					<div class="body-text light-80">{user?.bio}</div>
 				</div>
@@ -130,7 +130,7 @@
 
 <style>
 	main {
-		width: 100%;
+		width: 518px;
 	}
 	.profile-bar {
 		display: flex;

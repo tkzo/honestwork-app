@@ -12,6 +12,9 @@
 	"/api/job_submit": [
 		"src/routes/api/job_submit/+server.ts"
 	],
+	"/api/job_update": [
+		"src/routes/api/job_update/+server.ts"
+	],
 	"/api/job/[sort]/[order]": [
 		"src/routes/api/job/[sort]/[order]/+server.ts"
 	],
@@ -49,9 +52,7 @@
 		"src/routes/messages/+page.server.ts"
 	],
 	"/(subpages)/mint": [],
-	"/new_job": [
-		"src/routes/new_job/+page.server.ts"
-	],
+	"/new_job": [],
 	"/profile": [
 		"src/routes/profile/+page.server.ts"
 	],
