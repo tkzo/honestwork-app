@@ -2,6 +2,8 @@
 	import { goto } from '$app/navigation';
 	import { connectWallet } from '$lib/stores/Network';
 	import { userConnected, xmtpConnected, userState } from '$lib/stores/Network';
+	import BenefitsCards from '$lib/components/landing/BenefitsCards.svelte';
+	import Faq from '$lib/components/landing/Faq.svelte';
 	import Skeleton from '$lib/components/common/Skeleton.svelte';
 
 	const track = async () => {
@@ -31,10 +33,10 @@
 	<div on:click={handleConnect} on:keydown>CONNECT WALLET</div>
 	<div on:click={() => goto('/skills')} on:keydown>START EXPLORING</div>
 	<div class="container">
-		<!-- <BenefitsCards />
+		<BenefitsCards />
 		<div style="height: 120px;"></div>
 		<Faq />
-		<div style="height: 120px;"></div> -->
+		<div style="height: 120px;"></div>
 	</div>
 {:else}
 	<Skeleton width="200px" borderRadius="0px" />
