@@ -3,8 +3,6 @@
 	import { connectWallet } from '$lib/stores/Network';
 	import { userConnected, xmtpConnected, userState } from '$lib/stores/Network';
 	import Skeleton from '$lib/components/common/Skeleton.svelte';
-	import BenefitsCards from '$lib/components/landing/BenefitsCards.svelte';
-	import Faq from '$lib/components/landing/Faq.svelte';
 
 	const track = async () => {
 		if (typeof window !== 'undefined' && window) {
