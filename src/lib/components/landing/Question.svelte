@@ -1,6 +1,7 @@
 <script lang="ts">
     import { gsap } from "gsap";
     import { slide } from "svelte/transition";
+    import { assets } from '$app/paths';
 
     export let card: any;
     
@@ -21,7 +22,7 @@
     <div on:click={setOpen} on:keydown={setOpen} style="cursor:pointer;" class="faq-card">
         <div class="question-box">
             <div class="question">{card.question}</div>
-            <img src="icons/landing/chevron.svg" alt="Chevron" class={`chevron-${card.id}`} />
+            <img src={`${assets}/icons/landing/chevron.svg`} alt="Chevron" class={`chevron-${card.id}`} />
         </div>
             {#if open}
             <div transition:slide={{ duration: 400 }}>

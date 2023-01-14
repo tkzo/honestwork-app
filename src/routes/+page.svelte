@@ -18,10 +18,10 @@
 <div on:click={handleConnect} on:keydown>LOGIN</div>
 <div on:click={() => goto('/skills')} on:keydown>EXPLORE</div>
 <div class="container">
-	<!-- <BenefitsCards /> -->
-	<!-- <div style="height: 120px;"></div>
-	<Faq />
-	<div style="height: 120px;"></div> -->
+	 <!-- <BenefitsCards /> -->
+	<!-- <div style="height: 120px;"></div> -->
+	<!-- <Faq /> -->
+	<!-- <div style="height: 120px;"></div> -->
 </div>
 
 <style>
