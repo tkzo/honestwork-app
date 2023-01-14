@@ -314,7 +314,7 @@
 	>
 		<div bind:this={contents} class="contents" style={`width:520px;`}>
 			<div style="height: 16px" />
-			{#if $userAddress.toLowerCase() == data.user.address.toLowerCase() && $userState > 1}
+			{#if $userAddress.toLowerCase() == data.user.address.toLowerCase() && $userState > 0}
 				{#if chosenTab == 'profile'}
 					<form
 						method="POST"

@@ -90,7 +90,7 @@
 			<a class="button" href={`job/${job.user_address}/${job.slot}`}>
 				<p class="light-60">share job</p>
 				<div style="width:4px;" />
-				<img src="icons/external.svg" alt="share" style="margin-top:-2px;" />
+				<img src="/icons/external.svg" alt="share" style="margin-top:-2px;" />
 			</a>
 		</div>
 	</div>
@@ -140,7 +140,7 @@
 														<p class={i % 2 == 0 ? '' : 'light-60'}>{token.address}</p>
 														<div style="width:4px;" />
 														<img
-															src="icons/external.svg"
+															src="/icons/external.svg"
 															alt="External Link"
 															style="margin-top:-2px;"
 														/>

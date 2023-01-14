@@ -1,6 +1,7 @@
 <script>
 	import { chainName } from '$lib/stores/Network';
 	import { xmtpConnected, xmtpConnecting } from '$lib/stores/Network';
+	import { assets } from '$app/paths';
 	let pages = [
 		{ name: 'faq', path: '/' },
 		{ name: 'terms', path: '/' },
@@ -25,11 +26,11 @@
 			{/each}
 		</div>
 		<div class="social-section">
-			<img src={`icons/github.svg`} alt="Github" />
+			<img src={`${assets}/icons/github.svg`} alt="Github" />
 			<div style="width:8px" />
-			<img src={`icons/twitter.svg`} alt="Twitter" />
+			<img src={`${assets}/icons/twitter.svg`} alt="Twitter" />
 			<div style="width:8px" />
-			<img src={`icons/discord.svg`} alt="Discord" />
+			<img src={`${assets}/icons/discord.svg`} alt="Discord" />
 		</div>
 	</div>
 	<div class="right-container">
@@ -50,7 +51,7 @@
 			{:else}
 				<p class="light-40 semibold link">xmtp</p>
 				<div style="width:4px" />
-				<img src="icons/loader.svg" alt="loading" class="rotating" />
+				<img src={`${assets}/icons/loader.svg`} alt="loading" class="rotating" />
 			{/if}
 		</div>
 	</div>

@@ -3,9 +3,9 @@ import { redirect } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 
 export const GET: RequestHandler = ({ url, cookies }) => {
-	const userSignature = cookies.get('signature');
-	const userSalt = cookies.get('salt');
-	const address = url.searchParams.get('address');
+	const userSignature = cookies.get('honestwork_signature');
+	const userSalt = cookies.get('honestwork_salt');
+	const address = url.searchParams.get('honestwork_address');
 
 	if (userSignature && userSalt && address) {
 		validateSignature(address, userSignature, userSalt);

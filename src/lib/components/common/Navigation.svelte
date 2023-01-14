@@ -7,6 +7,7 @@
 		xmtpConnected
 	} from '$lib/stores/Network';
 	import { page } from '$app/stores';
+	import { assets } from '$app/paths';
 </script>
 
 <main>
@@ -46,7 +47,7 @@
 		<div class="wallet-section">
 			{#if !$userConnected}
 				{#if $connecting}
-					<img src="icons/loader.svg" alt="loading" class="rotating" />
+					<img src={`${assets}/icons/loader.svg`} alt="loading" class="rotating" />
 				{/if}
 				<div style="width:4px" />
 				<p class="yellow semibold link" on:click={connectWallet} on:keydown>connect</p>
