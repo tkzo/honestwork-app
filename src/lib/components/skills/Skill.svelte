@@ -4,6 +4,9 @@
 	import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
 	import type { UserType } from '$lib/stores/Types';
 	import { onMount } from 'svelte';
+	import { assets } from '$app/paths';
+	import { placeholder_image } from '$lib/stores/Constants';
+
 	export let title: string;
 	export let description: string;
 	export let image_urls: Array<string>;
@@ -29,7 +32,6 @@
 
 	$: trimmed_description =
 		description.length > 120 ? description.slice(0, 120) + '...' : description;
-	let placeholder_image = 'assets/xcopy.gif';
 
 	onMount(() => {
 		fetchUser();
@@ -42,6 +44,7 @@
 	let user: UserType;
 	//todo: show placeholder until image is loaded
 	let image_component: HTMLImageElement;
+	let hovering_heart: boolean = false;
 </script>
 
 <section class={chosen ? 'chosen' : ''}>
@@ -86,10 +89,20 @@
 				}}
 				on:keydown
 			>
-				<a href="/messages"> <img src="icons/message.svg" alt="message" /> </a>
+				<a href="/messages"> <img src={`${assets}/icons/message.svg`} alt="message" /> </a>
 			</div>
-			<div class="action">
-				<img src="icons/heart.svg" alt="heart" />
+			<div
+				class="action"
+				on:mouseover={() => (hovering_heart = true)}
+				on:focus
+				on:mouseout={() => (hovering_heart = false)}
+				on:blur
+			>
+				{#if hovering_heart}
+					<img src={`${assets}/icons/halfheart.svg`} alt="heart" />
+				{:else}
+					<img src={`${assets}/icons/heart.svg`} alt="heart" />
+				{/if}
 			</div>
 		</div>
 	</div>

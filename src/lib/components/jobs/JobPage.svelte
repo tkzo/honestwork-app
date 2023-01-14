@@ -63,6 +63,35 @@
 			}
 		}
 	};
+	const handleWatch = async () => {
+		if ($userConnected) {
+			try {
+				const url = `${base}/api/watchlist/add`;
+				const response = await fetch(url, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						address: job.user_address,
+						slot: job.slot
+					})
+				});
+				const data = await response.json();
+				if (data == 'success') {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Added to watchlist!</p>`
+					);
+				} else {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
+					);
+				}
+			} catch (e) {
+				console.log(e);
+			}
+		}
+	};
 </script>
 
 <main>
@@ -85,7 +114,7 @@
 				<p class="yellow">apply to this job</p>
 			</div>
 			<div style="height:8px" />
-			<div class="button">
+			<div class="button link" on:click={handleWatch} on:keydown>
 				<p class="light-60">add to watchlist</p>
 			</div>
 			<div style="height:8px" />

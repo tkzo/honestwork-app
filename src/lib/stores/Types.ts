@@ -55,3 +55,13 @@ export type Network = {
 export type Token = {
 	address: string;
 };
+
+export type Watchlist = {
+	input: {
+		address: string;
+		slot: number;
+	};
+	username: string;
+	title: string;
+	image_url: string;
+};

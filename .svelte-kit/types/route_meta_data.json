@@ -36,6 +36,12 @@
 	"/api/user/[address]": [
 		"src/routes/api/user/[address]/+server.ts"
 	],
+	"/api/watchlist/add": [
+		"src/routes/api/watchlist/add/+server.ts"
+	],
+	"/api/watchlist/get": [
+		"src/routes/api/watchlist/get/+server.ts"
+	],
 	"/(subpages)/connect_wallet": [
 		"src/routes/(subpages)/connect_wallet/+page.server.ts"
 	],

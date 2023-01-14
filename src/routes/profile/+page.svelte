@@ -15,10 +15,14 @@
 		skill_add,
 		skill_upload_urls,
 		changes_made,
-		submitting
+		submitting,
+		user_watchlist
 	} from '$lib/stores/State';
 	import { Svrollbar } from 'svrollbar';
 	import { browser } from '$app/environment';
+	import { assets } from '$app/paths';
+	import Watchlist from '$lib/components/profile/Watchlist.svelte';
+	import { toast } from '@zerodevx/svelte-toast';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
@@ -77,6 +81,7 @@
 	onMount(async () => {
 		changes_made.set(false);
 		await getNft();
+		getWatchlist();
 		//todo: move to layout
 		updateInputLengths();
 	});
@@ -108,7 +113,25 @@
 	} else {
 		changes_made.set(false);
 	}
-
+	const getWatchlist = async () => {
+		if ($userConnected) {
+			try {
+				const response = await fetch(`/api/watchlist/get`);
+				const data = await response.json();
+				console.log('Data:', data);
+				user_watchlist.set([]);
+				data.forEach((item: any) => {
+					user_watchlist.update((w) => {
+						w.push(item);
+						return w;
+					});
+				});
+				console.log("User's watchlist:", $user_watchlist);
+			} catch (error) {
+				toast.push('Error fetching watchlist');
+			}
+		}
+	};
 	const setEnsName = async () => {
 		ens_loading = true;
 		await connectNode();
@@ -311,7 +334,6 @@
 		style={`width:100%; height:${feedHeight.toString() + 'px'}`}
 	>
 		<div bind:this={contents} class="contents" style={`width:520px;`}>
-			<div style="height: 16px" />
 			{#if $userAddress.toLowerCase() == data.user.address.toLowerCase() && $userState > 0}
 				{#if chosenTab == 'profile'}
 					<form
@@ -328,10 +350,10 @@
 								</p>
 								<p
 									class="tab link semibold light-60"
-									on:click={() => toggle('job history')}
+									on:click={() => toggle('watchlist')}
 									on:keydown
 								>
-									job history
+									watchlist
 								</p>
 							</div>
 
@@ -404,7 +426,7 @@
 											<p class="yellow">use nft image</p>
 										{:else}
 											<img
-												src="icons/unchecked.svg"
+												src={`${assets}/icons/unchecked.svg`}
 												alt="Checked"
 												style="height:16px;width:16px;"
 											/>
@@ -425,7 +447,7 @@
 										{#if ens_loading}
 											<div class="input-like">
 												<img
-													src="icons/loader.svg"
+													src={`${assets}/icons/loader.svg`}
 													alt="loading"
 													class="rotating"
 													style="height:16px;width:16px;"
@@ -469,7 +491,7 @@
 								>
 									<input hidden type="checkbox" name="show_ens" bind:checked={show_ens} />
 									<img
-										src={show_ens ? 'icons/checked.svg' : 'icons/unchecked.svg'}
+										src={show_ens ? `${assets}/icons/checked.svg` : `${assets}/icons/unchecked.svg`}
 										alt="Checked"
 										style="height:16px;width:16px;"
 									/>
@@ -628,10 +650,10 @@
 									<p class="tab link semibold yellow">skills</p>
 									<p
 										class="tab link semibold light-60"
-										on:click={() => toggle('job history')}
+										on:click={() => toggle('watchlist')}
 										on:keydown
 									>
-										job history
+										watchlist
 									</p>
 								</div>
 							</section>
@@ -652,7 +674,7 @@
 								<div class="save-changes">
 									{#if $submitting}
 										<img
-											src="icons/loader.svg"
+											src={`${assets}/icons/loader.svg`}
 											alt="loading"
 											class="rotating"
 											style="height:16px;width:16px;"
@@ -668,7 +690,7 @@
 						<div style="height: 16px" />
 						<Skills {data} />
 					</form>
-				{:else if chosenTab == 'job history'}
+				{:else if chosenTab == 'watchlist'}
 					<section class="bar">
 						<div class="tabs">
 							<p class="tab link semibold light-60" on:click={() => toggle('profile')} on:keydown>
@@ -677,9 +699,11 @@
 							<p class="tab link semibold light-60" on:click={() => toggle('skills')} on:keydown>
 								skills
 							</p>
-							<p class="tab link semibold yellow">job history</p>
+							<p class="tab link semibold yellow">watchlist</p>
 						</div>
 					</section>
+					<div style="height: 16px" />
+					<Watchlist />
 				{/if}
 			{:else}
 				<div style="height: 16px" />
