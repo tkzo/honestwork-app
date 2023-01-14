@@ -477,7 +477,6 @@ const fetchUserState = async () => {
 	try {
 		const contract = new ethers.Contract(token_address, token_abi, get(networkSigner));
 		let state = await contract.getUserState(get(userAddress));
-		console.log('State: ', state);
 		userState.set(state);
 	} catch (err) {
 		console.log(err);

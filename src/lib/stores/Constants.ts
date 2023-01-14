@@ -1,4 +1,6 @@
-export let placeholder_image = 'assets/xcopy.gif';
+import { assets } from '$app/paths';
+
+export let placeholder_image = `${assets}/assets/xcopy.gif`;
 
 export const chains = [
 	{

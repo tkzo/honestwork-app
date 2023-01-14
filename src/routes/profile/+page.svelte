@@ -9,7 +9,6 @@
 		userConnected
 	} from '$lib/stores/Network';
 	import { onMount } from 'svelte';
-	import { Jumper } from 'svelte-loading-spinners';
 	import { tweened } from 'svelte/motion';
 	import {
 		chosen_skill_slot,
@@ -18,7 +17,6 @@
 		changes_made,
 		submitting
 	} from '$lib/stores/State';
-	import Jobs from '$lib/components/profile/Jobs.svelte';
 	import { Svrollbar } from 'svrollbar';
 	import { browser } from '$app/environment';
 

@@ -1,37 +1,23 @@
 <script lang="ts">
-	import type { SkillType, UserType } from '$lib/stores/Types';
+	import type { SkillType } from '$lib/stores/Types';
 	import { Svrollbar } from 'svrollbar';
-	import Skeleton from '$lib/components/common/Skeleton.svelte';
-	import { nodeProvider } from '$lib/stores/Network';
 	import { browser } from '$app/environment';
-	import { base, assets } from '$app/paths';
-	import { placeholder_image } from '$lib/stores/Constants';
 
 	export let skill: SkillType;
 
+	let faketags = ['tag #1', 'tag #2', 'tag #3'];
+
 	let viewport: Element;
 	let contents: Element;
-
-	let user: UserType;
 	let chosen_image: number = 0;
-	let nft_image: any;
-	let ens_name: string;
 
 	let feedHeight = 0;
 	$: if (browser) feedHeight = window.innerHeight - 136;
 	$: if (skill && browser) {
-		nft_image = '';
 		resetState();
-		fetchUser();
 	}
 	$: trimmed_images = skill.image_urls.filter((url: string) => url !== '');
 
-	const fetchUser = async () => {
-		const res = await fetch(`${base}/api/user/${skill.user_address}`);
-		user = await res.json();
-		await getNft();
-		ens_name = await $nodeProvider.lookupAddress(skill.user_address);
-	};
 	const nextImage = () => {
 		if (chosen_image < trimmed_images.length - 1) {
 			chosen_image++;
@@ -44,56 +30,10 @@
 	};
 	const resetState = () => {
 		chosen_image = 0;
-		ens_name = '';
-		nft_image = '';
-	};
-	const getNft = async () => {
-		if (user.nft_address && user.nft_id) {
-			try {
-				const response = await fetch(`${base}/api/alchemy/${user.nft_address}/${user.nft_id}`);
-				if (response.ok) {
-					const data = await response.json();
-					nft_image = data.image;
-				}
-			} catch (err) {
-				console.log(err);
-			}
-		}
 	};
 </script>
 
 <main>
-	<a
-		class="profile-bar"
-		href={`${base}/creator/${skill.user_address}`}
-		target="_blank"
-		rel="noreferrer"
-	>
-		<div class="left-section">
-			<img
-				class="pfp"
-				src={user?.show_nft
-					? nft_image && nft_image != ''
-						? nft_image
-						: placeholder_image
-					: user?.image_url && user.image_url != ''
-					? user.image_url
-					: placeholder_image}
-				alt=""
-			/>
-			<div style="width:8px;" />
-			{#if user?.show_ens && ens_name && ens_name != ''}
-				<p class="yellow">{ens_name}</p>
-			{:else if user?.username && user.username != ''}
-				<p class="yellow">{user?.username}</p>
-			{:else}
-				<Skeleton width="100px" height="20px" />
-			{/if}
-			<div style="width:8px;" />
-			<p class="light-60">{user?.title}</p>
-		</div>
-		<img src={`${assets}/icons/external.svg`} alt="External Link" style="margin-right:8px;" />
-	</a>
 	<div class="wrapper">
 		<div bind:this={viewport} class="viewport" style={`height:${feedHeight.toString() + 'px'}`}>
 			<div bind:this={contents} class="contents">
@@ -109,7 +49,13 @@
 						</div>
 					</div>
 				</div>
-				<div style="height:12px;" />
+				<div class="tags">
+					{#each faketags as tag}
+						<div class="tag link">
+							<p>{tag}</p>
+						</div>
+					{/each}
+				</div>
 				<div class="description">
 					<div class="body-text light-80">
 						{skill.description}
@@ -143,31 +89,9 @@
 		display: flex;
 		flex-direction: column;
 	}
-	.profile-bar {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-		border-width: 1px 1px 0px 1px;
-		border-style: solid;
-		border-color: var(--color-light-10);
-		cursor: pointer;
-	}
-	.profile-bar:hover {
-		background-color: var(--color-light-2);
-	}
-	.left-section {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
-	.pfp {
-		width: 40px;
-		height: 40px;
-	}
 	.gallery {
-		width: 518px;
-		border-width: 1px 1px 1px 1px;
+		width: 100%;
+		border-width: 0px 0px 1px 0px;
 		border-style: solid;
 		border-color: var(--color-light-10);
 		display: flex;
@@ -206,7 +130,7 @@
 		color: var(--color-dark);
 	}
 	.description {
-		border-width: 1px 1px 1px 1px;
+		border-width: 1px 0px 1px 0px;
 		border-style: solid;
 		border-color: var(--color-light-10);
 		padding: 12px;
@@ -215,7 +139,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		border-width: 1px;
+		border-width: 1px 0px 1px 0px;
 		border-style: solid;
 		border-color: var(--color-light-10);
 	}
@@ -252,5 +176,20 @@
 	.viewport::-webkit-scrollbar {
 		/* hide scrollbar */
 		display: none;
+	}
+	.tags {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding: 12px;
+	}
+	.tag {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding: 8px 12px;
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--color-light-10);
 	}
 </style>

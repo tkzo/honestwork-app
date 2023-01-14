@@ -198,7 +198,6 @@ export const actions: Actions = {
 			const url = `${apiUrl}/skills/${userAddress}/${userSalt}/${userSignature}/${data.get(
 				'skill_slot'
 			)}`;
-			console.log('Patching: ' + url);
 			let response = await fetch(url, {
 				method: 'PATCH',
 				body: JSON.stringify(body),

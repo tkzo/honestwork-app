@@ -9,4 +9,4 @@
 	<meta name="description" content="HonestWork Job Page" />
 </svelte:head>
 
-<JobPage job={data.job} />
+<JobPage job={data.job} show_tags={true} />

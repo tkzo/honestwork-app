@@ -6,8 +6,10 @@
 	import { placeholder_image } from '$lib/stores/Constants';
 	import { userAddress, userConnected } from '$lib/stores/Network';
 	import { toast } from '@zerodevx/svelte-toast';
+	import { base, assets } from '$app/paths';
 
 	export let job: JobType;
+	export let show_tags: boolean = false;
 
 	let viewport: Element;
 	let contents: Element;
@@ -34,7 +36,7 @@
 	const handleApply = async () => {
 		if ($userConnected) {
 			try {
-				const url = `api/job_apply/${job.user_address}/${job.slot}`;
+				const url = `${base}/api/job_apply/${job.user_address}/${job.slot}`;
 				const response = await fetch(url, {
 					method: 'POST',
 					headers: {
@@ -97,7 +99,16 @@
 	<div class="wrapper">
 		<div bind:this={viewport} class="viewport" style={`height:${feedHeight.toString() + 'px'}`}>
 			<div bind:this={contents} class="contents">
-				<div style="height:12px;" />
+				{#if show_tags}
+					<div class="tags">
+						{#each job.tags as tag}
+							<div class="tag link">
+								<p>{tag}</p>
+							</div>
+						{/each}
+					</div>
+				{/if}
+
 				<div class="description">
 					<div class="body-text light-80">
 						{job.description}
@@ -140,7 +151,7 @@
 														<p class={i % 2 == 0 ? '' : 'light-60'}>{token.address}</p>
 														<div style="width:4px;" />
 														<img
-															src="/icons/external.svg"
+															src={`${assets}/icons/external.svg`}
 															alt="External Link"
 															style="margin-top:-2px;"
 														/>
@@ -337,5 +348,20 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+	}
+	.tags {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding: 12px;
+	}
+	.tag {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding: 8px 12px;
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--color-light-10);
 	}
 </style>

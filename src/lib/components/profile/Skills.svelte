@@ -50,13 +50,7 @@
 	<div style="height: 12px" />
 	{#each data.skills?.json as skill, i}
 		<div on:click={() => handleSkillEdit(i)} on:keydown>
-			<Skill
-				slot={i}
-				title={skill.title}
-				description={skill.description}
-				image_urls={skill.image_urls}
-				minimum_price={skill.minimum_price}
-			/>
+			<Skill slot={i} {skill} />
 		</div>
 		{#if i < data.skills.json?.length - 1}
 			<div style="height: 12px" />

@@ -247,7 +247,6 @@
 						{#if job.application}
 							{#each job.application as applicant, i}
 								<div style="height:8px;" />
-
 								<Applicant {applicant} />
 								{#if i == job.application.length - 1}
 									<div style="height:8px;" />

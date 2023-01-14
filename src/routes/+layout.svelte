@@ -7,11 +7,13 @@
 	import { page } from '$app/stores';
 	import LogRocket from 'logrocket';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
-	import Connection from '$lib/components/common/Connection.svelte';
 	import { notifications } from '$lib/stores/Constants';
+
+	//todo: move notification logic out of here
 
 	// trackers
 	LogRocket.init('2wdgml/honestwork');
+	$: trimmedRoute = $page.route.id?.split('/')[1];
 	$: if ($userAddress && $userAddress != '') {
 		logrocketIdentify();
 	}
@@ -62,6 +64,14 @@
 		<Notification notification={notifications.upgrade} />
 		<div style="height:16px;" />
 	{/if}
+	{#if trimmedRoute == 'job'}
+		<Notification notification={notifications.mint} />
+		<div style="height:16px;" />
+	{:else if trimmedRoute == 'creator'}
+		<Notification notification={notifications.mint} />
+		<div style="height:16px;" />
+	{/if}
+
 	<slot />
 	{#if $page.route.id !== '/'}
 		<Footer />

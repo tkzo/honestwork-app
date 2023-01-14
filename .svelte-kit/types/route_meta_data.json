@@ -42,6 +42,9 @@
 	"/(subpages)/create_account": [
 		"src/routes/(subpages)/create_account/+page.server.ts"
 	],
+	"/creator/[address]": [
+		"src/routes/creator/[address]/+page.server.ts"
+	],
 	"/jobs": [
 		"src/routes/jobs/+page.server.ts"
 	],
