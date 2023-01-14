@@ -52,19 +52,14 @@
         font-weight: 400;
         font-size: 14px;
         line-height: 24px;
-        /* or 171% */
         color: var(--color-light);
         text-transform: none;
     }
 
-    @media (max-width:754px) {
+    @media (max-width:780px) {
         .container {
             flex-direction: column;
-        }
-    }
-    @media (max-width:550px) {
-        .benefits-card {
-            max-width: 280px;
+            align-items: center;
         }
     }
 </style>
