@@ -15,6 +15,11 @@
 	$: console.log('Skill chosen:', chosen_skill);
 </script>
 
+<svelte:head>
+	<title>HW | Creator</title>
+	<meta name="description" content="HonestWork Skills Page" />
+</svelte:head>
+
 <main>
 	<CreatorCard {user} />
 	<div style="width: 12px" />

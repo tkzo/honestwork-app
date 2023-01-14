@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>Job Listing</title>
+	<title>HW | Job Listing</title>
 	<meta name="description" content="HonestWork Job Page" />
 </svelte:head>
 
