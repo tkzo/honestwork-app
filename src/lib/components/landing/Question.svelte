@@ -46,6 +46,7 @@
         justify-content: space-between;
         display: flex;
         align-items: center;
+        gap:16px;
     }
     .question {
         font-family: 'Proto Mono';
@@ -61,5 +62,11 @@
         font-size: 16px;
         line-height: 24px;
         color: var(--color-light-60);
+    }
+    @media (max-width:620px) {
+        .question,
+        .answer {
+            font-size: 14px;
+        }
     }
 </style>

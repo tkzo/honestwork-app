@@ -33,10 +33,10 @@
 	<div on:click={handleConnect} on:keydown>CONNECT WALLET</div>
 	<div on:click={() => goto('/skills')} on:keydown>START EXPLORING</div>
 	<div class="container">
-		<BenefitsCards />
+		<!-- <BenefitsCards />
 		<div style="height: 120px;"></div>
 		<Faq />
-		<div style="height: 120px;"></div>
+		<div style="height: 120px;"></div> -->
 	</div>
 {:else}
 	<Skeleton width="200px" borderRadius="0px" />

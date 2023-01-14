@@ -24,7 +24,7 @@
         },
         {
             id:4,
-            question:'How will I receive payment for the delivered project?',
+            question:'How will I receive payment?',
             answer: 'After the employer accepts the delivered project, you can claim the payment by clicking the “Claim” button in the chat. You’ll receive the payment in your crypto wallet.'        },
         {
             id:5,
