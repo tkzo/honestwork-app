@@ -4,6 +4,7 @@
 	import { Svrollbar } from 'svrollbar';
 	import type { SkillType } from '$lib/stores/Types';
 	import fuzzy from 'fuzzy';
+	import { browser } from '$app/environment';
 
 	export let data: any;
 	export let viewport: Element;
@@ -23,7 +24,8 @@
 	let show_sorting_options = false;
 	let chosen_sorting_option = 0;
 
-	$: feedHeight = window.innerHeight - 128;
+	let feedHeight = 0;
+	$: if (browser) feedHeight = window.innerHeight - 128;
 	$: filteredSkills =
 		search_input != ''
 			? fuzzy
@@ -144,26 +146,28 @@
 			>
 				<div bind:this={contents} class="contents">
 					<div style="height:8px" />
-					{#each filteredSkills as skill, index}
-						{#if index == 0}
-							<div style="height:0px" bind:this={ghost_component} />
-						{/if}
-						<div
-							on:click={() => {
-								active_skill = skill;
-							}}
-							on:keydown
-						>
-							<Skill
-								chosen={skill == active_skill}
-								title={skill.title}
-								description={skill.description}
-								image_urls={skill.image_urls}
-								minimum_price={skill.minimum_price}
-								user_address={skill.user_address}
-							/>
-						</div>
-					{/each}
+					{#if filteredSkills && filteredSkills.length > 0}
+						{#each filteredSkills as skill, index}
+							{#if index == 0}
+								<div style="height:0px" bind:this={ghost_component} />
+							{/if}
+							<div
+								on:click={() => {
+									active_skill = skill;
+								}}
+								on:keydown
+							>
+								<Skill
+									chosen={skill == active_skill}
+									title={skill.title}
+									description={skill.description}
+									image_urls={skill.image_urls}
+									minimum_price={skill.minimum_price}
+									user_address={skill.user_address}
+								/>
+							</div>
+						{/each}
+					{/if}
 				</div>
 			</div>
 			<Svrollbar {viewport} {contents} on:show={updateScrollState} />
@@ -258,19 +262,15 @@
 		--svrollbar-thumb-background: #d9ab55;
 		--svrollbar-thumb-opacity: 1;
 	}
-
 	.viewport {
 		position: relative;
 		overflow: scroll;
 		box-sizing: border-box;
-
-		/* hide scrollbar */
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}
 
 	.viewport::-webkit-scrollbar {
-		/* hide scrollbar */
 		display: none;
 	}
 	.sorting-dropdown {

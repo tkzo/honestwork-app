@@ -1,8 +1,8 @@
 import { c as create_ssr_component, b as subscribe, d as add_attribute } from "../../../../chunks/index.js";
-import { n as networkSigner, u as userConnected, a as userAddress } from "../../../../chunks/Network.js";
+import { n as networkSigner, u as userConnected, d as userAddress } from "../../../../chunks/Network.js";
 const _page_svelte_svelte_type_style_lang = "";
 const css = {
-  code: "section.svelte-10mldoo{width:258px;display:flex;flex-direction:column;background-color:var(--color-dark);border-width:1px;border-style:solid;border-color:var(--color-light-20);box-sizing:border-box}.gm.svelte-10mldoo{border-width:0px 0px 1px 0px;border-style:solid;border-color:var(--color-light-20);padding:12px;display:flex;flex-direction:column;align-items:center;text-align:center}.gm-inner.svelte-10mldoo{display:flex;flex-direction:row;align-items:center}input.svelte-10mldoo{width:234px}button.svelte-10mldoo{width:100%}",
+  code: "section.svelte-xva5n6{width:258px;display:flex;flex-direction:column;background-color:var(--color-dark);border-width:1px;border-style:solid;border-color:var(--color-light-10);box-sizing:border-box}.gm.svelte-xva5n6{border-width:0px 0px 1px 0px;border-style:solid;border-color:var(--color-light-10);padding:12px;display:flex;flex-direction:column;align-items:center;text-align:center}.gm-inner.svelte-xva5n6{display:flex;flex-direction:row;align-items:center}input.svelte-xva5n6{width:234px}button.svelte-xva5n6{width:100%}",
   map: null
 };
 const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
@@ -29,14 +29,14 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   $$unsubscribe_userAddress();
   return `${$$result.head += `<!-- HEAD_svelte-1nn52a7_START -->${$$result.title = `<title>HonestWork</title>`, ""}<meta name="${"description"}" content="${"HonestWork"}"><!-- HEAD_svelte-1nn52a7_END -->`, ""}
 
-${$userConnected ? `<section class="${"svelte-10mldoo"}"><div class="${"gm svelte-10mldoo"}"><div class="${"gm-inner svelte-10mldoo"}"><img src="${"icons/heart.svg"}" alt="${"Heart"}">
+${$userConnected ? `<section class="${"svelte-xva5n6"}"><div class="${"gm svelte-xva5n6"}"><div class="${"gm-inner svelte-xva5n6"}"><img src="${"icons/heart.svg"}" alt="${"Heart"}">
 				<div style="${"width:8px"}"></div>
 				<p>gm fren (<span class="${"yellow"}">2/2</span>)</p></div></div>
-		<form method="${"POST"}"${add_attribute("this", myform, 0)}><input type="${"hidden"}" name="${"address"}"${add_attribute("value", $userAddress, 0)} class="${"svelte-10mldoo"}">
-			<input type="${"hidden"}" name="${"salt"}"${add_attribute("value", salt, 0)} class="${"svelte-10mldoo"}">
-			<input type="${"hidden"}" name="${"signature"}"${add_attribute("value", signature, 0)} class="${"svelte-10mldoo"}">
-			<button class="${"svelte-10mldoo"}"><div class="${"gm svelte-10mldoo"}"><p class="${"yellow"}">create account</p></div></button></form>
-		<div class="${"gm svelte-10mldoo"}"><p>skip for now</p></div></section>` : ``}`;
+		<form method="${"POST"}"${add_attribute("this", myform, 0)}><input type="${"hidden"}" name="${"address"}"${add_attribute("value", $userAddress, 0)} class="${"svelte-xva5n6"}">
+			<input type="${"hidden"}" name="${"salt"}"${add_attribute("value", salt, 0)} class="${"svelte-xva5n6"}">
+			<input type="${"hidden"}" name="${"signature"}"${add_attribute("value", signature, 0)} class="${"svelte-xva5n6"}">
+			<button class="${"svelte-xva5n6"}"><div class="${"gm svelte-xva5n6"}"><p class="${"yellow"}">create account</p></div></button></form>
+		<div class="${"gm svelte-xva5n6"}"><p>skip for now</p></div></section>` : ``}`;
 });
 export {
   Page as default

@@ -4,6 +4,7 @@
 	import { Svrollbar } from 'svrollbar';
 	import type { SkillType, JobType } from '$lib/stores/Types';
 	import fuzzy from 'fuzzy';
+	import { browser } from '$app/environment';
 
 	export let data: any;
 	export let viewport: Element;
@@ -22,9 +23,11 @@
 	];
 	let show_sorting_options = false;
 	let chosen_sorting_option = 0;
+	let feedHeight = 0;
 
-	//todo: browser check for window.innerHeight
-	$: feedHeight = window.innerHeight - 128;
+	$: if (browser) {
+		feedHeight = window.innerHeight - 144;
+	}
 	$: filteredSkills =
 		search_input != ''
 			? fuzzy
@@ -68,7 +71,7 @@
 </svelte:head>
 
 <main>
-	<div class="feed">
+	<div class="feed" style={`height:${feedHeight + 32}px`}>
 		<div class="search-bar">
 			<div class="input-container">
 				<img
@@ -145,30 +148,21 @@
 			>
 				<div bind:this={contents} class="contents">
 					<div style="height:8px" />
-					{#each filteredSkills as job, index}
-						{#if index == 0}
-							<div style="height:0px" bind:this={ghost_component} />
-						{/if}
-						<div
-							on:click={() => {
-								active_job = job;
-							}}
-							on:keydown
-						>
-							<Job
-								chosen={job == active_job}
-								username="Consensys"
-								user_title="Web3 Infrastructure Provider"
-								title={job.title}
-								description={job.description}
-								image_url="/assets/consensys.png"
-								budget={job.budget}
-								user_address={job.user_address}
-								installments={3}
-								rating={5.0}
-							/>
-						</div>
-					{/each}
+					{#if filteredSkills && filteredSkills.length > 0}
+						{#each filteredSkills as job, index}
+							{#if index == 0}
+								<div style="height:0px" bind:this={ghost_component} />
+							{/if}
+							<div
+								on:click={() => {
+									active_job = job;
+								}}
+								on:keydown
+							>
+								<Job chosen={job == active_job} {job} />
+							</div>
+						{/each}
+					{/if}
 				</div>
 			</div>
 			<Svrollbar {viewport} {contents} on:show={updateScrollState} />
@@ -187,6 +181,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		overflow-y: hidden;
 	}
 	.feed {
 		width: 520px;
@@ -194,6 +189,7 @@
 		border-style: solid;
 		border-color: var(--color-light-10);
 		overflow-y: hidden;
+		height: auto;
 	}
 	.job {
 		width: 520px;

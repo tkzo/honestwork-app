@@ -4,6 +4,8 @@ import { env } from '$env/dynamic/public';
 import { Client } from '@xmtp/xmtp-js';
 import { get } from 'svelte/store';
 
+//todo: typescript
+
 export let userConnected = writable(false);
 export let userAddress = writable('');
 export let networkProvider = writable();
@@ -48,10 +50,8 @@ export const connectWallet = async () => {
 		userConnected.set(true);
 
 		// membership state
-		await fetchUserState(signer, addr);
 		// set network/account change listeners
 		setListeners();
-
 		connecting.set(false);
 
 		// xmtp connection
@@ -62,6 +62,7 @@ export const connectWallet = async () => {
 			xmtpConnecting.set(false);
 			xmtpConnected.set(true);
 		}
+		await fetchUserState();
 	} catch (err) {
 		console.log('error:', err);
 	}
@@ -75,27 +76,6 @@ const setListeners = () => {
 		window.location.reload();
 	});
 };
-
-export const connectNode = async () => {
-	try {
-		const provider = new ethers.providers.JsonRpcProvider(env.PUBLIC_ETHEREUM_RPC);
-		nodeProvider.set(provider);
-	} catch (err) {
-		console.log('error:', err);
-	}
-};
-
-const fetchUserState = async (signer, addr) => {
-	try {
-		const contract = new ethers.Contract(token_address, token_abi, signer);
-		let state = await contract.getUserState(addr);
-		userState.set(state);
-		console.log('State', state);
-	} catch (err) {
-		console.log(err);
-	}
-};
-
 export const token_abi = [
 	{
 		inputs: [
@@ -484,5 +464,23 @@ export const token_abi = [
 		type: 'function'
 	}
 ];
+export const connectNode = async () => {
+	try {
+		const provider = new ethers.providers.JsonRpcProvider(env.PUBLIC_ETHEREUM_RPC);
+		nodeProvider.set(provider);
+	} catch (err) {
+		console.log('error:', err);
+	}
+};
+
+const fetchUserState = async () => {
+	try {
+		const contract = new ethers.Contract(token_address, token_abi, get(networkSigner));
+		let state = await contract.getUserState(get(userAddress));
+		userState.set(state);
+	} catch (err) {
+		console.log(err);
+	}
+};
 
 connectNode();

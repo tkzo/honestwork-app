@@ -6,6 +6,9 @@ function assign(tar, src) {
     tar[k] = src[k];
   return tar;
 }
+function is_promise(value) {
+  return value && typeof value === "object" && typeof value.then === "function";
+}
 function run(fn) {
   return fn();
 }
@@ -174,18 +177,19 @@ export {
   subscribe as b,
   create_ssr_component as c,
   add_attribute as d,
-  escape as e,
-  each as f,
-  getContext as g,
-  assign as h,
-  now as i,
-  identity as j,
-  null_to_empty as k,
+  each as e,
+  escape as f,
+  null_to_empty as g,
+  getContext as h,
+  identity as i,
+  assign as j,
+  now as k,
   loop as l,
   missing_component as m,
   noop as n,
-  createEventDispatcher as o,
-  onDestroy as p,
+  onDestroy as o,
+  createEventDispatcher as p,
+  is_promise as q,
   setContext as s,
   validate_component as v
 };

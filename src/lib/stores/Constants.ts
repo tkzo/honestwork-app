@@ -2,48 +2,36 @@ export let placeholder_image = 'assets/xcopy.gif';
 
 export const chains = [
 	{
-		name: 'ethereum',
-		id: 1,
+		name: 'binance',
+		id: 56,
 		tokens: [
 			{
-				name: 'ether',
-				symbol: 'eth',
-				address: '0x0000000000000000000000000000000000000000',
-				max_allowed: 10000
-			},
-			{
-				name: 'usdc',
-				symbol: 'usdc',
-				address: '0x0000000000000000000000000000000000000001',
-				max_allowed: 10000
-			}
-		]
-	},
-	{
-		name: 'polygon',
-		id: 137,
-		tokens: [
-			{
-				name: 'matic',
-				symbol: 'matic',
-				address: '0x0000000000000000000000000000000000000000',
-				max_allowed: 10000
-			},
-			{
-				name: 'usdc',
-				symbol: 'usdc',
-				address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
-				max_allowed: 10000
-			},
-			{
-				name: 'fakeUSD',
-				symbol: 'fUSD',
+				name: 'MockToken',
+				symbol: 'MCKT',
 				address: '0x6bf83F1af0350407c6766Af32818603E9c08E182',
-				max_allowed: 10000
+				max_allowed: 1000000
 			}
 		]
 	}
 ];
+
+export const notifications = {
+	postjob: {
+		bodytext: 'looking for awesome people for your project?',
+		cta: 'post a job',
+		icon: '/icons/post.svg'
+	},
+	mint: {
+		bodytext: 'grab an nft to get airdrop tokens from your activities!',
+		cta: 'mint and start accumulating',
+		icon: '/icons/trending.svg'
+	},
+	upgrade: {
+		bodytext: 'you can list even more awesome skills by upgrading your nft!',
+		cta: 'upgrade now',
+		icon: '/icons/zap.svg'
+	}
+};
 
 export const sticky_data = [
 	{ duration: 7, price: 49 },

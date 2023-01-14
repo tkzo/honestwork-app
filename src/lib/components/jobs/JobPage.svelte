@@ -1,58 +1,28 @@
 <script lang="ts">
-	import type { UserType } from '$lib/stores/Types';
 	import { Svrollbar } from 'svrollbar';
-	import Skeleton from '$lib/components/common/Skeleton.svelte';
-	import { nodeProvider } from '$lib/stores/Network';
 	import type { JobType } from '$lib/stores/Types';
 	import { chains } from '$lib/stores/Constants';
+	import { browser } from '$app/environment';
+	import { placeholder_image } from '$lib/stores/Constants';
+	import { userAddress, userConnected } from '$lib/stores/Network';
+	import { toast } from '@zerodevx/svelte-toast';
 
 	export let job: JobType;
 
 	let viewport: Element;
 	let contents: Element;
-
-	let user: UserType;
-	let nft_image: any;
-	let ens_name: string;
-	let placeholder_image = 'assets/xcopy.gif';
 	let chosen_network: number;
 
-	$: feedHeight = window.innerHeight - 136;
-	$: if (job) {
-		nft_image = '';
-		fetchUser();
+	let feedHeight = 0;
+	$: if (browser) feedHeight = window.innerHeight - 136;
+	$: if (job && browser) {
 		if (job.tokens_accepted) {
 			chosen_network = job.tokens_accepted[0].id;
 		}
 	}
 
-	const fetchUser = async () => {
-		const res = await fetch(`/api/user/${job.user_address}`);
-		user = await res.json();
-		await getNft();
-		ens_name = await $nodeProvider.lookupAddress(job.user_address);
-	};
-	const getNft = async () => {
-		if (user.nft_address && user.nft_id) {
-			try {
-				const response = await fetch(`api/alchemy/${user.nft_address}/${user.nft_id}`);
-				if (response.ok) {
-					const data = await response.json();
-					nft_image = data.image;
-				}
-			} catch (err) {
-				console.log(err);
-			}
-		}
-	};
-
 	const getChainName = (chain_id: number) => {
 		const name = chains.find((chain) => chain.id == chain_id)?.name;
-		return name;
-	};
-	const getTokenName = (chain_id: number, address: string) => {
-		const tokens = chains.find((chain) => chain.id == chain_id)?.tokens;
-		const name = tokens?.find((token) => token.address == address)?.name;
 		return name;
 	};
 	const getTokenSymbol = (chain_id: number, address: string) => {
@@ -60,49 +30,68 @@
 		const symbol = tokens?.find((token) => token.address == address)?.symbol;
 		return symbol;
 	};
+	//todo: allow only once (validate on api as well)
+	const handleApply = async () => {
+		if ($userConnected) {
+			try {
+				const url = `api/job_apply/${job.user_address}/${job.slot}`;
+				const response = await fetch(url, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						user_address: $userAddress,
+						job_id: `job:${job.user_address}:${job.slot}`,
+						cover_letter: `lord,pls take me.`
+					})
+				});
+				const data = await response.json();
+				if (data == 'success') {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Application received</p>`
+					);
+				} else {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
+					);
+				}
+			} catch (e) {
+				console.log(e);
+			}
+		}
+	};
 </script>
 
 <main>
 	<div class="profile-bar">
 		<div class="left-section">
-			<img
-				class="pfp"
-				src={user?.show_nft
-					? nft_image && nft_image != ''
-						? nft_image
-						: placeholder_image
-					: user?.image_url && user.image_url != ''
-					? user.image_url
-					: placeholder_image}
-				alt=""
-			/>
+			<img class="pfp" src={job.image_url ?? placeholder_image} alt="" />
 			<div style="width:8px;" />
 			<div class="info">
 				<div class="info-username">
-					{#if user?.show_ens}
-						{#if ens_name && ens_name != ''}
-							<p>{ens_name}</p>
-						{:else}
-							<Skeleton width="100px" />
-						{/if}
-					{:else if user?.username && user.username != ''}
-						<p>{user?.username}</p>
-					{/if}
+					<p>{job.username}</p>
 				</div>
 				<div style="height:4px;" />
-				<p class="light-60">{user?.title}</p>
+				<p class="light-60">{job.title}</p>
 				<div style="height:4px;" />
 				<p>4.8<span class="light-60">(377)</span></p>
 			</div>
 		</div>
 		<div class="right-section">
-			<div class="button">
+			<div class="button" on:click={handleApply} on:keydown>
 				<p class="yellow">apply to this job</p>
 			</div>
 			<div style="height:8px" />
 			<div class="button">
 				<p class="light-60">add to watchlist</p>
 			</div>
+			<div style="height:8px" />
+			<a class="button" href={`job/${job.user_address}/${job.slot}`}>
+				<p class="light-60">share job</p>
+				<div style="width:4px;" />
+				<img src="icons/external.svg" alt="share" style="margin-top:-2px;" />
+			</a>
 		</div>
 	</div>
 	<div class="wrapper">
@@ -202,7 +191,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		align-items: center;
+		align-items: flex-start;
 		border-width: 1px 1px 1px 1px;
 		border-style: solid;
 		border-color: var(--color-light-10);
@@ -215,8 +204,8 @@
 		align-items: flex-start;
 	}
 	.pfp {
-		width: 60px;
-		height: 60px;
+		width: 94px;
+		height: 94px;
 	}
 	.info {
 		display: flex;

@@ -38,41 +38,30 @@
 </script>
 
 {#if $chosen_skill_slot == -1}
-	{#if data.skills.json != null}
-		{#each data.skills?.json as skill, i}
-			<div on:click={() => handleSkillEdit(i)} on:keydown>
-				<Skill
-					slot={i}
-					title={skill.title}
-					description={skill.description}
-					image_urls={skill.image_urls}
-					minimum_price={skill.minimum_price}
-				/>
-			</div>
-			{#if i < data.skills.json?.length - 1}
-				<div style="height: 12px" />
-			{/if}
-		{/each}
-		{#if data.skills.json?.length < total_skills}
-			<div class="empty">
-				<div style="height:16px" />
-				<p class="light-60">you can add {total_skills - data.skills.json?.length} more skill(s)</p>
-				<div style="height:12px" />
-				<section class="add-button" on:click={handleSkillAdd} on:keydown>
-					<p class="yellow">+add new skill</p>
-				</section>
-			</div>
-		{/if}
-	{:else}
+	{#if data.skills.json?.length < total_skills}
 		<div class="empty">
-			<div style="height:16px" />
-			<p class="light-60">you don't have any skills published yet.</p>
+			<p class="light-60">you can add {total_skills - data.skills.json?.length} more skill(s)</p>
 			<div style="height:12px" />
 			<section class="add-button" on:click={handleSkillAdd} on:keydown>
 				<p class="yellow">+add new skill</p>
 			</section>
 		</div>
 	{/if}
+	<div style="height: 12px" />
+	{#each data.skills?.json as skill, i}
+		<div on:click={() => handleSkillEdit(i)} on:keydown>
+			<Skill
+				slot={i}
+				title={skill.title}
+				description={skill.description}
+				image_urls={skill.image_urls}
+				minimum_price={skill.minimum_price}
+			/>
+		</div>
+		{#if i < data.skills.json?.length - 1}
+			<div style="height: 12px" />
+		{/if}
+	{/each}
 {:else}
 	<SkillEdit
 		skill={data.skills.json ? data.skills.json[$chosen_skill_slot] ?? empty_skill : empty_skill}

@@ -24,7 +24,10 @@ export type UserType = {
 };
 
 export type JobType = {
+	slot: number;
 	user_address: string;
+	email: string;
+	username: string;
 	created_at: number;
 	title: string;
 	description: string;
@@ -36,8 +39,15 @@ export type JobType = {
 	tokens_accepted: Array<Network>;
 	sticky_duration: string;
 	timezone: string;
+	application: Array<ApplicantType>;
 };
 
+export type ApplicantType = {
+	user_address: string;
+	job_id: string;
+	cover_letter: string;
+	date: number;
+};
 export type Network = {
 	id: number;
 	tokens: Array<Token>;

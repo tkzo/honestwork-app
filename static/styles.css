@@ -32,11 +32,23 @@
 	color: var(--color-primary);
 }
 
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
 /* hide scrollbar but allow scrolling */
 body {
 	-ms-overflow-style: none; /* for Internet Explorer, Edge */
 	scrollbar-width: none; /* for Firefox */
-	/* overflow-y: hidden; */
+	overflow-y: hidden;
 	--svrollbar-track-width: 1px;
 	/* --svrollbar-track-background: #85b4b9; */
 	--svrollbar-track-opacity: 1;
@@ -104,13 +116,14 @@ p {
 
 a {
 	font-weight: 400;
-	color: var(--color-primary);
 	text-decoration: none;
+	color: var(--color-light);
 	cursor: pointer;
 }
 
 a:visited {
 	text-decoration: none;
+	color: none;
 }
 
 .semibold {
@@ -233,6 +246,8 @@ button:focus {
 	background: transparent;
 	border: 1px solid transparent;
 	font-family: 'Proto Mono', monospace;
+	font-size: 12px;
+	line-height: 16px;
 	cursor: pointer;
 	padding: 0px;
 }

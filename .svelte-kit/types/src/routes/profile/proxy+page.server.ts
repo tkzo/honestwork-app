@@ -76,6 +76,7 @@ export const actions = {
 		const userSalt = cookies.get('honestwork_salt');
 		const data = await request.formData();
 		let cloud_url;
+		console.log('User file_url:', data.get('file_url'));
 		if (data.get('file_url') != '') {
 			cloud_url = env.PRIVATE_SPACES_URL + '/' + userAddress + '/' + data.get('file_url');
 		}
