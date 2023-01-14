@@ -18,8 +18,7 @@
 	let active_job: JobType | null = null;
 	let sorting_options = [
 		{ k: 'publish date', v: 'created_at', a: 'false' },
-		{ k: 'rating', v: 'rating', a: 'false' },
-		{ k: 'min. budget', v: 'minimum_price', a: 'false' }
+		{ k: 'min. budget', v: 'budget', a: 'false' }
 	];
 	let show_sorting_options = false;
 	let chosen_sorting_option = 0;
@@ -28,7 +27,7 @@
 	$: if (browser) {
 		feedHeight = window.innerHeight - 144;
 	}
-	$: filteredSkills =
+	$: filteredJobs =
 		search_input != ''
 			? fuzzy
 					.filter(search_input, data.json, {
@@ -37,8 +36,8 @@
 					.map((result: any) => result.original)
 			: data.json;
 
-	$: if (filteredSkills) {
-		active_job = filteredSkills[0];
+	$: if (filteredJobs) {
+		active_job = filteredJobs[0];
 	}
 
 	const updateScrollState = () => {
@@ -54,7 +53,7 @@
 	};
 	const fetchSorting = async () => {
 		const result = await fetch(
-			`/api/skill/${sorting_options[chosen_sorting_option].v}/${sorting_options[chosen_sorting_option].a}`
+			`/api/job/${sorting_options[chosen_sorting_option].v}/${sorting_options[chosen_sorting_option].a}`
 		);
 		data.json = await result.json();
 	};
@@ -66,7 +65,7 @@
 </script>
 
 <svelte:head>
-	<title>HW | Skills</title>
+	<title>HW | Jobs</title>
 	<meta name="description" content="HonestWork Jobs Page" />
 </svelte:head>
 
@@ -148,8 +147,8 @@
 			>
 				<div bind:this={contents} class="contents">
 					<div style="height:8px" />
-					{#if filteredSkills && filteredSkills.length > 0}
-						{#each filteredSkills as job, index}
+					{#if filteredJobs && filteredJobs.length > 0}
+						{#each filteredJobs as job, index}
 							{#if index == 0}
 								<div style="height:0px" bind:this={ghost_component} />
 							{/if}

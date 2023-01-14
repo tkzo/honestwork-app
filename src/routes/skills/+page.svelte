@@ -18,8 +18,7 @@
 	let active_skill: SkillType | null = null;
 	let sorting_options = [
 		{ k: 'publish date', v: 'created_at', a: 'false' },
-		{ k: 'rating', v: 'rating', a: 'false' },
-		{ k: 'min. budget', v: 'minimum_price', a: 'false' }
+		{ k: 'budget', v: 'minimum_price', a: 'false' }
 	];
 	let show_sorting_options = false;
 	let chosen_sorting_option = 0;
