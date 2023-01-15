@@ -1,48 +1,94 @@
 <script lang="ts">
-	import type { UserType } from '$lib/types/Types';
 	import { Svrollbar } from 'svrollbar';
-	import Skeleton from '$lib/components/common/Skeleton.svelte';
-	import { nodeProvider } from '$lib/stores/Network';
-	import type { JobType } from '$lib/types/Types';
-	import { tokens } from '$lib/stores/Tokens';
-	import Notification from '$lib/components/common/Notification.svelte';
+	import type { JobType } from '$lib/stores/Types';
+	import { chains } from '$lib/stores/Constants';
+	import { browser } from '$app/environment';
+	import { placeholder_image } from '$lib/stores/Constants';
+	import { userAddress, userConnected } from '$lib/stores/Network';
+	import { toast } from '@zerodevx/svelte-toast';
+	import { base, assets } from '$app/paths';
 
 	export let job: JobType;
+	export let show_tags: boolean = false;
 
 	let viewport: Element;
 	let contents: Element;
+	let chosen_network: number;
 
-	let user: UserType;
-	let nft_image: any;
-	let ens_name: string;
-	let placeholder_image = 'assets/xcopy.gif';
-	let chosen_network: string;
-
-	$: feedHeight = window.innerHeight - 136;
-	$: if (job) {
-		nft_image = '';
-		fetchUser();
+	let feedHeight = 0;
+	$: if (browser) feedHeight = window.innerHeight - 136;
+	$: if (job && browser) {
 		if (job.tokens_accepted) {
-			chosen_network = job.tokens_accepted[0].name;
+			chosen_network = job.tokens_accepted[0].id;
 		}
 	}
 
-	const fetchUser = async () => {
-		const res = await fetch(`/api/user/${job.user_address}`);
-		user = await res.json();
-		await getNft();
-		ens_name = await $nodeProvider.lookupAddress(job.user_address);
+	const getChainName = (chain_id: number) => {
+		const name = chains.find((chain) => chain.id == chain_id)?.name;
+		return name;
 	};
-	const getNft = async () => {
-		if (user.nft_address && user.nft_id) {
+	const getTokenSymbol = (chain_id: number, address: string) => {
+		const tokens = chains.find((chain) => chain.id == chain_id)?.tokens;
+		const symbol = tokens?.find((token) => token.address == address)?.symbol;
+		return symbol;
+	};
+	//todo: allow only once (validate on api as well)
+	const handleApply = async () => {
+		if ($userConnected) {
 			try {
-				const response = await fetch(`api/alchemy/${user.nft_address}/${user.nft_id}`);
-				if (response.ok) {
-					const data = await response.json();
-					nft_image = data.image;
+				const url = `${base}/api/job_apply/${job.user_address}/${job.slot}`;
+				const response = await fetch(url, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						user_address: $userAddress,
+						job_id: `job:${job.user_address}:${job.slot}`,
+						cover_letter: `lord,pls take me.`
+					})
+				});
+				const data = await response.json();
+				if (data == 'success') {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Application received</p>`
+					);
+				} else {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
+					);
 				}
-			} catch (err) {
-				console.log(err);
+			} catch (e) {
+				console.log(e);
+			}
+		}
+	};
+	const handleWatch = async () => {
+		if ($userConnected) {
+			try {
+				const url = `${base}/api/watchlist/add`;
+				const response = await fetch(url, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						address: job.user_address,
+						slot: job.slot
+					})
+				});
+				const data = await response.json();
+				if (data == 'success') {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Added to watchlist!</p>`
+					);
+				} else {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
+					);
+				}
+			} catch (e) {
+				console.log(e);
 			}
 		}
 	};
@@ -51,50 +97,47 @@
 <main>
 	<div class="profile-bar">
 		<div class="left-section">
-			<img
-				class="pfp"
-				src={user?.show_nft
-					? nft_image && nft_image != ''
-						? nft_image
-						: placeholder_image
-					: user?.image_url && user.image_url != ''
-					? user.image_url
-					: placeholder_image}
-				alt=""
-			/>
+			<img class="pfp" src={job.image_url ?? placeholder_image} alt="" />
 			<div style="width:8px;" />
 			<div class="info">
 				<div class="info-username">
-					{#if user?.show_ens}
-						{#if ens_name && ens_name != ''}
-							<p>{ens_name}</p>
-						{:else}
-							<Skeleton width="100px" />
-						{/if}
-					{:else if user?.username && user.username != ''}
-						<p>{user?.username}</p>
-					{/if}
+					<p>{job.username}</p>
 				</div>
 				<div style="height:4px;" />
-				<p class="light-60">{user?.title}</p>
+				<p class="light-60">{job.title}</p>
 				<div style="height:4px;" />
 				<p>4.8<span class="light-60">(377)</span></p>
 			</div>
 		</div>
 		<div class="right-section">
-			<div class="button">
+			<div class="button" on:click={handleApply} on:keydown>
 				<p class="yellow">apply to this job</p>
 			</div>
 			<div style="height:8px" />
-			<div class="button">
+			<div class="button link" on:click={handleWatch} on:keydown>
 				<p class="light-60">add to watchlist</p>
 			</div>
+			<div style="height:8px" />
+			<a class="button" href={`job/${job.user_address}/${job.slot}`}>
+				<p class="light-60">share job</p>
+				<div style="width:4px;" />
+				<img src="/icons/external.svg" alt="share" style="margin-top:-2px;" />
+			</a>
 		</div>
 	</div>
 	<div class="wrapper">
 		<div bind:this={viewport} class="viewport" style={`height:${feedHeight.toString() + 'px'}`}>
 			<div bind:this={contents} class="contents">
-				<div style="height:12px;" />
+				{#if show_tags}
+					<div class="tags">
+						{#each job.tags as tag}
+							<div class="tag link">
+								<p>{tag}</p>
+							</div>
+						{/each}
+					</div>
+				{/if}
+
 				<div class="description">
 					<div class="body-text light-80">
 						{job.description}
@@ -105,13 +148,9 @@
 					{#if job.tokens_accepted && job.tokens_accepted.length > 0}
 						<div class="network-tabs">
 							{#each job.tokens_accepted as network}
-								<div
-									class="network-tab"
-									on:click={() => (chosen_network = network.name)}
-									on:keydown
-								>
-									<p class={chosen_network == network.name ? 'yellow' : 'light-60'}>
-										{network.name}
+								<div class="network-tab" on:click={() => (chosen_network = network.id)} on:keydown>
+									<p class={chosen_network == network.id ? 'yellow' : 'light-60'}>
+										{getChainName(network.id)}
 									</p>
 								</div>
 							{/each}
@@ -130,25 +169,29 @@
 							<div style="height:8px;" />
 							{#if job.tokens_accepted}
 								{#each job.tokens_accepted as network}
-									{#each network.tokens as token, i}
-										{#if network.name == chosen_network}
-											<div class="token">
-												<p class={i % 2 == 0 ? '' : 'light-60'}>{token.symbol}</p>
-												<div class="address">
-													<p class={i % 2 == 0 ? '' : 'light-60'}>{token.address}</p>
-													<div style="width:4px;" />
-													<img
-														src="icons/external.svg"
-														alt="External Link"
-														style="margin-top:-2px;"
-													/>
+									{#if network.tokens && network.tokens.length > 0}
+										{#each network.tokens as token, i}
+											{#if network.id == chosen_network}
+												<div class="token">
+													<p class={i % 2 == 0 ? '' : 'light-60'}>
+														{getTokenSymbol(network.id, token.address)}
+													</p>
+													<div class="address">
+														<p class={i % 2 == 0 ? '' : 'light-60'}>{token.address}</p>
+														<div style="width:4px;" />
+														<img
+															src={`${assets}/icons/external.svg`}
+															alt="External Link"
+															style="margin-top:-2px;"
+														/>
+													</div>
 												</div>
-											</div>
-											{#if i != network.tokens.length - 1}
-												<div style="height:8px;" />
+												{#if i != network.tokens.length - 1}
+													<div style="height:8px;" />
+												{/if}
 											{/if}
-										{/if}
-									{/each}
+										{/each}
+									{/if}
 								{/each}
 							{:else}
 								<p class="light-60">NO TOKEN INFO FOUND</p>
@@ -158,16 +201,18 @@
 				</div>
 				<div style="height:12px;" />
 				<div class="links">
-					{#each job.links as link}
-						<div class="link-container">
-							<p class="placeholder light-40">link</p>
-							<div style="width:8px;" />
-							<a href={link}>
-								<p class="light-80">{link}</p>
-							</a>
-						</div>
-						<div style="height:8px;" />
-					{/each}
+					{#if job.links && job.links.length > 0}
+						{#each job.links as link}
+							<div class="link-container">
+								<p class="placeholder light-40">link</p>
+								<div style="width:8px;" />
+								<a href={link}>
+									<p class="light-80">{link}</p>
+								</a>
+							</div>
+							<div style="height:8px;" />
+						{/each}
+					{/if}
 				</div>
 				<div style="height:32px;" />
 			</div>
@@ -186,7 +231,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		align-items: center;
+		align-items: flex-start;
 		border-width: 1px 1px 1px 1px;
 		border-style: solid;
 		border-color: var(--color-light-10);
@@ -199,8 +244,8 @@
 		align-items: flex-start;
 	}
 	.pfp {
-		width: 60px;
-		height: 60px;
+		width: 94px;
+		height: 94px;
 	}
 	.info {
 		display: flex;
@@ -332,5 +377,20 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+	}
+	.tags {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding: 12px;
+	}
+	.tag {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding: 8px 12px;
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--color-light-10);
 	}
 </style>

@@ -182,7 +182,6 @@
 			const response = await fetch(`api/alchemy/${addr}/${id}`);
 			if (response.ok) {
 				const data = await response.json();
-				console.log('NFT log:', data);
 				return data.image;
 			}
 		} catch (err) {

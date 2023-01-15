@@ -6,11 +6,26 @@
 	"/api/auth": [
 		"src/routes/api/auth/+server.ts"
 	],
+	"/api/(job)/job_apply/[address]/[slot]": [
+		"src/routes/api/(job)/job_apply/[address]/[slot]/+server.ts"
+	],
+	"/api/(job)/job_submit": [
+		"src/routes/api/(job)/job_submit/+server.ts"
+	],
+	"/api/(job)/job_update": [
+		"src/routes/api/(job)/job_update/+server.ts"
+	],
+	"/api/(job)/job/[sort]/[order]": [
+		"src/routes/api/(job)/job/[sort]/[order]/+server.ts"
+	],
 	"/api/search": [
 		"src/routes/api/search/+server.ts"
 	],
 	"/api/skill/[sort]/[order]": [
 		"src/routes/api/skill/[sort]/[order]/+server.ts"
+	],
+	"/api/(job)/upload-job-url/[filename]/[address]": [
+		"src/routes/api/(job)/upload-job-url/[filename]/[address]/+server.ts"
 	],
 	"/api/upload-skill-url/[skill_slot]/[image_slot]/[filename]": [
 		"src/routes/api/upload-skill-url/[skill_slot]/[image_slot]/[filename]/+server.ts"
@@ -21,14 +36,29 @@
 	"/api/user/[address]": [
 		"src/routes/api/user/[address]/+server.ts"
 	],
+	"/api/watchlist/add": [
+		"src/routes/api/watchlist/add/+server.ts"
+	],
+	"/api/watchlist/get": [
+		"src/routes/api/watchlist/get/+server.ts"
+	],
 	"/(subpages)/connect_wallet": [
 		"src/routes/(subpages)/connect_wallet/+page.server.ts"
 	],
 	"/(subpages)/create_account": [
 		"src/routes/(subpages)/create_account/+page.server.ts"
 	],
+	"/creator/[address]": [
+		"src/routes/creator/[address]/+page.server.ts"
+	],
 	"/jobs": [
 		"src/routes/jobs/+page.server.ts"
+	],
+	"/job/[address]/[slot]": [
+		"src/routes/job/[address]/[slot]/+page.server.ts"
+	],
+	"/listings": [
+		"src/routes/listings/+page.server.ts"
 	],
 	"/messages": [
 		"src/routes/messages/+page.server.ts"
@@ -38,7 +68,6 @@
 	"/profile": [
 		"src/routes/profile/+page.server.ts"
 	],
-	"/projects": [],
 	"/skills": [
 		"src/routes/skills/+page.server.ts"
 	]

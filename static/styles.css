@@ -10,11 +10,45 @@
 		url('fonts/ProtoMono-SemiBoldShadow.otf') format('otf');
 } */
 
+:root {
+	--toastBackground: var(--color-light-2);
+	--toastBorder: 1px solid var(--color-light-10);
+	--toastBarHeight: 2px;
+	--toastMsgPadding: 12px;
+	--toastMinHeight: 100%;
+	--toastContainerTop: 36px;
+	--toastContainerRight: 16px;
+	--toastBoxShadow: none;
+	--toastWidth: auto;
+	--toastBarBackground: var(--color-primary);
+	--toastBtnFont: 12px;
+}
+
+.toast-container {
+	font-style: normal;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 16px;
+	color: var(--color-primary);
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
 /* hide scrollbar but allow scrolling */
 body {
 	-ms-overflow-style: none; /* for Internet Explorer, Edge */
 	scrollbar-width: none; /* for Firefox */
-	/* overflow-y: hidden; */
+	overflow-y: hidden;
 	--svrollbar-track-width: 1px;
 	/* --svrollbar-track-background: #85b4b9; */
 	--svrollbar-track-opacity: 1;
@@ -77,18 +111,19 @@ p {
 	font-size: 12px;
 	line-height: 16px;
 	margin: 0px;
-	text-transform: uppercase;
+	/* text-transform: uppercase; */
 }
 
 a {
 	font-weight: 400;
-	color: var(--color-primary);
 	text-decoration: none;
+	color: var(--color-light);
 	cursor: pointer;
 }
 
 a:visited {
 	text-decoration: none;
+	color: none;
 }
 
 .semibold {
@@ -188,11 +223,11 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 ::placeholder {
-	color: var(--color-light-80);
+	color: var(--color-light-20);
 }
 
 textarea::placeholder {
-	color: var(--color-light-60);
+	color: var(--color-light-20);
 }
 
 ::-moz-selection {
@@ -211,6 +246,8 @@ button:focus {
 	background: transparent;
 	border: 1px solid transparent;
 	font-family: 'Proto Mono', monospace;
+	font-size: 12px;
+	line-height: 16px;
 	cursor: pointer;
 	padding: 0px;
 }

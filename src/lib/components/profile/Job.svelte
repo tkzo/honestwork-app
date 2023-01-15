@@ -1,9 +1,9 @@
 <svelte:options immutable={true} />
 
 <script lang="ts">
-	import type { UserType } from '$lib/types/Types';
+	import type { UserType } from '$lib/stores/Types';
 	import { onMount } from 'svelte';
-	import type { JobType } from '$lib/types/Types';
+	import type { JobType } from '$lib/stores/Types';
 
 	// todo: dispatch tag click event to parent search bar
 

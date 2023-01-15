@@ -1,8 +1,11 @@
 <script lang="ts">
-	import type { SkillType, UserType } from '$lib/types/Types';
+	import type { SkillType, UserType } from '$lib/stores/Types';
 	import { Svrollbar } from 'svrollbar';
 	import Skeleton from '$lib/components/common/Skeleton.svelte';
 	import { nodeProvider } from '$lib/stores/Network';
+	import { browser } from '$app/environment';
+	import { base, assets } from '$app/paths';
+	import { placeholder_image } from '$lib/stores/Constants';
 
 	export let skill: SkillType;
 
@@ -13,10 +16,10 @@
 	let chosen_image: number = 0;
 	let nft_image: any;
 	let ens_name: string;
-	let placeholder_image = 'assets/xcopy.gif';
 
-	$: feedHeight = window.innerHeight - 136;
-	$: if (skill) {
+	let feedHeight = 0;
+	$: if (browser) feedHeight = window.innerHeight - 136;
+	$: if (skill && browser) {
 		nft_image = '';
 		resetState();
 		fetchUser();
@@ -24,7 +27,7 @@
 	$: trimmed_images = skill.image_urls.filter((url: string) => url !== '');
 
 	const fetchUser = async () => {
-		const res = await fetch(`/api/user/${skill.user_address}`);
+		const res = await fetch(`${base}/api/user/${skill.user_address}`);
 		user = await res.json();
 		await getNft();
 		ens_name = await $nodeProvider.lookupAddress(skill.user_address);
@@ -47,7 +50,7 @@
 	const getNft = async () => {
 		if (user.nft_address && user.nft_id) {
 			try {
-				const response = await fetch(`api/alchemy/${user.nft_address}/${user.nft_id}`);
+				const response = await fetch(`${base}/api/alchemy/${user.nft_address}/${user.nft_id}`);
 				if (response.ok) {
 					const data = await response.json();
 					nft_image = data.image;
@@ -60,7 +63,12 @@
 </script>
 
 <main>
-	<div class="profile-bar">
+	<a
+		class="profile-bar"
+		href={`${base}/creator/${skill.user_address}`}
+		target="_blank"
+		rel="noreferrer"
+	>
 		<div class="left-section">
 			<img
 				class="pfp"
@@ -84,8 +92,8 @@
 			<div style="width:8px;" />
 			<p class="light-60">{user?.title}</p>
 		</div>
-		<img src="icons/external.svg" alt="External Link" style="margin-right:8px;" />
-	</div>
+		<img src={`${assets}/icons/external.svg`} alt="External Link" style="margin-right:8px;" />
+	</a>
 	<div class="wrapper">
 		<div bind:this={viewport} class="viewport" style={`height:${feedHeight.toString() + 'px'}`}>
 			<div bind:this={contents} class="contents">
@@ -144,6 +152,9 @@
 		border-style: solid;
 		border-color: var(--color-light-10);
 		cursor: pointer;
+	}
+	.profile-bar:hover {
+		background-color: var(--color-light-2);
 	}
 	.left-section {
 		display: flex;

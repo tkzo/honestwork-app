@@ -4,6 +4,9 @@ import type { Actions } from './$types';
 import { env } from '$env/dynamic/private';
 import { ethers } from 'ethers';
 
+const apiUrl =
+	parseInt(env.PRODUCTION_ENV) == 1 ? env.PRIVATE_HONESTWORK_API : env.PRIVATE_LOCAL_HONESTWORK_API;
+
 export const load: PageServerLoad = async ({ cookies }) => {
 	const userAddress = cookies.get('honestwork_address')!;
 	const userSignature = cookies.get('honestwork_signature');
@@ -30,7 +33,7 @@ const verifySignature = (salt: string, signature: string) => {
 };
 
 const getUser = async (address: string) => {
-	const url = `${env.PRIVATE_HONESTWORK_API}users/${address}`;
+	const url = `${apiUrl}/users/${address}`;
 	let response = await fetch(url);
 	if (response.ok) {
 		let json = await response.json();
@@ -42,7 +45,7 @@ const getUser = async (address: string) => {
 };
 
 const getSkills = async (address: string) => {
-	const url = `${env.PRIVATE_HONESTWORK_API}skills/${address}`;
+	const url = `${apiUrl}/skills/${address}`;
 	let response = await fetch(url);
 	if (response.ok) {
 		let json = await response.json();
@@ -54,7 +57,7 @@ const getSkills = async (address: string) => {
 };
 
 const getJobs = async (address: string) => {
-	const url = `${env.PRIVATE_HONESTWORK_API}jobs/${address}`;
+	const url = `${apiUrl}/jobs/${address}`;
 	let response = await fetch(url);
 	if (response.ok) {
 		let json = await response.json();
@@ -67,13 +70,14 @@ const getJobs = async (address: string) => {
 
 export const actions: Actions = {
 	profile: async ({ cookies, request }) => {
-		const userAddress = cookies.get('address');
-		const userSignature = cookies.get('signature');
-		const userSalt = cookies.get('salt');
+		const userAddress = cookies.get('honestwork_address');
+		const userSignature = cookies.get('honestwork_signature');
+		const userSalt = cookies.get('honestwork_salt');
 		const data = await request.formData();
 		let cloud_url;
+		console.log('User file_url:', data.get('file_url'));
 		if (data.get('file_url') != '') {
-			cloud_url = env.PRIVATE_SPACES_URL + '/' + userAddress + '/' + data.get('file_url');
+			cloud_url = env.PRIVATE_SPACES_URL + '/' + userAddress + '/profile/' + data.get('file_url');
 		}
 		const body = {
 			username: data.get('username'),
@@ -89,7 +93,7 @@ export const actions: Actions = {
 			links: [data.get('link-0'), data.get('link-1'), data.get('link-2')]
 		};
 
-		const url = `${env.PRIVATE_HONESTWORK_API}users/${userAddress}/${userSalt}/${userSignature}`;
+		const url = `${apiUrl}/users/${userAddress}/${userSalt}/${userSignature}`;
 		let response = await fetch(url, {
 			method: 'PATCH',
 			body: JSON.stringify(body),
@@ -103,9 +107,9 @@ export const actions: Actions = {
 		}
 	},
 	skills: async ({ cookies, request }) => {
-		const userAddress = cookies.get('address');
-		const userSignature = cookies.get('signature');
-		const userSalt = cookies.get('salt');
+		const userAddress = cookies.get('honestwork_address');
+		const userSignature = cookies.get('honestwork_signature');
+		const userSalt = cookies.get('honestwork_salt');
 		const data = await request.formData();
 		let cloud_url_0 = '';
 		let cloud_url_1 = '';
@@ -117,44 +121,44 @@ export const actions: Actions = {
 		let cloud_url_7 = '';
 
 		if (data.get('file_url_0') != '') {
-			cloud_url_0 = `${env.PRIVATE_SPACES_URL}/${userAddress}/${data.get('skill_slot')}/${data.get(
-				'image_slot_0'
-			)}/${data.get('file_url_0')}`;
+			cloud_url_0 = `${env.PRIVATE_SPACES_URL}/${userAddress}/skill/${data.get(
+				'skill_slot'
+			)}/${data.get('image_slot_0')}/${data.get('file_url_0')}`;
 		}
 		if (data.get('file_url_1') != '') {
-			cloud_url_1 = `${env.PRIVATE_SPACES_URL}/${userAddress}/${data.get('skill_slot')}/${data.get(
-				'image_slot_1'
-			)}/${data.get('file_url_1')}`;
+			cloud_url_1 = `${env.PRIVATE_SPACES_URL}/${userAddress}/skill/${data.get(
+				'skill_slot'
+			)}/${data.get('image_slot_1')}/${data.get('file_url_1')}`;
 		}
 		if (data.get('file_url_2') != '') {
-			cloud_url_2 = `${env.PRIVATE_SPACES_URL}/${userAddress}/${data.get('skill_slot')}/${data.get(
-				'image_slot_2'
-			)}/${data.get('file_url_2')}`;
+			cloud_url_2 = `${env.PRIVATE_SPACES_URL}/${userAddress}/skill/${data.get(
+				'skill_slot'
+			)}/${data.get('image_slot_2')}/${data.get('file_url_2')}`;
 		}
 		if (data.get('file_url_3') != '') {
-			cloud_url_3 = `${env.PRIVATE_SPACES_URL}/${userAddress}/${data.get('skill_slot')}/${data.get(
-				'image_slot_3'
-			)}/${data.get('file_url_3')}`;
+			cloud_url_3 = `${env.PRIVATE_SPACES_URL}/${userAddress}/skill/${data.get(
+				'skill_slot'
+			)}/${data.get('image_slot_3')}/${data.get('file_url_3')}`;
 		}
 		if (data.get('file_url_4') != '') {
-			cloud_url_4 = `${env.PRIVATE_SPACES_URL}/${userAddress}/${data.get('skill_slot')}/${data.get(
-				'image_slot_4'
-			)}/${data.get('file_url_4')}`;
+			cloud_url_4 = `${env.PRIVATE_SPACES_URL}/${userAddress}/skill/${data.get(
+				'skill_slot'
+			)}/${data.get('image_slot_4')}/${data.get('file_url_4')}`;
 		}
 		if (data.get('file_url_5') != '') {
-			cloud_url_5 = `${env.PRIVATE_SPACES_URL}/${userAddress}/${data.get('skill_slot')}/${data.get(
-				'image_slot_5'
-			)}/${data.get('file_url_5')}`;
+			cloud_url_5 = `${env.PRIVATE_SPACES_URL}/${userAddress}/skill/${data.get(
+				'skill_slot'
+			)}/${data.get('image_slot_5')}/${data.get('file_url_5')}`;
 		}
 		if (data.get('file_url_6') != '') {
-			cloud_url_6 = `${env.PRIVATE_SPACES_URL}/${userAddress}/${data.get('skill_slot')}/${data.get(
-				'image_slot_6'
-			)}/${data.get('file_url_6')}`;
+			cloud_url_6 = `${env.PRIVATE_SPACES_URL}/${userAddress}/skill/${data.get(
+				'skill_slot'
+			)}/${data.get('image_slot_6')}/${data.get('file_url_6')}`;
 		}
 		if (data.get('file_url_7') != '') {
-			cloud_url_7 = `${env.PRIVATE_SPACES_URL}/${userAddress}/${data.get('skill_slot')}/${data.get(
-				'image_slot_7'
-			)}/${data.get('file_url_7')}`;
+			cloud_url_7 = `${env.PRIVATE_SPACES_URL}/${userAddress}/skill/${data.get(
+				'skill_slot'
+			)}/${data.get('image_slot_7')}/${data.get('file_url_7')}`;
 		}
 
 		const body = {
@@ -178,7 +182,7 @@ export const actions: Actions = {
 		};
 
 		if (data.get('skill_method') == 'add') {
-			const url = `${env.PRIVATE_HONESTWORK_API}skills/${userAddress}/${userSalt}/${userSignature}`;
+			const url = `${apiUrl}skills/${userAddress}/${userSalt}/${userSignature}`;
 			let response = await fetch(url, {
 				method: 'POST',
 				body: JSON.stringify(body),
@@ -191,9 +195,9 @@ export const actions: Actions = {
 				console.log(json);
 			}
 		} else {
-			const url = `${
-				env.PRIVATE_HONESTWORK_API
-			}skills/${userAddress}/${userSalt}/${userSignature}/${data.get('skill_slot')}`;
+			const url = `${apiUrl}/skills/${userAddress}/${userSalt}/${userSignature}/${data.get(
+				'skill_slot'
+			)}`;
 			let response = await fetch(url, {
 				method: 'PATCH',
 				body: JSON.stringify(body),

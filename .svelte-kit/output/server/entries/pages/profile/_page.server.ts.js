@@ -1,20 +1,26 @@
 import { r as redirect } from "../../../chunks/index2.js";
 import { e as env } from "../../../chunks/env-private.js";
+import { ethers } from "ethers";
+const apiUrl = parseInt(env.PRODUCTION_ENV) == 1 ? env.PRIVATE_HONESTWORK_API : env.PRIVATE_LOCAL_HONESTWORK_API;
 const load = async ({ cookies }) => {
-  const userAddress = cookies.get("address");
-  const userSignature = cookies.get("signature");
-  const userSalt = cookies.get("salt");
-  if (userSignature && userSalt && userAddress) {
+  const userAddress = cookies.get("honestwork_address");
+  const userSignature = cookies.get("honestwork_signature");
+  const userSalt = cookies.get("honestwork_salt");
+  if (userSignature && userSalt && userAddress && userAddress == verifySignature(userSalt, userSignature)) {
     let user = await getUser(userAddress);
     let skills = await getSkills(userAddress);
+    let jobs = await getJobs(userAddress);
     user.address = userAddress;
-    return { user, skills };
+    return { user, skills, jobs };
   } else {
     throw redirect(301, "/create_account");
   }
 };
+const verifySignature = (salt, signature) => {
+  return ethers.utils.verifyMessage(salt, signature);
+};
 const getUser = async (address) => {
-  const url = `${env.PRIVATE_HONESTWORK_API}users/${address}`;
+  const url = `${apiUrl}/users/${address}`;
   let response = await fetch(url);
   if (response.ok) {
     let json = await response.json();
@@ -25,7 +31,18 @@ const getUser = async (address) => {
   }
 };
 const getSkills = async (address) => {
-  const url = `${env.PRIVATE_HONESTWORK_API}skills/${address}`;
+  const url = `${apiUrl}/skills/${address}`;
+  let response = await fetch(url);
+  if (response.ok) {
+    let json = await response.json();
+    return { json };
+  } else {
+    console.log("HTTP-Error: " + response.status);
+    return response.status;
+  }
+};
+const getJobs = async (address) => {
+  const url = `${apiUrl}/jobs/${address}`;
   let response = await fetch(url);
   if (response.ok) {
     let json = await response.json();
@@ -37,11 +54,12 @@ const getSkills = async (address) => {
 };
 const actions = {
   profile: async ({ cookies, request }) => {
-    const userAddress = cookies.get("address");
-    const userSignature = cookies.get("signature");
-    const userSalt = cookies.get("salt");
+    const userAddress = cookies.get("honestwork_address");
+    const userSignature = cookies.get("honestwork_signature");
+    const userSalt = cookies.get("honestwork_salt");
     const data = await request.formData();
     let cloud_url;
+    console.log("User file_url:", data.get("file_url"));
     if (data.get("file_url") != "") {
       cloud_url = env.PRIVATE_SPACES_URL + "/" + userAddress + "/" + data.get("file_url");
     }
@@ -58,7 +76,7 @@ const actions = {
       timezone: "",
       links: [data.get("link-0"), data.get("link-1"), data.get("link-2")]
     };
-    const url = `${env.PRIVATE_HONESTWORK_API}users/${userAddress}/${userSalt}/${userSignature}`;
+    const url = `${apiUrl}/users/${userAddress}/${userSalt}/${userSignature}`;
     let response = await fetch(url, {
       method: "PATCH",
       body: JSON.stringify(body),
@@ -144,7 +162,7 @@ const actions = {
       created_at: Math.floor(new Date().getTime() / 1e3)
     };
     if (data.get("skill_method") == "add") {
-      const url = `${env.PRIVATE_HONESTWORK_API}skills/${userAddress}/${userSalt}/${userSignature}`;
+      const url = `${apiUrl}skills/${userAddress}/${userSalt}/${userSignature}`;
       let response = await fetch(url, {
         method: "POST",
         body: JSON.stringify(body),
@@ -157,7 +175,9 @@ const actions = {
         console.log(json);
       }
     } else {
-      const url = `${env.PRIVATE_HONESTWORK_API}skills/${userAddress}/${userSalt}/${userSignature}/${data.get("skill_slot")}`;
+      const url = `${apiUrl}/skills/${userAddress}/${userSalt}/${userSignature}/${data.get(
+        "skill_slot"
+      )}`;
       let response = await fetch(url, {
         method: "PATCH",
         body: JSON.stringify(body),

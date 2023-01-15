@@ -1,24 +1,23 @@
 <script lang="ts">
+	import type { SkillType } from '$lib/stores/Types';
+	import { placeholder_image } from '$lib/stores/Constants';
+
 	export let slot: number;
-	export let title: string;
-	export let description: string;
-	export let image_urls: Array<string>;
-	export let minimum_price: number;
+	export let skill: SkillType;
 
 	let tags = ['logo design', 'ui/ux', 'nft'];
 
 	$: trimmed_description =
-		description.length > 251 ? description.slice(0, 251) + '...' : description;
-	let placeholder_image = 'assets/xcopy.gif';
+		skill.description.length > 251 ? skill.description.slice(0, 251) + '...' : skill.description;
 </script>
 
 <section>
 	<div class="header">
-		<p class="light"><span class="light-40">#{slot + 1} </span>{title}</p>
+		<p class="light"><span class="light-40">#{slot + 1} </span>{skill.title}</p>
 		<p class="yellow">></p>
 	</div>
 	<div class="gallery">
-		{#each image_urls.slice(0, 4) as url}
+		{#each skill.image_urls.slice(0, 4) as url}
 			<img src={url == '' ? placeholder_image : url} alt="gallery" class="preview-image" />
 		{/each}
 	</div>
@@ -38,7 +37,7 @@
 		</div>
 		<div class="tag border-all">
 			<p class="light-40">
-				MIN <span class="light">${minimum_price}</span>
+				MIN <span class="light">${skill.minimum_price}</span>
 			</p>
 		</div>
 	</div>
