@@ -1,18 +1,19 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import {
-		userConnected,
-		token_abi,
-		networkSigner,
-		userState,
-		token_address
-	} from '$lib/stores/Network';
+	import { userConnected, networkSigner, userState } from '$lib/stores/Network';
+	import { env } from '$env/dynamic/public';
+
+	import { nft_abi } from '$lib/stores/Constants';
 	import { ethers } from 'ethers';
 
 	const mint = async () => {
 		if ($userState == 0) {
 			try {
-				const contract = new ethers.Contract(token_address, token_abi, $networkSigner);
+				const contract = new ethers.Contract(
+					env.PUBLIC_JOB_LISTING_CONTRACT_ADDRESS!,
+					nft_abi,
+					$networkSigner
+				);
 				const tx = await contract.mint();
 				const receipt = await tx.wait();
 				if (receipt.status == 1) {
