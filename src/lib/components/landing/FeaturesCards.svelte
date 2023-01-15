@@ -93,8 +93,10 @@
 </script>
 
 <div class="buttons-container">
+    <div class="line"></div>
     <button on:click={() => employer = true} class="{employer ? 'selected button' : 'button'}">Employers</button>
     <button on:click={() => employer = false} class="{!employer ? 'selected button' : 'button'}">Freelancers</button>
+    <div class="line"></div>
 </div>
 <div style="height: 100px;"></div>
 <div class="container">
@@ -151,6 +153,11 @@
         flex-direction: row;
         align-items: center;
         justify-content: center;
+    }
+    .line {
+        height: 1px;
+        background-color: var(--color-light-10);
+        width: 100%;
     }
     .container {
         display: flex;

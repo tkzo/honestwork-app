@@ -28,10 +28,12 @@
 		<div class="contents" bind:this={contents}>
 			<div on:click={handleConnect} on:keydown>LOGIN</div>
 			<div on:click={() => goto('/skills')} on:keydown>EXPLORE</div>
-			<!-- <BenefitsCards /> -->
-			<!-- <div style="height: 120px;"></div> -->
-			<!-- <Faq /> -->
-			<!-- <div style="height: 120px;"></div> -->
+			<FeaturesCards />
+			<div style="height: 120px;"></div>
+			<BenefitsCards />
+			<div style="height: 120px;"></div>
+			<Faq />
+			<div style="height: 120px;"></div>
 		</div>
 	</div>
 	<Svrollbar alwaysVisible {viewport} {contents} />
@@ -75,7 +77,7 @@
 		/* hide scrollbar */
 		display: none;
 	}
-	.contents {
+	/* .contents {
 		width: 520px;
-	}
+	} */
 </style>
