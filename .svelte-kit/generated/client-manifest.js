@@ -12,24 +12,22 @@ export const nodes = [() => import('./nodes/0'),
 	() => import('./nodes/9'),
 	() => import('./nodes/10'),
 	() => import('./nodes/11'),
-	() => import('./nodes/12'),
-	() => import('./nodes/13')];
+	() => import('./nodes/12')];
 
 export const server_loads = [];
 
 export const dictionary = {
 	"/": [2],
-	"/(subpages)/connect_wallet": [~3],
-	"/(subpages)/create_account": [~4],
-	"/creator/[address]": [~6],
-	"/jobs": [~8],
-	"/job/[address]/[slot]": [~7],
-	"/listings": [~9],
-	"/messages": [~10],
-	"/(subpages)/mint": [5],
-	"/new_job": [11],
-	"/profile": [~12],
-	"/skills": [~13]
+	"/(subpages)/create_account": [~3],
+	"/creator/[address]": [~5],
+	"/jobs": [~7],
+	"/job/[address]/[slot]": [~6],
+	"/listings": [~8],
+	"/messages": [~9],
+	"/(subpages)/mint": [4],
+	"/new_job": [10],
+	"/profile": [~11],
+	"/skills": [~12]
 };
 
 export const hooks = {

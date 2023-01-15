@@ -52,14 +52,13 @@
 	</div>
 	{#if $page.route.id !== '/'}
 		<Navigation />
+		<div style="height:32px;" />
 	{/if}
-	<div style="height:32px;" />
 	{#if $page.route.id == '/jobs' || $page.route.id == '/skills' || $page.route.id == '/listings'}
 		<Notification notification={notifications.postjob} />
 		<div style="height:16px;" />
 	{:else if $page.route.id == '/new_job'}
 		<Notification notification={notifications.mint} />
-		<div style="height:16px;" />
 	{:else if $page.route.id == '/profile'}
 		<Notification notification={notifications.upgrade} />
 		<div style="height:16px;" />
