@@ -46,8 +46,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		created_at: new Date().getTime()
 	};
 
-	console.log('Body: ', body);
-
 	const url = `${apiUrl}/jobs/${userAddress}/${userSalt}/${userSignature}/`;
 	const options = {
 		method: 'POST',
