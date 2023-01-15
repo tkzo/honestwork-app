@@ -1,6 +1,6 @@
 <script>
 	import { chainName } from '$lib/stores/Network';
-	import { xmtpConnected, xmtpConnecting } from '$lib/stores/Network';
+	import { xmtpConnected, xmtpConnecting, userAddress } from '$lib/stores/Network';
 	import { assets } from '$app/paths';
 	let pages = [
 		{ name: 'faq', path: '/' },
@@ -42,17 +42,26 @@
 		<div class="network-section">
 			{#if !$xmtpConnecting}
 				<div style="width:4px" />
-				<p class="light-40 semibold link">
+				<p class="light-40 ">
 					xmtp <span
 						style={$xmtpConnected ? 'color:var(--color-success)' : 'color:var(--color-primary)'}
 						>{$xmtpConnected ? 'active' : 'n/a'}</span
 					>
 				</p>
 			{:else}
-				<p class="light-40 semibold link">xmtp</p>
+				<p class="light-40">xmtp</p>
 				<div style="width:4px" />
 				<img src={`${assets}/icons/loader.svg`} alt="loading" class="rotating" />
 			{/if}
+		</div>
+		<div class="network-section">
+			<p class="light-40">account</p>
+			<div style="width:4px" />
+			<p class="light-80">
+				{$userAddress != ''
+					? $userAddress.substring(0, 6) + '...' + $userAddress.substring($userAddress.length - 4)
+					: 'n/a'}
+			</p>
 		</div>
 	</div>
 </main>
@@ -79,7 +88,7 @@
 		height: 32px;
 	}
 	.brand-section {
-		height: 100%;
+		height: 30px;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -91,6 +100,8 @@
 		box-sizing: border-box;
 	}
 	.social-section {
+		height: 30px;
+
 		display: flex;
 		flex-direction: row;
 		padding: 8px 12px;
@@ -100,7 +111,7 @@
 		box-sizing: border-box;
 	}
 	.sitemap-section {
-		height: 100%;
+		height: 30px;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -112,7 +123,7 @@
 		box-sizing: border-box;
 	}
 	.network-section {
-		height: 100%;
+		height: 30px;
 		display: flex;
 		flex-direction: row;
 		align-items: center;

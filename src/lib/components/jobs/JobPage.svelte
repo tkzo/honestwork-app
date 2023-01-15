@@ -136,6 +136,8 @@
 							</div>
 						{/each}
 					</div>
+				{:else}
+					<div style="height:12px;" />
 				{/if}
 
 				<div class="description">

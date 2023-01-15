@@ -2,7 +2,6 @@
 	import {
 		networkProvider,
 		networkSigner,
-		token_abi,
 		userConnected,
 		connectWallet,
 		xmtpConnected,
@@ -10,7 +9,7 @@
 	} from '$lib/stores/Network';
 	import { JobInput } from '$lib/stores/Validation';
 	import type { JobType, Network, Token } from '$lib/stores/Types';
-	import { chains } from '$lib/stores/Constants';
+	import { chains, erc20_abi } from '$lib/stores/Constants';
 	import { placeholder_image, sticky_data } from '$lib/stores/Constants';
 	import { chosen_job_slot } from '$lib/stores/State';
 	import { shortcut } from '$lib/stores/Shortcut';
@@ -23,6 +22,7 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
+	import { assets } from '$app/paths';
 
 	//todo: upgrade tags when api is rdy
 	//add autosuggest from redis
@@ -36,12 +36,7 @@
 	export let contents: Element;
 
 	let feedHeight = 0;
-	$: if (browser) {
-		feedHeight = window.innerHeight - 112;
-	}
-
 	let file_url: string;
-
 	let service_fee = 10; // in $
 	let jobForm: HTMLFormElement;
 	let tokens_selected: TokenSelection[] = [];
@@ -54,8 +49,8 @@
 	let links: string[] = [];
 	let tags: string[] = [];
 	let chosen_network: Network = chains[0];
-	let polygonTokens = chains.find((chain) => chain.id == 137)?.tokens!;
-	let chosen_payment_token = polygonTokens[0];
+	let binanceTokens = chains.find((chain) => chain.id == 56)?.tokens!;
+	let chosen_payment_token = binanceTokens[0];
 	let paymentTokenBalance = 0;
 	let userPaying = false;
 	let userSigned = false;
@@ -72,9 +67,24 @@
 	let userPublishing = false;
 	let userPublished = false;
 	let parsed_filename: string;
+	let user_allowance: string; // bignumber
+	let approveMax = false;
+	let userApproved = false;
 
 	$: sticky_item = sticky_data.find((n) => n.duration == sticky_duration) ?? sticky_data[0];
+	$: if (browser) {
+		feedHeight = window.innerHeight - 112;
+	}
+	$: if (chosen_payment_token && $userConnected) {
+		getAllowance();
+	}
 
+	const getAllowance = async () => {
+		let ERC20 = new ethers.Contract(chosen_payment_token.address, erc20_abi, $networkProvider);
+		let allowance = await ERC20.allowance($userAddress, env.PUBLIC_JOB_LISTING_CONTRACT_ADDRESS);
+		user_allowance = ethers.utils.formatEther(allowance);
+		console.log('Allowance:', user_allowance);
+	};
 	const handleSubmit = async (e: Event) => {
 		userPublishing = true;
 		const formData = new FormData(e.target! as HTMLFormElement);
@@ -217,7 +227,7 @@
 					return;
 				}
 
-				const ERC20 = new ethers.Contract(token_address, token_abi, $networkProvider);
+				const ERC20 = new ethers.Contract(token_address, erc20_abi, $networkProvider);
 				paymentTokenBalance = parseFloat(
 					ethers.utils.formatEther(await ERC20.balanceOf($userAddress))
 				);
@@ -236,8 +246,22 @@
 			let amount_to_pay = sticky_item.price + service_fee;
 			let price = ethers.utils.parseEther(amount_to_pay.toString());
 			try {
+				if (parseFloat(user_allowance) < amount_to_pay) {
+					const erc20 = new ethers.Contract(
+						chosen_payment_token.address,
+						erc20_abi,
+						$networkSigner
+					);
+					let approveAmt = approveMax ? ethers.constants.MaxUint256 : price;
+					let approveTx = await erc20.approve(env.PUBLIC_JOB_LISTING_CONTRACT_ADDRESS!, approveAmt);
+					let receipt = await approveTx.wait();
+					if (receipt.status == 1) {
+						toast.push(`<p class="light-60">Approval successful!</p>`);
+					}
+					userApproved = true;
+				}
 				const joblistingContract = new ethers.Contract(
-					env.PUBLIC_JOB_LISTING_CONTRACT_ADDRESS,
+					env.PUBLIC_JOB_LISTING_CONTRACT_ADDRESS!,
 					joblisting_abi,
 					$networkSigner
 				);
@@ -259,12 +283,9 @@
 </script>
 
 <main class="wrapper">
-	<div
-		class="viewport"
-		bind:this={viewport}
-		style={`width:520px; height:${feedHeight.toString() + 'px'}`}
-	>
+	<div class="viewport" bind:this={viewport} style={`height:${feedHeight.toString() + 'px'}`}>
 		<div class="contents" bind:this={contents}>
+			<div style="height:16px;" />
 			{#if $userConnected && $xmtpConnected}
 				<form method="POST" on:submit|preventDefault={handleSubmit} bind:this={jobForm}>
 					<input hidden type="number" name="job_slot" value={$chosen_job_slot} />
@@ -281,7 +302,7 @@
 						>
 							<div class="image-tint" />
 							<div class="upload-button">
-								<img src="icons/upload.svg" alt="Upload" />
+								<img src={`${assets}/icons/upload.svg`} alt="Upload" />
 								<div style="height:4px;" />
 								<p class="yellow">UPLOAD IMAGE</p>
 							</div>
@@ -326,7 +347,7 @@
 							>
 								<input hidden type="checkbox" name="show_ens" bind:checked={show_ens} />
 								<img
-									src={show_ens ? 'icons/checked.svg' : 'icons/unchecked.svg'}
+									src={show_ens ? `${assets}/icons/checked.svg` : `${assets}/icons/unchecked.svg`}
 									alt="Checked"
 									style="height:16px;width:16px;"
 								/>
@@ -425,7 +446,9 @@
 									{sticky_item?.duration} days<span class="light-60">(${sticky_item?.price})</span>
 								</p>
 								<img
-									src={show_sticky_menu ? 'icons/chevron_active.svg' : 'icons/chevron_passive.svg'}
+									src={show_sticky_menu
+										? `${assets}/icons/chevron_active.svg`
+										: `${assets}/icons/chevron_passive.svg`}
 									alt="Dropdown"
 									style="width:10px;"
 								/>
@@ -504,7 +527,6 @@
 							{#each tags as tag, i}
 								<div class="tag" on:click={() => handleRemoveTag(i)} on:keydown>
 									<p class="light-60">{tag}</p>
-									<!-- <img src="icons/close.svg" alt="Close" /> -->
 									<div class="close-icon" />
 								</div>
 							{/each}
@@ -530,9 +552,9 @@
 								<div class="token" on:click={() => handleTokenUpdate(token.address)} on:keydown>
 									<div class="token-left">
 										{#if tokens_selected && getTokenState(token.address)}
-											<img src="icons/checked.svg" alt="Check" />
+											<img src={`${assets}/icons/checked.svg`} alt="Check" />
 										{:else}
-											<img src="icons/unchecked_passive.svg" alt="Plus" />
+											<img src={`${assets}/icons/unchecked_passive.svg`} alt="Plus" />
 										{/if}
 										<div style="width:4px" />
 										<p class={tokens_selected && getTokenState(token.address) ? '' : 'light-60'}>
@@ -586,16 +608,16 @@
 										</p>
 										<img
 											src={show_token_menu
-												? 'icons/chevron_active.svg'
-												: 'icons/chevron_passive.svg'}
+												? `${assets}/icons/chevron_active.svg`
+												: `${assets}/icons/chevron_passive.svg`}
 											alt="Check"
 											style="width: 10px; "
 										/>
 									</div>
 									{#if show_token_menu}
 										<div class="sticky-menu">
-											{#if polygonTokens}
-												{#each polygonTokens as token}
+											{#if binanceTokens}
+												{#each binanceTokens as token}
 													<div
 														class="sticky-item"
 														on:click={() => handlePaymentTokenUpdate(token)}
@@ -622,14 +644,22 @@
 							</div>
 							<div style="height:12px" />
 							{#if userPaying}
-								<div class="payment-button">
-									<img src="icons/loader.svg" alt="loading" class="rotating" />
-									<div style="width:8px" />
-									<p class="yellow">transaction in progress...</p>
-								</div>
+								{#if userApproved}
+									<div class="payment-button">
+										<img src={`${assets}/icons/loader.svg`} alt="loading" class="rotating" />
+										<div style="width:8px" />
+										<p class="yellow">payment in progress...</p>
+									</div>
+								{:else}
+									<div class="payment-button">
+										<img src={`${assets}/icons/loader.svg`} alt="loading" class="rotating" />
+										<div style="width:8px" />
+										<p class="yellow">approval in progress...</p>
+									</div>
+								{/if}
 							{:else if userPublishing}
 								<div class="payment-button">
-									<img src="icons/loader.svg" alt="loading" class="rotating" />
+									<img src={`${assets}/icons/loader.svg`} alt="loading" class="rotating" />
 									<div style="width:8px" />
 									<p class="yellow">publishing job listing...</p>
 								</div>
@@ -639,9 +669,7 @@
 								</div>
 							{:else}
 								<div class="payment-button payment-button-hover link" on:click={pay} on:keydown>
-									<p class="yellow link">
-										pay ${sticky_item.price + 10} with {chosen_payment_token.symbol}
-									</p>
+									<p class="yellow link">approve and pay</p>
 								</div>
 							{/if}
 						</div>
@@ -652,7 +680,7 @@
 				<section>
 					<div class="gm">
 						<div class="gm-inner">
-							<img src="icons/heart.svg" alt="Heart" />
+							<img src={`${assets}/icons/heart.svg`} alt="Heart" />
 							<div style="width:8px" />
 							<p>gm fren</p>
 						</div>
@@ -670,11 +698,12 @@
 			{/if}
 		</div>
 	</div>
+	<Svrollbar alwaysVisible {viewport} {contents} />
 </main>
 
 <style>
 	main {
-		width: 520px;
+		width: 100%;
 		height: 100%;
 		display: flex;
 		flex-direction: column;
@@ -1041,6 +1070,7 @@
 		--svrollbar-thumb-width: 10px;
 		--svrollbar-thumb-background: #d9ab55;
 		--svrollbar-thumb-opacity: 1;
+		width: 100%;
 	}
 
 	.viewport {
@@ -1051,10 +1081,17 @@
 		/* hide scrollbar */
 		-ms-overflow-style: none;
 		scrollbar-width: none;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 
 	.viewport::-webkit-scrollbar {
 		/* hide scrollbar */
 		display: none;
+	}
+	.contents {
+		width: 520px;
 	}
 </style>
