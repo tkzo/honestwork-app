@@ -1,7 +1,6 @@
 <script lang="ts">
-    let freelancer = false;
-
-    // $: freelancer;
+    let employer = true;
+    let isSelected: boolean;
 
     type FeatureCard = {
         title: string;
@@ -93,10 +92,13 @@
     ]
 </script>
 
-<button on:click={() => freelancer = false} class="button">Employer</button>
-<button on:click={() => freelancer = true} class="button">Freelancer</button>
+<div class="buttons-container">
+    <button on:click={() => employer = true} class="{employer ? 'selected button' : 'button'}">Employers</button>
+    <button on:click={() => employer = false} class="{!employer ? 'selected button' : 'button'}">Freelancers</button>
+</div>
+<div style="height: 100px;"></div>
 <div class="container">
-    {#if !freelancer}
+    {#if employer}
         {#each employersFeatureCards as card, index}
             <div class="features-card {index % 2 == 0 ? 'img-right' : 'img-left'}">
                 <div class="info">
@@ -144,6 +146,12 @@
 </div>
 
 <style>
+    .buttons-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
     .container {
         display: flex;
         flex-direction: column;
@@ -199,7 +207,6 @@
         font-weight: 400;
         font-size: 16px;
         line-height: 24px;
-        /* or 171% */
         color: var(--color-light);
         text-transform: none;
         width: 100%;
@@ -217,6 +224,10 @@
         filter: drop-shadow(0px 0px 50px var(--color-primary));
         cursor: pointer;
         color: var(--color-primary);
+    }
+    .selected {
+        background-color: var(--color-primary);
+        color: var(--color-dark);
     }
     .img-container{
         width: 50%;
