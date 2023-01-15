@@ -1,1 +1,2 @@
-export { default as component } from "../../../src/routes/(subpages)/mint/+page.svelte";
+export { default as component } from "../../../src/routes/creator/[address]/+page.svelte";
+export const server = true;

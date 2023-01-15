@@ -42,9 +42,6 @@
 	"/api/watchlist/get": [
 		"src/routes/api/watchlist/get/+server.ts"
 	],
-	"/(subpages)/connect_wallet": [
-		"src/routes/(subpages)/connect_wallet/+page.server.ts"
-	],
 	"/(subpages)/create_account": [
 		"src/routes/(subpages)/create_account/+page.server.ts"
 	],
