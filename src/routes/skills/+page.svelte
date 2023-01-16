@@ -156,14 +156,7 @@
 								}}
 								on:keydown
 							>
-								<Skill
-									chosen={skill == active_skill}
-									title={skill.title}
-									description={skill.description}
-									image_urls={skill.image_urls}
-									minimum_price={skill.minimum_price}
-									user_address={skill.user_address}
-								/>
+								<Skill chosen={skill == active_skill} {skill} />
 							</div>
 						{/each}
 					{/if}

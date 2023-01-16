@@ -48,6 +48,7 @@
 		"gsap": "^3.11.4",
 		"logrocket": "^3.0.1",
 		"mixpanel": "^0.17.0",
+		"pace-js": "^1.2.4",
 		"svelte-file-dropzone": "^1.0.0",
 		"svelte-lazy": "^1.1.0",
 		"svelte-loading-skeleton": "^1.0.1",

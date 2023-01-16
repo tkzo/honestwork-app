@@ -1,4 +1,5 @@
 export type SkillType = {
+	slot: number;
 	user_address: string;
 	created_at: number;
 	title: string;
@@ -57,6 +58,16 @@ export type Token = {
 };
 
 export type Watchlist = {
+	input: {
+		address: string;
+		slot: number;
+	};
+	username: string;
+	title: string;
+	image_url: string;
+};
+
+export type Favorite = {
 	input: {
 		address: string;
 		slot: number;

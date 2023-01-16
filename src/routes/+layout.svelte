@@ -44,6 +44,7 @@
 			gtag('config', 'G-3X3Y5X23HN');
 		}
 	</script>
+	<script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
 </svelte:head>
 
 <main>

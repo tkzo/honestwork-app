@@ -14,6 +14,9 @@
 	let active_job: JobType | null;
 	let feedHeight = 0;
 
+	// const components = [{ job: active_job!, component: ListingDetails }];
+	// let selected = components[0];
+
 	$: if (browser) {
 		feedHeight = window.innerHeight - 112;
 	}
@@ -23,6 +26,7 @@
 	});
 
 	const handleJobSelect = (job: JobType) => {
+		active_job = null;
 		active_job = job;
 		chosen_job_slot.set(job.slot);
 	};
@@ -64,6 +68,7 @@
 	<div class="job">
 		{#if active_job}
 			<ListingDetails job={active_job} {feedHeight} />
+			<!-- <svelte:component this={selected.component} job={active_job} {feedHeight} /> -->
 		{/if}
 	</div>
 </main>

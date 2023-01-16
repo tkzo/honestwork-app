@@ -2,17 +2,21 @@
 
 <script lang="ts">
 	import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
-	import type { UserType } from '$lib/stores/Types';
+	import type { SkillType, UserType } from '$lib/stores/Types';
 	import { onMount } from 'svelte';
-	import { assets } from '$app/paths';
+	import { assets, base } from '$app/paths';
 	import { placeholder_image } from '$lib/stores/Constants';
+	import { userConnected } from '$lib/stores/Network';
+	import { toast } from '@zerodevx/svelte-toast';
 
-	export let title: string;
-	export let description: string;
-	export let image_urls: Array<string>;
-	export let minimum_price: number;
 	export let chosen: boolean;
-	export let user_address: string;
+	export let skill: SkillType;
+
+	let title = skill.title;
+	let description = skill.description;
+	let image_urls = skill.image_urls;
+	let minimum_price = skill.minimum_price;
+	let user_address = skill.user_address;
 
 	//todo: make this dynamic
 	$: tags = [
@@ -36,6 +40,36 @@
 	onMount(() => {
 		fetchUser();
 	});
+
+	const handleAddToFavorites = async () => {
+		if ($userConnected) {
+			try {
+				const url = `${base}/api/favorites/add`;
+				const response = await fetch(url, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						address: skill.user_address,
+						slot: skill.slot
+					})
+				});
+				const data = await response.json();
+				if (data == 'success') {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Added to favorites!</p>`
+					);
+				} else {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
+					);
+				}
+			} catch (e) {
+				console.log(e);
+			}
+		}
+	};
 
 	const fetchUser = async () => {
 		const res = await fetch(`/api/user/${user_address}`);
@@ -97,6 +131,8 @@
 				on:focus
 				on:mouseout={() => (hovering_heart = false)}
 				on:blur
+				on:click={handleAddToFavorites}
+				on:keydown
 			>
 				{#if hovering_heart}
 					<img src={`${assets}/icons/halfheart.svg`} alt="heart" />

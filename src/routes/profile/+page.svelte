@@ -6,7 +6,9 @@
 		userState,
 		nodeProvider,
 		connectNode,
-		userConnected
+		userConnected,
+		getFavorites,
+		getWatchlist
 	} from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 	import { tweened } from 'svelte/motion';
@@ -16,13 +18,15 @@
 		skill_upload_urls,
 		changes_made,
 		submitting,
-		user_watchlist
+		user_watchlist,
+		user_favorites
 	} from '$lib/stores/State';
 	import { Svrollbar } from 'svrollbar';
 	import { browser } from '$app/environment';
 	import { assets } from '$app/paths';
 	import Watchlist from '$lib/components/profile/Watchlist.svelte';
 	import { toast } from '@zerodevx/svelte-toast';
+	import Favorites from '$lib/components/profile/Favorites.svelte';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
@@ -82,6 +86,7 @@
 		changes_made.set(false);
 		await getNft();
 		getWatchlist();
+		getFavorites();
 		//todo: move to layout
 		updateInputLengths();
 	});
@@ -113,25 +118,7 @@
 	} else {
 		changes_made.set(false);
 	}
-	const getWatchlist = async () => {
-		if ($userConnected) {
-			try {
-				const response = await fetch(`/api/watchlist/get`);
-				const data = await response.json();
-				console.log('Data:', data);
-				user_watchlist.set([]);
-				data.forEach((item: any) => {
-					user_watchlist.update((w) => {
-						w.push(item);
-						return w;
-					});
-				});
-				console.log("User's watchlist:", $user_watchlist);
-			} catch (error) {
-				toast.push('Error fetching watchlist');
-			}
-		}
-	};
+
 	const setEnsName = async () => {
 		ens_loading = true;
 		await connectNode();
@@ -354,6 +341,13 @@
 									on:keydown
 								>
 									watchlist
+								</p>
+								<p
+									class="tab link semibold light-60"
+									on:click={() => toggle('favorites')}
+									on:keydown
+								>
+									favorites
 								</p>
 							</div>
 
@@ -655,6 +649,13 @@
 									>
 										watchlist
 									</p>
+									<p
+										class="tab link semibold light-60"
+										on:click={() => toggle('favorites')}
+										on:keydown
+									>
+										favorites
+									</p>
 								</div>
 							</section>
 						{:else}
@@ -700,10 +701,30 @@
 								skills
 							</p>
 							<p class="tab link semibold yellow">watchlist</p>
+							<p class="tab link semibold light-60" on:click={() => toggle('favorites')} on:keydown>
+								favorites
+							</p>
 						</div>
 					</section>
 					<div style="height: 16px" />
 					<Watchlist />
+				{:else if chosenTab == 'favorites'}
+					<section class="bar">
+						<div class="tabs">
+							<p class="tab link semibold light-60" on:click={() => toggle('profile')} on:keydown>
+								profile
+							</p>
+							<p class="tab link semibold light-60" on:click={() => toggle('skills')} on:keydown>
+								skills
+							</p>
+							<p class="tab link semibold light-60" on:click={() => toggle('watchlist')} on:keydown>
+								watchlist
+							</p>
+							<p class="tab link semibold yellow">favorites</p>
+						</div>
+					</section>
+					<div style="height: 16px" />
+					<Favorites />
 				{/if}
 			{:else}
 				<div style="height: 16px" />

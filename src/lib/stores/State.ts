@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import type { Watchlist } from '$lib/stores/Types';
+import type { Watchlist, Favorite } from '$lib/stores/Types';
 
 type Metadata = {
 	title: string;
@@ -18,3 +18,4 @@ export let job_add = writable(false);
 export let job_updated = writable(false);
 
 export let user_watchlist = writable(Array<Watchlist>());
+export let user_favorites = writable(Array<Favorite>());

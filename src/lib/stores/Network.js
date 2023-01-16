@@ -4,6 +4,8 @@ import { env } from '$env/dynamic/public';
 import { Client } from '@xmtp/xmtp-js';
 import { get } from 'svelte/store';
 import { nft_abi } from '$lib/stores/Constants';
+import { toast } from '@zerodevx/svelte-toast';
+import { user_watchlist, user_favorites } from '$lib/stores/State';
 
 //todo: typescript
 
@@ -94,6 +96,42 @@ const fetchUserState = async () => {
 		userState.set(state);
 	} catch (err) {
 		console.log(err);
+	}
+};
+
+export const getWatchlist = async () => {
+	if (get(userConnected)) {
+		try {
+			const response = await fetch(`/api/watchlist/get`);
+			const data = await response.json();
+			user_watchlist.set([]);
+			data.forEach((item) => {
+				user_watchlist.update((w) => {
+					w.push(item);
+					return w;
+				});
+			});
+		} catch (error) {
+			toast.push('Error fetching watchlist');
+		}
+	}
+};
+
+export const getFavorites = async () => {
+	if (get(userConnected)) {
+		try {
+			const response = await fetch(`/api/favorites/get`);
+			const data = await response.json();
+			user_favorites.set([]);
+			data.forEach((item) => {
+				user_favorites.update((w) => {
+					w.push(item);
+					return w;
+				});
+			});
+		} catch (error) {
+			toast.push('Error fetching favorites');
+		}
 	}
 };
 
