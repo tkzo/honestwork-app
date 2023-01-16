@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { quintOut } from 'svelte/easing';
+    import { fade, fly } from 'svelte/transition';
+
     let employer = true;
-    let isSelected: boolean;
 
     type FeatureCard = {
         title: string;
@@ -102,7 +104,9 @@
 <div class="container">
     {#if employer}
         {#each employersFeatureCards as card, index}
-            <div class="features-card {index % 2 == 0 ? 'img-right' : 'img-left'}">
+            <div class="features-card {index % 2 == 0 ? 'img-right' : 'img-left'}"
+            in:fly="{{ y: 200, delay:200, duration: 2000, easing: quintOut}}"
+            out:fade="{{duration:400, delay:100}}" >
                 <div class="info">
                     <h3 class="title">{card.title}</h3>
                     <div class="description-container">
@@ -124,7 +128,9 @@
         {/each}
     {:else}
         {#each freelancersFeatureCards as card, index}
-            <div class="features-card {index % 2 == 0 ? 'img-right' : 'img-left'}">
+            <div class="features-card {index % 2 == 0 ? 'img-right' : 'img-left'}"
+            in:fly="{{ y: 200, delay:200, duration: 2000, easing: quintOut}}"
+            out:fade="{{duration:400, delay:100}}">
                 <div class="info">
                     <h3 class="title">{card.title}</h3>
                     <div class="description-container">
@@ -153,18 +159,23 @@
         flex-direction: row;
         align-items: center;
         justify-content: center;
+        width: 80vw;
     }
     .line {
         height: 1px;
         background-color: var(--color-light-10);
         width: 100%;
+        max-width: 371px;
     }
     .container {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        align-items: center;
         gap: 120px;
-        width: 100%;
+        width: 80vw;
+        padding-bottom: 120px;;
+        border-bottom: 1px solid var(--color-light-10);
     }
     .features-card {
         display: flex;
@@ -172,7 +183,6 @@
         gap: 57px;
         background: var(--color-dark);
         width:100%;
-        max-width: 879px;
         justify-content: space-between;
     }
     .img-right {
@@ -195,6 +205,11 @@
         text-transform: uppercase;
         color: var(--color-primary);
         margin: 0;
+        font-family: 'Proto Mono';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 28px;
+        line-height: 40px;
     }
     .description-container {
         display: flex;
@@ -231,6 +246,7 @@
         filter: drop-shadow(0px 0px 50px var(--color-primary));
         cursor: pointer;
         color: var(--color-primary);
+        width: 247px;
     }
     .selected {
         background-color: var(--color-primary);
@@ -244,14 +260,34 @@
         max-width: 420px;
     }
 
-    /* @media (max-width:754px) {
-        .container {
-            flex-direction: column;
+    @media (max-width:870px) {
+        .title {
+            font-size: 20px;
+            line-height: 32px;
+        }
+        .feature {
+            font-size: 14px;
+            line-height: 20px;
         }
     }
-    @media (max-width:550px) {
+    @media (max-width:754px) {
         .features-card {
-            max-width: 280px;
+            flex-direction: column;
         }
-    } */
+        .feature {
+            max-width: 500px;
+        }
+        .info {
+            justify-content: center;
+            align-items: center;
+        }
+        .info,
+        .img-container {
+            width: 100%;
+        }
+        .featured-image {
+            display: block;
+            margin: 0 auto;
+        }
+    }
 </style>
