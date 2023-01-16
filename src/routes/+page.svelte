@@ -3,9 +3,9 @@
 	import { connectWallet } from '$lib/stores/Network';
 	import { Svrollbar } from 'svrollbar';
 	// import { userConnected, xmtpConnected, userState } from '$lib/stores/Network';
-	// import FeaturesCards from '$lib/components/landing/FeaturesCards.svelte';
-	// import BenefitsCards from '$lib/components/landing/BenefitsCards.svelte';
-	// import Faq from '$lib/components/landing/Faq.svelte';
+	import FeaturesCards from '$lib/components/landing/FeaturesCards.svelte';
+	import BenefitsCards from '$lib/components/landing/BenefitsCards.svelte';
+	import Faq from '$lib/components/landing/Faq.svelte';
 
 	let viewport: Element;
 	let contents: Element;
@@ -28,12 +28,12 @@
 		<div class="contents" bind:this={contents}>
 			<div on:click={handleConnect} on:keydown>LOGIN</div>
 			<div on:click={() => goto('/skills')} on:keydown>EXPLORE</div>
-			<!-- <FeaturesCards />
+			<FeaturesCards />
 			<div style="height: 120px;"></div>
 			<BenefitsCards />
 			<div style="height: 120px;"></div>
 			<Faq />
-			<div style="height: 120px;"></div> -->
+			<div style="height: 120px;"></div>
 		</div>
 	</div>
 	<Svrollbar alwaysVisible {viewport} {contents} />
