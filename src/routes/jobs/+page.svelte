@@ -158,7 +158,7 @@
 									active_job = job;
 								}}
 								on:keydown
-								in:fly={{ duration: 100 + 100 * index, x: 50 }}
+								in:fly={{ duration: 100 + 50 * index, y: 10 + 5 * index }}
 							>
 								<Job chosen={job == active_job} {job} />
 							</div>

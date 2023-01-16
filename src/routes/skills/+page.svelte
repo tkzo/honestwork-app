@@ -156,7 +156,7 @@
 									active_skill = skill;
 								}}
 								on:keydown
-								in:fly={{ duration: 100 + 50 * index, x: 50 }}
+								in:fly={{ duration: 100 + 50 * index, y: 10 + 5 * index }}
 							>
 								<Skill chosen={skill == active_skill} {skill} />
 							</div>
