@@ -16,9 +16,9 @@ export const load: PageServerLoad = ({ cookies }) => {
 export const actions: Actions = {
 	default: async ({ cookies, request, fetch }) => {
 		const data = await request.formData();
-		const address = data.get('address');
-		const salt = data.get('salt');
-		const signature = data.get('signature');
+		const address = data.get('honestwork_address');
+		const salt = data.get('honestwork_salt');
+		const signature = data.get('honestwork_signature');
 		if (salt && signature && address) {
 			const apiUrl =
 				parseInt(env.PRODUCTION_ENV) == 1
