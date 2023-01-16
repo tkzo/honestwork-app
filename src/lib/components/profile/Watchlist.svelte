@@ -4,6 +4,7 @@
 	import { userConnected, getWatchlist } from '$lib/stores/Network';
 	import { toast } from '@zerodevx/svelte-toast';
 	import type { Watchlist } from '$lib/stores/Types';
+	import { fly } from 'svelte/transition';
 
 	const handleRemove = async (item: Watchlist) => {
 		if ($userConnected) {
@@ -34,8 +35,8 @@
 </script>
 
 <main>
-	{#each $user_watchlist as item}
-		<div class="container">
+	{#each $user_watchlist as item, index}
+		<div class="container" in:fly={{ duration: 100 + 50 * index, x: 50 }}>
 			<div class="left">
 				<img src={item.image_url} alt={item.username} class="job-image" />
 				<a

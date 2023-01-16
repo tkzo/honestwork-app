@@ -5,6 +5,7 @@
 	import type { SkillType } from '$lib/stores/Types';
 	import fuzzy from 'fuzzy';
 	import { browser } from '$app/environment';
+	import { fly } from 'svelte/transition';
 
 	export let data: any;
 	export let viewport: Element;
@@ -155,6 +156,7 @@
 									active_skill = skill;
 								}}
 								on:keydown
+								in:fly={{ duration: 100 + 50 * index, x: 50 }}
 							>
 								<Skill chosen={skill == active_skill} {skill} />
 							</div>
