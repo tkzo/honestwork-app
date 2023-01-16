@@ -6,6 +6,9 @@
 	"/api/auth": [
 		"src/routes/api/auth/+server.ts"
 	],
+	"/api/auth/login/[address]": [
+		"src/routes/api/auth/login/[address]/+server.ts"
+	],
 	"/api/favorites/add": [
 		"src/routes/api/favorites/add/+server.ts"
 	],
@@ -57,8 +60,8 @@
 	"/api/watchlist/remove": [
 		"src/routes/api/watchlist/remove/+server.ts"
 	],
-	"/(subpages)/create_account": [
-		"src/routes/(subpages)/create_account/+page.server.ts"
+	"/(subpages)/auth": [
+		"src/routes/(subpages)/auth/+page.server.ts"
 	],
 	"/creator/[address]": [
 		"src/routes/creator/[address]/+page.server.ts"

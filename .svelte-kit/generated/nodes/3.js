@@ -1,2 +1,2 @@
-export { default as component } from "../../../src/routes/(subpages)/create_account/+page.svelte";
+export { default as component } from "../../../src/routes/(subpages)/auth/+page.svelte";
 export const server = true;
