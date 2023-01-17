@@ -65,14 +65,22 @@ export const connectWallet = async () => {
 		setListeners();
 		connecting.set(false);
 
+		// await connectXmtp();
+		await fetchUserState();
+	} catch (err) {
+		console.log('error:', err);
+	}
+};
+
+export const connectXmtp = async () => {
+	try {
 		if (!get(xmtpConnected)) {
 			xmtpConnecting.set(true);
-			let xc = await Client.create(signer);
+			let xc = await Client.create(get(networkSigner));
 			xmtpClient.set(xc);
 			xmtpConnecting.set(false);
 			xmtpConnected.set(true);
 		}
-		await fetchUserState();
 	} catch (err) {
 		console.log('error:', err);
 	}

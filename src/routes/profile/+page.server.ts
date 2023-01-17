@@ -13,7 +13,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	const callUrl = `${apiUrl}/verify/${userAddress}/${userSignature}`;
 	let callResponse = await fetch(callUrl);
 	let calldata = await callResponse.json();
-
 	if (calldata == 'success') {
 		let user = await getUser(userAddress);
 		let skills = await getSkills(userAddress);

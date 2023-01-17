@@ -44,7 +44,7 @@
 				<div style="width:4px" />
 				<p class="light-40 ">
 					xmtp <span
-						style={$xmtpConnected ? 'color:var(--color-success)' : 'color:var(--color-primary)'}
+						style={$xmtpConnected ? 'color:var(--color-success)' : 'color:var(--color-error)'}
 						>{$xmtpConnected ? 'active' : 'n/a'}</span
 					>
 				</p>

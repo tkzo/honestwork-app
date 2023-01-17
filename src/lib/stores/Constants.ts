@@ -32,6 +32,11 @@ export const notifications = {
 		bodytext: 'you can list even more awesome skills by upgrading your nft!',
 		cta: 'upgrade now',
 		icon: '/icons/zap.svg'
+	},
+	xmtp: {
+		bodytext: "you're not receiving messages at the moment.",
+		cta: 'connect xmtp',
+		icon: '/icons/zap.svg'
 	}
 };
 

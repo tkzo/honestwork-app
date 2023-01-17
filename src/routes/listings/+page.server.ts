@@ -9,23 +9,18 @@ const apiUrl =
 export const load: PageServerLoad = async ({ cookies }) => {
 	const userAddress = cookies.get('honestwork_address')!;
 	const userSignature = cookies.get('honestwork_signature');
-	const userSalt = cookies.get('honestwork_salt');
 
-	if (
-		userSignature &&
-		userSalt &&
-		userAddress &&
-		userAddress == verifySignature(userSalt, userSignature)
-	) {
+	const callUrl = `${apiUrl}/verify/${userAddress}/${userSignature}`;
+	let callResponse = await fetch(callUrl);
+	let calldata = await callResponse.json();
+	if (calldata == 'success') {
 		let jobs = await getJobs(userAddress);
 		return { jobs: jobs };
 	} else {
-		throw redirect(301, '/mint');
+		throw redirect(301, '/auth');
 	}
 };
-const verifySignature = (salt: string, signature: string) => {
-	return ethers.utils.verifyMessage(salt, signature);
-};
+
 const getJobs = async (address: string) => {
 	const url = `${apiUrl}/jobs/${address}`;
 	let response = await fetch(url);
