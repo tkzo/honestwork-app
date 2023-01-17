@@ -66,6 +66,9 @@
 	"/jobs": [
 		"src/routes/jobs/+page.server.ts"
 	],
+	"/job/[address]": [
+		"src/routes/job/[address]/+page.server.ts"
+	],
 	"/job/[address]/[slot]": [
 		"src/routes/job/[address]/[slot]/+page.server.ts"
 	],

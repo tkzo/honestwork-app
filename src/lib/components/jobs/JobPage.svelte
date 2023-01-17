@@ -128,7 +128,7 @@
 	<div class="wrapper">
 		<div bind:this={viewport} class="viewport" style={`height:${feedHeight.toString() + 'px'}`}>
 			<div bind:this={contents} class="contents">
-				{#if show_tags}
+				{#if show_tags && job.tags}
 					<div class="tags">
 						{#each job.tags as tag}
 							<div class="tag link">
