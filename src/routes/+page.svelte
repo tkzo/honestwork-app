@@ -15,8 +15,6 @@
 		await connectWallet();
 		goto('/skills');
 	};
-
-
 </script>
 
 <svelte:head>
@@ -28,31 +26,50 @@
 	<div class="viewport" bind:this={viewport}>
 		<div class="contents" bind:this={contents}>
 			<div class="hero">
-				<div style="height: 32px;"></div>
+				<div style="height: 32px;" />
 				<div class="nav">
 					<div class="logo">
-						<img src={`${assets}/icons/landing/logo.svg`} alt="HonestWork Logo" class="icon" />
+						<img src={`${assets}/icons/landing/logo.svg`} alt="HonestWork Logo" />
 						<div class="text">H0NESTW0RK</div>
 					</div>
 					<div class="login" on:click={handleConnect} on:keydown>LOGIN TO APP</div>
 				</div>
-				<div style="height: 100px;"></div>
+				<div style="height: 100px;" />
 				<div class="header">
 					<h1>A platform for all your web3 freelancing needs</h1>
-					<p class="about">HonestWork connects clients with top-rated blockchain experts, including copywriters, developers, and designers.</p>
+					<p class="about">
+						HonestWork connects clients with top-rated blockchain experts, including copywriters,
+						developers, and designers.
+					</p>
 					<div class="explore" on:click={() => goto('/skills')} on:keydown>START EXPLORING</div>
 					<div class="socials">
-						<!-- icons -->
+						<a href="https://twitter.com/HonestWorkDAO" target="_blank" rel="noopener noreferrer">
+							<img src={`${assets}/icons/landing/twitter.svg`} alt="Twitter" class="icon" />
+						</a>
+						<a href="https://discord.gg/jbU72fTfTd" target="_blank" rel="noopener noreferrer">
+							<img src={`${assets}/icons/landing/discord.svg`} alt="Discord" class="icon" />
+						</a>
+						<a href="https://github.com/honestworkdao" target="_blank" rel="noopener noreferrer">
+							<img src={`${assets}/icons/landing/github.svg`} alt="Github" class="icon" />
+						</a>
+						<a href="https://www.linkedin.com/company/honestworkdao/" target="_blank" rel="noopener noreferrer">
+							<img src={`${assets}/icons/landing/linkedin.svg`} alt="LinkedIn" class="icon" />
+						</a>
+					</div>
+					<div style="height: 64px;" />
+					<div class="imgs-container">
+						<img src="{`${assets}/assets/landing/hw.png`} " alt="HonestWork" class="app-img"/>
+						<img src="{`${assets}/assets/landing/deer.png`} " alt="HonestWork" class="deer"/>
 					</div>
 				</div>
 			</div>
-			<div style="height: 120px;"></div>
+			<div style="height: 120px;" />
 			<FeaturesCards />
-			<div style="height: 120px;"></div>
+			<div style="height: 120px;" />
 			<BenefitsCards />
-			<div style="height: 120px;"></div>
+			<div style="height: 120px;" />
 			<Faq />
-			<div style="height: 120px;"></div>
+			<div style="height: 120px;" />
 		</div>
 	</div>
 	<Svrollbar alwaysVisible {viewport} {contents} />
@@ -102,7 +119,7 @@
 		align-items: center;
 	}
 	.hero {
-		background: linear-gradient(180deg, #16181C 0%, var(--color-dark) 100%);
+		background: linear-gradient(180deg, #16181c 0%, var(--color-dark) 100%);
 		width: 100%;
 		display: flex;
 		flex-direction: column;
@@ -116,14 +133,11 @@
 		width: 80vw;
 		padding: 12px;
 	}
-	.logo{
+	.logo {
 		display: flex;
 		flex-direction: row;
-		gap:8px;
+		gap: 8px;
 		align-items: center;
-
-	}
-	.icon {
 	}
 	.text {
 		font-family: 'Proto Mono';
@@ -147,7 +161,7 @@
 	.header {
 		display: flex;
 		flex-direction: column;
-		gap:16px;
+		gap: 16px;
 		justify-content: center;
 		align-items: center;
 		width: 100%;
@@ -181,6 +195,61 @@
 		color: var(--color-primary);
 	}
 	.socials {
-
 	}
+	.icon {
+		cursor: pointer;
+		opacity: 0.2;
+		height: 20px;
+		width: 20px;
+	}
+	.icon:hover {
+		opacity: 1;
+	}
+	.imgs-container {
+		position: relative;
+		top: 0;
+		left: 0;
+		width:80vw
+	}
+	.app-img {
+		position: relative;
+		top: 0;
+		left: 0;
+		width: 100%;
+	}
+	.deer {
+		position: absolute;
+		bottom: 0px;
+		right: -50px;
+		height: 420px;
+		width: auto;
+	}
+	@media (max-width:900px) {
+        .deer {
+			right: -40px;
+            height: 350px;
+        }
+    }
+	@media (max-width:800px) {
+        .deer {
+			right: -30px;
+            height: 300px;
+        }
+    }
+	@media (max-width:700px) {
+        .deer {
+			right: -20px;
+            height: 250px;
+        }
+    }
+	@media (max-width:550px) {
+        .deer {
+            height: 200px;
+        }
+    }
+	@media (max-width:450px) {
+        .deer {
+            height: 150px;
+        }
+    }
 </style>
