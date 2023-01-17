@@ -290,7 +290,7 @@
 	<div class="viewport" bind:this={viewport} style={`height:${feedHeight.toString() + 'px'}`}>
 		<div class="contents" bind:this={contents}>
 			<div style="height:16px;" />
-			{#if $userConnected && $xmtpConnected}
+			{#if $userConnected}
 				<form method="POST" on:submit|preventDefault={handleSubmit} bind:this={jobForm}>
 					<input hidden type="number" name="job_slot" value={$chosen_job_slot} />
 					<input hidden type="text" name="user_address" value={$userAddress} />
