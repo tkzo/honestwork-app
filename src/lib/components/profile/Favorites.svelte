@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { user_watchlist } from '$lib/stores/State';
+	import { user_favorites } from '$lib/stores/State';
 	import { assets, base } from '$app/paths';
-	import { userConnected, getWatchlist } from '$lib/stores/Network';
+	import { userConnected, getFavorites } from '$lib/stores/Network';
 	import { toast } from '@zerodevx/svelte-toast';
-	import type { Watchlist } from '$lib/stores/Types';
-	import { fly } from 'svelte/transition';
+	import type { Favorite } from '$lib/stores/Types';
 
-	const handleRemove = async (item: Watchlist) => {
+	const handleRemove = async (item: Favorite) => {
 		if ($userConnected) {
 			try {
-				const url = `${base}/api/watchlist/remove`;
+				const url = `${base}/api/favorites/remove`;
 				const response = await fetch(url, {
 					method: 'POST',
 					headers: {
@@ -22,26 +21,26 @@
 				});
 				const data = await response.json();
 				if (data == 'success') {
-					toast.push('Removed from watchlist.');
-					getWatchlist();
+					toast.push('Removed from favorites.');
+					getFavorites();
 				} else {
-					toast.push('Failed to remove from watchlist.');
+					toast.push('Failed to remove from favorites');
 				}
 			} catch (error) {
-				toast.push('Failed to remove from watchlist');
+				toast.push('Failed to remove from favorites');
 			}
 		}
 	};
 </script>
 
 <main>
-	{#each $user_watchlist as item, index}
-		<div class="container" in:fly={{ duration: 100 + 50 * index, x: 50 }}>
+	{#each $user_favorites as item}
+		<div class="container">
 			<div class="left">
 				<img src={item.image_url} alt={item.username} class="job-image" />
 				<a
 					class="content"
-					href={`${base}/job/${item.input.address}/${item.input.slot}`}
+					href={`${base}/creator/${item.input.address}/`}
 					target="_blank"
 					rel="noreferrer"
 				>
@@ -57,7 +56,7 @@
 				<p class="light-60">remove from favorites</p>
 			</div>
 		</div>
-		{#if item !== $user_watchlist[$user_watchlist.length - 1]}
+		{#if item !== $user_favorites[$user_favorites.length - 1]}
 			<div style="height:8px" />
 		{/if}
 	{/each}

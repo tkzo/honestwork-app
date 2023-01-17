@@ -5,6 +5,7 @@
 	import type { SkillType, JobType } from '$lib/stores/Types';
 	import fuzzy from 'fuzzy';
 	import { browser } from '$app/environment';
+	import { fly } from 'svelte/transition';
 
 	export let data: any;
 	export let viewport: Element;
@@ -157,6 +158,7 @@
 									active_job = job;
 								}}
 								on:keydown
+								in:fly={{ duration: 100 + 50 * index, y: 10 + 5 * index }}
 							>
 								<Job chosen={job == active_job} {job} />
 							</div>

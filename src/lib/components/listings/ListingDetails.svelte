@@ -35,7 +35,7 @@
 		job.tokens_accepted?.map((n) => {
 			return { chain_id: n.id, token_address: n.tokens[0].address };
 		}) ?? [];
-	let image_url: string | undefined = job.image_url;
+	let image_url: string = job.image_url;
 	let upload_url: Response;
 	let show_ens: boolean = false;
 	let show_sticky_menu: boolean = false;
@@ -165,7 +165,9 @@
 		};
 		reader.readAsDataURL(file);
 
-		const res = await fetch(`/api/upload-job-url/${e.target.files[0].name}/${$userAddress}`);
+		const res = await fetch(
+			`/api/update-job-url/${e.target.files[0].name}/${$userAddress}/${job.slot}`
+		);
 		upload_url = res;
 	};
 	const setSticky = (duration: number) => {
@@ -337,7 +339,7 @@
 												minlength={form_limitations.job.title.min}
 												maxlength={form_limitations.job.title.max}
 												placeholder="Enter a title for you job listing"
-												bind:value={job.title}
+												bind:value={title}
 											/>
 											<div class="limit">
 												<p class="light-60">
@@ -358,7 +360,7 @@
 										class="flex-input"
 										type="text"
 										placeholder="Enter email for notifications"
-										bind:value={job.email}
+										bind:value={email}
 									/>
 								</div>
 								<div style="height:8px" />

@@ -10,6 +10,29 @@
 		url('fonts/ProtoMono-SemiBoldShadow.otf') format('otf');
 } */
 
+.pace {
+	-webkit-pointer-events: none;
+	pointer-events: none;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+.pace-inactive {
+	display: none;
+}
+
+.pace .pace-progress {
+	background: var(--color-primary);
+	position: fixed;
+	z-index: 2000;
+	top: 0;
+	right: 100%;
+	width: 100%;
+	height: 1px;
+}
+
 :root {
 	--toastBackground: var(--color-light-2);
 	--toastBorder: 1px solid var(--color-light-10);
@@ -281,4 +304,23 @@ button:active {
 .rotating {
 	-webkit-animation: rotating 3s linear infinite;
 	animation: rotating 3s linear infinite;
+}
+
+.button {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	border-width: 1px;
+	border-style: solid;
+	border-color: var(--color-light-10);
+	padding: 4px 8px;
+	cursor: pointer;
+	box-sizing: border-box;
+}
+.button:hover {
+	background-color: var(--color-primary);
+}
+.button:hover p {
+	color: var(--color-dark);
 }

@@ -6,6 +6,18 @@
 	"/api/auth": [
 		"src/routes/api/auth/+server.ts"
 	],
+	"/api/auth/login/[address]": [
+		"src/routes/api/auth/login/[address]/+server.ts"
+	],
+	"/api/favorites/add": [
+		"src/routes/api/favorites/add/+server.ts"
+	],
+	"/api/favorites/get": [
+		"src/routes/api/favorites/get/+server.ts"
+	],
+	"/api/favorites/remove": [
+		"src/routes/api/favorites/remove/+server.ts"
+	],
 	"/api/(job)/job_apply/[address]/[slot]": [
 		"src/routes/api/(job)/job_apply/[address]/[slot]/+server.ts"
 	],
@@ -23,6 +35,9 @@
 	],
 	"/api/skill/[sort]/[order]": [
 		"src/routes/api/skill/[sort]/[order]/+server.ts"
+	],
+	"/api/(job)/update-job-url/[filename]/[address]/[slot]": [
+		"src/routes/api/(job)/update-job-url/[filename]/[address]/[slot]/+server.ts"
 	],
 	"/api/(job)/upload-job-url/[filename]/[address]": [
 		"src/routes/api/(job)/upload-job-url/[filename]/[address]/+server.ts"
@@ -42,8 +57,11 @@
 	"/api/watchlist/get": [
 		"src/routes/api/watchlist/get/+server.ts"
 	],
-	"/(subpages)/create_account": [
-		"src/routes/(subpages)/create_account/+page.server.ts"
+	"/api/watchlist/remove": [
+		"src/routes/api/watchlist/remove/+server.ts"
+	],
+	"/(subpages)/auth": [
+		"src/routes/(subpages)/auth/+page.server.ts"
 	],
 	"/creator/[address]": [
 		"src/routes/creator/[address]/+page.server.ts"
