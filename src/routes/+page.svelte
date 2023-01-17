@@ -236,7 +236,14 @@
             height: 300px;
         }
     }
-	@media (max-width:700px) {
+	@media (max-width:720px) {
+		.header {
+			max-width: 80vw;
+		}
+		h1 {
+			font-size: 32px;
+			line-height: 40px;
+		}
         .deer {
 			right: -20px;
             height: 250px;
@@ -246,6 +253,12 @@
         .deer {
             height: 200px;
         }
+		h1 {
+			font-size: 24px;
+		}
+		.about {
+			font-size: 14px;
+		}
     }
 	@media (max-width:450px) {
         .deer {
