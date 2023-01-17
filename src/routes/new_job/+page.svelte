@@ -23,6 +23,11 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import { assets } from '$app/paths';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		connectWallet();
+	});
 
 	//todo: upgrade tags when api is rdy
 	//add autosuggest from redis
@@ -83,7 +88,6 @@
 		let ERC20 = new ethers.Contract(chosen_payment_token.address, erc20_abi, $networkProvider);
 		let allowance = await ERC20.allowance($userAddress, env.PUBLIC_JOB_LISTING_CONTRACT_ADDRESS);
 		user_allowance = ethers.utils.formatEther(allowance);
-		console.log('Allowance:', user_allowance);
 	};
 	const handleSubmit = async (e: Event) => {
 		userPublishing = true;

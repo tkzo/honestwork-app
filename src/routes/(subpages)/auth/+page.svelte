@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { networkSigner, userAddress, userConnected } from '$lib/stores/Network';
+	import { networkProvider, networkSigner, userAddress, userConnected } from '$lib/stores/Network';
+	import { ethers } from 'ethers';
+	// import type { ActionData } from './$types';
 
 	let myform: HTMLFormElement;
 	let signature: string;
@@ -9,8 +11,20 @@
 		const res = await fetch(`/api/auth/login/${$userAddress}`);
 		salt = await res.json();
 		myform.signature.value = await $networkSigner.signMessage(salt);
+
+		// let domain = 'honestwork.app';
+		// const salt = `${domain} wants you to sign in with your Ethereum account:\n${$userAddress}\n\nI accept the MetaMask Terms of Service: https://community.metamask.io/tos\n\nURI: https://${domain}\nVersion: 1\nChain ID: 1\nNonce: 32891757\nIssued At: 2021-09-30T16:25:24.000Z`;
+		// try {
+		// 	const msg = `0x${Buffer.from(salt, 'utf8')}`;
+		// 	let sd = await $networkSigner.signMessage(msg);
+		// 	let res = ethers.utils.verifyMessage(msg, sd);
+		// } catch (err) {
+		// 	console.error(err);
+		// }
 		myform.submit();
 	};
+
+	// export let form: ActionData;
 </script>
 
 <svelte:head>

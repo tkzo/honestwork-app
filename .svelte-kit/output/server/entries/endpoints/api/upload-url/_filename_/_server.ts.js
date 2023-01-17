@@ -3,7 +3,7 @@ import { e as env } from "../../../../../chunks/env-private.js";
 import { S3, ListObjectsCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 const GET = async ({ params, cookies }) => {
-  const userAddress = cookies.get("address");
+  const userAddress = cookies.get("honestwork_address");
   const s3Client = new S3({
     forcePathStyle: false,
     endpoint: env.PRIVATE_SPACES_URL,
@@ -31,7 +31,7 @@ const GET = async ({ params, cookies }) => {
     if (data.Contents) {
       for (let i = 0; i < data.Contents.length; i++) {
         let foldername = data.Contents[i].Key?.split("/");
-        if (foldername && foldername[0] == userAddress && typeof foldername[1] == void 0) {
+        if (foldername && foldername[0] == userAddress && foldername[1] == "profile") {
           try {
             const deleted_file = await s3Client2.send(
               new DeleteObjectCommand({
@@ -51,7 +51,7 @@ const GET = async ({ params, cookies }) => {
   try {
     const url = await createPresignedPost(s3Client, {
       Bucket: env.PRIVATE_SPACES_BUCKETNAME,
-      Key: `${userAddress}/${params.filename}`,
+      Key: `${userAddress}/profile/${params.filename}`,
       Conditions: [
         ["content-length-range", 0, 1048576]
       ],

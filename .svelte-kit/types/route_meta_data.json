@@ -3,9 +3,6 @@
 	"/api/alchemy/[addr]/[id]": [
 		"src/routes/api/alchemy/[addr]/[id]/+server.ts"
 	],
-	"/api/auth": [
-		"src/routes/api/auth/+server.ts"
-	],
 	"/api/auth/login/[address]": [
 		"src/routes/api/auth/login/[address]/+server.ts"
 	],

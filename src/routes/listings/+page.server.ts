@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 		let jobs = await getJobs(userAddress);
 		return { jobs: jobs };
 	} else {
-		throw redirect(301, '/create_account');
+		throw redirect(301, '/mint');
 	}
 };
 const verifySignature = (salt: string, signature: string) => {

@@ -17,7 +17,7 @@
 				const tx = await contract.mint();
 				const receipt = await tx.wait();
 				if (receipt.status == 1) {
-					goto('/create_account');
+					goto('/profile');
 				}
 			} catch (error) {
 				console.log(error);

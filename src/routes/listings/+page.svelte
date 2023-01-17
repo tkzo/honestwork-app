@@ -6,6 +6,7 @@
 	import { browser } from '$app/environment';
 	import { chosen_job_slot } from '$lib/stores/State';
 	import { onMount } from 'svelte';
+	import { connectWallet } from '$lib/stores/Network';
 
 	export let data: any;
 	export let viewport: Element;
@@ -14,14 +15,12 @@
 	let active_job: JobType | null;
 	let feedHeight = 0;
 
-	// const components = [{ job: active_job!, component: ListingDetails }];
-	// let selected = components[0];
-
 	$: if (browser) {
 		feedHeight = window.innerHeight - 112;
 	}
 
 	onMount(() => {
+		connectWallet();
 		handleJobSelect(data?.jobs.json[0]);
 	});
 
