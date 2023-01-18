@@ -1,3 +1,9 @@
+export type FAQCard = {
+	id:number;
+	question: string;
+	answer: string
+}
+
 export type SkillType = {
 	slot: number;
 	user_address: string;
