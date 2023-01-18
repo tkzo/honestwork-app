@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Navigation from '$lib/components/common/Navigation.svelte';
 	import Footer from '$lib/components/common/Footer.svelte';
-	import Notification from '$lib/components/common/Notification.svelte';
+	import NotificationHandler from '$lib/components/common/NotificationHandler.svelte';
 	import { userAddress } from '$lib/stores/Network';
 	import { Buffer } from 'buffer';
 	import { page } from '$app/stores';
@@ -13,7 +13,6 @@
 
 	// trackers
 	LogRocket.init('2wdgml/honestwork');
-	$: trimmedRoute = $page.route.id?.split('/')[1];
 	$: if ($userAddress && $userAddress != '') {
 		logrocketIdentify();
 	}
@@ -55,23 +54,7 @@
 		<Navigation />
 		<div style="height:32px;" />
 	{/if}
-	{#if $page.route.id == '/jobs' || $page.route.id == '/skills' || $page.route.id == '/listings'}
-		<Notification notification={notifications.postjob} />
-		<div style="height:16px;" />
-	{:else if $page.route.id == '/new_job'}
-		<Notification notification={notifications.mint} />
-	{:else if $page.route.id == '/profile'}
-		<Notification notification={notifications.upgrade} />
-		<div style="height:16px;" />
-	{/if}
-	{#if trimmedRoute == 'job'}
-		<Notification notification={notifications.mint} />
-		<div style="height:16px;" />
-	{:else if trimmedRoute == 'creator'}
-		<Notification notification={notifications.mint} />
-		<div style="height:16px;" />
-	{/if}
-
+	<NotificationHandler />
 	<slot />
 	{#if $page.route.id !== '/'}
 		<Footer />

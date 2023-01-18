@@ -30,17 +30,28 @@ let chain_names = {
 	1453: 'devm'
 };
 
+const replacerFunc = () => {
+	const visited = new WeakSet();
+	return (key, value) => {
+		if (typeof value === 'object' && value !== null) {
+			if (visited.has(value)) {
+				return;
+			}
+			visited.add(value);
+		}
+		return value;
+	};
+};
+
 export const connectWallet = async () => {
 	connecting.set(true);
 	try {
-		// get user provider,signer
 		const provider = new ethers.providers.Web3Provider(window.ethereum);
 		await provider.send('eth_requestAccounts', []);
 		const signer = provider.getSigner();
 		networkProvider.set(provider);
 		networkSigner.set(signer);
 
-		// get connection details
 		let addr = await signer.getAddress();
 		userAddress.set(addr);
 		let chain_id = await signer.getChainId();
@@ -51,21 +62,25 @@ export const connectWallet = async () => {
 			}
 		}
 		userConnected.set(true);
-
-		// membership state
-		// set network/account change listeners
 		setListeners();
 		connecting.set(false);
 
-		// xmtp connection
+		// await connectXmtp();
+		await fetchUserState();
+	} catch (err) {
+		console.log('error:', err);
+	}
+};
+
+export const connectXmtp = async () => {
+	try {
 		if (!get(xmtpConnected)) {
 			xmtpConnecting.set(true);
-			let xc = await Client.create(signer);
+			let xc = await Client.create(get(networkSigner));
 			xmtpClient.set(xc);
 			xmtpConnecting.set(false);
 			xmtpConnected.set(true);
 		}
-		await fetchUserState();
 	} catch (err) {
 		console.log('error:', err);
 	}

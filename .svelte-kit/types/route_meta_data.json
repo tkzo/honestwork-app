@@ -3,9 +3,6 @@
 	"/api/alchemy/[addr]/[id]": [
 		"src/routes/api/alchemy/[addr]/[id]/+server.ts"
 	],
-	"/api/auth": [
-		"src/routes/api/auth/+server.ts"
-	],
 	"/api/auth/login/[address]": [
 		"src/routes/api/auth/login/[address]/+server.ts"
 	],
@@ -68,6 +65,9 @@
 	],
 	"/jobs": [
 		"src/routes/jobs/+page.server.ts"
+	],
+	"/job/[address]": [
+		"src/routes/job/[address]/+page.server.ts"
 	],
 	"/job/[address]/[slot]": [
 		"src/routes/job/[address]/[slot]/+page.server.ts"

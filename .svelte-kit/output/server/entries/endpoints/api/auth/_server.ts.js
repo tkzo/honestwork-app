@@ -1,14 +1,14 @@
 import { r as redirect } from "../../../../chunks/index2.js";
 import { e as env } from "../../../../chunks/env-private.js";
 const GET = ({ url, cookies }) => {
-  const userSignature = cookies.get("signature");
-  const userSalt = cookies.get("salt");
-  const address = url.searchParams.get("address");
+  const userSignature = cookies.get("honestwork_signature");
+  const userSalt = cookies.get("honestwork_salt");
+  const address = url.searchParams.get("honestwork_address");
   if (userSignature && userSalt && address) {
     validateSignature(address);
     throw redirect(301, `/profile`);
   }
-  throw redirect(301, "/create_account");
+  throw redirect(301, "/mint");
 };
 const validateSignature = async (address, userSignature, userSalt) => {
   const apiUrl = parseInt(env.PRODUCTION_ENV) == 1 ? env.PRIVATE_HONESTWORK_API : env.PRIVATE_LOCAL_HONESTWORK_API;

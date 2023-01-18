@@ -23,6 +23,11 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import { assets } from '$app/paths';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		connectWallet();
+	});
 
 	//todo: upgrade tags when api is rdy
 	//add autosuggest from redis
@@ -70,6 +75,9 @@
 	let user_allowance: string; // bignumber
 	let approveMax = false;
 	let userApproved = false;
+	let salt: string;
+
+	let signature: string;
 
 	$: sticky_item = sticky_data.find((n) => n.duration == sticky_duration) ?? sticky_data[0];
 	$: if (browser) {
@@ -83,10 +91,13 @@
 		let ERC20 = new ethers.Contract(chosen_payment_token.address, erc20_abi, $networkProvider);
 		let allowance = await ERC20.allowance($userAddress, env.PUBLIC_JOB_LISTING_CONTRACT_ADDRESS);
 		user_allowance = ethers.utils.formatEther(allowance);
-		console.log('Allowance:', user_allowance);
 	};
 	const handleSubmit = async (e: Event) => {
 		userPublishing = true;
+		const res = await fetch(`/api/auth/login/${$userAddress}`);
+		salt = await res.json();
+		jobForm.signature.value = await $networkSigner.signMessage(salt);
+
 		const formData = new FormData(e.target! as HTMLFormElement);
 		let formObj: JobType = {} as JobType;
 		formObj = Object.fromEntries(formData.entries()) as unknown as JobType;
@@ -135,8 +146,9 @@
 				toast.push(`<p class="light-60">Job listing published.</p>`);
 			}
 		}
+
 		userPublishing = false;
-		goto('/jobs');
+		goto(`/job/${$userAddress}`);
 	};
 	const uploadImage = async (e: any) => {
 		let target_file;
@@ -286,13 +298,15 @@
 	<div class="viewport" bind:this={viewport} style={`height:${feedHeight.toString() + 'px'}`}>
 		<div class="contents" bind:this={contents}>
 			<div style="height:16px;" />
-			{#if $userConnected && $xmtpConnected}
+			{#if $userConnected}
 				<form method="POST" on:submit|preventDefault={handleSubmit} bind:this={jobForm}>
-					<input hidden type="number" name="job_slot" value={$chosen_job_slot} />
-					<input hidden type="text" name="user_address" value={$userAddress} />
-					<input hidden type="text" name="tx_hash" value={tx_hash} />
-					<input hidden type="text" name="token_paid" value={chosen_payment_token.address} />
-					<input hidden type="text" name="file_url" value={file_url} />
+					<input hidden type="number" name="job_slot" bind:value={$chosen_job_slot} />
+					<input hidden type="text" name="user_address" bind:value={$userAddress} />
+					<input hidden type="text" name="signature" bind:value={signature} />
+
+					<input hidden type="text" name="tx_hash" bind:value={tx_hash} />
+					<input hidden type="text" name="token_paid" bind:value={chosen_payment_token.address} />
+					<input hidden type="text" name="file_url" bind:value={file_url} />
 					<div class="image-section">
 						<div
 							class="image-card"

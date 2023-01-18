@@ -2,17 +2,13 @@ import type { RequestHandler } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 
 export const POST: RequestHandler = async ({ request, cookies }) => {
-	const userAddress = cookies.get('honestwork_address')!;
-	const userSignature = cookies.get('honestwork_signature');
-	const userSalt = cookies.get('honestwork_salt');
-
 	let data = await request.json();
 
 	const apiUrl =
 		parseInt(env.PRODUCTION_ENV) == 1
 			? env.PRIVATE_HONESTWORK_API
 			: env.PRIVATE_LOCAL_HONESTWORK_API;
-	const hwapiUrl = `${apiUrl}/jobs/${userAddress}`;
+	const hwapiUrl = `${apiUrl}/jobs/${data.user_address}`;
 	const jobs_response = await fetch(hwapiUrl, {
 		method: 'GET',
 		headers: {
@@ -24,7 +20,8 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
 	let cloud_url;
 	if (data.image_url != '') {
-		cloud_url = env.PRIVATE_SPACES_URL + '/' + userAddress + '/job/' + index + '/' + data.image_url;
+		cloud_url =
+			env.PRIVATE_SPACES_URL + '/' + data.user_address + '/job/' + index + '/' + data.image_url;
 	}
 
 	const body = {
@@ -46,7 +43,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		created_at: new Date().getTime()
 	};
 
-	const url = `${apiUrl}/jobs/${userAddress}/${userSalt}/${userSignature}/`;
+	const url = `${apiUrl}/jobs/${data.user_address}/${data.signature}`;
 	const options = {
 		method: 'POST',
 		body: JSON.stringify(body),

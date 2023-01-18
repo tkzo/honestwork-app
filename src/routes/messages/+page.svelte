@@ -10,7 +10,11 @@
 	import { Jumper } from 'svelte-loading-spinners';
 	import { onDestroy } from 'svelte';
 	import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
-
+	import { onMount } from 'svelte';
+	import { connectWallet } from '$lib/stores/Network';
+	onMount(() => {
+		connectWallet();
+	});
 	//todo: move conversation into its own component
 	export let viewport: Element;
 	export let contents: Element;

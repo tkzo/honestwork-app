@@ -1,6 +1,20 @@
-import { e as env, w as writable } from "./env-public.js";
+import { w as writable, e as env } from "./env-public.js";
 import { ethers } from "ethers";
 import "@xmtp/xmtp-js";
+import "./index.js";
+const ToastItem_svelte_svelte_type_style_lang = "";
+const SvelteToast_svelte_svelte_type_style_lang = "";
+let metadata = { title: "" };
+let chosen_skill_slot = writable(-1);
+let chosen_job_slot = writable(-1);
+let skill_upload_urls = writable([Array]);
+let skill_add = writable(false);
+let changes_made = writable(false);
+let submitting = writable(false);
+let new_conversation_address = writable("");
+let new_conversation_metadata = writable(metadata);
+writable(Array());
+writable(Array());
 let userConnected = writable(false);
 let userAddress = writable("");
 let networkProvider = writable();
@@ -21,394 +35,6 @@ const connectNode = async () => {
     console.log("error:", err);
   }
 };
-const token_abi = [
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "_name",
-        type: "string"
-      },
-      {
-        internalType: "string",
-        name: "_symbol",
-        type: "string"
-      }
-    ],
-    stateMutability: "nonpayable",
-    type: "constructor"
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "owner",
-        type: "address"
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "approved",
-        type: "address"
-      },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256"
-      }
-    ],
-    name: "Approval",
-    type: "event"
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "owner",
-        type: "address"
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "operator",
-        type: "address"
-      },
-      {
-        indexed: false,
-        internalType: "bool",
-        name: "approved",
-        type: "bool"
-      }
-    ],
-    name: "ApprovalForAll",
-    type: "event"
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "from",
-        type: "address"
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "to",
-        type: "address"
-      },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256"
-      }
-    ],
-    name: "Transfer",
-    type: "event"
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "to",
-        type: "address"
-      },
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256"
-      }
-    ],
-    name: "approve",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "owner",
-        type: "address"
-      }
-    ],
-    name: "balanceOf",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256"
-      }
-    ],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
-    inputs: [],
-    name: "bind",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256"
-      }
-    ],
-    name: "getApproved",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address"
-      }
-    ],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_user",
-        type: "address"
-      }
-    ],
-    name: "getUserState",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256"
-      }
-    ],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "owner",
-        type: "address"
-      },
-      {
-        internalType: "address",
-        name: "operator",
-        type: "address"
-      }
-    ],
-    name: "isApprovedForAll",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool"
-      }
-    ],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
-    inputs: [],
-    name: "mint",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [],
-    name: "name",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string"
-      }
-    ],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256"
-      }
-    ],
-    name: "ownerOf",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address"
-      }
-    ],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "from",
-        type: "address"
-      },
-      {
-        internalType: "address",
-        name: "to",
-        type: "address"
-      },
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256"
-      }
-    ],
-    name: "safeTransferFrom",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "from",
-        type: "address"
-      },
-      {
-        internalType: "address",
-        name: "to",
-        type: "address"
-      },
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256"
-      },
-      {
-        internalType: "bytes",
-        name: "data",
-        type: "bytes"
-      }
-    ],
-    name: "safeTransferFrom",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "operator",
-        type: "address"
-      },
-      {
-        internalType: "bool",
-        name: "approved",
-        type: "bool"
-      }
-    ],
-    name: "setApprovalForAll",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes4",
-        name: "interfaceId",
-        type: "bytes4"
-      }
-    ],
-    name: "supportsInterface",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool"
-      }
-    ],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
-    inputs: [],
-    name: "symbol",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string"
-      }
-    ],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
-    inputs: [],
-    name: "tier",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256"
-      }
-    ],
-    name: "tokenURI",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string"
-      }
-    ],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "from",
-        type: "address"
-      },
-      {
-        internalType: "address",
-        name: "to",
-        type: "address"
-      },
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256"
-      }
-    ],
-    name: "transferFrom",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
-  }
-];
 connectNode();
 export {
   chainName as a,
@@ -418,10 +44,17 @@ export {
   userState as e,
   nodeProvider as f,
   xmtpClient as g,
-  networkProvider as h,
-  connectNode as i,
+  new_conversation_metadata as h,
+  new_conversation_address as i,
+  networkProvider as j,
+  chosen_job_slot as k,
+  changes_made as l,
+  chosen_skill_slot as m,
   networkSigner as n,
-  token_abi as t,
+  skill_add as o,
+  submitting as p,
+  connectNode as q,
+  skill_upload_urls as s,
   userConnected as u,
   xmtpConnected as x
 };
