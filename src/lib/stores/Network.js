@@ -43,6 +43,13 @@ const replacerFunc = () => {
 	};
 };
 
+export const connectIfCached = async () => {
+	let local = localStorage.getItem('honestwork_connection', 'true');
+	if (local && local == 'true') {
+		connectWallet();
+	}
+};
+
 export const connectWallet = async () => {
 	connecting.set(true);
 	try {
@@ -62,6 +69,11 @@ export const connectWallet = async () => {
 			}
 		}
 		userConnected.set(true);
+		let local = localStorage.getItem('honestwork_connection', 'true');
+		if (local != 'true') {
+			localStorage.setItem('honestwork_connection', 'true');
+		}
+
 		setListeners();
 		connecting.set(false);
 

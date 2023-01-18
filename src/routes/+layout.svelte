@@ -8,8 +8,6 @@
 	import LogRocket from 'logrocket';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 
-	//todo: move notification logic out of here
-
 	// trackers
 	LogRocket.init('2wdgml/honestwork');
 	$: if ($userAddress && $userAddress != '') {

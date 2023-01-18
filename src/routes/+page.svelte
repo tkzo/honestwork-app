@@ -26,7 +26,6 @@
 	<div class="viewport" bind:this={viewport}>
 		<div class="contents" bind:this={contents}>
 			<div class="hero">
-				<div style="height: 32px;" />
 				<div class="nav">
 					<div class="logo">
 						<img src={`${assets}/icons/landing/logo.svg`} alt="HonestWork Logo" />
@@ -34,6 +33,8 @@
 					</div>
 					<div class="login" on:click={handleConnect} on:keydown>LOGIN TO APP</div>
 				</div>
+				<div style="height: 32px;" />
+
 				<div style="height: 100px;" />
 				<div class="header">
 					<h1>A platform for all your web3 freelancing needs</h1>
@@ -52,14 +53,18 @@
 						<a href="https://github.com/honestworkdao" target="_blank" rel="noopener noreferrer">
 							<img src={`${assets}/icons/landing/github.svg`} alt="Github" class="icon" />
 						</a>
-						<a href="https://www.linkedin.com/company/honestworkdao/" target="_blank" rel="noopener noreferrer">
+						<a
+							href="https://www.linkedin.com/company/honestworkdao/"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
 							<img src={`${assets}/icons/landing/linkedin.svg`} alt="LinkedIn" class="icon" />
 						</a>
 					</div>
 					<div style="height: 64px;" />
 					<div class="imgs-container">
-						<img src="{`${assets}/assets/landing/hw.png`} " alt="HonestWork" class="app-img"/>
-						<img src="{`${assets}/assets/landing/deer.png`} " alt="HonestWork" class="deer"/>
+						<img src="{`${assets}/assets/landing/hw.png`} " alt="HonestWork" class="app-img" />
+						<img src="{`${assets}/assets/landing/deer.png`} " alt="HonestWork" class="deer" />
 					</div>
 				</div>
 			</div>
@@ -204,7 +209,7 @@
 		position: relative;
 		top: 0;
 		left: 0;
-		width:80vw
+		width: 80vw;
 	}
 	.app-img {
 		position: relative;
@@ -219,19 +224,19 @@
 		height: 420px;
 		width: auto;
 	}
-	@media (max-width:900px) {
-        .deer {
+	@media (max-width: 900px) {
+		.deer {
 			right: -40px;
-            height: 350px;
-        }
-    }
-	@media (max-width:800px) {
-        .deer {
+			height: 350px;
+		}
+	}
+	@media (max-width: 800px) {
+		.deer {
 			right: -30px;
-            height: 300px;
-        }
-    }
-	@media (max-width:720px) {
+			height: 300px;
+		}
+	}
+	@media (max-width: 720px) {
 		.header {
 			max-width: 80vw;
 		}
@@ -239,25 +244,25 @@
 			font-size: 32px;
 			line-height: 40px;
 		}
-        .deer {
+		.deer {
 			right: -20px;
-            height: 250px;
-        }
-    }
-	@media (max-width:550px) {
-        .deer {
-            height: 200px;
-        }
+			height: 250px;
+		}
+	}
+	@media (max-width: 550px) {
+		.deer {
+			height: 200px;
+		}
 		h1 {
 			font-size: 24px;
 		}
 		.about {
 			font-size: 14px;
 		}
-    }
-	@media (max-width:450px) {
-        .deer {
-            height: 150px;
-        }
-    }
+	}
+	@media (max-width: 450px) {
+		.deer {
+			height: 150px;
+		}
+	}
 </style>

@@ -4,6 +4,7 @@
 	import { placeholder_image } from '$lib/stores/Constants';
 	import { slide } from 'svelte/transition';
 	import { expoOut } from 'svelte/easing';
+	import { base, assets } from '$app/paths';
 
 	export let applicant: ApplicantType;
 
@@ -72,7 +73,7 @@
 						{#if ens_loading}
 							<div class="ens-loader">
 								<img
-									src="icons/loader.svg"
+									src={`${assets}/icons/loader.svg`}
 									alt="loading"
 									class="rotating"
 									style="height:16px;width:16px;"
@@ -95,9 +96,9 @@
 					<p class="yellow">send message</p>
 				</div>
 				<div style="height:8px" />
-				<div class="button">
+				<a class="button" href={`${base}/creator/${applicant.user_address}`}>
 					<p class="light-60">go to profile</p>
-				</div>
+				</a>
 			</div>
 		</div>
 		{#if drawer_open}
@@ -108,7 +109,7 @@
 				{#each user.links as link, i}
 					<a class="item" href={link} target="_blank" rel="noreferrer">
 						<p>link #{i + 1} <span class="light-60">{link}</span></p>
-						<img src="icons/external.svg" alt="link" />
+						<img src={`${assets}/icons/external.svg`} alt="link" />
 					</a>
 				{/each}
 			</div>
@@ -117,9 +118,9 @@
 			{#if drawer_open}
 				<p class="light-60">hide applicant info</p>
 				<div style="width:4px" />
-				<img src="icons/corner-right-up_passive.svg" alt="drawer" />
+				<img src={`${assets}/icons/corner-right-up_passive.svg`} alt="drawer" />
 			{:else}
-				<img src="icons/corner-left-down_active.svg" alt="drawer" />
+				<img src={`${assets}/icons/corner-left-down_active.svg`} alt="drawer" />
 				<div style="width:4px" />
 				<p class="light-60">show applicant info</p>
 			{/if}

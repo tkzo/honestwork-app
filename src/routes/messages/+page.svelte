@@ -11,9 +11,9 @@
 	import { onDestroy } from 'svelte';
 	import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
 	import { onMount } from 'svelte';
-	import { connectWallet } from '$lib/stores/Network';
+	import { connectIfCached } from '$lib/stores/Network';
 	onMount(() => {
-		connectWallet();
+		connectIfCached();
 	});
 	//todo: move conversation into its own component
 	export let viewport: Element;

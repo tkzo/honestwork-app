@@ -26,11 +26,17 @@
 			{/each}
 		</div>
 		<div class="social-section">
-			<img src={`${assets}/icons/github.svg`} alt="Github" />
+			<a href="https://github.com/honestworkdao" target="_blank" rel="noreferrer">
+				<img src={`${assets}/icons/github.svg`} alt="Github" />
+			</a>
 			<div style="width:8px" />
-			<img src={`${assets}/icons/twitter.svg`} alt="Twitter" />
+			<a href="https://twitter.com/honestworkdao" target="_blank" rel="noreferrer">
+				<img src={`${assets}/icons/twitter.svg`} alt="Twitter" />
+			</a>
 			<div style="width:8px" />
-			<img src={`${assets}/icons/discord.svg`} alt="Discord" />
+			<a href="https://discord.gg/vP6R5unDBF" target="_blank" rel="noreferrer">
+				<img src={`${assets}/icons/discord.svg`} alt="Discord" />
+			</a>
 		</div>
 	</div>
 	<div class="right-container">

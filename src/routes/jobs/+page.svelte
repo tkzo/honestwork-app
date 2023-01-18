@@ -7,10 +7,10 @@
 	import { browser } from '$app/environment';
 	import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
-	import { connectWallet } from '$lib/stores/Network';
+	import { connectIfCached } from '$lib/stores/Network';
 
 	onMount(() => {
-		connectWallet();
+		connectIfCached();
 	});
 
 	export let data: any;

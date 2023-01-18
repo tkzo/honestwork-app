@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Notification from '$lib/components/common/Notification.svelte';
-	import { userAddress, xmtpConnected, connectXmtp } from '$lib/stores/Network';
+	import { userConnected, xmtpConnected, connectXmtp } from '$lib/stores/Network';
 	import { page } from '$app/stores';
 	import { notifications } from '$lib/stores/Constants';
 
@@ -27,7 +27,10 @@
 		<Notification notification={notifications.mint} />
 		<div style="height:16px;" />
 	{/if}
-{:else}
+{:else if $userConnected}
 	<Notification notification={notifications.xmtp} on:click={connectXmtp} />
+	<div style="height:16px;" />
+{:else}
+	<Notification notification={notifications.mint} />
 	<div style="height:16px;" />
 {/if}

@@ -9,7 +9,7 @@
 		userConnected,
 		getFavorites,
 		getWatchlist,
-		connectWallet
+		connectIfCached
 	} from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 	import { tweened } from 'svelte/motion';
@@ -18,9 +18,7 @@
 		skill_add,
 		skill_upload_urls,
 		changes_made,
-		submitting,
-		user_watchlist,
-		user_favorites
+		submitting
 	} from '$lib/stores/State';
 	import { Svrollbar } from 'svrollbar';
 	import { browser } from '$app/environment';
@@ -84,7 +82,7 @@
 	let feedHeight = 0;
 
 	onMount(async () => {
-		connectWallet();
+		connectIfCached();
 		changes_made.set(false);
 		await getNft();
 		getWatchlist();
