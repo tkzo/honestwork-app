@@ -77,9 +77,6 @@
 
 <style>
 	.wrapper {
-		/* width: 80vw; */
-	}
-	.wrapper {
 		position: relative;
 		-ms-overflow-style: none; /* for Internet Explorer, Edge */
 		scrollbar-width: none; /* for Firefox */
