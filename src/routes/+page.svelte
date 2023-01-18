@@ -194,8 +194,6 @@
 		font-weight: 600;
 		color: var(--color-primary);
 	}
-	.socials {
-	}
 	.icon {
 		cursor: pointer;
 		opacity: 0.2;
