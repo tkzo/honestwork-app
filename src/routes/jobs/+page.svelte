@@ -8,6 +8,7 @@
 	import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import { connectWallet } from '$lib/stores/Network';
+
 	onMount(() => {
 		connectWallet();
 	});

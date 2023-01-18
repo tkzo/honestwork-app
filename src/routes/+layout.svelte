@@ -7,7 +7,6 @@
 	import { page } from '$app/stores';
 	import LogRocket from 'logrocket';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
-	import { notifications } from '$lib/stores/Constants';
 
 	//todo: move notification logic out of here
 

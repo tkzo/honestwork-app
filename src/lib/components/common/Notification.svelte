@@ -1,12 +1,20 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
 	export let notification: { bodytext: string; cta: string; icon: string };
+
+	const dispatch = createEventDispatcher();
+
+	function handleClick() {
+		dispatch('click');
+	}
 </script>
 
 <main>
 	<div class="bar">
 		<p class="light-80">{notification.bodytext}</p>
 		<div style="width:8px" />
-		<div class="post-link">
+		<div class="post-link" on:click={handleClick} on:keydown>
 			<p class="yellow link underlined">{notification.cta}</p>
 			<div style="width:8px" />
 			<img src={notification.icon} alt={notification.cta} />

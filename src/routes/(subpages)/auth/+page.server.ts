@@ -11,7 +11,12 @@ export const actions: Actions = {
 				: env.PRIVATE_LOCAL_HONESTWORK_API;
 		const callUrl = `${apiUrl}/users/${data.get('address')}/${data.get('signature')}`;
 		let callResponse = await fetch(callUrl, {
-			method: 'POST'
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Honestwork-Address': data.get('address')!.toString(),
+				'Honestwork-Signature': data.get('signature')!.toString()
+			}
 		});
 		let calldata = await callResponse.json();
 		if (calldata == 'success') {

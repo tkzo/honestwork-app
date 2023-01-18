@@ -7,7 +7,9 @@
 	$: trimmedRoute = $page.route.id?.split('/')[1];
 </script>
 
-{#if $xmtpConnected}
+{#if $page.route.id == '/'}
+	<Notification notification={notifications.mint} />
+{:else if $xmtpConnected}
 	{#if $page.route.id == '/jobs' || $page.route.id == '/skills' || $page.route.id == '/listings'}
 		<Notification notification={notifications.postjob} />
 		<div style="height:16px;" />
@@ -26,8 +28,6 @@
 		<div style="height:16px;" />
 	{/if}
 {:else}
-	<div on:click={connectXmtp} on:keydown>
-		<Notification notification={notifications.xmtp} />
-		<div style="height:16px;" />
-	</div>
+	<Notification notification={notifications.xmtp} on:click={connectXmtp} />
+	<div style="height:16px;" />
 {/if}
