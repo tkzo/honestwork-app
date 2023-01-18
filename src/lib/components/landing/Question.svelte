@@ -1,18 +1,13 @@
 <script lang="ts">
-    import { gsap } from "gsap";
     import { slide } from "svelte/transition";
     import { assets } from '$app/paths';
+
 
     export let card: any;
     
     let open = false;
     
     const setOpen = () => {
-    if (!open) {
-      gsap.to(`.chevron-${card.id}`, { rotation: -180, duration: 0.5 });
-    } else {
-      gsap.to(`.chevron-${card.id}`, { rotation: 0, duration: 0.5 });
-    }
     open = !open;
   };
 
@@ -22,7 +17,7 @@
     <div on:click={setOpen} on:keydown={setOpen} style="cursor:pointer;" class="faq-card">
         <div class="question-box">
             <div class="question">{card.question}</div>
-            <img src={`${assets}/icons/landing/chevron.svg`} alt="Chevron" class={`chevron-${card.id}`} />
+            <img src={`${assets}/icons/landing/chevron.svg`} alt="Chevron" class={`chevron-${card.id} ${open ? `rotate-up` : `rotate-down`}`} />
         </div>
             {#if open}
             <div transition:slide={{ duration: 400 }}>
@@ -55,6 +50,14 @@
         font-weight: 600;
         font-size: 16px;
         line-height: 16px;
+    }
+    .rotate-up {
+        transform: rotate(-180deg);
+        transition: all 0.4s ease-out;
+    }
+    .rotate-down {
+        transform: rotate(0);
+        transition: all 0.4s ease-out;
     }
     .answer {
         font-family: 'Ubuntu Mono';

@@ -1,3 +1,9 @@
+export type FAQCard = {
+	id:number;
+	question: string;
+	answer: string
+}
+
 export type FeatureCard = {
 	title: string;
 	icon1: string;
@@ -10,6 +16,7 @@ export type FeatureCard = {
 	imgsrc: string;
 	imgalt:string;
 }
+
 export type SkillType = {
 	slot: number;
 	user_address: string;
