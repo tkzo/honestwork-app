@@ -1,97 +1,9 @@
 <script lang="ts">
 	import { quintOut } from 'svelte/easing';
     import { fade, fly } from 'svelte/transition';
+    import { employersFeatureCards, freelancersFeatureCards} from '$lib/stores/Constants';
 
     let employer = true;
-
-    type FeatureCard = {
-        title: string;
-        icon1: string;
-        icon1alt: string;
-        feature1: string;
-        icon2: string;
-        icon2alt: string;
-        feature2: string;
-        buttontext: string;
-        imgsrc: string;
-        imgalt:string;
-    }
-    let employersFeatureCards: FeatureCard[] = [
-        {
-        title: 'Post a job without a hassle',
-        icon1: 'icons/landing/dinosaur.svg',
-        icon1alt: 'Dinosaur icon',
-        feature1: 'Create a job listing for an unlimited duration',
-        icon2: 'icons/landing/script-text.svg',
-        icon2alt: 'Script text icon',
-        feature2: 'Start conversations with the best applicants through embedded messaging',
-        buttontext: 'Post a Job',
-        imgsrc: 'assets/landing/profile.png',
-        imgalt:'Profile',
-        },
-        {
-        title: 'Find the best talents',
-        icon1: 'icons/landing/dinosaur.svg',
-        icon1alt: 'Dinosaur icon',
-        feature1: 'Browse an extensive library of skills to find exactly what you need',
-        icon2: 'icons/landing/script-text.svg',
-        icon2alt: 'Script text icon',
-        feature2: 'Easily view previous work history and ratings on freelancers’ profile',
-        buttontext: 'Post a Job',
-        imgsrc: 'assets/landing/profile.png',
-        imgalt:'Profile',
-        },
-        {
-        title: 'Safe on-chain payments',
-        icon1: 'icons/landing/dinosaur.svg',
-        icon1alt: 'Dinosaur icon',
-        feature1: 'Pay with any on-chain token, including custom DAO tokens',
-        icon2: 'icons/landing/script-text.svg',
-        icon2alt: 'Script text icon',
-        feature2: 'Safe payments through a customized Escrow Contract',
-        buttontext: 'Post a Job',
-        imgsrc: 'assets/landing/profile.png',
-        imgalt:'Profile',
-        }
-    ]
-    let freelancersFeatureCards: FeatureCard[] = [
-        {
-        title: 'On-chain reputation',
-        icon1: 'icons/landing/dinosaur.svg',
-        icon1alt: 'Dinosaur icon',
-        feature1: 'Create unique profiles with ENS names and NFTs',
-        icon2: 'icons/landing/script-text.svg',
-        icon2alt: 'Script text icon',
-        feature2: 'HonestWork NFT stores your ratings and completed projects on-chain',
-        buttontext: 'Explore Jobs',
-        imgsrc: 'assets/landing/profile.png',
-        imgalt:'Profile',
-        },
-        {
-        title: 'Get paid in crypto',
-        icon1: 'icons/landing/dinosaur.svg',
-        icon1alt: 'Dinosaur icon',
-        feature1: 'Job payment is safely kept in an Escrow Contract while you are working on the task',
-        icon2: 'icons/landing/script-text.svg',
-        icon2alt: 'Script text icon',
-        feature2: 'Get paid straight to your crypto wallet after successfully completing a task',
-        buttontext: 'Explore Jobs',
-        imgsrc: 'assets/landing/profile.png',
-        imgalt:'Profile',
-        },
-        {
-        title: 'Find premium web3 freelance jobs',
-        icon1: 'icons/landing/dinosaur.svg',
-        icon1alt: 'Dinosaur icon',
-        feature1: 'Choose from the wide library of jobs listings',
-        icon2: 'icons/landing/script-text.svg',
-        icon2alt: 'Script text icon',
-        feature2: 'List your skills and get noticed for what you do best',
-        buttontext: 'Explore Jobs',
-        imgsrc: 'assets/landing/profile.png',
-        imgalt:'Profile',
-        }
-    ]
 </script>
 
 <div class="buttons-container">
@@ -248,6 +160,7 @@
         color: var(--color-primary);
         width: 247px;
     }
+    .button:hover,
     .selected {
         background-color: var(--color-primary);
         color: var(--color-dark);

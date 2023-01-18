@@ -3,7 +3,7 @@ import { e as env } from "../../../../../../../chunks/env-private.js";
 import { S3, ListObjectsCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 const GET = async ({ params, cookies }) => {
-  const userAddress = cookies.get("address");
+  const userAddress = cookies.get("honestwork_address");
   const s3Client = new S3({
     forcePathStyle: false,
     endpoint: env.PRIVATE_SPACES_URL,
@@ -32,7 +32,7 @@ const GET = async ({ params, cookies }) => {
       for (let i = 0; i < data.Contents.length; i++) {
         let foldername = data.Contents[i].Key?.split("/");
         if (foldername && foldername[0] == userAddress) {
-          if (foldername[1] && foldername[1] == params.skill_slot && foldername[2] && foldername[2] == params.image_slot)
+          if (foldername[1] == "skill" && foldername[2] == params.skill_slot && foldername[3] == params.image_slot)
             try {
               await s3Client2.send(
                 new DeleteObjectCommand({
@@ -52,7 +52,7 @@ const GET = async ({ params, cookies }) => {
   try {
     const url = await createPresignedPost(s3Client, {
       Bucket: env.PRIVATE_SPACES_BUCKETNAME,
-      Key: `${userAddress}/${params.skill_slot}/${params.image_slot}/${params.filename}`,
+      Key: `${userAddress}/skill/${params.skill_slot}/${params.image_slot}/${params.filename}`,
       Conditions: [
         ["content-length-range", 0, 5242880]
       ],

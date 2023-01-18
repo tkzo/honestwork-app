@@ -6,14 +6,29 @@ const load = async ({ cookies }) => {
   const userAddress = cookies.get("honestwork_address");
   const userSignature = cookies.get("honestwork_signature");
   const userSalt = cookies.get("honestwork_salt");
-  if (userSignature && userSalt && userAddress && userAddress == verifySignature(userSalt, userSignature)) {
+  console.log("userAddress: " + userAddress);
+  console.log("userSignature: " + userSignature);
+  console.log("userSalt: " + userSalt);
+  console.log("true?", verifySignature(userSalt, userSignature));
+  const callUrl = `${apiUrl}/verify`;
+  let callResponse = await fetch(callUrl, {
+    method: "GET",
+    body: JSON.stringify({
+      address: userAddress,
+      signature: userSignature,
+      salt: userSalt
+    })
+  });
+  let calldata = await callResponse.json();
+  if (calldata == "success") {
+    console.log("Success!");
     let user = await getUser(userAddress);
     let skills = await getSkills(userAddress);
     let jobs = await getJobs(userAddress);
     user.address = userAddress;
     return { user, skills, jobs };
   } else {
-    throw redirect(301, "/create_account");
+    throw redirect(301, "/mint");
   }
 };
 const verifySignature = (salt, signature) => {
@@ -61,7 +76,7 @@ const actions = {
     let cloud_url;
     console.log("User file_url:", data.get("file_url"));
     if (data.get("file_url") != "") {
-      cloud_url = env.PRIVATE_SPACES_URL + "/" + userAddress + "/" + data.get("file_url");
+      cloud_url = env.PRIVATE_SPACES_URL + "/" + userAddress + "/profile/" + data.get("file_url");
     }
     const body = {
       username: data.get("username"),
@@ -90,9 +105,9 @@ const actions = {
     }
   },
   skills: async ({ cookies, request }) => {
-    const userAddress = cookies.get("address");
-    const userSignature = cookies.get("signature");
-    const userSalt = cookies.get("salt");
+    const userAddress = cookies.get("honestwork_address");
+    const userSignature = cookies.get("honestwork_signature");
+    const userSalt = cookies.get("honestwork_salt");
     const data = await request.formData();
     let cloud_url_0 = "";
     let cloud_url_1 = "";
@@ -103,44 +118,44 @@ const actions = {
     let cloud_url_6 = "";
     let cloud_url_7 = "";
     if (data.get("file_url_0") != "") {
-      cloud_url_0 = `${env.PRIVATE_SPACES_URL}/${userAddress}/${data.get("skill_slot")}/${data.get(
-        "image_slot_0"
-      )}/${data.get("file_url_0")}`;
+      cloud_url_0 = `${env.PRIVATE_SPACES_URL}/${userAddress}/skill/${data.get(
+        "skill_slot"
+      )}/${data.get("image_slot_0")}/${data.get("file_url_0")}`;
     }
     if (data.get("file_url_1") != "") {
-      cloud_url_1 = `${env.PRIVATE_SPACES_URL}/${userAddress}/${data.get("skill_slot")}/${data.get(
-        "image_slot_1"
-      )}/${data.get("file_url_1")}`;
+      cloud_url_1 = `${env.PRIVATE_SPACES_URL}/${userAddress}/skill/${data.get(
+        "skill_slot"
+      )}/${data.get("image_slot_1")}/${data.get("file_url_1")}`;
     }
     if (data.get("file_url_2") != "") {
-      cloud_url_2 = `${env.PRIVATE_SPACES_URL}/${userAddress}/${data.get("skill_slot")}/${data.get(
-        "image_slot_2"
-      )}/${data.get("file_url_2")}`;
+      cloud_url_2 = `${env.PRIVATE_SPACES_URL}/${userAddress}/skill/${data.get(
+        "skill_slot"
+      )}/${data.get("image_slot_2")}/${data.get("file_url_2")}`;
     }
     if (data.get("file_url_3") != "") {
-      cloud_url_3 = `${env.PRIVATE_SPACES_URL}/${userAddress}/${data.get("skill_slot")}/${data.get(
-        "image_slot_3"
-      )}/${data.get("file_url_3")}`;
+      cloud_url_3 = `${env.PRIVATE_SPACES_URL}/${userAddress}/skill/${data.get(
+        "skill_slot"
+      )}/${data.get("image_slot_3")}/${data.get("file_url_3")}`;
     }
     if (data.get("file_url_4") != "") {
-      cloud_url_4 = `${env.PRIVATE_SPACES_URL}/${userAddress}/${data.get("skill_slot")}/${data.get(
-        "image_slot_4"
-      )}/${data.get("file_url_4")}`;
+      cloud_url_4 = `${env.PRIVATE_SPACES_URL}/${userAddress}/skill/${data.get(
+        "skill_slot"
+      )}/${data.get("image_slot_4")}/${data.get("file_url_4")}`;
     }
     if (data.get("file_url_5") != "") {
-      cloud_url_5 = `${env.PRIVATE_SPACES_URL}/${userAddress}/${data.get("skill_slot")}/${data.get(
-        "image_slot_5"
-      )}/${data.get("file_url_5")}`;
+      cloud_url_5 = `${env.PRIVATE_SPACES_URL}/${userAddress}/skill/${data.get(
+        "skill_slot"
+      )}/${data.get("image_slot_5")}/${data.get("file_url_5")}`;
     }
     if (data.get("file_url_6") != "") {
-      cloud_url_6 = `${env.PRIVATE_SPACES_URL}/${userAddress}/${data.get("skill_slot")}/${data.get(
-        "image_slot_6"
-      )}/${data.get("file_url_6")}`;
+      cloud_url_6 = `${env.PRIVATE_SPACES_URL}/${userAddress}/skill/${data.get(
+        "skill_slot"
+      )}/${data.get("image_slot_6")}/${data.get("file_url_6")}`;
     }
     if (data.get("file_url_7") != "") {
-      cloud_url_7 = `${env.PRIVATE_SPACES_URL}/${userAddress}/${data.get("skill_slot")}/${data.get(
-        "image_slot_7"
-      )}/${data.get("file_url_7")}`;
+      cloud_url_7 = `${env.PRIVATE_SPACES_URL}/${userAddress}/skill/${data.get(
+        "skill_slot"
+      )}/${data.get("image_slot_7")}/${data.get("file_url_7")}`;
     }
     const body = {
       user_address: data.get("user_address"),

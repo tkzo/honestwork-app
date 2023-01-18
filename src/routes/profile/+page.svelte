@@ -8,7 +8,8 @@
 		connectNode,
 		userConnected,
 		getFavorites,
-		getWatchlist
+		getWatchlist,
+		connectWallet
 	} from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 	import { tweened } from 'svelte/motion';
@@ -83,6 +84,7 @@
 	let feedHeight = 0;
 
 	onMount(async () => {
+		connectWallet();
 		changes_made.set(false);
 		await getNft();
 		getWatchlist();

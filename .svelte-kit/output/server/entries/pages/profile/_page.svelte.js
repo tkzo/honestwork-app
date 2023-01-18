@@ -1,13 +1,12 @@
 import { c as create_ssr_component, b as subscribe, d as add_attribute, f as escape, v as validate_component, g as null_to_empty } from "../../../chunks/index.js";
-import { b as changes_made, d as chosen_skill_slot, s as skill_upload_urls, e as skill_add, f as submitting } from "../../../chunks/State.js";
-import { d as userAddress, f as nodeProvider, u as userConnected, e as userState, i as connectNode } from "../../../chunks/Network.js";
-/* empty css                                                     */import { t as tweened } from "../../../chunks/index3.js";
+import { a as assets } from "../../../chunks/paths.js";
+/* empty css                                                   */import { l as changes_made, m as chosen_skill_slot, s as skill_upload_urls, d as userAddress, f as nodeProvider, u as userConnected, e as userState, o as skill_add, p as submitting, q as connectNode } from "../../../chunks/Network.js";
+import { t as tweened } from "../../../chunks/index3.js";
 import { S as Svrollbar } from "../../../chunks/Svrollbar.js";
-/* empty css                                                      */const Skill_svelte_svelte_type_style_lang = "";
-const SkillEdit_svelte_svelte_type_style_lang = "";
+/* empty css                                                      */const SkillEdit_svelte_svelte_type_style_lang = "";
 const Skills_svelte_svelte_type_style_lang = "";
-const Job_svelte_svelte_type_style_lang = "";
-const Jobs_svelte_svelte_type_style_lang = "";
+const Watchlist_svelte_svelte_type_style_lang = "";
+const Favorites_svelte_svelte_type_style_lang = "";
 const _page_svelte_svelte_type_style_lang = "";
 const css = {
   code: "textarea.svelte-1vl3wh1{width:100%;resize:none}.bio.svelte-1vl3wh1{width:100%;height:100%}img.svelte-1vl3wh1{width:188px;height:188px}.input-fields.svelte-1vl3wh1{display:flex;flex-direction:column;justify-content:flex-start;flex:1}.input-field.svelte-1vl3wh1{display:flex;flex-direction:row;justify-content:flex-start;position:relative}.placeholder.svelte-1vl3wh1{height:32px;display:flex;background-color:var(--color-dark);border-width:1px 0px 1px 1px;border-style:solid;border-color:var(--color-light-10);box-sizing:border-box;padding:8px}main.svelte-1vl3wh1{width:100%;height:100%;display:flex;flex-direction:column;align-items:center}.bar.svelte-1vl3wh1{width:520px;flex-direction:row;justify-content:space-between;align-items:center;padding:0px 12px 0px 0px;background:var(--color-light-2)}.info.svelte-1vl3wh1{width:520px;display:flex;flex-direction:row}.tabs.svelte-1vl3wh1{display:flex;flex-direction:row}.tab.svelte-1vl3wh1{display:flex;flex-direction:row;padding:8px 12px;border-width:0px 1px 0px 0px;border-style:solid;border-color:var(--color-light-10);box-sizing:border-box}.flex-input.svelte-1vl3wh1{height:32px;flex:1}.error.svelte-1vl3wh1{border-color:var(--color-error)}.success.svelte-1vl3wh1:focus{border-color:var(--color-success)}.infobox.svelte-1vl3wh1{width:240px;padding:8px;position:absolute;margin-left:532px}.gm.svelte-1vl3wh1{border-width:0px 0px 1px 0px;border-style:solid;border-color:var(--color-light-10);padding:12px;display:flex;flex-direction:column;align-items:center;text-align:center}.gm-inner.svelte-1vl3wh1{display:flex;flex-direction:row;align-items:center}.file-input.svelte-1vl3wh1{opacity:0;width:188px;height:32px;cursor:pointer}.file-input-container.svelte-1vl3wh1{position:relative;border-width:0px 1px 1px 1px;border-style:solid;border-color:var(--color-light-10);cursor:pointer}.pseudo-file-input.svelte-1vl3wh1{position:absolute;left:50%;top:50%;transform:translate(-50%, -50%);pointer-events:none}.input-like.svelte-1vl3wh1{background-color:var(--color-dark);font-family:'Proto Mono', monospace;color:var(--color-light);padding:8px;border-width:1px;border-style:solid;border-color:var(--color-light-10);font-size:13px;line-height:16px;box-sizing:border-box;flex:1;height:32px;display:flex;flex-direction:row;justify-content:flex-start}.limit.svelte-1vl3wh1{position:absolute;right:12px;transform:translateY(50%)}.description-bar.svelte-1vl3wh1{display:flex;flex-direction:row;justify-content:space-between;font-size:13px;line-height:16px;align-items:center}.description-title.svelte-1vl3wh1{padding:8px;border-width:1px 1px 0px 1px}.nft-checkbox.svelte-1vl3wh1{display:flex;flex-direction:column;align-items:center}.save-changes.svelte-1vl3wh1{display:flex;flex-direction:row;justify-content:flex-end;align-items:center}.wrapper.svelte-1vl3wh1{position:relative;-ms-overflow-style:none;scrollbar-width:none;overflow-y:scroll;--svrollbar-track-width:1px;--svrollbar-track-opacity:1;--svrollbar-thumb-width:10px;--svrollbar-thumb-background:#d9ab55;--svrollbar-thumb-opacity:1}.viewport.svelte-1vl3wh1{position:relative;overflow:scroll;box-sizing:border-box;-ms-overflow-style:none;scrollbar-width:none;display:flex;flex-direction:column;align-items:center}.viewport.svelte-1vl3wh1::-webkit-scrollbar{display:none}",
@@ -113,11 +112,12 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   $$unsubscribe_submitting();
   return `${$$result.head += `<!-- HEAD_svelte-nly3j5_START -->${$$result.title = `<title>HW | Profile</title>`, ""}<meta name="${"description"}" content="${"HonestWork Profile Page"}"><!-- HEAD_svelte-nly3j5_END -->`, ""}
 
-<main class="${"wrapper svelte-1vl3wh1"}"><div class="${"viewport svelte-1vl3wh1"}"${add_attribute("style", `width:100%; height:${feedHeight.toString() + "px"}`, 0)}${add_attribute("this", viewport, 0)}><div class="${"contents"}"${add_attribute("style", `width:520px;`, 0)}${add_attribute("this", contents, 0)}><div style="${"height: 16px"}"></div>
-			${$userAddress.toLowerCase() == data.user.address.toLowerCase() && $userState > 1 ? `${`<form method="${"POST"}" action="${"?/profile"}"${add_attribute("this", profileForm, 0)}><section class="${"bar svelte-1vl3wh1"}"><div class="${"tabs svelte-1vl3wh1"}"><p class="${"tab link semibold yellow svelte-1vl3wh1"}">profile</p>
+<main class="${"wrapper svelte-1vl3wh1"}"><div class="${"viewport svelte-1vl3wh1"}"${add_attribute("style", `width:100%; height:${feedHeight.toString() + "px"}`, 0)}${add_attribute("this", viewport, 0)}><div class="${"contents"}"${add_attribute("style", `width:520px;`, 0)}${add_attribute("this", contents, 0)}>${$userAddress.toLowerCase() == data.user.address.toLowerCase() && $userState > 0 ? `${`<form method="${"POST"}" action="${"?/profile"}"${add_attribute("this", profileForm, 0)}><section class="${"bar svelte-1vl3wh1"}"><div class="${"tabs svelte-1vl3wh1"}"><p class="${"tab link semibold yellow svelte-1vl3wh1"}">profile</p>
 								<p class="${"tab link semibold light-60 svelte-1vl3wh1"}">skills
 								</p>
-								<p class="${"tab link semibold light-60 svelte-1vl3wh1"}">job history
+								<p class="${"tab link semibold light-60 svelte-1vl3wh1"}">watchlist
+								</p>
+								<p class="${"tab link semibold light-60 svelte-1vl3wh1"}">favorites
 								</p></div>
 
 							<button class="${escape(null_to_empty(` semibold link ${$changes_made ? "yellow" : "light-60"}`), true) + " svelte-1vl3wh1"}"${add_attribute("style", `opacity: ${$blink}`, 0)}>save changes</button></section>
@@ -134,20 +134,24 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 								<div class="${"input-field file-input-container nft-checkbox svelte-1vl3wh1"}" style="${"cursor:pointer; padding:8px;"}"><div style="${"display:flex;flex-direction:row;"}"><input hidden type="${"checkbox"}" name="${"show_nft"}"${add_attribute("checked", show_nft, 1)}>
 										${show_nft ? `<img src="${"icons/checked.svg"}" alt="${"Checked"}" style="${"height:16px;width:16px;"}" class="${"svelte-1vl3wh1"}">
 											<div style="${"width:8px"}"></div>
-											<p class="${"yellow"}">use nft image</p>` : `<img src="${"icons/unchecked.svg"}" alt="${"Checked"}" style="${"height:16px;width:16px;"}" class="${"svelte-1vl3wh1"}">
+											<p class="${"yellow"}">use nft image</p>` : `<img${add_attribute("src", `${assets}/icons/unchecked.svg`, 0)} alt="${"Checked"}" style="${"height:16px;width:16px;"}" class="${"svelte-1vl3wh1"}">
 											<div style="${"width:8px"}"></div>
 											<p class="${"light-60"}">use nft image</p>`}</div></div></div>
 
 							<div style="${"width: 12px"}"></div>
 							<div class="${"input-fields svelte-1vl3wh1"}"><div class="${"input-field svelte-1vl3wh1"}"><div class="${"placeholder svelte-1vl3wh1"}"><p class="${"light-40"}">username</p></div>
-									${show_ens ? `${ens_loading ? `<div class="${"input-like svelte-1vl3wh1"}"><img src="${"icons/loader.svg"}" alt="${"loading"}" class="${"rotating svelte-1vl3wh1"}" style="${"height:16px;width:16px;"}">
+									${show_ens ? `${ens_loading ? `<div class="${"input-like svelte-1vl3wh1"}"><img${add_attribute("src", `${assets}/icons/loader.svg`, 0)} alt="${"loading"}" class="${"rotating svelte-1vl3wh1"}" style="${"height:16px;width:16px;"}">
 												<div style="${"width:4px"}"></div>
 												<p>loading ens...</p></div>` : `<div class="${"input-like svelte-1vl3wh1"}">${escape(ens_name)}</div>`}` : ``}
 									<input name="${"username"}" class="${"flex-input svelte-1vl3wh1"}" type="${"text"}" ${show_ens ? "hidden" : ""}${add_attribute("placeholder", data.user.username, 0)}${add_attribute("maxlength", username_input_limit, 0)}${add_attribute("value", username, 0)}${add_attribute("this", username_input_element, 0)}>
 									${!show_ens ? `<div class="${"limit svelte-1vl3wh1"}"><p><span class="${"yellow"}">${escape(username_input_length)}</span>/${escape(username_input_limit)}</p></div>` : ``}</div>
 								<div style="${"height: 8px"}"></div>
 								<div class="${"input-field svelte-1vl3wh1"}" style="${"cursor:pointer;"}"><input hidden type="${"checkbox"}" name="${"show_ens"}"${add_attribute("checked", show_ens, 1)}>
-									<img${add_attribute("src", show_ens ? "icons/checked.svg" : "icons/unchecked.svg", 0)} alt="${"Checked"}" style="${"height:16px;width:16px;"}" class="${"svelte-1vl3wh1"}">
+									<img${add_attribute(
+    "src",
+    show_ens ? `${assets}/icons/checked.svg` : `${assets}/icons/unchecked.svg`,
+    0
+  )} alt="${"Checked"}" style="${"height:16px;width:16px;"}" class="${"svelte-1vl3wh1"}">
 									<div style="${"width:4px"}"></div>
 									<p${add_attribute("class", show_ens ? "yellow" : "light-60", 0)}>use ens name</p></div>
 								<div style="${"height: 12px"}"></div>

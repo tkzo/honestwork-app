@@ -11,8 +11,6 @@
 	let user: UserType = data.user;
 	let skills: SkillType[] = data.skills;
 	let chosen_skill: SkillType | null = null;
-
-	$: console.log('Skill chosen:', chosen_skill);
 </script>
 
 <svelte:head>

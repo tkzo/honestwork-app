@@ -9,7 +9,7 @@ type OutputDataShape<T> = MaybeWithVoid<Omit<App.PageData, RequiredKeys<T>> & Pa
 type EnsureDefined<T> = T extends null | undefined ? {} : T;
 type OptionalUnion<U extends Record<string, any>, A extends keyof U = U extends U ? keyof U : never> = U extends unknown ? { [P in Exclude<A, keyof U>]?: never } & U : never;
 type PageParentData = EnsureDefined<LayoutData>;
-type LayoutRouteId = RouteId | "/" | "/(subpages)/auth" | "/(subpages)/mint" | "/creator/[address]" | "/job/[address]/[slot]" | "/jobs" | "/listings" | "/messages" | "/new_job" | "/profile" | "/skills" | null
+type LayoutRouteId = RouteId | "/" | "/(subpages)/auth" | "/(subpages)/mint" | "/creator/[address]" | "/job/[address]" | "/job/[address]/[slot]" | "/jobs" | "/listings" | "/messages" | "/new_job" | "/profile" | "/skills" | null
 type LayoutParams = RouteParams & { address?: string,slot?: string }
 type LayoutParentData = EnsureDefined<{}>;
 
