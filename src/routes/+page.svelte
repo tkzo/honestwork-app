@@ -133,6 +133,7 @@
 		justify-content: space-between;
 		border-bottom: 1px solid var(--color-light-10);
 		width: 80vw;
+		max-width: 960px;
 		padding: 12px;
 	}
 	.logo {
@@ -191,7 +192,7 @@
 		padding: 12px;
 		background: #101112;
 		border: 1px solid rgba(255, 255, 255, 0.2);
-		box-shadow: 0px 0px 50px rgba(255, 211, 105, 0.2);
+		box-shadow: 0px 0px 50px rgba(255, 211, 105, 0.1);
 		cursor: pointer;
 		font-weight: 600;
 		color: var(--color-primary);
@@ -210,6 +211,8 @@
 		top: 0;
 		left: 0;
 		width: 80vw;
+		max-width: 960px;
+		filter: drop-shadow(0px 0px 150px rgba(255, 211, 105, 0.15));
 	}
 	.app-img {
 		position: relative;

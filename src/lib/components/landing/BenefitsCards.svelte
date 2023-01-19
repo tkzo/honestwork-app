@@ -25,6 +25,8 @@
         justify-content: space-between;
         gap: 24px;
         width: 80vw;
+        max-width: 960px;
+
     }
     .benefits-card {
         display: flex;

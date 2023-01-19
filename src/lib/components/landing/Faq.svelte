@@ -17,6 +17,7 @@
         flex-direction: column;
         gap: 12px;
         width: 80vw;
+        max-width: 960px;
     }
     h2 {
         font-family: 'Proto Mono';
