@@ -31,7 +31,7 @@
                             <p class="feature">{card.feature2}</p>
                         </div>
                     </div>
-                    <a href="/jobs" class="button">{card.buttontext}</a>
+                    <a href="/jobs" class="cta">{card.buttontext}</a>
                 </div>
                 <div class="img-container">
                     <img src={card.imgsrc} alt={card.imgalt} class="featured-image">
@@ -55,7 +55,7 @@
                             <p class="feature">{card.feature2}</p>
                         </div>
                     </div>
-                    <a href="/jobs" class="button">{card.buttontext}</a>
+                    <a href="/jobs" class="cta">{card.buttontext}</a>
                 </div>
                 <div class="img-container">
                     <img src={card.imgsrc} alt={card.imgalt} class="featured-image">
@@ -72,6 +72,7 @@
         align-items: center;
         justify-content: center;
         width: 80vw;
+        max-width: 960px;
     }
     .line {
         height: 1px;
@@ -86,6 +87,7 @@
         align-items: center;
         gap: 120px;
         width: 80vw;
+        max-width: 960px;
         padding-bottom: 120px;;
         border-bottom: 1px solid var(--color-light-10);
     }
@@ -146,7 +148,7 @@
         width: 100%;
         max-width: 300px;
     }
-    .button {
+    .cta {
         box-sizing: border-box;
         display: flex;
         flex-direction: row;
@@ -155,11 +157,24 @@
         padding: 8px;
         gap: 10px;
         border: 1px solid var(--color-light-10);
-        filter: drop-shadow(0px 0px 50px var(--color-primary));
+		box-shadow: 0px 0px 50px rgba(255, 211, 105, 0.1);
         cursor: pointer;
         color: var(--color-primary);
         width: 247px;
     }
+    .button {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 12px;
+        border: 1px solid #FFD369;
+        color:var(--color-primary);
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 12px;
+    }
+    .cta:hover,
     .button:hover,
     .selected {
         background-color: var(--color-primary);
