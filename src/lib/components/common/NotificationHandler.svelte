@@ -12,7 +12,7 @@
 {:else if $page.route.id == '/jobs' || $page.route.id == '/skills' || $page.route.id == '/listings'}
 	<Notification notification={notifications.postjob} on:click={() => goto('/new_job')} />
 	<div style="height:16px;" />
-{:else if $page.route.id == '/new_job' || trimmedRoute == ('job' || 'creator')}
+{:else if $page.route.id == ('/new_job' || '/auth') || trimmedRoute == ('job' || 'creator')}
 	<Notification notification={notifications.mint} />
 	<div style="height:16px;" />
 {:else if $page.route.id == '/profile'}

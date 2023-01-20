@@ -188,6 +188,13 @@ a:visited {
 	color: var(--color-dark);
 }
 
+.link-frame {
+	cursor: pointer;
+}
+.link-frame:hover {
+	background-color: var(--color-light-2);
+}
+
 input {
 	outline: none;
 	border: none;

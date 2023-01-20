@@ -9,6 +9,9 @@
 	} from '$lib/stores/Network';
 	import { page } from '$app/stores';
 	import { assets } from '$app/paths';
+	import { user_signed_in } from '$lib/stores/State';
+
+	$: console.log('User signed in?:', $user_signed_in);
 </script>
 
 <main>
@@ -33,18 +36,16 @@
 		</a>
 	</div>
 	<div class="right-section">
-		{#if $userConnected && $xmtpConnected}
+		{#if $userConnected && $xmtpConnected && $user_signed_in}
 			<a class="messages" href="/messages">
-				<p class={$page.route.id == '/messages' ? 'yellow' : 'light-60 link'}>
-					messages(<span class="yellow">4</span>)
-				</p>
+				<p class={$page.route.id == '/messages' ? 'yellow' : 'light-60 link'}>messages</p>
 			</a>
-		{:else if $userConnected && !$xmtpConnected}
+		{:else if $userConnected && !$xmtpConnected && $user_signed_in}
 			<div class="messages">
 				<p class="yellow link" on:click={connectXmtp} on:keydown>connect xmtp</p>
 			</div>
 		{/if}
-		{#if $userConnected}
+		{#if $userConnected && $user_signed_in}
 			<a class="messages" href="/listings">
 				<p class={$page.route.id == '/listings' ? 'yellow' : 'light-60 link'}>listings</p>
 			</a>
@@ -56,9 +57,13 @@
 				{/if}
 				<div style="width:4px" />
 				<p class="yellow semibold link" on:click={connectWallet} on:keydown>connect</p>
-			{:else}
+			{:else if $user_signed_in}
 				<a href={`/profile`}>
 					<p class={$page.route.id == '/profile' ? 'yellow' : 'light-60 link'}>profile</p>
+				</a>
+			{:else}
+				<a href={`/auth`}>
+					<p class="yellow">login to hw</p>
 				</a>
 			{/if}
 		</div>

@@ -740,14 +740,20 @@
 				{/if}
 			{:else}
 				<div style="height: 16px" />
-				<section style="width:520px">
+				<section style="width:400px; display:flex; flex-direction:column;">
 					<div class="gm">
 						<div class="gm-inner">
 							<p class="yellow">wrong account</p>
 						</div>
 					</div>
 					<div class="gm">
-						<p>switch to <span class="yellow">{data.user.address}</span> to see this page.</p>
+						<p>
+							switch to <span class="yellow"
+								>{data.user.address.substring(0, 6) +
+									'...' +
+									data.user.address.substring($userAddress.length - 4)}</span
+							> to see this page.
+						</p>
 					</div>
 				</section>
 			{/if}

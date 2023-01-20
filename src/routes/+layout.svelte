@@ -8,6 +8,11 @@
 	import LogRocket from 'logrocket';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import ToastHandler from '$lib/components/common/ToastHandler.svelte';
+	import type { LayoutServerData } from './$types';
+	import { user_signed_in } from '$lib/stores/State';
+
+	export let data: LayoutServerData;
+	user_signed_in.set(data.signed!);
 
 	// trackers
 	LogRocket.init('2wdgml/honestwork');
@@ -51,8 +56,8 @@
 	{#if $page.route.id !== '/'}
 		<Navigation />
 		<div style="height:32px;" />
-	{:else}
-		<ToastHandler />
+		<!-- {:else}
+		<ToastHandler /> -->
 	{/if}
 	<NotificationHandler />
 	<slot />

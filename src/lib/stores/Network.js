@@ -30,19 +30,6 @@ let chain_names = {
 	1453: 'devm'
 };
 
-const replacerFunc = () => {
-	const visited = new WeakSet();
-	return (key, value) => {
-		if (typeof value === 'object' && value !== null) {
-			if (visited.has(value)) {
-				return;
-			}
-			visited.add(value);
-		}
-		return value;
-	};
-};
-
 export const connectIfCached = async () => {
 	let local = localStorage.getItem('honestwork_connection', 'true');
 	if (local && local == 'true') {

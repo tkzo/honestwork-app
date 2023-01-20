@@ -1,5 +1,8 @@
 {
-	"/": [],
+	"/": [
+		"src/routes/+layout.server.ts",
+		"src/routes/+layout.server.ts"
+	],
 	"/api/alchemy/[addr]/[id]": [
 		"src/routes/api/alchemy/[addr]/[id]/+server.ts"
 	],
@@ -58,32 +61,45 @@
 		"src/routes/api/watchlist/remove/+server.ts"
 	],
 	"/(subpages)/auth": [
-		"src/routes/(subpages)/auth/+page.server.ts"
+		"src/routes/(subpages)/auth/+page.server.ts",
+		"src/routes/+layout.server.ts"
 	],
 	"/creator/[address]": [
-		"src/routes/creator/[address]/+page.server.ts"
+		"src/routes/creator/[address]/+page.server.ts",
+		"src/routes/+layout.server.ts"
 	],
 	"/jobs": [
-		"src/routes/jobs/+page.server.ts"
+		"src/routes/jobs/+page.server.ts",
+		"src/routes/+layout.server.ts"
 	],
 	"/job/[address]": [
-		"src/routes/job/[address]/+page.server.ts"
+		"src/routes/job/[address]/+page.server.ts",
+		"src/routes/+layout.server.ts"
 	],
 	"/job/[address]/[slot]": [
-		"src/routes/job/[address]/[slot]/+page.server.ts"
+		"src/routes/job/[address]/[slot]/+page.server.ts",
+		"src/routes/+layout.server.ts"
 	],
 	"/listings": [
-		"src/routes/listings/+page.server.ts"
+		"src/routes/listings/+page.server.ts",
+		"src/routes/+layout.server.ts"
 	],
 	"/messages": [
-		"src/routes/messages/+page.server.ts"
+		"src/routes/messages/+page.server.ts",
+		"src/routes/+layout.server.ts"
 	],
-	"/(subpages)/mint": [],
-	"/new_job": [],
+	"/(subpages)/mint": [
+		"src/routes/+layout.server.ts"
+	],
+	"/new_job": [
+		"src/routes/+layout.server.ts"
+	],
 	"/profile": [
-		"src/routes/profile/+page.server.ts"
+		"src/routes/profile/+page.server.ts",
+		"src/routes/+layout.server.ts"
 	],
 	"/skills": [
-		"src/routes/skills/+page.server.ts"
+		"src/routes/skills/+page.server.ts",
+		"src/routes/+layout.server.ts"
 	]
 }
