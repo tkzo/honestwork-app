@@ -29,8 +29,8 @@
 	const fetchUser = async () => {
 		const res = await fetch(`${base}/api/user/${skill.user_address}`);
 		user = await res.json();
+		ens_name = user.ens_name ?? (await $nodeProvider.lookupAddress(skill.user_address));
 		await getNft();
-		ens_name = await $nodeProvider.lookupAddress(skill.user_address);
 	};
 	const nextImage = () => {
 		if (chosen_image < trimmed_images.length - 1) {

@@ -7,6 +7,7 @@
 	import { page } from '$app/stores';
 	import LogRocket from 'logrocket';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
+	import ToastHandler from '$lib/components/common/ToastHandler.svelte';
 
 	// trackers
 	LogRocket.init('2wdgml/honestwork');
@@ -45,11 +46,13 @@
 
 <main>
 	<div class="toast-container">
-		<SvelteToast options={{ duration: 8000, intro: { y: -20 } }} />
+		<SvelteToast options={{ duration: 5000, intro: { y: -20 } }} />
 	</div>
 	{#if $page.route.id !== '/'}
 		<Navigation />
 		<div style="height:32px;" />
+	{:else}
+		<ToastHandler />
 	{/if}
 	<NotificationHandler />
 	<slot />

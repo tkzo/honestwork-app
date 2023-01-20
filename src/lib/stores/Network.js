@@ -132,12 +132,14 @@ export const getWatchlist = async () => {
 			const response = await fetch(`/api/watchlist/get`);
 			const data = await response.json();
 			user_watchlist.set([]);
-			data.forEach((item) => {
-				user_watchlist.update((w) => {
-					w.push(item);
-					return w;
+			if (data != null && data.length > 0) {
+				data.forEach((item) => {
+					user_watchlist.update((w) => {
+						w.push(item);
+						return w;
+					});
 				});
-			});
+			}
 		} catch (error) {
 			toast.push('Error fetching watchlist');
 		}
@@ -150,12 +152,14 @@ export const getFavorites = async () => {
 			const response = await fetch(`/api/favorites/get`);
 			const data = await response.json();
 			user_favorites.set([]);
-			data.forEach((item) => {
-				user_favorites.update((w) => {
-					w.push(item);
-					return w;
+			if (data != null && data.length > 0) {
+				data.forEach((item) => {
+					user_favorites.update((w) => {
+						w.push(item);
+						return w;
+					});
 				});
-			});
+			}
 		} catch (error) {
 			toast.push('Error fetching favorites');
 		}

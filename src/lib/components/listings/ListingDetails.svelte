@@ -23,25 +23,12 @@
 	let viewport: Element;
 	let contents: Element;
 	let chosen_tab: string = 'applicants' || 'edit mode';
-	let username = job.username;
-	let title = job.title;
-	let email = job.email;
-	let description = job.description;
-	let budget = job.budget;
-	let installments = job.installments;
+
 	let file_url: string;
 	let jobForm: HTMLFormElement;
-	let tokens_selected: TokenSelection[] =
-		job.tokens_accepted?.map((n) => {
-			return { chain_id: n.id, token_address: n.tokens[0].address };
-		}) ?? [];
-	let image_url: string = job.image_url;
 	let upload_url: Response;
 	let show_ens: boolean = false;
 	let show_sticky_menu: boolean = false;
-	let sticky_duration: number = parseInt(job.sticky_duration);
-	let links: string[] = job.links;
-	let tags: string[] = job.tags;
 	let chosen_network: Network = chains[0];
 	let polygonTokens = chains.find((chain) => chain.id == 56)?.tokens!;
 	let chosen_payment_token = polygonTokens[0];
@@ -53,8 +40,23 @@
 	let description_length = 0;
 	let description_element: HTMLTextAreaElement;
 	let tx_hash = '';
-	let timezone: number = job.timezone ? parseInt(job.timezone.replace('UTC', '')) : 0;
 	let parsed_filename: string;
+
+	$: username = job.username;
+	$: title = job.title;
+	$: email = job.email;
+	$: description = job.description;
+	$: budget = job.budget;
+	$: installments = job.installments;
+	$: sticky_duration = parseInt(job.sticky_duration);
+	$: links = job.links;
+	$: tags = job.tags;
+	$: timezone = job.timezone ? parseInt(job.timezone.replace('UTC', '')) : 0;
+	$: tokens_selected =
+		job.tokens_accepted?.map((n) => {
+			return { chain_id: n.id, token_address: n.tokens[0].address };
+		}) ?? [];
+	$: image_url = job.image_url;
 
 	onMount(() => {
 		changes_made.set(false);
@@ -144,6 +146,7 @@
 			Object.entries({ ...fields, file }).forEach(([key, value]) => {
 				formData.append(key, value as string);
 			});
+			console.log('Formdata:', formData);
 			const upload = await fetch(url, {
 				method: 'POST',
 				body: formData
@@ -168,6 +171,7 @@
 		const res = await fetch(
 			`/api/update-job-url/${e.target.files[0].name}/${$userAddress}/${job.slot}`
 		);
+		console.log('Upload res:', res);
 		upload_url = res;
 	};
 	const setSticky = (duration: number) => {
@@ -257,7 +261,7 @@
 						{/if}
 					{:else}
 						<div class="edit">
-							{#if $userConnected && $xmtpConnected}
+							{#if $userConnected}
 								<input hidden type="number" name="job_slot" value={$chosen_job_slot} />
 								<input hidden type="text" name="user_address" value={$userAddress} />
 								<input hidden type="text" name="tx_hash" value={tx_hash} />
@@ -266,9 +270,7 @@
 								<div class="image-section">
 									<div
 										class="image-card"
-										style={`background-image:url(${
-											image_url && image_url != '' ? image_url : placeholder_image
-										})`}
+										style={`background-image:url(${image_url ?? placeholder_image})`}
 									>
 										<div class="image-tint" />
 										<div class="upload-button">

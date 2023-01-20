@@ -4,7 +4,8 @@
 		userConnected,
 		connectWallet,
 		connecting,
-		xmtpConnected
+		xmtpConnected,
+		connectXmtp
 	} from '$lib/stores/Network';
 	import { page } from '$app/stores';
 	import { assets } from '$app/paths';
@@ -38,6 +39,10 @@
 					messages(<span class="yellow">4</span>)
 				</p>
 			</a>
+		{:else if $userConnected && !$xmtpConnected}
+			<div class="messages">
+				<p class="yellow link" on:click={connectXmtp} on:keydown>connect xmtp</p>
+			</div>
 		{/if}
 		{#if $userConnected}
 			<a class="messages" href="/listings">

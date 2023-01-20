@@ -66,8 +66,7 @@
 	<div style="width:12px" />
 	<div class="job">
 		{#if active_job}
-			<ListingDetails job={active_job} {feedHeight} />
-			<!-- <svelte:component this={selected.component} job={active_job} {feedHeight} /> -->
+			<ListingDetails bind:job={active_job} {feedHeight} />
 		{/if}
 	</div>
 </main>

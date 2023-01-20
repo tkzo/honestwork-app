@@ -50,7 +50,9 @@
 				<div style="width:4px" />
 				<p class="light-40 ">
 					xmtp <span
-						style={$xmtpConnected ? 'color:var(--color-success)' : 'color:var(--color-error)'}
+						style={$xmtpConnected
+							? 'color:var(--color-success)'
+							: 'color:var(--color-error); animation: blinking 2s linear infinite;'}
 						>{$xmtpConnected ? 'active' : 'n/a'}</span
 					>
 				</p>

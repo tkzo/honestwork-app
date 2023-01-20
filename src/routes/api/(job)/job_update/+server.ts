@@ -4,7 +4,6 @@ import { env } from '$env/dynamic/private';
 export const POST: RequestHandler = async ({ request, cookies }) => {
 	const userAddress = cookies.get('honestwork_address')!;
 	const userSignature = cookies.get('honestwork_signature');
-	const userSalt = cookies.get('honestwork_salt');
 
 	let data = await request.json();
 
@@ -40,7 +39,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		created_at: new Date().getTime()
 	};
 
-	const url = `${apiUrl}/jobs/${userAddress}/${userSalt}/${userSignature}`;
+	const url = `${apiUrl}/jobs/${userAddress}/${userSignature}`;
 	const options = {
 		method: 'PATCH',
 		body: JSON.stringify(body),

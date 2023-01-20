@@ -67,7 +67,6 @@ export const actions = {
 	profile: async ({ cookies, request }: import('./$types').RequestEvent) => {
 		const userAddress = cookies.get('honestwork_address');
 		const userSignature = cookies.get('honestwork_signature');
-		const userSalt = cookies.get('honestwork_salt');
 		const data = await request.formData();
 		let cloud_url;
 		if (data.get('file_url') != '') {
@@ -76,6 +75,7 @@ export const actions = {
 		const body = {
 			username: data.get('username'),
 			show_ens: data.get('show_ens') == 'on' ? true : false,
+			ens_name: data.get('ens_name'),
 			title: data.get('title'),
 			email: data.get('email'),
 			bio: data.get('bio'),
@@ -87,7 +87,9 @@ export const actions = {
 			links: [data.get('link-0'), data.get('link-1'), data.get('link-2')]
 		};
 
-		const url = `${apiUrl}/users/${userAddress}/${userSalt}/${userSignature}`;
+		console.log('body: ', body);
+
+		const url = `${apiUrl}/users/${userAddress}/${userSignature}`;
 		let response = await fetch(url, {
 			method: 'PATCH',
 			body: JSON.stringify(body),
@@ -103,7 +105,6 @@ export const actions = {
 	skills: async ({ cookies, request }: import('./$types').RequestEvent) => {
 		const userAddress = cookies.get('honestwork_address');
 		const userSignature = cookies.get('honestwork_signature');
-		const userSalt = cookies.get('honestwork_salt');
 		const data = await request.formData();
 		let cloud_url_0 = '';
 		let cloud_url_1 = '';
@@ -176,7 +177,7 @@ export const actions = {
 		};
 
 		if (data.get('skill_method') == 'add') {
-			const url = `${apiUrl}skills/${userAddress}/${userSalt}/${userSignature}`;
+			const url = `${apiUrl}skills/${userAddress}/${userSignature}`;
 			let response = await fetch(url, {
 				method: 'POST',
 				body: JSON.stringify(body),
@@ -189,9 +190,7 @@ export const actions = {
 				console.log(json);
 			}
 		} else {
-			const url = `${apiUrl}/skills/${userAddress}/${userSalt}/${userSignature}/${data.get(
-				'skill_slot'
-			)}`;
+			const url = `${apiUrl}/skills/${userAddress}/${userSignature}/${data.get('skill_slot')}`;
 			let response = await fetch(url, {
 				method: 'PATCH',
 				body: JSON.stringify(body),

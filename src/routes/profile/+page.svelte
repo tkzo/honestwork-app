@@ -80,6 +80,7 @@
 	let bio_limit = 1000;
 	let infobox_marginleft = '532px';
 	let feedHeight = 0;
+	let ens_component: HTMLInputElement;
 
 	onMount(async () => {
 		connectIfCached();
@@ -266,6 +267,8 @@
 					console.error('Upload failed.');
 				}
 			}
+			if (show_ens) {
+			}
 			profileForm.submit();
 		}
 	};
@@ -329,6 +332,7 @@
 						on:submit|preventDefault={submitProfile}
 						action="?/profile"
 					>
+						<input hidden name="ens_name" bind:value={ens_name} bind:this={ens_component} />
 						<section class="bar">
 							<div class="tabs">
 								<p class="tab link semibold yellow">profile</p>
@@ -351,12 +355,20 @@
 								</p>
 							</div>
 
-							<button
-								class={` semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
-								style={`opacity: ${$blink}`}
-							>
-								save changes</button
-							>
+							<div class="save-changes">
+								{#if $submitting}
+									<img
+										src={`${assets}/icons/loader.svg`}
+										alt="loading"
+										class="rotating"
+										style="height:16px;width:16px;"
+									/>
+									<div style="width:4px;" />
+								{/if}
+								<button class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
+									>save changes</button
+								>
+							</div>
 						</section>
 						<div style="height: 16px" />
 						<section

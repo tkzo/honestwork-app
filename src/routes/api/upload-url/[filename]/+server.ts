@@ -55,7 +55,7 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 
 	try {
 		const url = await createPresignedPost(s3Client, {
-			Bucket: env.PRIVATE_SPACES_BUCKETNAME!,
+			Bucket: env.PRIVATE_SPACES_BUCKETNAME,
 			Key: `${userAddress}/profile/${params.filename}`,
 			Conditions: [
 				['content-length-range', 0, 1048576] // up to 1 MB
@@ -66,6 +66,7 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 			},
 			Expires: 600
 		});
+		console.log('url', url);
 		return json(url);
 	} catch (err) {
 		console.log('Error', err);

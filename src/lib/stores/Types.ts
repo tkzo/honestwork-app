@@ -1,8 +1,8 @@
 export type FAQCard = {
-	id:number;
+	id: number;
 	question: string;
-	answer: string
-}
+	answer: string;
+};
 
 export type FeatureCard = {
 	title: string;
@@ -14,8 +14,8 @@ export type FeatureCard = {
 	feature2: string;
 	buttontext: string;
 	imgsrc: string;
-	imgalt:string;
-}
+	imgalt: string;
+};
 
 export type SkillType = {
 	slot: number;
@@ -32,6 +32,7 @@ export type SkillType = {
 export type UserType = {
 	username: string;
 	show_ens: boolean;
+	ens_name: string;
 	title: string;
 	image_url: string;
 	show_nft: boolean;

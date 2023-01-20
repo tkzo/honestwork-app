@@ -1,6 +1,5 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { ethers } from 'ethers';
 import { env } from '$env/dynamic/private';
 
 const apiUrl =
@@ -18,8 +17,4 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	} else {
 		throw redirect(301, '/mint');
 	}
-};
-
-const verifySignature = (salt: string, signature: string) => {
-	return ethers.utils.verifyMessage(salt, signature);
 };
