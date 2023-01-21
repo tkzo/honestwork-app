@@ -303,6 +303,7 @@
 					<input hidden type="number" name="job_slot" bind:value={$chosen_job_slot} />
 					<input hidden type="text" name="user_address" bind:value={$userAddress} />
 					<input hidden type="text" name="signature" bind:value={signature} />
+					<input hidden type="text" name="sticky_duration" bind:value={sticky_duration} />
 
 					<input hidden type="text" name="tx_hash" bind:value={tx_hash} />
 					<input hidden type="text" name="token_paid" bind:value={chosen_payment_token.address} />

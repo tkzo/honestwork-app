@@ -27,6 +27,7 @@ export type SkillType = {
 	minimum_price: number;
 	links: Array<string>;
 	publish: boolean;
+	tags: Array<string>;
 };
 
 export type UserType = {

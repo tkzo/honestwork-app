@@ -1,11 +1,9 @@
 <script lang="ts">
 	import {
 		connectWallet,
-		connectXmtp,
 		networkSigner,
 		userAddress,
 		userConnected,
-		xmtpConnected,
 		userState
 	} from '$lib/stores/Network';
 

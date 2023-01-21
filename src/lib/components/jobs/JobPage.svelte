@@ -244,6 +244,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: flex-start;
+		max-width: 320px;
 	}
 	.pfp {
 		width: 94px;

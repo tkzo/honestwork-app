@@ -300,6 +300,7 @@
 				counter++;
 			}
 		}
+		console.log('Form beofre submit:', skillsForm);
 		skillsForm.submit();
 	};
 	const updateInputLengths = () => {
@@ -309,6 +310,10 @@
 
 		title_input_length = title_input_element?.value.length ?? data.user.title.length;
 		bio_length = bio_element?.value.length ?? data.user.bio.length;
+	};
+	let tags: string[] = [];
+	const handleTagsUpdate = (e: any) => {
+		tags = e.detail.tags;
 	};
 </script>
 
@@ -642,6 +647,8 @@
 						on:submit|preventDefault={submitSkills}
 						action="?/skills"
 					>
+						<input hidden name="tags" value={tags} />
+
 						<input hidden name="skill_method" value={$skill_add ? 'add' : 'edit'} />
 						{#if $chosen_skill_slot == -1}
 							<section class="bar">
@@ -701,7 +708,7 @@
 							</section>
 						{/if}
 						<div style="height: 16px" />
-						<Skills {data} />
+						<Skills {data} on:tag_update={handleTagsUpdate} />
 					</form>
 				{:else if chosenTab == 'watchlist'}
 					<section class="bar">
@@ -757,6 +764,7 @@
 					</div>
 				</section>
 			{/if}
+			<div style="height: 64px" />
 		</div>
 	</div>
 	<Svrollbar {viewport} {contents} />

@@ -12,11 +12,13 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 			? env.PRIVATE_HONESTWORK_API
 			: env.PRIVATE_LOCAL_HONESTWORK_API;
 
-	let cloud_url;
-	if (data.image_url != '') {
+	let cloud_url = '';
+	if (data.image_url != undefined) {
 		cloud_url =
 			env.PRIVATE_SPACES_URL + '/' + userAddress + '/job/' + data.job_slot + '/' + data.image_url;
 	}
+	console.log('Image URL: ' + data.image_url);
+	console.log('Cloud URL: ' + cloud_url);
 
 	const body = {
 		slot: parseInt(data.job_slot),
@@ -25,7 +27,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		title: data.title,
 		email: data.email,
 		description: data.description,
-		image_url: cloud_url,
 		token_paid: data.token_paid,
 		budget: parseInt(data.budget),
 		installments: parseInt(data.installments),
@@ -36,7 +37,8 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		tx_hash: data.tx_hash,
 		tags: data.tags,
 		timezone: data.timezone,
-		created_at: new Date().getTime()
+		created_at: new Date().getTime(),
+		image_url: cloud_url
 	};
 
 	const url = `${apiUrl}/jobs/${userAddress}/${userSignature}`;

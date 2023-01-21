@@ -13,7 +13,6 @@ export const load = (async ({ cookies }) => {
 		const callUrl = `${apiUrl}/verify/${userAddress}/${userSignature}`;
 		let callResponse = await fetch(callUrl);
 		let calldata = await callResponse.json();
-		console.log('calldata: ' + calldata);
 		if (calldata == 'success') {
 			return {
 				signed: true

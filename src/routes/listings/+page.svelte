@@ -66,7 +66,9 @@
 	<div style="width:12px" />
 	<div class="job">
 		{#if active_job}
-			<ListingDetails bind:job={active_job} {feedHeight} />
+			{#key $chosen_job_slot}
+				<ListingDetails bind:job={active_job} {feedHeight} />
+			{/key}
 		{/if}
 	</div>
 </main>

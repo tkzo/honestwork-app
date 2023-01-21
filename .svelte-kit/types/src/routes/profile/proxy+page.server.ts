@@ -106,6 +106,8 @@ export const actions = {
 		const userAddress = cookies.get('honestwork_address');
 		const userSignature = cookies.get('honestwork_signature');
 		const data = await request.formData();
+
+		console.log('Data:', data);
 		let cloud_url_0 = '';
 		let cloud_url_1 = '';
 		let cloud_url_2 = '';
@@ -173,7 +175,8 @@ export const actions = {
 			],
 			description: data.get('description'),
 			publish: data.get('publish') == 'on' ? true : false,
-			created_at: Math.floor(new Date().getTime() / 1000)
+			created_at: Math.floor(new Date().getTime() / 1000),
+			tags: data.get('tags')!.toString().split(',')
 		};
 
 		if (data.get('skill_method') == 'add') {

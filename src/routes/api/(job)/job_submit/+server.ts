@@ -40,7 +40,8 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		tx_hash: data.tx_hash,
 		tags: data.tags,
 		timezone: data.timezone,
-		created_at: new Date().getTime()
+		created_at: new Date().getTime(),
+		email: data.email
 	};
 
 	const url = `${apiUrl}/jobs/${data.user_address}/${data.signature}`;

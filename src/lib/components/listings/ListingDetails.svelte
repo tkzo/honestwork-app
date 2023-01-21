@@ -42,21 +42,21 @@
 	let tx_hash = '';
 	let parsed_filename: string;
 
-	$: username = job.username;
-	$: title = job.title;
-	$: email = job.email;
-	$: description = job.description;
-	$: budget = job.budget;
-	$: installments = job.installments;
-	$: sticky_duration = parseInt(job.sticky_duration);
-	$: links = job.links;
-	$: tags = job.tags;
-	$: timezone = job.timezone ? parseInt(job.timezone.replace('UTC', '')) : 0;
-	$: tokens_selected =
+	let username = job.username;
+	let title = job.title;
+	let email = job.email;
+	let description = job.description;
+	let budget = job.budget;
+	let installments = job.installments;
+	let sticky_duration = parseInt(job.sticky_duration);
+	let links = job.links;
+	let tags = job.tags;
+	let timezone = job.timezone ? parseInt(job.timezone.replace('UTC', '')) : 0;
+	let tokens_selected =
 		job.tokens_accepted?.map((n) => {
 			return { chain_id: n.id, token_address: n.tokens[0].address };
 		}) ?? [];
-	$: image_url = job.image_url;
+	let image_url = job.image_url;
 
 	onMount(() => {
 		changes_made.set(false);
@@ -111,8 +111,11 @@
 			console.log(parsed.error);
 			return;
 		} else {
-			uploadImage(e);
-			formObj.image_url = parsed_filename;
+			if (upload_url) {
+				uploadImage(e);
+				formObj.image_url = parsed_filename;
+			}
+
 			jobForm.tokens_accepted = JSON.stringify(formObj.tokens_accepted);
 			let stringified = JSON.stringify(formObj);
 			const url = '/api/job_update';

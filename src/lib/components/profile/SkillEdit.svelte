@@ -2,7 +2,10 @@
 	import { onMount } from 'svelte';
 	import { skill_upload_urls, chosen_skill_slot, changes_made } from '$lib/stores/State';
 	import { userAddress } from '$lib/stores/Network';
+	import { shortcut } from '$lib/stores/Shortcut';
+	import { createEventDispatcher } from 'svelte';
 
+	const dispatch = createEventDispatcher();
 	//todo: move images to img elements instead of div backgrounds (won't show ones with empty letter in its name)
 
 	export let skill: any;
@@ -45,6 +48,7 @@
 	let title_input_element: HTMLInputElement;
 	let title_input_length: number;
 	let title_input_limit = 15;
+	let tag_input: HTMLInputElement;
 
 	$: if (
 		title != skill.title ||
@@ -113,6 +117,21 @@
 	});
 	let show_infobox = false;
 	let publish: boolean = skill.publish;
+	let tags: string[] = skill.tags;
+
+	const handleTagEntry = (e: any) => {
+		if (e.target?.value !== '' && e.pointerType != 'mouse') tags.push(e.target?.value);
+		tags = tags;
+		console.log('Dispatching tag update');
+		dispatch('tag_update', {
+			tags: tags
+		});
+		tag_input.value = '';
+	};
+	const handleRemoveTag = (index: number) => {
+		tags.splice(index, 1);
+		tags = tags;
+	};
 </script>
 
 <section>
@@ -120,6 +139,7 @@
 		<input hidden type="number" name="skill_slot" value={$chosen_skill_slot} />
 		<input hidden type="text" name="user_address" value={$userAddress} />
 		<input hidden type="checkbox" name="publish" bind:checked={publish} />
+
 		{#if publish}
 			<p class="light-60">status: <span class="light">published</span></p>
 			<p class="yellow" on:click={() => (publish = !publish)} on:keydown style="cursor:pointer;">
@@ -382,6 +402,31 @@
 	</div>
 </div>
 <div style="height:16px;" />
+<div class="input-field">
+	<div class="placeholder">
+		<p class="light-40">tags</p>
+	</div>
+	<input
+		class="flex-input"
+		type="text"
+		use:shortcut={{ code: 'Enter' }}
+		on:click={(e) => handleTagEntry(e)}
+		bind:this={tag_input}
+		placeholder="enter at least 1 tag"
+	/>
+</div>
+<div style="height:8px" />
+{#if tags.length > 0}
+	<div class="tags">
+		{#each tags as tag, i}
+			<div class="tag" on:click={() => handleRemoveTag(i)} on:keydown>
+				<p class="light-60">{tag}</p>
+				<div class="close-icon" />
+			</div>
+		{/each}
+	</div>
+{/if}
+<div style="height:16px;" />
 <div class="input-fields">
 	<div class="input-field">
 		<div class="placeholder">
@@ -540,5 +585,34 @@
 		flex-direction: row;
 		justify-content: space-between;
 		padding: 8px;
+	}
+	.tags {
+		width: calc(100% - 100px);
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+	.tag {
+		padding: 8px;
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--color-light-10);
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		cursor: pointer;
+	}
+	.tag:hover {
+		background-color: var(--color-light-2);
+	}
+	.tag > p {
+		font-size: 11px;
+		line-height: 12px;
+	}
+	.tag:hover .close-icon {
+		background: url('icons/close.svg');
 	}
 </style>
