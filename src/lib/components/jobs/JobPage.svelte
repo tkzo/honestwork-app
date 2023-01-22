@@ -7,6 +7,9 @@
 	import { userAddress, userConnected } from '$lib/stores/Network';
 	import { toast } from '@zerodevx/svelte-toast';
 	import { base, assets } from '$app/paths';
+	import { page } from '$app/stores';
+	//@ts-ignore
+	import Clipboard from 'svelte-clipboard';
 
 	export let job: JobType;
 	export let show_tags: boolean = false;
@@ -31,37 +34,6 @@
 		const tokens = chains.find((chain) => chain.id == chain_id)?.tokens;
 		const symbol = tokens?.find((token) => token.address == address)?.symbol;
 		return symbol;
-	};
-	//todo: allow only once (validate on api as well)
-	const handleApply = async () => {
-		if ($userConnected) {
-			try {
-				const url = `${base}/api/job_apply/${job.user_address}/${job.slot}`;
-				const response = await fetch(url, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({
-						user_address: $userAddress,
-						job_id: `job:${job.user_address}:${job.slot}`,
-						cover_letter: `lord,pls take me.`
-					})
-				});
-				const data = await response.json();
-				if (data == 'success') {
-					toast.push(
-						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Application received</p>`
-					);
-				} else {
-					toast.push(
-						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
-					);
-				}
-			} catch (e) {
-				console.log(e);
-			}
-		}
 	};
 	const handleWatch = async () => {
 		if ($userConnected) {
@@ -110,19 +82,29 @@
 			</div>
 		</div>
 		<div class="right-section">
-			<div class="button" on:click={handleApply} on:keydown>
-				<p class="yellow">apply to this job</p>
-			</div>
+			{#if $page.route.id == '/jobs'}
+				<a class="button" href={`/job/${job.user_address}/${job.slot}`}>
+					<p class="yellow">apply to this job</p>
+				</a>
+			{/if}
 			<div style="height:8px" />
 			<div class="button link" on:click={handleWatch} on:keydown>
 				<p class="light-60">add to watchlist</p>
 			</div>
 			<div style="height:8px" />
-			<a class="button" href={`job/${job.user_address}/${job.slot}`}>
-				<p class="light-60">share job</p>
-				<div style="width:4px;" />
-				<img src="/icons/external.svg" alt="share" style="margin-top:-2px;" />
-			</a>
+			<Clipboard
+				text={`https://honestwork.app/job/${job.user_address}/${job.slot}`}
+				let:copy
+				on:copy={() => {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>copied to clipboard!</p>`
+					);
+				}}
+			>
+				<div class="button" on:click={copy} on:keydown>
+					<p class="light-60">share job link</p>
+				</div>
+			</Clipboard>
 		</div>
 	</div>
 	<div class="wrapper">

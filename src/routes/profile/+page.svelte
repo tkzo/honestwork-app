@@ -26,6 +26,7 @@
 	import Watchlist from '$lib/components/profile/Watchlist.svelte';
 	import { toast } from '@zerodevx/svelte-toast';
 	import Favorites from '$lib/components/profile/Favorites.svelte';
+	import { Jumper } from 'svelte-loading-spinners';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
@@ -745,7 +746,7 @@
 					<div style="height: 16px" />
 					<Favorites />
 				{/if}
-			{:else}
+			{:else if $userConnected && $userAddress.toLowerCase() != data.user.address.toLowerCase()}
 				<div style="height: 16px" />
 				<section style="width:400px; display:flex; flex-direction:column;">
 					<div class="gm">
@@ -763,6 +764,8 @@
 						</p>
 					</div>
 				</section>
+			{:else}
+				<Jumper />
 			{/if}
 			<div style="height: 64px" />
 		</div>

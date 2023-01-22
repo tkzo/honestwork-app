@@ -6,6 +6,7 @@
 		userConnected,
 		userState
 	} from '$lib/stores/Network';
+	import { user_signed_in } from '$lib/stores/State';
 
 	let myform: HTMLFormElement;
 	let signature: string;
@@ -25,7 +26,7 @@
 </svelte:head>
 
 <main>
-	{#if $userConnected && $userState > 0}
+	{#if $userConnected && $userState > 0 && !$user_signed_in}
 		<section>
 			<div class="gm">
 				<div class="gm-inner">
