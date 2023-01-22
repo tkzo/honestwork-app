@@ -3,7 +3,6 @@
 	import { connectWallet } from '$lib/stores/Network';
 	import { Svrollbar } from 'svrollbar';
 	import { assets } from '$app/paths';
-	// import { userConnected, xmtpConnected, userState } from '$lib/stores/Network';
 	import FeaturesCards from '$lib/components/landing/FeaturesCards.svelte';
 	import BenefitsCards from '$lib/components/landing/BenefitsCards.svelte';
 	import Faq from '$lib/components/landing/Faq.svelte';

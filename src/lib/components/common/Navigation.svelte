@@ -1,6 +1,5 @@
 <script>
 	import {
-		userAddress,
 		userConnected,
 		connectWallet,
 		connecting,
@@ -10,8 +9,6 @@
 	import { page } from '$app/stores';
 	import { assets } from '$app/paths';
 	import { user_signed_in } from '$lib/stores/State';
-
-	$: console.log('User signed in?:', $user_signed_in);
 </script>
 
 <main>

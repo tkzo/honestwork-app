@@ -31,13 +31,18 @@ let chain_names = {
 };
 
 export const connectIfCached = async () => {
-	let local = localStorage.getItem('honestwork_connection', 'true');
-	if (local && local == 'true') {
-		connectWallet();
+	if (!get(userConnected)) {
+		console.log('Connecting cached wallet...');
+
+		let local = localStorage.getItem('honestwork_connection', 'true');
+		if (local && local == 'true') {
+			connectWallet();
+		}
 	}
 };
 
 export const connectWallet = async () => {
+	console.log('Connecting wallet...');
 	connecting.set(true);
 	try {
 		const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -56,6 +61,9 @@ export const connectWallet = async () => {
 			}
 		}
 		userConnected.set(true);
+		toast.push(
+			`<p class="light-60"><span style='color:var(--color-success)'>success: </span>wallet connected.</p>`
+		);
 		let local = localStorage.getItem('honestwork_connection', 'true');
 		if (local != 'true') {
 			localStorage.setItem('honestwork_connection', 'true');
@@ -79,6 +87,9 @@ export const connectXmtp = async () => {
 			xmtpClient.set(xc);
 			xmtpConnecting.set(false);
 			xmtpConnected.set(true);
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-success)'>success: </span>xmtp connected.</p>`
+			);
 		}
 	} catch (err) {
 		console.log('error:', err);

@@ -4,8 +4,8 @@
 		networkSigner,
 		userConnected,
 		connectWallet,
-		xmtpConnected,
-		userAddress
+		userAddress,
+		connectIfCached
 	} from '$lib/stores/Network';
 	import { JobInput } from '$lib/stores/Validation';
 	import type { JobType, Network, Token } from '$lib/stores/Types';
@@ -26,7 +26,7 @@
 	import { onMount } from 'svelte';
 
 	onMount(() => {
-		connectWallet();
+		connectIfCached();
 	});
 
 	//todo: upgrade tags when api is rdy
