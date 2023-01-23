@@ -22,13 +22,19 @@
 				});
 				const data = await response.json();
 				if (data == 'success') {
-					toast.push('Removed from watchlist.');
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Removed from watchlist.</p>`
+					);
 					getWatchlist();
 				} else {
-					toast.push('Failed to remove from watchlist.');
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>Failed to remove from watchlist.</p>`
+					);
 				}
 			} catch (error) {
-				toast.push('Failed to remove from watchlist');
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>Failed to remove from watchlist.</p>`
+				);
 			}
 		}
 	};
