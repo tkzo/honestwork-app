@@ -4,8 +4,8 @@
 <div class="container">
     <div class="benefits-card">
         <img src="icons/landing/lock.svg" alt="Lock icon" class="icon">
-        <h4 class="title">safe payments</h4>
-        <p class="description">A payment system that gives freelancers peace of mind knowing their time won’t be wasted, and assurance for employers.</p>
+        <h4 class="title">low fees</h4>
+        <p class="description">HonestWork employers’ fees are as low as 5%. There are no fees for freelancers, only a one-time investment in HonestWork NFT. </p>
     </div>
     <div class="benefits-card">
         <img src="icons/landing/mail-multiple.svg" alt="Messages icon" class="icon">

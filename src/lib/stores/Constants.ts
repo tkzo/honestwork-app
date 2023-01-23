@@ -75,13 +75,13 @@ export let employersFeatureCards: FeatureCard[] = [
 
 export const freelancersFeatureCards: FeatureCard[] = [
 	{
-	title: 'On-chain reputation',
+	title: 'On-chain perks',
 	icon1: 'icons/landing/dinosaur.svg',
 	icon1alt: 'Dinosaur icon',
 	feature1: 'Create unique profiles with ENS names and NFTs',
 	icon2: 'icons/landing/script-text.svg',
 	icon2alt: 'Script text icon',
-	feature2: 'HonestWork NFT stores your ratings and completed projects on-chain',
+	feature2: 'Receive airdrops based on your activity points',
 	buttontext: 'Explore Jobs',
 	imgsrc: 'assets/landing/profile.png',
 	imgalt:'Profile',
@@ -93,7 +93,7 @@ export const freelancersFeatureCards: FeatureCard[] = [
 	feature1: 'Job payment is safely kept in an Escrow Contract while you are working on the task',
 	icon2: 'icons/landing/script-text.svg',
 	icon2alt: 'Script text icon',
-	feature2: 'Get paid straight to your crypto wallet after successfully completing a task',
+	feature2: 'Receive 100% of your earnings with no fees  ',
 	buttontext: 'Explore Jobs',
 	imgsrc: 'assets/landing/profile.png',
 	imgalt:'Profile',
