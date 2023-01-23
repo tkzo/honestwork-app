@@ -96,7 +96,7 @@
 	};
 	const handleSubmit = async (e: any) => {
 		console.log('Event:', e);
-		if (e.submitter?.id != 'job-post') {
+		if (e.submitter?.id != 'job_post') {
 			return;
 		}
 		userPublishing = true;
