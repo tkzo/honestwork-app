@@ -21,7 +21,9 @@
 
 	onMount(() => {
 		connectIfCached();
-		handleJobSelect(data?.jobs.json[0]);
+		if (data.jobs.json && data.jobs.json.length != 0) {
+			handleJobSelect(data?.jobs.json[0]);
+		}
 	});
 
 	const handleJobSelect = (job: JobType) => {

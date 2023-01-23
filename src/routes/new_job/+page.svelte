@@ -30,8 +30,8 @@
 		connectIfCached();
 	});
 
-	//todo: upgrade tags when api is rdy
-	//add autosuggest from redis
+	// todo: upgrade tags when api is rdy
+	// add autosuggest from redis
 
 	type TokenSelection = {
 		chain_id: number;
@@ -66,8 +66,6 @@
 	let username_element: HTMLInputElement;
 	let title_length = 0;
 	let title_element: HTMLInputElement;
-	let description_length = 0;
-	let description_element: HTMLTextAreaElement;
 	let tx_hash = '';
 	let timezone: number;
 	let userPublishing = false;
@@ -95,7 +93,6 @@
 		user_allowance = ethers.utils.formatEther(allowance);
 	};
 	const handleSubmit = async (e: any) => {
-		console.log('Event:', e);
 		if (e.submitter?.id != 'job_post') {
 			return;
 		}

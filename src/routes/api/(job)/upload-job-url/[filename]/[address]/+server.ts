@@ -1,4 +1,4 @@
-import type { RequestHandler } from '../../../../$types';
+import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import { S3 } from '@aws-sdk/client-s3';
@@ -27,6 +27,7 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 		}
 	});
 	const jobs = await response.json();
+	console.log('jobs', jobs);
 	try {
 		const s3Client2 = new S3({
 			forcePathStyle: false,
