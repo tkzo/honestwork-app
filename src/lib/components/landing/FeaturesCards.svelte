@@ -161,7 +161,7 @@
         cursor: pointer;
         color: var(--color-primary);
         width: 247px;
-        transition: background-color 0.3s ease-out 0s
+        transition: background-color 0.12s linear 0s
     }
     .button {
         display: flex;
@@ -174,7 +174,7 @@
         font-weight: 600;
         font-size: 12px;
         line-height: 12px;
-        transition: background-color 0.3s ease-out 0s
+        transition: background-color 0.12s linear 0s
     }
     .cta:hover,
     .button:hover,
