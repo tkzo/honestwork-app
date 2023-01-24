@@ -198,7 +198,7 @@
 		cursor: pointer;
 		font-weight: 600;
 		color: var(--color-primary);
-		transition: all 0.3s ease-in;
+        transition: background-color 0.3s ease-out 0s
 	}
 	.explore:hover {
 		background: var(--color-primary);
