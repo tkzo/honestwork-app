@@ -30,7 +30,7 @@
 						<img src={`${assets}/icons/landing/logo.svg`} alt="HonestWork Logo" />
 						<div class="text">H0NESTW0RK</div>
 					</div>
-					<div class="login" on:click={handleConnect} on:keydown>LOGIN TO APP</div>
+					<div class="login link" on:click={handleConnect} on:keydown>LOGIN TO APP</div>
 				</div>
 				<div style="height: 32px;" />
 
@@ -160,6 +160,9 @@
 		color: var(--color-primary);
 		cursor: pointer;
 	}
+	.link:hover {
+		color: var(--color-dark);
+	}
 	.header {
 		display: flex;
 		flex-direction: column;
@@ -195,6 +198,11 @@
 		cursor: pointer;
 		font-weight: 600;
 		color: var(--color-primary);
+		transition: all 0.3s ease-in;
+	}
+	.explore:hover {
+		background: var(--color-primary);
+		color: var(--color-dark);
 	}
 	.icon {
 		cursor: pointer;
