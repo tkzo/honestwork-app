@@ -161,7 +161,7 @@
         cursor: pointer;
         color: var(--color-primary);
         width: 247px;
-        transition: background-color 0.12s linear 0s
+        transition: border 0.2s ease-in 0s
     }
     .button {
         display: flex;
@@ -174,13 +174,14 @@
         font-weight: 600;
         font-size: 12px;
         line-height: 12px;
-        transition: background-color 0.12s linear 0s
     }
-    .cta:hover,
     .button:hover,
     .selected {
         background-color: var(--color-primary);
         color: var(--color-dark);
+    }
+    .cta:hover {
+        border: 1px solid var(--color-primary);
     }
     .img-container{
         width: 50%;

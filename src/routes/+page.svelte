@@ -198,11 +198,10 @@
 		cursor: pointer;
 		font-weight: 600;
 		color: var(--color-primary);
-        transition: background-color 0.12s linear 0s
+        transition: border 0.2s ease-in 0s
 	}
 	.explore:hover {
-		background: var(--color-primary);
-		color: var(--color-dark);
+		border: 1px solid var(--color-primary);
 	}
 	.icon {
 		cursor: pointer;
