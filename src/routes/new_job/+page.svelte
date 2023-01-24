@@ -24,13 +24,14 @@
 	import { browser } from '$app/environment';
 	import { assets } from '$app/paths';
 	import { onMount } from 'svelte';
+	import Tiptap from '$lib/components/common/Tiptap.svelte';
 
 	onMount(() => {
 		connectIfCached();
 	});
 
-	//todo: upgrade tags when api is rdy
-	//add autosuggest from redis
+	// todo: upgrade tags when api is rdy
+	// add autosuggest from redis
 
 	type TokenSelection = {
 		chain_id: number;
@@ -65,8 +66,6 @@
 	let username_element: HTMLInputElement;
 	let title_length = 0;
 	let title_element: HTMLInputElement;
-	let description_length = 0;
-	let description_element: HTMLTextAreaElement;
 	let tx_hash = '';
 	let timezone: number;
 	let userPublishing = false;
@@ -76,8 +75,9 @@
 	let approveMax = false;
 	let userApproved = false;
 	let salt: string;
-
+	let content: string;
 	let signature: string;
+	let total_chars = 0;
 
 	$: sticky_item = sticky_data.find((n) => n.duration == sticky_duration) ?? sticky_data[0];
 	$: if (browser) {
@@ -92,7 +92,10 @@
 		let allowance = await ERC20.allowance($userAddress, env.PUBLIC_JOB_LISTING_CONTRACT_ADDRESS);
 		user_allowance = ethers.utils.formatEther(allowance);
 	};
-	const handleSubmit = async (e: Event) => {
+	const handleSubmit = async (e: any) => {
+		if (e.submitter?.id != 'job_post') {
+			return;
+		}
 		userPublishing = true;
 		const res = await fetch(`/api/auth/login/${$userAddress}`);
 		salt = await res.json();
@@ -120,6 +123,7 @@
 		formObj.tags = tags;
 		formObj.sticky_duration = sticky_duration.toString();
 		formObj.timezone = timezone >= 0 ? `UTC+${timezone}` : `UTC-${timezone}`;
+		formObj.description = content;
 
 		//todo: consume errors and show them to the user
 		let parsed = JobInput.safeParse(formObj);
@@ -286,10 +290,38 @@
 				userPaid = true;
 			} catch (e: any) {
 				toast.push(
-					`<p class="light-60"><span style="color:var(--color-error)">ERR: </span>${e.reason}</p>`
+					`<p class="light-60"><span style="color:var(--color-error)">error: </span>${e.reason}</p>`
 				);
 			}
 			userPaying = false;
+		}
+	};
+	const handleContentInput = (e: any) => {
+		content = e.detail.content;
+		parseContent(e.detail.content);
+	};
+	const parseContent = (content: string) => {
+		total_chars = 0;
+		let c = content;
+		let ps = c.split('<p>');
+		for (let i = 0; i < ps.length; i++) {
+			if (ps[i].includes('</p>')) {
+				ps[i] = ps[i].split('</p>')[0];
+			}
+		}
+		ps.shift();
+		let h4s = c.split('<h4>');
+		for (let i = 0; i < h4s.length; i++) {
+			if (h4s[i].includes('</h4>')) {
+				h4s[i] = h4s[i].split('</h4>')[0];
+			}
+		}
+		h4s.shift();
+		for (let i = 0; i < ps.length; i++) {
+			total_chars += ps[i].length;
+		}
+		for (let i = 0; i < h4s.length; i++) {
+			total_chars += h4s[i].length;
 		}
 	};
 </script>
@@ -304,7 +336,6 @@
 					<input hidden type="text" name="user_address" bind:value={$userAddress} />
 					<input hidden type="text" name="signature" bind:value={signature} />
 					<input hidden type="text" name="sticky_duration" bind:value={sticky_duration} />
-
 					<input hidden type="text" name="tx_hash" bind:value={tx_hash} />
 					<input hidden type="text" name="token_paid" bind:value={chosen_payment_token.address} />
 					<input hidden type="text" name="file_url" bind:value={file_url} />
@@ -490,20 +521,11 @@
 					<div class="description-bar">
 						<div class="description-title"><p class="light-40">job description</p></div>
 						<p class="light-60">
-							<span class="yellow">{description_length}</span>/{form_limitations.job.description
-								.max}
+							<span class="yellow">{total_chars}</span>/{form_limitations.job.description.max}
 						</p>
 					</div>
 					<div class="description">
-						<textarea
-							name="description"
-							rows={form_limitations.job.description.rows}
-							minlength={form_limitations.job.description.min}
-							maxlength={form_limitations.job.description.max}
-							placeholder="enter description..."
-							bind:this={description_element}
-							on:keyup={() => (description_length = description_element.value.length)}
-						/>
+						<Tiptap on:content={handleContentInput} />
 					</div>
 					<div style="height:24px" />
 					{#each new Array(3) as _, i}
@@ -680,7 +702,7 @@
 								</div>
 							{:else if userPaid && !userPublished}
 								<div class="payment-button">
-									<button type="submit"><p>publish job listing</p></button>
+									<button type="submit" id="job_post"><p>publish job listing</p></button>
 								</div>
 							{:else}
 								<div class="payment-button payment-button-hover link" on:click={pay} on:keydown>

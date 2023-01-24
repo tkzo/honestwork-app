@@ -37,6 +37,8 @@
 		"@aws-sdk/client-s3": "^3.226.0",
 		"@aws-sdk/s3-presigned-post": "^3.226.0",
 		"@sveltejs/svelte-virtual-list": "^3.0.1",
+		"@tiptap/core": "^2.0.0-beta.209",
+		"@tiptap/starter-kit": "^2.0.0-beta.209",
 		"@xmtp/xmtp-js": "^7.7.2",
 		"@zerodevx/svelte-toast": "1.0.0-rc.1",
 		"alchemy-sdk": "^2.2.3",
@@ -53,6 +55,7 @@
 		"svelte-lazy": "^1.1.0",
 		"svelte-loading-skeleton": "^1.0.1",
 		"svelte-loading-spinners": "^0.3.4",
+		"svelte-tiptap": "^0.7.0",
 		"svrollbar": "^0.12.0",
 		"zod": "^3.20.2"
 	}

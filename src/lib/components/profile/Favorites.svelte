@@ -21,13 +21,19 @@
 				});
 				const data = await response.json();
 				if (data == 'success') {
-					toast.push('Removed from favorites.');
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Removed from favorites.</p>`
+					);
 					getFavorites();
 				} else {
-					toast.push('Failed to remove from favorites');
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>Failed to remove from favorites.</p>`
+					);
 				}
 			} catch (error) {
-				toast.push('Failed to remove from favorites');
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>Failed to remove from favorites.</p>`
+				);
 			}
 		}
 	};

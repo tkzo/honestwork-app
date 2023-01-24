@@ -17,6 +17,7 @@
 	let viewport: Element;
 	let contents: Element;
 	let chosen_network: number;
+	let trimmed_description: string;
 
 	let feedHeight = 0;
 	$: if (browser) feedHeight = window.innerHeight - 136;
@@ -24,6 +25,12 @@
 		if (job.tokens_accepted) {
 			chosen_network = job.tokens_accepted[0].id;
 		}
+	}
+	$: if (job && job.description) {
+		trimmed_description = job.description.replace(
+			'contenteditable="true"',
+			'contenteditable="false"'
+		);
 	}
 
 	const getChainName = (chain_id: number) => {
@@ -121,12 +128,8 @@
 				{:else}
 					<div style="height:12px;" />
 				{/if}
+				{@html trimmed_description}
 
-				<div class="description">
-					<div class="body-text light-80">
-						{job.description}
-					</div>
-				</div>
 				<div style="height:12px;" />
 				<div class="payment-container">
 					{#if job.tokens_accepted && job.tokens_accepted.length > 0}

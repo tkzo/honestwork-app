@@ -17,8 +17,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		cloud_url =
 			env.PRIVATE_SPACES_URL + '/' + userAddress + '/job/' + data.job_slot + '/' + data.image_url;
 	}
-	console.log('Image URL: ' + data.image_url);
-	console.log('Cloud URL: ' + cloud_url);
 
 	const body = {
 		slot: parseInt(data.job_slot),

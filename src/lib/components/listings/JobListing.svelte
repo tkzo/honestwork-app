@@ -1,15 +1,15 @@
 <svelte:options immutable={true} />
 
 <script lang="ts">
-	import type { JobType, UserType } from '$lib/stores/Types';
+	import type { JobType } from '$lib/stores/Types';
 	import { onMount } from 'svelte';
 	import { placeholder_image, sticky_data } from '$lib/stores/Constants';
 
 	export let chosen: boolean;
 	export let job: JobType;
 
-	let user: UserType;
 	let hashtags = job.tags;
+	let trimmed_description: string;
 
 	// todo: inline this
 	$: infos = [
@@ -26,17 +26,29 @@
 			value: humandate
 		}
 	];
-	$: trimmed_description =
-		job.description.length > 300 ? job.description.slice(0, 300) + '...' : job.description;
+
 	$: humandate = new Date(job.created_at).toLocaleDateString();
+	$: if (job && job.description) {
+		trimmed_description = job.description.replace(
+			'contenteditable="true"',
+			'contenteditable="false"'
+		);
+	}
+	const parseContent = (content: string) => {
+		let chars: string = '';
+		let c = content;
+		let ps = c.split('<p>');
+		for (let i = 0; i < ps.length; i++) {
+			if (ps[i].includes('</p>')) {
+				ps[i] = ps[i].split('</p>')[0];
+			}
+		}
+		ps.shift();
 
-	onMount(() => {
-		fetchUser();
-	});
-
-	const fetchUser = async () => {
-		const res = await fetch(`/api/user/${job.user_address}`);
-		user = await res.json();
+		for (let i = 0; i < ps.length; i++) {
+			chars += ps[i] + '...';
+		}
+		return chars;
 	};
 </script>
 
@@ -46,9 +58,9 @@
 			{#if parseInt(job.sticky_duration) >= 7}
 				<div class="tag">
 					<p class="yellow">
-						sticky post <span class="light-60">{job.sticky_duration} days</span>(<span
-							>${sticky_data.find((n) => n.duration == parseInt(job.sticky_duration))}</span
-						>)
+						sticky post <span class="light-60">{job.sticky_duration} days </span><span class="light"
+							>${sticky_data.find((n) => n.duration == parseInt(job.sticky_duration))?.price}</span
+						>
 					</p>
 				</div>
 			{/if}
@@ -65,7 +77,7 @@
 		<img src={job.image_url ?? placeholder_image} alt="gallery" class="preview-image" />
 		<div style="width:12px;" />
 		<div class="content">
-			<div class="body-text light-60">{trimmed_description}</div>
+			<div class="body-text light-60">{parseContent(job.description)}</div>
 			<div style="height: 16px" />
 			<div class="hashtags">
 				{#if hashtags && hashtags.length > 0}

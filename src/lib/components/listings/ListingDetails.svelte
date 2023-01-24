@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Applicant from './Applicant.svelte';
-	import { userConnected, connectWallet, xmtpConnected, userAddress } from '$lib/stores/Network';
+	import { userConnected, connectWallet, userAddress } from '$lib/stores/Network';
 	import { JobInput } from '$lib/stores/Validation';
 	import type { JobType, Network } from '$lib/stores/Types';
 	import { chains } from '$lib/stores/Constants';
@@ -11,11 +11,7 @@
 	import { Svrollbar } from 'svrollbar';
 	import { toast } from '@zerodevx/svelte-toast';
 	import { onMount } from 'svelte';
-
-	type TokenSelection = {
-		chain_id: number;
-		token_address: string;
-	};
+	import Tiptap from '$lib/components/common/Tiptap.svelte';
 
 	export let job: JobType;
 	export let feedHeight: number;
@@ -37,10 +33,10 @@
 	let username_element: HTMLInputElement;
 	let title_length = 0;
 	let title_element: HTMLInputElement;
-	let description_length = 0;
-	let description_element: HTMLTextAreaElement;
 	let tx_hash = '';
 	let parsed_filename: string;
+	let content: string;
+	let total_chars = 0;
 
 	let username = job.username;
 	let title = job.title;
@@ -104,6 +100,7 @@
 		formObj.tags = tags;
 		formObj.sticky_duration = sticky_duration.toString();
 		formObj.timezone = timezone >= 0 ? `UTC+${timezone}` : `UTC-${timezone}`;
+		formObj.description = content;
 
 		//todo: consume errors and show them to the user
 		let parsed = JobInput.safeParse(formObj);
@@ -129,7 +126,13 @@
 			let res = await fetch(url, options);
 			let data = await res.json();
 			if (data == 'success') {
-				toast.push(`<p class="light-60">Job listing updated.</p>`);
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>job listing updated.</p>`
+				);
+			} else {
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>job listing could not be updated.</p>`
+				);
 			}
 		}
 		changes_made.set(false);
@@ -216,6 +219,34 @@
 			(n) => n.chain_id == chosen_network.id && n.token_address == address
 		);
 		return t ? true : false;
+	};
+	const handleContentInput = (e: any) => {
+		content = e.detail.content;
+		parseContent(e.detail.content);
+	};
+	const parseContent = (content: string) => {
+		total_chars = 0;
+		let c = content;
+		let ps = c.split('<p>');
+		for (let i = 0; i < ps.length; i++) {
+			if (ps[i].includes('</p>')) {
+				ps[i] = ps[i].split('</p>')[0];
+			}
+		}
+		ps.shift();
+		let h4s = c.split('<h4>');
+		for (let i = 0; i < h4s.length; i++) {
+			if (h4s[i].includes('</h4>')) {
+				h4s[i] = h4s[i].split('</h4>')[0];
+			}
+		}
+		h4s.shift();
+		for (let i = 0; i < ps.length; i++) {
+			total_chars += ps[i].length;
+		}
+		for (let i = 0; i < h4s.length; i++) {
+			total_chars += h4s[i].length;
+		}
 	};
 </script>
 
@@ -458,21 +489,11 @@
 								<div class="description-bar">
 									<div class="description-title"><p class="light-40">job description</p></div>
 									<p class="light-60">
-										<span class="yellow">{description_length}</span>/{form_limitations.job
-											.description.max}
+										<span class="yellow">{total_chars}</span>/{form_limitations.job.description.max}
 									</p>
 								</div>
 								<div class="description">
-									<textarea
-										name="description"
-										rows={form_limitations.job.description.rows}
-										minlength={form_limitations.job.description.min}
-										maxlength={form_limitations.job.description.max}
-										placeholder="enter description..."
-										bind:this={description_element}
-										on:keyup={() => (description_length = description_element.value.length)}
-										bind:value={description}
-									/>
+									<Tiptap on:content={handleContentInput} />
 								</div>
 								<div style="height:24px" />
 								{#each new Array(3) as _, i}

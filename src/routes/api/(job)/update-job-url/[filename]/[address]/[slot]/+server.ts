@@ -1,4 +1,4 @@
-import type { RequestHandler } from '../../../../../$types';
+import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import { S3 } from '@aws-sdk/client-s3';
