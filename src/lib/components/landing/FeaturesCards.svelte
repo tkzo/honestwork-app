@@ -31,7 +31,7 @@
                             <p class="feature">{card.feature2}</p>
                         </div>
                     </div>
-                    <a href="/jobs" class="cta">{card.buttontext}</a>
+                    <!-- <a href="/jobs" class="cta">{card.buttontext}</a> -->
                 </div>
                 <div class="img-container">
                     <img src={card.imgsrc} alt={card.imgalt} class="featured-image">
@@ -55,7 +55,7 @@
                             <p class="feature">{card.feature2}</p>
                         </div>
                     </div>
-                    <a href="/jobs" class="cta">{card.buttontext}</a>
+                    <!-- <a href="/jobs" class="cta">{card.buttontext}</a> -->
                 </div>
                 <div class="img-container">
                     <img src={card.imgsrc} alt={card.imgalt} class="featured-image">
@@ -161,6 +161,7 @@
         cursor: pointer;
         color: var(--color-primary);
         width: 247px;
+        transition: border 0.2s ease-in 0s
     }
     .button {
         display: flex;
@@ -174,11 +175,13 @@
         font-size: 12px;
         line-height: 12px;
     }
-    .cta:hover,
     .button:hover,
     .selected {
         background-color: var(--color-primary);
         color: var(--color-dark);
+    }
+    .cta:hover {
+        border: 1px solid var(--color-primary);
     }
     .img-container{
         width: 50%;
