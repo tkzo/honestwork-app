@@ -31,7 +31,7 @@
                             <p class="feature">{card.feature2}</p>
                         </div>
                     </div>
-                    <a href="/jobs" class="cta">{card.buttontext}</a>
+                    <!-- <a href="/jobs" class="cta">{card.buttontext}</a> -->
                 </div>
                 <div class="img-container">
                     <img src={card.imgsrc} alt={card.imgalt} class="featured-image">
@@ -55,7 +55,7 @@
                             <p class="feature">{card.feature2}</p>
                         </div>
                     </div>
-                    <a href="/jobs" class="cta">{card.buttontext}</a>
+                    <!-- <a href="/jobs" class="cta">{card.buttontext}</a> -->
                 </div>
                 <div class="img-container">
                     <img src={card.imgsrc} alt={card.imgalt} class="featured-image">
