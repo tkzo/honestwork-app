@@ -149,6 +149,11 @@ export const notifications = {
 		bodytext: "you're not receiving messages at the moment.",
 		cta: 'connect xmtp',
 		icon: '/icons/zap.svg'
+	},
+	launch: {
+		bodytext: "HonestWork is launching soon!",
+		cta: 'follow our twitter for the updates',
+		icon: '/icons/twitter.svg'
 	}
 };
 
