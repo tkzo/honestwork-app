@@ -81,6 +81,9 @@
 	$: sticky_item = sticky_data.find((n) => n.duration == sticky_duration) ?? sticky_data[0];
 
 	const handleSubmit = async (e: Event) => {
+		if (e.submitter?.id != 'job_post') {
+			return;
+		}
 		const formData = new FormData(e.target! as HTMLFormElement);
 		let formObj: JobType = {} as JobType;
 		formObj = Object.fromEntries(formData.entries()) as unknown as JobType;
@@ -252,7 +255,9 @@
 					<div style="width:4px;" />
 				{/if}
 				{#if chosen_tab == 'edit mode'}
-					<button class={$changes_made ? 'yellow link' : 'light-60'}> save changes </button>
+					<button id="job_post" class={$changes_made ? 'yellow link' : 'light-60'}>
+						save changes
+					</button>
 				{/if}
 			</div>
 		</div>
