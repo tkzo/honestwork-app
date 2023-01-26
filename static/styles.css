@@ -339,6 +339,7 @@ button:active {
 	color: var(--color-light-80);
 }
 .ProseMirror h4 {
+	font-family: 'Proto Mono', monospace;
 	font-size: 13px;
 	line-height: 24px;
 	font-weight: 600;

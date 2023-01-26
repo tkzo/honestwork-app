@@ -26,6 +26,11 @@
 	let ens_name: string | null = null;
 	let drawer_open = false;
 
+	$: trimmed_description = applicant.cover_letter.replace(
+		'contenteditable="true"',
+		'contenteditable="false"'
+	);
+
 	const fetchUser = async () => {
 		const response = await fetch(`/api/user/${applicant.user_address}`);
 		user = await response.json();
@@ -104,7 +109,7 @@
 		{#if drawer_open}
 			<div class="drawer_container" in:slide={{ duration: 500, easing: expoOut }}>
 				<div class="bio">
-					<div class="body-text light-80">{@html applicant.cover_letter}</div>
+					<div class="body-text light-80">{@html trimmed_description}</div>
 				</div>
 				{#each user.links as link, i}
 					<a class="item" href={link} target="_blank" rel="noreferrer">

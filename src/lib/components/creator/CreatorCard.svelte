@@ -100,7 +100,7 @@
 						</div>
 					</div>
 					<div class="bio">
-						<div class="body-text light-80">{user?.bio}</div>
+						<div class="body-text light-80">{@html user.bio}</div>
 					</div>
 					{#each user.links as link, i}
 						<a class="item" href={link} target="_blank" rel="noreferrer">

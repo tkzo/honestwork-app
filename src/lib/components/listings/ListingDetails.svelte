@@ -13,6 +13,8 @@
 	import { onMount } from 'svelte';
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	import { parseContent } from '$lib/stores/Parser';
+	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 
 	export let job: JobType;
 	export let feedHeight: number;
@@ -137,6 +139,7 @@
 			}
 		}
 		changes_made.set(false);
+		goto(`${base}/listings`);
 	};
 	const uploadImage = async (e: any) => {
 		let target_file;

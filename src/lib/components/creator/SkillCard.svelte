@@ -5,8 +5,6 @@
 
 	export let skill: SkillType;
 
-	let faketags = ['tag #1', 'tag #2', 'tag #3'];
-
 	let viewport: Element;
 	let contents: Element;
 	let chosen_image: number = 0;
@@ -50,15 +48,18 @@
 					</div>
 				</div>
 				<div class="tags">
-					{#each faketags as tag}
+					{#each skill.tags as tag}
 						<div class="tag link">
 							<p>{tag}</p>
 						</div>
+						{#if tag !== skill.tags[skill.tags.length - 1]}
+							<div style="width:8px;" />
+						{/if}
 					{/each}
 				</div>
 				<div class="description">
 					<div class="body-text light-80">
-						{skill.description}
+						{@html skill.description}
 					</div>
 				</div>
 				<div style="height:12px;" />
