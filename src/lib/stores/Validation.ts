@@ -25,7 +25,7 @@ export const JobInput = z.object({
 		})
 		.refine(
 			(val) =>
-				!Number.isNaN(parseInt(val, 10)) && parseInt(val, 10) > 1000 && parseInt(val, 10) < 1000000,
+				!Number.isNaN(parseInt(val, 10)) && parseInt(val, 10) > 200 && parseInt(val, 10) < 1000000,
 			{
 				message: 'Wrong amount'
 			}
