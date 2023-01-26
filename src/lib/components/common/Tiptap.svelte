@@ -43,10 +43,6 @@
 	};
 </script>
 
-<svelte:head>
-	<title>Bubble Menu | Tiptap Svelte</title>
-</svelte:head>
-
 {#if editor}
 	<div>
 		<BubbleMenu editor={$editor}>

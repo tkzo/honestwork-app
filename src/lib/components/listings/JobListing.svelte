@@ -2,8 +2,8 @@
 
 <script lang="ts">
 	import type { JobType } from '$lib/stores/Types';
-	import { onMount } from 'svelte';
 	import { placeholder_image, sticky_data } from '$lib/stores/Constants';
+	import { parseContent } from '$lib/stores/Parser';
 
 	export let chosen: boolean;
 	export let job: JobType;
@@ -34,22 +34,6 @@
 			'contenteditable="false"'
 		);
 	}
-	const parseContent = (content: string) => {
-		let chars: string = '';
-		let c = content;
-		let ps = c.split('<p>');
-		for (let i = 0; i < ps.length; i++) {
-			if (ps[i].includes('</p>')) {
-				ps[i] = ps[i].split('</p>')[0];
-			}
-		}
-		ps.shift();
-
-		for (let i = 0; i < ps.length; i++) {
-			chars += ps[i] + '...';
-		}
-		return chars;
-	};
 </script>
 
 <section class={chosen ? 'chosen' : ''}>
@@ -77,7 +61,9 @@
 		<img src={job.image_url ?? placeholder_image} alt="gallery" class="preview-image" />
 		<div style="width:12px;" />
 		<div class="content">
-			<div class="body-text light-60">{parseContent(job.description)}</div>
+			<div class="body-text light-60">
+				{parseContent(job.description).chars.slice(0, 160) + '...'}
+			</div>
 			<div style="height: 16px" />
 			<div class="hashtags">
 				{#if hashtags && hashtags.length > 0}

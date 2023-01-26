@@ -26,8 +26,10 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 			'Content-Type': 'application/json'
 		}
 	});
-	const jobs = await response.json();
-	console.log('jobs', jobs);
+	let jobs = await response.json();
+	if (jobs == null) {
+		jobs = [];
+	}
 	try {
 		const s3Client2 = new S3({
 			forcePathStyle: false,

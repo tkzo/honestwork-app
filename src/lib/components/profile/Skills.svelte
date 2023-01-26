@@ -38,7 +38,7 @@
 </script>
 
 {#if $chosen_skill_slot == -1}
-	{#if data.skills.json?.length < total_skills}
+	{#if data.skills.json == undefined || data.skills.json?.length < total_skills}
 		<div class="empty">
 			<p class="light-60">you can add {total_skills - data.skills.json?.length} more skill(s)</p>
 			<div style="height:12px" />
@@ -48,14 +48,16 @@
 		</div>
 	{/if}
 	<div style="height: 12px" />
-	{#each data.skills?.json as skill, i}
-		<div on:click={() => handleSkillEdit(i)} on:keydown>
-			<Skill slot={i} {skill} />
-		</div>
-		{#if i < data.skills.json?.length - 1}
-			<div style="height: 12px" />
-		{/if}
-	{/each}
+	{#if data.skills.json}
+		{#each data.skills?.json as skill, i}
+			<div on:click={() => handleSkillEdit(i)} on:keydown>
+				<Skill slot={i} {skill} />
+			</div>
+			{#if i < data.skills.json?.length - 1}
+				<div style="height: 12px" />
+			{/if}
+		{/each}
+	{/if}
 {:else}
 	<SkillEdit
 		skill={data.skills.json ? data.skills.json[$chosen_skill_slot] ?? empty_skill : empty_skill}

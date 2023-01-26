@@ -27,6 +27,8 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import Favorites from '$lib/components/profile/Favorites.svelte';
 	import { Jumper } from 'svelte-loading-spinners';
+	import Tiptap from '$lib/components/common/Tiptap.svelte';
+	import { parseContent } from '$lib/stores/Parser';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
@@ -82,6 +84,9 @@
 	let infobox_marginleft = '532px';
 	let feedHeight = 0;
 	let ens_component: HTMLInputElement;
+	let content: string;
+	let total_chars = 0;
+	let tags: string[] = [];
 
 	onMount(async () => {
 		connectIfCached();
@@ -239,6 +244,9 @@
 		upload_url = res;
 	};
 	const submitProfile = async (e: any) => {
+		if (e.submitter?.id != 'profile_post') {
+			return;
+		}
 		submitting.set(true);
 		//todo: proper handling
 		if (show_nft && !is_owner) {
@@ -268,12 +276,13 @@
 					console.error('Upload failed.');
 				}
 			}
-			if (show_ens) {
-			}
 			profileForm.submit();
 		}
 	};
 	const submitSkills = async (e: any) => {
+		if (e.submitter?.id != 'profile_post') {
+			return;
+		}
 		submitting.set(true);
 		let counter = 0;
 		for await (let t of e.target) {
@@ -301,7 +310,6 @@
 				counter++;
 			}
 		}
-		console.log('Form beofre submit:', skillsForm);
 		skillsForm.submit();
 	};
 	const updateInputLengths = () => {
@@ -312,9 +320,12 @@
 		title_input_length = title_input_element?.value.length ?? data.user.title.length;
 		bio_length = bio_element?.value.length ?? data.user.bio.length;
 	};
-	let tags: string[] = [];
 	const handleTagsUpdate = (e: any) => {
 		tags = e.detail.tags;
+	};
+	const handleContentInput = (e: any) => {
+		content = e.detail.content;
+		total_chars = parseContent(e.detail.content).total_chars;
 	};
 </script>
 
@@ -339,6 +350,8 @@
 						action="?/profile"
 					>
 						<input hidden name="ens_name" bind:value={ens_name} bind:this={ens_component} />
+						<input hidden name="bio" bind:value={content} />
+
 						<section class="bar">
 							<div class="tabs">
 								<p class="tab link semibold yellow">profile</p>
@@ -371,7 +384,9 @@
 									/>
 									<div style="width:4px;" />
 								{/if}
-								<button class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
+								<button
+									id="profile_post"
+									class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
 									>save changes</button
 								>
 							</div>
@@ -627,18 +642,10 @@
 						<div style="height: 16px" />
 						<div class="description-bar">
 							<section class="description-title"><p class="light-40">bio</p></section>
-							<p class="chars light-60"><span class="yellow">{bio_length}</span>/{bio_limit}</p>
+							<p class="chars light-60"><span class="yellow">{total_chars}</span>/{bio_limit}</p>
 						</div>
 						<div class="bio">
-							<textarea
-								name="bio"
-								rows="20"
-								maxlength="1000"
-								placeholder="enter bio here..."
-								bind:value={bio}
-								bind:this={bio_element}
-								on:keyup={updateInputLengths}
-							/>
+							<Tiptap on:content={handleContentInput} content={data.user.bio} />
 						</div>
 					</form>
 				{:else if chosenTab == 'skills'}
@@ -702,7 +709,9 @@
 										/>
 										<div style="width:4px;" />
 									{/if}
-									<button class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
+									<button
+										id="profile_post"
+										class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
 										>save changes</button
 									>
 								</div>
@@ -774,10 +783,6 @@
 </main>
 
 <style>
-	textarea {
-		width: 100%;
-		resize: none;
-	}
 	.bio {
 		width: 100%;
 		height: 100%;

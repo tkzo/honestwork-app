@@ -1,14 +1,10 @@
 <script lang="ts">
 	import type { SkillType } from '$lib/stores/Types';
 	import { placeholder_image } from '$lib/stores/Constants';
+	import { parseContent } from '$lib/stores/Parser';
 
 	export let slot: number;
 	export let skill: SkillType;
-
-	let tags = ['logo design', 'ui/ux', 'nft'];
-
-	$: trimmed_description =
-		skill.description.length > 251 ? skill.description.slice(0, 251) + '...' : skill.description;
 </script>
 
 <section>
@@ -22,15 +18,17 @@
 		{/each}
 	</div>
 	<div class="description">
-		<div class="light-60 body-text">{trimmed_description}</div>
+		<div class="body-text light-60">
+			{parseContent(skill.description).chars.slice(0, 160) + '...'}
+		</div>
 	</div>
 	<div class="tag-bar">
 		<div class="tags">
-			{#each tags as tag}
+			{#each skill.tags as tag}
 				<div class="tag border-all">
 					<p class="light-40 link">{tag}</p>
 				</div>
-				{#if tag != tags[tags.length - 1]}
+				{#if tag != skill.tags[skill.tags.length - 1]}
 					<div style="width: 4px" />
 				{/if}
 			{/each}

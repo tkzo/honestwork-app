@@ -37,6 +37,10 @@
 		const name = chains.find((chain) => chain.id == chain_id)?.name;
 		return name;
 	};
+	const getChainExplorer = (id: number) => {
+		let explorer = chains.find((chain) => chain.id == id)?.explorer;
+		return explorer;
+	};
 	const getTokenSymbol = (chain_id: number, address: string) => {
 		const tokens = chains.find((chain) => chain.id == chain_id)?.tokens;
 		const symbol = tokens?.find((token) => token.address == address)?.symbol;
@@ -159,7 +163,12 @@
 									{#if network.tokens && network.tokens.length > 0}
 										{#each network.tokens as token, i}
 											{#if network.id == chosen_network}
-												<div class="token">
+												<a
+													class="token"
+													href={`${getChainExplorer(network.id)}/${token.address}`}
+													target="_blank"
+													rel="noopener noreferrer"
+												>
 													<p class={i % 2 == 0 ? '' : 'light-60'}>
 														{getTokenSymbol(network.id, token.address)}
 													</p>
@@ -172,7 +181,7 @@
 															style="margin-top:-2px;"
 														/>
 													</div>
-												</div>
+												</a>
 												{#if i != network.tokens.length - 1}
 													<div style="height:8px;" />
 												{/if}
@@ -193,7 +202,7 @@
 							<div class="link-container">
 								<p class="placeholder light-40">link</p>
 								<div style="width:8px;" />
-								<a href={link}>
+								<a href={link} target="_blank" rel="noopener noreferrer">
 									<p class="light-80">{link}</p>
 								</a>
 							</div>

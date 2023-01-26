@@ -8,6 +8,7 @@
 	import { placeholder_image } from '$lib/stores/Constants';
 	import { userConnected } from '$lib/stores/Network';
 	import { toast } from '@zerodevx/svelte-toast';
+	import { parseContent } from '$lib/stores/Parser';
 
 	export let chosen: boolean;
 	export let skill: SkillType;
@@ -33,9 +34,6 @@
 			value: '$' + minimum_price.toString().slice(0, 6)
 		}
 	];
-
-	$: trimmed_description =
-		description.length > 120 ? description.slice(0, 120) + '...' : description;
 
 	onMount(() => {
 		fetchUser();
@@ -95,7 +93,9 @@
 			<div>
 				<p>{title}</p>
 				<div style="height:12px" />
-				<div class="body-text light-60">{trimmed_description}</div>
+				<div class="body-text light-60">
+					{parseContent(skill.description).chars.slice(0, 160) + '...'}
+				</div>
 			</div>
 			<div class="sub">
 				<p class="yellow">{user?.username}</p>

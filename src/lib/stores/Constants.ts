@@ -4,113 +4,120 @@ import type { FeatureCard } from '$lib/stores/Types';
 
 export let FAQCards: FAQCard[] = [
 	{
-		id:1,
-		question:'How to create a profile in HonestWork?',
-		answer: 'To create a freelancer profile, you need an HonestWork NFT. Then simply connect with your crypto wallet and fill in your profile information.'
+		id: 1,
+		question: 'How to create a profile in HonestWork?',
+		answer:
+			'To create a freelancer profile, you need an HonestWork NFT. Then simply connect with your crypto wallet and fill in your profile information.'
 	},
 	{
-		id:2,
-		question:'How to get HonestWork NFT?',
-		answer: 'You can mint HonestWork NFT in the HonestWork app or buy it on the NFT marketplace (e.g. OpenSea) if available.'
+		id: 2,
+		question: 'How to get HonestWork NFT?',
+		answer:
+			'You can mint HonestWork NFT in the HonestWork app or buy it on the NFT marketplace (e.g. OpenSea) if available.'
 	},
 	{
-		id:3,
-		question:'How to get a freelance job in HonestWork?',
-		answer: 'You can apply to the existing jobs on the “Jobs” page or receive offers based on the skills listed on your profile.'
+		id: 3,
+		question: 'How to get a freelance job in HonestWork?',
+		answer:
+			'You can apply to the existing jobs on the “Jobs” page or receive offers based on the skills listed on your profile.'
 	},
 	{
-		id:4,
-		question:'How will I receive payment?',
-		answer: 'After the employer accepts the delivered project, you can claim the payment by clicking the “Claim” button in the chat. You’ll receive the payment in your crypto wallet.'        },
-	{
-		id:5,
-		question:'How to post a job in HonestWork?',
-		answer: 'You can post a job by clicking the “Post a Job” button on the Jobs page. After filling out the job listing form, you’ll be asked to connect with your crypto wallet and approve the transaction for the service fee. After a successful transaction, your job listing will appear on the Jobs page.'
+		id: 4,
+		question: 'How will I receive payment?',
+		answer:
+			'After the employer accepts the delivered project, you can claim the payment by clicking the “Claim” button in the chat. You’ll receive the payment in your crypto wallet.'
 	},
 	{
-		id:6,
-		question:'How to pay for work?',
-		answer: 'When you make a deal with a freelancer, you’ll be prompted to create a smart contract that solidifies the deal. To create the smart contract, you’ll need to pay the agreed-upon amount and success fee. Payment will be safely stored in the Escrow Contract until you unlock it so the freelancer can claim it.'
+		id: 5,
+		question: 'How to post a job in HonestWork?',
+		answer:
+			'You can post a job by clicking the “Post a Job” button on the Jobs page. After filling out the job listing form, you’ll be asked to connect with your crypto wallet and approve the transaction for the service fee. After a successful transaction, your job listing will appear on the Jobs page.'
+	},
+	{
+		id: 6,
+		question: 'How to pay for work?',
+		answer:
+			'When you make a deal with a freelancer, you’ll be prompted to create a smart contract that solidifies the deal. To create the smart contract, you’ll need to pay the agreed-upon amount and success fee. Payment will be safely stored in the Escrow Contract until you unlock it so the freelancer can claim it.'
 	}
-]
+];
 
 export let employersFeatureCards: FeatureCard[] = [
 	{
-	title: 'Post a job without a hassle',
-	icon1: 'icons/landing/dinosaur.svg',
-	icon1alt: 'Dinosaur icon',
-	feature1: 'Create a job listing for an unlimited duration',
-	icon2: 'icons/landing/script-text.svg',
-	icon2alt: 'Script text icon',
-	feature2: 'Start conversations with the best applicants through embedded messaging',
-	buttontext: 'Post a Job',
-	imgsrc: 'assets/landing/profile.png',
-	imgalt:'Profile',
+		title: 'Post a job without a hassle',
+		icon1: 'icons/landing/dinosaur.svg',
+		icon1alt: 'Dinosaur icon',
+		feature1: 'Create a job listing for an unlimited duration',
+		icon2: 'icons/landing/script-text.svg',
+		icon2alt: 'Script text icon',
+		feature2: 'Start conversations with the best applicants through embedded messaging',
+		buttontext: 'Post a Job',
+		imgsrc: 'assets/landing/profile.png',
+		imgalt: 'Profile'
 	},
 	{
-	title: 'Find the best talents',
-	icon1: 'icons/landing/dinosaur.svg',
-	icon1alt: 'Dinosaur icon',
-	feature1: 'Browse an extensive library of skills to find exactly what you need',
-	icon2: 'icons/landing/script-text.svg',
-	icon2alt: 'Script text icon',
-	feature2: 'Easily view previous work history and ratings on freelancers’ profile',
-	buttontext: 'Post a Job',
-	imgsrc: 'assets/landing/profile.png',
-	imgalt:'Profile',
+		title: 'Find the best talents',
+		icon1: 'icons/landing/dinosaur.svg',
+		icon1alt: 'Dinosaur icon',
+		feature1: 'Browse an extensive library of skills to find exactly what you need',
+		icon2: 'icons/landing/script-text.svg',
+		icon2alt: 'Script text icon',
+		feature2: 'Easily view previous work history and ratings on freelancers’ profile',
+		buttontext: 'Post a Job',
+		imgsrc: 'assets/landing/profile.png',
+		imgalt: 'Profile'
 	},
 	{
-	title: 'Safe on-chain payments',
-	icon1: 'icons/landing/dinosaur.svg',
-	icon1alt: 'Dinosaur icon',
-	feature1: 'Pay with any on-chain token, including custom DAO tokens',
-	icon2: 'icons/landing/script-text.svg',
-	icon2alt: 'Script text icon',
-	feature2: 'Safe payments through a customized Escrow Contract',
-	buttontext: 'Post a Job',
-	imgsrc: 'assets/landing/profile.png',
-	imgalt:'Profile',
+		title: 'Safe on-chain payments',
+		icon1: 'icons/landing/dinosaur.svg',
+		icon1alt: 'Dinosaur icon',
+		feature1: 'Pay with any on-chain token, including custom DAO tokens',
+		icon2: 'icons/landing/script-text.svg',
+		icon2alt: 'Script text icon',
+		feature2: 'Safe payments through a customized Escrow Contract',
+		buttontext: 'Post a Job',
+		imgsrc: 'assets/landing/profile.png',
+		imgalt: 'Profile'
 	}
-]
+];
 
 export const freelancersFeatureCards: FeatureCard[] = [
 	{
-	title: 'On-chain perks',
-	icon1: 'icons/landing/dinosaur.svg',
-	icon1alt: 'Dinosaur icon',
-	feature1: 'Create unique profiles with ENS names and NFTs',
-	icon2: 'icons/landing/script-text.svg',
-	icon2alt: 'Script text icon',
-	feature2: 'Receive airdrops based on your activity points',
-	buttontext: 'Explore Jobs',
-	imgsrc: 'assets/landing/profile.png',
-	imgalt:'Profile',
+		title: 'On-chain perks',
+		icon1: 'icons/landing/dinosaur.svg',
+		icon1alt: 'Dinosaur icon',
+		feature1: 'Create unique profiles with ENS names and NFTs',
+		icon2: 'icons/landing/script-text.svg',
+		icon2alt: 'Script text icon',
+		feature2: 'Receive airdrops based on your activity points',
+		buttontext: 'Explore Jobs',
+		imgsrc: 'assets/landing/profile.png',
+		imgalt: 'Profile'
 	},
 	{
-	title: 'Get paid in crypto',
-	icon1: 'icons/landing/dinosaur.svg',
-	icon1alt: 'Dinosaur icon',
-	feature1: 'Job payment is safely kept in an Escrow Contract while you are working on the task',
-	icon2: 'icons/landing/script-text.svg',
-	icon2alt: 'Script text icon',
-	feature2: 'Receive 100% of your earnings with no fees  ',
-	buttontext: 'Explore Jobs',
-	imgsrc: 'assets/landing/profile.png',
-	imgalt:'Profile',
+		title: 'Get paid in crypto',
+		icon1: 'icons/landing/dinosaur.svg',
+		icon1alt: 'Dinosaur icon',
+		feature1: 'Job payment is safely kept in an Escrow Contract while you are working on the task',
+		icon2: 'icons/landing/script-text.svg',
+		icon2alt: 'Script text icon',
+		feature2: 'Receive 100% of your earnings with no fees  ',
+		buttontext: 'Explore Jobs',
+		imgsrc: 'assets/landing/profile.png',
+		imgalt: 'Profile'
 	},
 	{
-	title: 'Find premium web3 freelance jobs',
-	icon1: 'icons/landing/dinosaur.svg',
-	icon1alt: 'Dinosaur icon',
-	feature1: 'Choose from the wide library of jobs listings',
-	icon2: 'icons/landing/script-text.svg',
-	icon2alt: 'Script text icon',
-	feature2: 'List your skills and get noticed for what you do best',
-	buttontext: 'Explore Jobs',
-	imgsrc: 'assets/landing/profile.png',
-	imgalt:'Profile',
+		title: 'Find premium web3 freelance jobs',
+		icon1: 'icons/landing/dinosaur.svg',
+		icon1alt: 'Dinosaur icon',
+		feature1: 'Choose from the wide library of jobs listings',
+		icon2: 'icons/landing/script-text.svg',
+		icon2alt: 'Script text icon',
+		feature2: 'List your skills and get noticed for what you do best',
+		buttontext: 'Explore Jobs',
+		imgsrc: 'assets/landing/profile.png',
+		imgalt: 'Profile'
 	}
-]
+];
 
 export let placeholder_image = `${assets}/assets/xcopy.gif`;
 
@@ -125,7 +132,8 @@ export const chains = [
 				address: '0x0eBd5ED8A9625ac2Cb06F63D7f6D06cE60D2C797',
 				max_allowed: 1000000
 			}
-		]
+		],
+		explorer: 'https://bscscan.com/address'
 	}
 ];
 

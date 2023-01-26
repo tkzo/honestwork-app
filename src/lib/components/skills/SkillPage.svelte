@@ -16,8 +16,9 @@
 	let chosen_image: number = 0;
 	let nft_image: any;
 	let ens_name: string;
-
+	let trimmed_description: string;
 	let feedHeight = 0;
+
 	$: if (browser) feedHeight = window.innerHeight - 136;
 	$: if (skill && browser) {
 		nft_image = '';
@@ -25,6 +26,12 @@
 		fetchUser();
 	}
 	$: trimmed_images = skill.image_urls.filter((url: string) => url !== '');
+	$: if (skill && skill.description) {
+		trimmed_description = skill.description.replace(
+			'contenteditable="true"',
+			'contenteditable="false"'
+		);
+	}
 
 	const fetchUser = async () => {
 		const res = await fetch(`${base}/api/user/${skill.user_address}`);
@@ -110,11 +117,8 @@
 					</div>
 				</div>
 				<div style="height:12px;" />
-				<div class="description">
-					<div class="body-text light-80">
-						{skill.description}
-					</div>
-				</div>
+				{@html trimmed_description}
+
 				<div style="height:12px;" />
 				<div class="links">
 					{#each skill.links as link}

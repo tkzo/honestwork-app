@@ -12,6 +12,7 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import { onMount } from 'svelte';
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
+	import { parseContent } from '$lib/stores/Parser';
 
 	export let job: JobType;
 	export let feedHeight: number;
@@ -222,31 +223,7 @@
 	};
 	const handleContentInput = (e: any) => {
 		content = e.detail.content;
-		parseContent(e.detail.content);
-	};
-	const parseContent = (content: string) => {
-		total_chars = 0;
-		let c = content;
-		let ps = c.split('<p>');
-		for (let i = 0; i < ps.length; i++) {
-			if (ps[i].includes('</p>')) {
-				ps[i] = ps[i].split('</p>')[0];
-			}
-		}
-		ps.shift();
-		let h4s = c.split('<h4>');
-		for (let i = 0; i < h4s.length; i++) {
-			if (h4s[i].includes('</h4>')) {
-				h4s[i] = h4s[i].split('</h4>')[0];
-			}
-		}
-		h4s.shift();
-		for (let i = 0; i < ps.length; i++) {
-			total_chars += ps[i].length;
-		}
-		for (let i = 0; i < h4s.length; i++) {
-			total_chars += h4s[i].length;
-		}
+		total_chars = parseContent(e.detail.content).total_chars;
 	};
 </script>
 
@@ -493,7 +470,7 @@
 									</p>
 								</div>
 								<div class="description">
-									<Tiptap on:content={handleContentInput} />
+									<Tiptap on:content={handleContentInput} content={job.description} />
 								</div>
 								<div style="height:24px" />
 								{#each new Array(3) as _, i}

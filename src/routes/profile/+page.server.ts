@@ -85,8 +85,7 @@ export const actions: Actions = {
 			timezone: '',
 			links: [data.get('link-0'), data.get('link-1'), data.get('link-2')]
 		};
-
-		console.log('body: ', body);
+		console.log('Body:', body);
 
 		const url = `${apiUrl}/users/${userAddress}/${userSignature}`;
 		let response = await fetch(url, {
@@ -179,7 +178,7 @@ export const actions: Actions = {
 		};
 
 		if (data.get('skill_method') == 'add') {
-			const url = `${apiUrl}skills/${userAddress}/${userSignature}`;
+			const url = `${apiUrl}/skills/${userAddress}/${userSignature}`;
 			let response = await fetch(url, {
 				method: 'POST',
 				body: JSON.stringify(body),
@@ -190,6 +189,8 @@ export const actions: Actions = {
 			if (response.ok) {
 				const json = await response.json();
 				console.log(json);
+			} else {
+				console.log(response);
 			}
 		} else {
 			const url = `${apiUrl}/skills/${userAddress}/${userSignature}/${data.get('skill_slot')}`;

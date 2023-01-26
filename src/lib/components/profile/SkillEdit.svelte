@@ -4,13 +4,15 @@
 	import { userAddress } from '$lib/stores/Network';
 	import { shortcut } from '$lib/stores/Shortcut';
 	import { createEventDispatcher } from 'svelte';
+	import { placeholder_image } from '$lib/stores/Constants';
+	import Tiptap from '$lib/components/common/Tiptap.svelte';
+	import { parseContent } from '$lib/stores/Parser';
 
 	const dispatch = createEventDispatcher();
 	//todo: move images to img elements instead of div backgrounds (won't show ones with empty letter in its name)
 
 	export let skill: any;
 
-	let placeholder_image = 'assets/xcopy.gif';
 	let description_chars = 1000;
 	let description_text = skill.description;
 	let title: string = skill.title;
@@ -49,6 +51,11 @@
 	let title_input_length: number;
 	let title_input_limit = 15;
 	let tag_input: HTMLInputElement;
+	let show_infobox = false;
+	let publish: boolean = skill.publish;
+	let tags: string[] = skill.tags;
+	let content: string;
+	let total_chars = 0;
 
 	$: if (
 		title != skill.title ||
@@ -71,6 +78,12 @@
 	} else {
 		changes_made.set(false);
 	}
+	onMount(() => {
+		updateInputLengths();
+		dispatch('tag_update', {
+			tags: skill.tags
+		});
+	});
 
 	const uploadPhoto = async (e: any) => {
 		const file = e.target.files[0]!;
@@ -105,24 +118,13 @@
 		}
 		skill_upload_urls.set(urls);
 	};
-	const updateDescription = () => {
-		text_length = myTextarea.value.length;
-	};
+
 	const updateInputLengths = () => {
 		title_input_length = title_input_element?.value.length ?? skill.title.length;
 	};
-	onMount(() => {
-		updateDescription();
-		updateInputLengths();
-	});
-	let show_infobox = false;
-	let publish: boolean = skill.publish;
-	let tags: string[] = skill.tags;
-
 	const handleTagEntry = (e: any) => {
 		if (e.target?.value !== '' && e.pointerType != 'mouse') tags.push(e.target?.value);
 		tags = tags;
-		console.log('Dispatching tag update');
 		dispatch('tag_update', {
 			tags: tags
 		});
@@ -131,6 +133,13 @@
 	const handleRemoveTag = (index: number) => {
 		tags.splice(index, 1);
 		tags = tags;
+		dispatch('tag_update', {
+			tags: tags
+		});
+	};
+	const handleContentInput = (e: any) => {
+		content = e.detail.content;
+		total_chars = parseContent(e.detail.content).total_chars;
 	};
 </script>
 
@@ -139,6 +148,7 @@
 		<input hidden type="number" name="skill_slot" value={$chosen_skill_slot} />
 		<input hidden type="text" name="user_address" value={$userAddress} />
 		<input hidden type="checkbox" name="publish" bind:checked={publish} />
+		<input hidden type="text" name="description" bind:value={content} />
 
 		{#if publish}
 			<p class="light-60">status: <span class="light">published</span></p>
@@ -453,22 +463,18 @@
 <div class="description">
 	<div class="description-bar">
 		<section class="description-title"><p class="light-40">description</p></section>
-		<p class="chars light-60"><span class="yellow">{text_length}</span>/{description_chars}</p>
+		<p class="chars light-60"><span class="yellow">{total_chars}</span>/{description_chars}</p>
 	</div>
-	<textarea
-		name="description"
-		rows="20"
-		maxlength="1000"
-		placeholder="enter skill description..."
-		wrap="hard"
-		cols="77"
-		bind:this={myTextarea}
-		bind:value={description_text}
-		on:keyup={updateDescription}
-	/>
+	<div class="bio">
+		<Tiptap on:content={handleContentInput} content={skill.description} />
+	</div>
 </div>
 
 <style>
+	.bio {
+		width: 100%;
+		height: 100%;
+	}
 	.gallery {
 		display: flex;
 		flex-direction: row;

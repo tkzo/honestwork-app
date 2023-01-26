@@ -1,10 +1,13 @@
 import { z } from 'zod';
+import { parseContent } from '$lib/stores/Parser';
+
+// todo: implement skill, job, cover letter validations
 export const JobInput = z.object({
-	user_address: z.string().min(5).max(50),
-	token_paid: z.string(),
+	user_address: z.string().min(5).max(50), // todo: validate address
+	token_paid: z.string(), // todo: whitelist check
 	title: z.string().min(5).max(50),
-	description: z.string().min(100).max(1000),
-	tags: z.string().array().min(1).max(3),
+	description: z.string(), // todo: parse and validate
+	tags: z.string().array().min(1).max(3), // todo: url check??
 	links: z.string().array().min(1).max(3),
 	budget: z
 		.string()

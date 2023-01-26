@@ -34,7 +34,7 @@
 </script>
 
 <svelte:head>
-	<title>HW | Skills</title>
+	<title>HW | Listings</title>
 	<meta name="description" content="HonestWork Jobs Page" />
 </svelte:head>
 

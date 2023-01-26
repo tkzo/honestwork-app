@@ -104,7 +104,7 @@
 		{#if drawer_open}
 			<div class="drawer_container" in:slide={{ duration: 500, easing: expoOut }}>
 				<div class="bio">
-					<div class="body-text light-80">{applicant.cover_letter}</div>
+					<div class="body-text light-80">{@html applicant.cover_letter}</div>
 				</div>
 				{#each user.links as link, i}
 					<a class="item" href={link} target="_blank" rel="noreferrer">
