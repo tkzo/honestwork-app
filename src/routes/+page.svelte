@@ -30,10 +30,8 @@
 						<img src={`${assets}/icons/landing/logo.svg`} alt="HonestWork Logo" />
 						<div class="text">H0NESTW0RK</div>
 					</div>
-					<div class="login" on:click={handleConnect} on:keydown>LOGIN TO APP</div>
+					<!-- <div class="login link" on:click={handleConnect} on:keydown>LOGIN TO APP</div> -->
 				</div>
-				<div style="height: 32px;" />
-
 				<div style="height: 100px;" />
 				<div class="header">
 					<h1>A platform for all your web3 freelancing needs</h1>
@@ -41,7 +39,7 @@
 						HonestWork connects clients with top-rated blockchain experts, including copywriters,
 						developers, and designers.
 					</p>
-					<div class="explore" on:click={() => goto('/skills')} on:keydown>START EXPLORING</div>
+					<!-- <div class="explore" on:click={() => goto('/skills')} on:keydown>START EXPLORING</div> -->
 					<div class="socials">
 						<a href="https://twitter.com/HonestWorkDAO" target="_blank" rel="noopener noreferrer">
 							<img src={`${assets}/icons/landing/twitter.svg`} alt="Twitter" class="icon" />
@@ -150,7 +148,7 @@
 		letter-spacing: 0.05em;
 		color: var(--color-light);
 	}
-	.login {
+	/* .login {
 		font-family: 'Proto Mono';
 		font-style: normal;
 		font-weight: 600;
@@ -160,6 +158,9 @@
 		color: var(--color-primary);
 		cursor: pointer;
 	}
+	.link:hover {
+		color: var(--color-dark);
+	} */
 	.header {
 		display: flex;
 		flex-direction: column;
@@ -187,7 +188,7 @@
 		margin: 0 0 20px;
 		max-width: 496px;
 	}
-	.explore {
+	/* .explore {
 		padding: 12px;
 		background: #101112;
 		border: 1px solid rgba(255, 255, 255, 0.2);
@@ -195,7 +196,11 @@
 		cursor: pointer;
 		font-weight: 600;
 		color: var(--color-primary);
+        transition: border 0.2s ease-in 0s
 	}
+	.explore:hover {
+		border: 1px solid var(--color-primary);
+	} */
 	.icon {
 		cursor: pointer;
 		opacity: 0.2;
