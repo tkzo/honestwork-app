@@ -74,13 +74,13 @@
 	let file_url: string;
 	let username_input_element: HTMLInputElement;
 	let username_input_length: number;
-	let username_input_limit = 15;
+	let username_input_limit = 50;
 	let title_input_element: HTMLInputElement;
 	let title_input_length: number;
-	let title_input_limit = 15;
+	let title_input_limit = 50;
 	let bio_element: HTMLTextAreaElement;
 	let bio_length: number;
-	let bio_limit = 1000;
+	let bio_limit = 2000;
 	let infobox_marginleft = '532px';
 	let feedHeight = 0;
 	let ens_component: HTMLInputElement;

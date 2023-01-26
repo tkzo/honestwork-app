@@ -66,7 +66,6 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 			},
 			Expires: 600
 		});
-		console.log('url', url);
 		return json(url);
 	} catch (err) {
 		console.log('Error', err);

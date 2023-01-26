@@ -6,6 +6,7 @@
 	import { assets, base } from '$app/paths';
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
+	import { toast } from '@zerodevx/svelte-toast';
 
 	export let user: UserType;
 	let viewport: Element;
@@ -39,6 +40,13 @@
 		await connectNode();
 		ens_name = await $nodeProvider.lookupAddress($page.params.address);
 		ens_loading = false;
+	};
+	const handleSendMessage = async () => {
+		if (!$userConnected) {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>wallet not connected.</p>`
+			);
+		}
 	};
 </script>
 
@@ -90,12 +98,8 @@
 							</div>
 						</div>
 						<div class="right-section">
-							<div class="button">
+							<div class="button" on:click={handleSendMessage}>
 								<p class="yellow">send message</p>
-							</div>
-							<div style="height:8px" />
-							<div class="button">
-								<p class="light-60">add to favorites</p>
 							</div>
 						</div>
 					</div>

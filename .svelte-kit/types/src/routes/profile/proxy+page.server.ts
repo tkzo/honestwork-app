@@ -86,7 +86,6 @@ export const actions = {
 			timezone: '',
 			links: [data.get('link-0'), data.get('link-1'), data.get('link-2')]
 		};
-		console.log('Body:', body);
 
 		const url = `${apiUrl}/users/${userAddress}/${userSignature}`;
 		let response = await fetch(url, {
@@ -106,7 +105,6 @@ export const actions = {
 		const userSignature = cookies.get('honestwork_signature');
 		const data = await request.formData();
 
-		console.log('Data:', data);
 		let cloud_url_0 = '';
 		let cloud_url_1 = '';
 		let cloud_url_2 = '';

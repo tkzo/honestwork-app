@@ -13,7 +13,7 @@
 
 	export let skill: any;
 
-	let description_chars = 1000;
+	let description_chars = 2000;
 	let description_text = skill.description;
 	let title: string = skill.title;
 	let minimum: string = skill.minimum_price;
@@ -49,7 +49,7 @@
 	let comp_7: HTMLInputElement;
 	let title_input_element: HTMLInputElement;
 	let title_input_length: number;
-	let title_input_limit = 15;
+	let title_input_limit = 50;
 	let tag_input: HTMLInputElement;
 	let show_infobox = false;
 	let publish: boolean = skill.publish;

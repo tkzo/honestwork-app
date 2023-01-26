@@ -121,7 +121,7 @@
 
 				<div style="height:12px;" />
 				<div class="links">
-					{#each skill.links as link}
+					{#each skill.links.filter((n) => n != '') as link}
 						<div class="link-container">
 							<p class="placeholder light-40">link</p>
 							<div style="width:8px;" />

@@ -159,7 +159,7 @@ export const notifications = {
 		icon: '/icons/zap.svg'
 	},
 	launch: {
-		bodytext: "HonestWork is launching soon!",
+		bodytext: 'HonestWork is launching soon!',
 		cta: 'follow our twitter for the updates',
 		icon: '/icons/twitter.svg'
 	}
@@ -176,16 +176,16 @@ export const form_limitations = {
 	job: {
 		username: {
 			min: 5,
-			max: 40
+			max: 50
 		},
 		title: {
 			min: 5,
-			max: 40
+			max: 50
 		},
 		description: {
 			rows: 20,
-			min: 100,
-			max: 1000
+			min: 200,
+			max: 2000
 		},
 		tags: {
 			min: 1,
@@ -196,12 +196,12 @@ export const form_limitations = {
 			max: 3
 		},
 		budget: {
-			min: 1000,
+			min: 200,
 			max: 1000000
 		},
 		installments: {
 			min: 2,
-			max: 3
+			max: 5
 		},
 		timezone: {
 			min: -12,

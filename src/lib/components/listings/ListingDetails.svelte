@@ -159,7 +159,6 @@
 			Object.entries({ ...fields, file }).forEach(([key, value]) => {
 				formData.append(key, value as string);
 			});
-			console.log('Formdata:', formData);
 			const upload = await fetch(url, {
 				method: 'POST',
 				body: formData

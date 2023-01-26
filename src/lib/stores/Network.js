@@ -32,8 +32,6 @@ let chain_names = {
 
 export const connectIfCached = async () => {
 	if (!get(userConnected)) {
-		console.log('Connecting cached wallet...');
-
 		let local = localStorage.getItem('honestwork_connection', 'true');
 		if (local && local == 'true') {
 			connectWallet();
@@ -42,7 +40,6 @@ export const connectIfCached = async () => {
 };
 
 export const connectWallet = async () => {
-	console.log('Connecting wallet...');
 	connecting.set(true);
 	try {
 		const provider = new ethers.providers.Web3Provider(window.ethereum);
