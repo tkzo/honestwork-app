@@ -80,7 +80,7 @@
 	}
 	$: sticky_item = sticky_data.find((n) => n.duration == sticky_duration) ?? sticky_data[0];
 
-	const handleSubmit = async (e: Event) => {
+	const handleSubmit = async (e: any) => {
 		if (e.submitter?.id != 'job_post') {
 			return;
 		}

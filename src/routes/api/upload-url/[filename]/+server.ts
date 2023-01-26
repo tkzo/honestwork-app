@@ -58,7 +58,7 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 			Bucket: env.PRIVATE_SPACES_BUCKETNAME,
 			Key: `${userAddress}/profile/${params.filename}`,
 			Conditions: [
-				['content-length-range', 0, 1048576] // up to 1 MB
+				['content-length-range', 0, 10485760] // up to 10 MB
 			],
 			Fields: {
 				acl: 'public-read',

@@ -62,7 +62,7 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 			Bucket: env.PRIVATE_SPACES_BUCKETNAME!,
 			Key: `${params.address}/job/${params.slot}/${params.filename}`,
 			Conditions: [
-				['content-length-range', 0, 1048576] // up to 1 MB
+				['content-length-range', 0, 26214400] // up to 25 MB
 			],
 			Fields: {
 				acl: 'public-read',

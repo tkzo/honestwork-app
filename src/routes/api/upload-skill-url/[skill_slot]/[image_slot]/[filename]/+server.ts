@@ -63,7 +63,7 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 			Bucket: env.PRIVATE_SPACES_BUCKETNAME!,
 			Key: `${userAddress}/skill/${params.skill_slot}/${params.image_slot}/${params.filename}`,
 			Conditions: [
-				['content-length-range', 0, 5242880] // up to 5 MB
+				['content-length-range', 0, 26214400] // up to 25 MB
 			],
 			Fields: {
 				acl: 'public-read',

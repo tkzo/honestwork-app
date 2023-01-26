@@ -136,20 +136,7 @@
 		duration: 100
 	});
 	const toggle = (tab: string) => {
-		if (!$changes_made) {
-			chosenTab = tab;
-		} else if (chosenTab != tab) {
-			$blink = 0;
-			setTimeout(() => {
-				$blink = 1;
-			}, 100);
-			setTimeout(() => {
-				$blink = 0;
-			}, 200);
-			setTimeout(() => {
-				$blink = 1;
-			}, 300);
-		}
+		chosenTab = tab;
 	};
 	const getNft = async () => {
 		fetching_image = true;
