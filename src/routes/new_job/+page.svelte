@@ -123,7 +123,7 @@
 		formObj.links = links;
 		formObj.tags = tags;
 		formObj.sticky_duration = sticky_duration.toString();
-		formObj.timezone = timezone >= 0 ? `UTC+${timezone}` : `UTC-${timezone}`;
+		formObj.timezone = timezone >= 0 ? `UTC+${timezone}` : `UTC${timezone}`;
 		formObj.description = content;
 
 		//todo: consume errors and show them to the user
