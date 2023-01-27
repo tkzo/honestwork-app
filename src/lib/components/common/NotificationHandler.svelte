@@ -8,11 +8,13 @@
 </script>
 
 {#if $page.route.id == '/'}
-<a href="https://twitter.com/HonestWorkDAO" target="_blank" rel="noreferrer" ><Notification notification={notifications.launch} /></a>	
+	<a href="https://twitter.com/HonestWorkDAO" target="_blank" rel="noreferrer"
+		><Notification notification={notifications.launch} /></a
+	>
 {:else if $page.route.id == '/jobs' || $page.route.id == '/skills' || $page.route.id == '/listings'}
 	<Notification notification={notifications.postjob} on:click={() => goto('/new_job')} />
 	<div style="height:16px;" />
-{:else if $page.route.id == ('/new_job' || '/auth') || trimmedRoute == 'job' || trimmedRoute == 'creator'}
+{:else if $page.route.id == '/new_job' || $page.route.id == '/messages' || $page.route.id == '/auth' || trimmedRoute == 'job' || trimmedRoute == 'creator'}
 	<Notification notification={notifications.mint} />
 	<div style="height:16px;" />
 {:else if $page.route.id == '/profile'}

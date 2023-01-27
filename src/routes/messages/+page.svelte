@@ -1,7 +1,7 @@
 <script lang="ts">
 	//todo: add types
 
-	import { nodeProvider, userConnected, xmtpClient } from '$lib/stores/Network';
+	import { nodeProvider, userConnected, xmtpClient, userAddress } from '$lib/stores/Network';
 	import { browser } from '$app/environment';
 	import { shortcut } from '$lib/stores/Shortcut';
 	import { Svrollbar } from 'svrollbar';
@@ -9,9 +9,11 @@
 	import { afterUpdate } from 'svelte';
 	import { Jumper } from 'svelte-loading-spinners';
 	import { onDestroy } from 'svelte';
-	import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
+	import { new_conversation_metadata } from '$lib/stores/State';
 	import { onMount } from 'svelte';
 	import { connectIfCached } from '$lib/stores/Network';
+	import { base } from '$app/paths';
+
 	onMount(() => {
 		connectIfCached();
 	});
@@ -65,18 +67,38 @@
 	const updateRows = () => {
 		rows = user_input.value.split(/\r\n|\r|\n/).length;
 	};
-
 	const scroll = (behavior: any) => {
 		viewport.scroll({ top: contents.clientHeight, behavior: behavior });
 	};
-
 	const fetchConversations = async () => {
 		if (browser && $xmtpClient) {
-			if ($new_conversation_address != '') {
-				await newConversation($new_conversation_address);
-				new_conversation_address.set('');
+			const url = `${base}/api/conversation/${$userAddress}`;
+			const response = await fetch(url);
+			const json = await response.json();
+
+			if ($new_conversation_metadata.address != '') {
+				await newConversation($new_conversation_metadata.address);
+				new_conversation_metadata.set({ title: '', address: '' });
 			}
 			conversations = await $xmtpClient.conversations.list();
+			conversations = conversations.filter(
+				(convo) =>
+					convo.context?.conversationId &&
+					convo.context.conversationId.startsWith('honestwork.app/')
+			);
+
+			conversations = conversations.filter((convo) => {
+				return json.find((j: any) => {
+					return j.matched_user == convo.peerAddress;
+				});
+			});
+
+			conversations = conversations.filter((convo) => {
+				return json.find((j: any) => {
+					return j.muted == false;
+				});
+			});
+
 			if (conversations.length > 0) {
 				await fetchInbox(conversations);
 				for await (const conv of conversations) {
@@ -88,7 +110,6 @@
 		}
 		loaded = true;
 	};
-
 	const fetchInbox = async (convos: any[]) => {
 		let c = 0;
 		for await (const convo of convos) {
@@ -102,7 +123,6 @@
 		}
 		last_messages = last_messages;
 	};
-
 	const newConversation = async (addr: string) => {
 		const convo = await $xmtpClient.conversations.newConversation(addr, {
 			conversationId: 'honestwork.app/conversations',
@@ -115,14 +135,12 @@
 		user_input.focus();
 		return convo;
 	};
-
 	const chooseItem = async (convo: any) => {
 		chosen_conversation = convo;
 		first_chat_load = true;
 		getChatMessages(convo);
 		user_input.focus();
 	};
-
 	const getLastMessage = async (convo: any) => {
 		let convo_messages = await convo.messages();
 		if (convo_messages.length == 0) {
@@ -134,12 +152,10 @@
 		}
 		return msg;
 	};
-
 	const getChatMessages = async (convo: any) => {
 		let convo_messages = await convo.messages();
 		chosen_messages = convo_messages;
 	};
-
 	const syncChatMessages = async (convo: any) => {
 		active_stream = await convo.streamMessages();
 		for await (const message of active_stream) {
@@ -149,7 +165,6 @@
 			fetchInbox(conversations);
 		}
 	};
-
 	const syncConversations = async () => {
 		all_streams = await $xmtpClient.conversations.stream();
 		for await (const conversation of all_streams) {
@@ -158,7 +173,6 @@
 			conversations = conversations;
 		}
 	};
-
 	const fetchPeer = async (peer: string) => {
 		const result = await fetch(`/api/user/${peer}`);
 		let jason = await result.json();
@@ -172,7 +186,6 @@
 		}
 		return jason;
 	};
-
 	const sendMessage = async (convo: any) => {
 		new_message = user_input.value;
 		let input_ = user_input.value;
@@ -180,7 +193,6 @@
 		await convo.send(input_);
 		new_message = '';
 	};
-
 	const getNft = async (addr: string, id: number) => {
 		try {
 			const response = await fetch(`api/alchemy/${addr}/${id}`);
@@ -442,7 +454,6 @@
 		display: flex;
 		flex-direction: column;
 	}
-
 	.inbox-wrapper {
 		position: relative;
 		-ms-overflow-style: none; /* for Internet Explorer, Edge */
@@ -458,7 +469,6 @@
 		display: flex;
 		flex-direction: column-reverse;
 	}
-
 	.viewport {
 		position: relative;
 		overflow: scroll;
@@ -468,13 +478,11 @@
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}
-
 	.chat-viewport {
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
 	}
-
 	.viewport::-webkit-scrollbar {
 		/* hide scrollbar */
 		display: none;

@@ -30,6 +30,8 @@
 	let show_sorting_options = false;
 	let chosen_sorting_option = 0;
 
+	$: console.log('Daatta:', data.json);
+
 	let feedHeight = 0;
 	$: if (browser) feedHeight = window.innerHeight - 128;
 	$: filteredSkills =

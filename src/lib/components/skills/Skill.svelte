@@ -1,7 +1,7 @@
 <svelte:options immutable={true} />
 
 <script lang="ts">
-	import { new_conversation_address, new_conversation_metadata } from '$lib/stores/State';
+	import { new_conversation_metadata } from '$lib/stores/State';
 	import type { SkillType, UserType } from '$lib/stores/Types';
 	import { onMount } from 'svelte';
 	import { assets, base } from '$app/paths';
@@ -13,27 +13,13 @@
 	export let chosen: boolean;
 	export let skill: SkillType;
 
-	let title = skill.title;
-	let description = skill.description;
-	let image_urls = skill.image_urls;
-	let minimum_price = skill.minimum_price;
-	let user_address = skill.user_address;
+	$: console.log('Skill:', skill);
 
-	//todo: make this dynamic
-	$: tags = [
-		{
-			key: 'member',
-			value: 'tier 3'
-		},
-		{
-			key: 'jobs delivered',
-			value: '666'
-		},
-		{
-			key: 'min. budget',
-			value: '$' + minimum_price.toString().slice(0, 6)
-		}
-	];
+	let title = skill.title;
+	let image_urls = skill.image_urls;
+	let user_address = skill.user_address;
+	let user: UserType;
+	let hovering_heart: boolean = false;
 
 	onMount(() => {
 		fetchUser();
@@ -41,6 +27,7 @@
 
 	const handleAddToFavorites = async () => {
 		if ($userConnected) {
+			console.log('Skill slot:', skill.slot);
 			try {
 				const url = `${base}/api/favorites/add`;
 				const response = await fetch(url, {
@@ -68,26 +55,16 @@
 			}
 		}
 	};
-
 	const fetchUser = async () => {
 		const res = await fetch(`/api/user/${user_address}`);
 		user = await res.json();
 	};
-	let user: UserType;
-	//todo: show placeholder until image is loaded
-	let image_component: HTMLImageElement;
-	let hovering_heart: boolean = false;
 </script>
 
 <section class={chosen ? 'chosen' : ''}>
 	<div class="contents">
 		<div class="thumbnail">
-			<img
-				src={image_urls[0] ?? placeholder_image}
-				alt="gallery"
-				class="preview-image"
-				bind:this={image_component}
-			/>
+			<img src={image_urls[0] ?? placeholder_image} alt="gallery" class="preview-image" />
 		</div>
 		<div class="content">
 			<div>
@@ -105,11 +82,11 @@
 	</div>
 	<div class="tag-bar">
 		<div class="tags">
-			{#each tags as tag}
+			{#each skill.tags as tag}
 				<div class="tag">
-					<p class="link">{tag.value} <span class="light-40">{tag.key}</span></p>
+					<p class="link">#{tag}</p>
 				</div>
-				{#if tag != tags[tags.length - 1]}
+				{#if tag != skill.tags[skill.tags.length - 1]}
 					<div style="width: 4px" />
 				{/if}
 			{/each}
@@ -118,8 +95,7 @@
 			<div
 				class="action"
 				on:click={() => {
-					new_conversation_address.set(user_address);
-					new_conversation_metadata.set({ title: title });
+					new_conversation_metadata.set({ title: title, address: user_address });
 				}}
 				on:keydown
 			>

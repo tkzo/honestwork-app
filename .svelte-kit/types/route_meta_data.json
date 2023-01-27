@@ -9,6 +9,12 @@
 	"/api/auth/login/[address]": [
 		"src/routes/api/auth/login/[address]/+server.ts"
 	],
+	"/api/(conversation)/conversation_add": [
+		"src/routes/api/(conversation)/conversation_add/+server.ts"
+	],
+	"/api/(conversation)/conversation/[address]": [
+		"src/routes/api/(conversation)/conversation/[address]/+server.ts"
+	],
 	"/api/favorites/add": [
 		"src/routes/api/favorites/add/+server.ts"
 	],
