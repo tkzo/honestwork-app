@@ -119,6 +119,7 @@ declare module '$env/static/private' {
 declare module '$env/static/public' {
 	export const PUBLIC_MEMBERSHIP_TOKEN_ADDRESS: string;
 	export const PUBLIC_JOB_LISTING_CONTRACT_ADDRESS: string;
+	export const PUBLIC_PAYMENT_CONTRACT_ADDRESS: string;
 	export const PUBLIC_ETHEREUM_RPC: string;
 }
 
@@ -234,6 +235,7 @@ declare module '$env/dynamic/public' {
 	export const env: {
 		PUBLIC_MEMBERSHIP_TOKEN_ADDRESS: string;
 		PUBLIC_JOB_LISTING_CONTRACT_ADDRESS: string;
+		PUBLIC_PAYMENT_CONTRACT_ADDRESS: string;
 		PUBLIC_ETHEREUM_RPC: string;
 		[key: `PUBLIC_${string}`]: string | undefined;
 	}

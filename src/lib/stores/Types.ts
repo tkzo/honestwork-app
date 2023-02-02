@@ -43,6 +43,7 @@ export type UserType = {
 	timezone: string;
 	bio: string;
 	links: Array<string>;
+	dms_open: boolean;
 };
 
 export type JobType = {

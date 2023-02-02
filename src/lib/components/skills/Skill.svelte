@@ -13,8 +13,6 @@
 	export let chosen: boolean;
 	export let skill: SkillType;
 
-	$: console.log('Skill:', skill);
-
 	let title = skill.title;
 	let image_urls = skill.image_urls;
 	let user_address = skill.user_address;
@@ -27,7 +25,6 @@
 
 	const handleAddToFavorites = async () => {
 		if ($userConnected) {
-			console.log('Skill slot:', skill.slot);
 			try {
 				const url = `${base}/api/favorites/add`;
 				const response = await fetch(url, {

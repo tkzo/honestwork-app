@@ -10,6 +10,5 @@ export const GET: RequestHandler = async ({ params }) => {
 	const url = `${apiUrl}/users/${params.address}`;
 	let response = await fetch(url);
 	let data = await response.json();
-	console.log('JSON:', data);
 	return json(data);
 };

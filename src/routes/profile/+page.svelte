@@ -64,6 +64,7 @@
 	let nft_id: number = data.user.nft_id;
 	let nft_address: string = data.user.nft_address;
 	let bio: string = data.user.bio;
+	let dms_open: boolean = data.user.dms_open;
 	let fetching_image = true;
 	let infobox_show: boolean = false;
 	let infobox_previous_content: string;
@@ -119,7 +120,8 @@
 		bio != data.user.bio ||
 		image_url != data.user.image_url ||
 		show_nft != data.user.show_nft ||
-		show_ens != data.user.show_ens
+		show_ens != data.user.show_ens ||
+		dms_open != data.user.dms_open
 	) {
 		changes_made.set(true);
 	} else {
@@ -581,7 +583,22 @@
 										on:focusout={() => deFocusInput()}
 									/>
 								</div>
-
+								<div style="height:12px" />
+								<div
+									class="input-field"
+									on:click={() => (dms_open = !dms_open)}
+									on:keydown
+									style="cursor:pointer;"
+								>
+									<input hidden type="checkbox" name="dms_open" bind:checked={dms_open} />
+									<img
+										src={dms_open ? `${assets}/icons/checked.svg` : `${assets}/icons/unchecked.svg`}
+										alt="Checked"
+										style="height:16px;width:16px;"
+									/>
+									<div style="width:4px" />
+									<p class={dms_open ? 'yellow' : 'light-60'}>receive private messages</p>
+								</div>
 								<div style="height:8px" />
 							</div>
 						</div>

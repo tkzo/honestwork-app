@@ -87,7 +87,7 @@
 				<input
 					class="search-input"
 					type="text"
-					placeholder="Search for awesome jobs"
+					placeholder="Search for awesome jobs 👀"
 					bind:value={search_input}
 					on:focus={() => (input_active = true)}
 					on:focusout={() => (input_active = false)}
@@ -225,6 +225,9 @@
 		border: none;
 		width: 240px;
 		background: var(--color-light-2);
+	}
+	::placeholder {
+		color: var(--color-light-80);
 	}
 	input:focus {
 		outline: none;

@@ -3,7 +3,7 @@
 	import { userConnected, networkSigner, userState } from '$lib/stores/Network';
 	import { env } from '$env/dynamic/public';
 
-	import { nft_abi } from '$lib/stores/Constants';
+	import { nft_abi } from '$lib/stores/ABI';
 	import { ethers } from 'ethers';
 
 	const mint = async () => {

@@ -9,7 +9,8 @@
 	} from '$lib/stores/Network';
 	import { JobInput } from '$lib/stores/Validation';
 	import type { JobType, Network, Token } from '$lib/stores/Types';
-	import { chains, erc20_abi } from '$lib/stores/Constants';
+	import { chains } from '$lib/stores/Constants';
+	import { erc20_abi } from '$lib/stores/ABI';
 	import { placeholder_image, sticky_data } from '$lib/stores/Constants';
 	import { chosen_job_slot } from '$lib/stores/State';
 	import { shortcut } from '$lib/stores/Shortcut';
@@ -901,16 +902,6 @@
 	.description {
 		width: 100%;
 		height: 100%;
-	}
-	textarea {
-		width: 100%;
-		height: 100%;
-		border-width: 1px;
-		border-style: solid;
-		border-color: var(--color-light-10);
-		box-sizing: border-box;
-		padding: 8px;
-		resize: none;
 	}
 	.tags {
 		width: calc(100% - 100px);

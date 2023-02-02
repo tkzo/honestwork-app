@@ -83,9 +83,12 @@ export const actions = {
 			nft_address: data.get('nft_address'),
 			nft_id: data.get('nft_id'),
 			show_nft: data.get('show_nft') == 'on' ? true : false,
-			timezone: '',
+			dms_open: data.get('dms_open') == 'on' ? true : false,
+			timezone: 'UTC+3',
 			links: [data.get('link-0'), data.get('link-1'), data.get('link-2')]
 		};
+
+		console.log('Body:', body);
 
 		const url = `${apiUrl}/users/${userAddress}/${userSignature}`;
 		let response = await fetch(url, {

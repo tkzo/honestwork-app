@@ -131,7 +131,7 @@ section {
 p {
 	font-style: normal;
 	font-weight: 400;
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 16px;
 	margin: 0px;
 	/* text-transform: uppercase; */
@@ -155,6 +155,12 @@ a:visited {
 
 .yellow {
 	color: var(--color-primary);
+}
+.green {
+	color: var(--color-success);
+}
+.red {
+	color: var(--color-error);
 }
 
 .light-40 {

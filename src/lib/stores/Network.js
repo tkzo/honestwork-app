@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { env } from '$env/dynamic/public';
 import { Client } from '@xmtp/xmtp-js';
 import { get } from 'svelte/store';
-import { nft_abi } from '$lib/stores/Constants';
+import { nft_abi } from '$lib/stores/ABI';
 import { toast } from '@zerodevx/svelte-toast';
 import { user_watchlist, user_favorites } from '$lib/stores/State';
 
