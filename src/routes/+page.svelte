@@ -6,10 +6,8 @@
 	import FeaturesCards from '$lib/components/landing/FeaturesCards.svelte';
 	import BenefitsCards from '$lib/components/landing/BenefitsCards.svelte';
 	import Faq from '$lib/components/landing/Faq.svelte';
-
 	let viewport: Element;
 	let contents: Element;
-
 	const handleConnect = async () => {
 		await connectWallet();
 		goto('/skills');
@@ -30,16 +28,6 @@
 						<img src={`${assets}/icons/landing/logo.svg`} alt="HonestWork Logo" />
 						<div class="text">H0NESTW0RK</div>
 					</div>
-					<!-- <div class="login link" on:click={handleConnect} on:keydown>LOGIN TO APP</div> -->
-				</div>
-				<div style="height: 100px;" />
-				<div class="header">
-					<h1>A platform for all your web3 freelancing needs</h1>
-					<p class="about">
-						HonestWork connects clients with top-rated blockchain experts, including copywriters,
-						developers, and designers.
-					</p>
-					<!-- <div class="explore" on:click={() => goto('/skills')} on:keydown>START EXPLORING</div> -->
 					<div class="socials">
 						<a href="https://twitter.com/HonestWorkDAO" target="_blank" rel="noopener noreferrer">
 							<img src={`${assets}/icons/landing/twitter.svg`} alt="Twitter" class="icon" />
@@ -58,9 +46,19 @@
 							<img src={`${assets}/icons/landing/linkedin.svg`} alt="LinkedIn" class="icon" />
 						</a>
 					</div>
+					<!-- <div class="login link" on:click={handleConnect} on:keydown>LOGIN TO APP</div> -->
+				</div>
+				<div style="height: 100px;" />
+				<div class="header">
+					<h1>A platform for all your web3 freelancing needs</h1>
+					<p class="about">
+						HonestWork connects clients with top-rated blockchain experts, including copywriters,
+						developers, and designers.
+					</p>
+					<!-- <div class="explore" on:click={() => goto('/skills')} on:keydown>START EXPLORING</div> -->
 					<div style="height: 64px;" />
 					<div class="imgs-container">
-						<img src="{`${assets}/assets/landing/hw.png`} " alt="HonestWork" class="app-img" />
+						<img src="{`${assets}/assets/landing/hw.webp`} " alt="HonestWork" class="app-img" />
 						<img src="{`${assets}/assets/landing/deer.png`} " alt="HonestWork" class="deer" />
 					</div>
 				</div>
@@ -86,7 +84,6 @@
 		--svrollbar-track-width: 1px;
 		/* --svrollbar-track-background: #85b4b9; */
 		--svrollbar-track-opacity: 1;
-
 		--svrollbar-thumb-width: 10px;
 		--svrollbar-thumb-background: #d9ab55;
 		--svrollbar-thumb-opacity: 1;
@@ -96,7 +93,6 @@
 		position: relative;
 		overflow: scroll;
 		box-sizing: border-box;
-
 		/* hide scrollbar */
 		-ms-overflow-style: none;
 		scrollbar-width: none;
