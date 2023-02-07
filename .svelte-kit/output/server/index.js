@@ -2286,7 +2286,21 @@ async function respond(request, options, state) {
     }
   }
 }
-const app_template = ({ head, body, assets: assets2, nonce }) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n\n		<link rel="icon" href="' + assets2 + '/favicon.png" />\n		<link\n			rel="stylesheet"\n			href="' + assets2 + '/fonts/stylesheet.css"\n			type="text/css"\n			charset="utf-8"\n		/>\n		<link rel="stylesheet" href="' + assets2 + '/styles.css" charset="utf-8" />\n		<link rel="stylesheet" href="' + assets2 + '/dark.css" charset="utf-8" />\n\n		<link rel="preconnect" href="https://fonts.googleapis.com" />\n		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />\n		<link\n			href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap"\n			rel="stylesheet"\n		/>\n		<meta name="viewport" content="width=device-width" />\n		' + head + '\n	</head>\n\n	<body>\n		<div style="display: contents">' + body + "</div>\n	</body>\n</html>\n";
+const app_template = ({ head, body, assets: assets2, nonce }) => '<!DOCTYPE html>\r\n<html lang="en">\r\n	<head>\r\n		<meta charset="utf-8" />\r\n\r\n		<link rel="icon" href="' + assets2 + '/favicon.png" />\r\n		<link\r\n			rel="stylesheet"\r\n			href="' + assets2 + '/fonts/stylesheet.css"\r\n			type="text/css"\r\n			charset="utf-8"\r\n		/>\r\n		<link rel="stylesheet" href="' + assets2 + '/styles.css" charset="utf-8" />\r\n		<link rel="stylesheet" href="' + assets2 + `/dark.css" charset="utf-8" />\r
+\r
+		<link rel="preconnect" href="https://fonts.googleapis.com" />\r
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />\r
+		<link\r
+			href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap"\r
+			rel="stylesheet"\r
+		/>\r
+		<script\r
+			src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"\r
+			data-pace-options='{"eventLag:false"}'\r
+		></script>\r
+\r
+		<meta name="viewport" content="width=device-width" />\r
+		` + head + '\r\n	</head>\r\n\r\n	<body>\r\n		<div style="display: contents">' + body + "</div>\r\n	</body>\r\n</html>\r\n";
 const error_template = ({ status, message }) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<title>' + message + `</title>
 
 		<style>
@@ -2366,7 +2380,7 @@ class Server {
       app_template,
       app_template_contains_nonce: false,
       error_template,
-      version: "1673942634311"
+      version: "1675762665527"
     };
   }
   async init({ env }) {

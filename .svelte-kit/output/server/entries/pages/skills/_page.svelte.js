@@ -1,58 +1,45 @@
 import { c as create_ssr_component, b as subscribe, f as escape, g as null_to_empty, d as add_attribute, e as each, v as validate_component } from "../../../chunks/index.js";
-import { u as userConnected, f as nodeProvider } from "../../../chunks/Network.js";
+import { u as userConnected, g as nodeProvider } from "../../../chunks/Network.js";
 import { a as assets, b as base } from "../../../chunks/paths.js";
 import { p as placeholder_image } from "../../../chunks/Constants.js";
+import { p as parseContent } from "../../../chunks/Parser.js";
 import { S as Svrollbar } from "../../../chunks/Svrollbar.js";
 /* empty css                                                      */import { S as Skeleton } from "../../../chunks/Skeleton.js";
 import { b as browser } from "../../../chunks/environment.js";
 import "fuzzy";
 const Skill_svelte_svelte_type_style_lang = "";
 const css$2 = {
-  code: "section.svelte-wg54sw.svelte-wg54sw{width:520px;flex-direction:column;cursor:pointer;border-width:1px 0px 1px 0px;border-style:solid;border-color:var(--color-light-10)}section.svelte-wg54sw.svelte-wg54sw:hover{background-color:var(--color-light-2)}.contents.svelte-wg54sw.svelte-wg54sw{display:flex;flex-direction:row;border-width:0px 0px 1px 0px;border-style:solid;border-color:var(--color-light-10)}.thumbnail.svelte-wg54sw.svelte-wg54sw{height:180px;width:240px}.content.svelte-wg54sw.svelte-wg54sw{display:flex;flex-direction:column;padding:8px;justify-content:space-between;width:278px}.sub.svelte-wg54sw.svelte-wg54sw{width:100%;display:flex;flex-direction:row;justify-content:space-between}.preview-image.svelte-wg54sw.svelte-wg54sw{height:180px;width:240px}.tag-bar.svelte-wg54sw.svelte-wg54sw{display:flex;flex-direction:row;justify-content:space-between}.tags.svelte-wg54sw.svelte-wg54sw{display:flex;flex-direction:row}.tag.svelte-wg54sw.svelte-wg54sw{padding:8px;border-width:0px 1px 0px 0px;border-style:solid;border-color:var(--color-light-10)}.tag.svelte-wg54sw.svelte-wg54sw:hover{background-color:var(--color-primary)}.tag.svelte-wg54sw:hover p.svelte-wg54sw{color:var(--color-dark)}.tag.svelte-wg54sw:hover span.svelte-wg54sw{color:var(--color-dark)}.actions.svelte-wg54sw.svelte-wg54sw{display:flex;flex-direction:row;align-items:center}.action.svelte-wg54sw.svelte-wg54sw{height:16px;padding:8px;border-width:0px 0px 0px 1px;border-style:solid;border-color:var(--color-light-10)}.chosen.svelte-wg54sw.svelte-wg54sw{background-color:var(--color-light-2)}",
+  code: "section.svelte-wg54sw.svelte-wg54sw{width:520px;flex-direction:column;cursor:pointer;border-width:1px 0px 1px 0px;border-style:solid;border-color:var(--color-light-10)}section.svelte-wg54sw.svelte-wg54sw:hover{background-color:var(--color-light-2)}.contents.svelte-wg54sw.svelte-wg54sw{display:flex;flex-direction:row;border-width:0px 0px 1px 0px;border-style:solid;border-color:var(--color-light-10)}.thumbnail.svelte-wg54sw.svelte-wg54sw{height:180px;width:240px}.content.svelte-wg54sw.svelte-wg54sw{display:flex;flex-direction:column;padding:8px;justify-content:space-between;width:278px}.sub.svelte-wg54sw.svelte-wg54sw{width:100%;display:flex;flex-direction:row;justify-content:space-between}.preview-image.svelte-wg54sw.svelte-wg54sw{height:180px;width:240px}.tag-bar.svelte-wg54sw.svelte-wg54sw{display:flex;flex-direction:row;justify-content:space-between}.tags.svelte-wg54sw.svelte-wg54sw{display:flex;flex-direction:row}.tag.svelte-wg54sw.svelte-wg54sw{padding:8px;border-width:0px 1px 0px 0px;border-style:solid;border-color:var(--color-light-10)}.tag.svelte-wg54sw.svelte-wg54sw:hover{background-color:var(--color-primary)}.tag.svelte-wg54sw:hover p.svelte-wg54sw{color:var(--color-dark)}.actions.svelte-wg54sw.svelte-wg54sw{display:flex;flex-direction:row;align-items:center}.action.svelte-wg54sw.svelte-wg54sw{height:16px;padding:8px;border-width:0px 0px 0px 1px;border-style:solid;border-color:var(--color-light-10)}.chosen.svelte-wg54sw.svelte-wg54sw{background-color:var(--color-light-2)}",
   map: null
 };
 const Skill = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let tags;
-  let trimmed_description;
   let $$unsubscribe_userConnected;
   $$unsubscribe_userConnected = subscribe(userConnected, (value) => value);
   let { chosen } = $$props;
   let { skill } = $$props;
   let title = skill.title;
-  let description = skill.description;
   let image_urls = skill.image_urls;
-  let minimum_price = skill.minimum_price;
   skill.user_address;
   let user;
-  let image_component;
   if ($$props.chosen === void 0 && $$bindings.chosen && chosen !== void 0)
     $$bindings.chosen(chosen);
   if ($$props.skill === void 0 && $$bindings.skill && skill !== void 0)
     $$bindings.skill(skill);
   $$result.css.add(css$2);
-  tags = [
-    { key: "member", value: "tier 3" },
-    { key: "jobs delivered", value: "666" },
-    {
-      key: "min. budget",
-      value: "$" + minimum_price.toString().slice(0, 6)
-    }
-  ];
-  trimmed_description = description.length > 120 ? description.slice(0, 120) + "..." : description;
   $$unsubscribe_userConnected();
   return `
 
 
 
-<section class="${escape(null_to_empty(chosen ? "chosen" : ""), true) + " svelte-wg54sw"}"><div class="${"contents svelte-wg54sw"}"><div class="${"thumbnail svelte-wg54sw"}"><img${add_attribute("src", image_urls[0] ?? placeholder_image, 0)} alt="${"gallery"}" class="${"preview-image svelte-wg54sw"}"${add_attribute("this", image_component, 0)}></div>
+<section class="${escape(null_to_empty(chosen ? "chosen" : ""), true) + " svelte-wg54sw"}"><div class="${"contents svelte-wg54sw"}"><div class="${"thumbnail svelte-wg54sw"}"><img${add_attribute("src", image_urls[0] ?? placeholder_image, 0)} alt="${"gallery"}" class="${"preview-image svelte-wg54sw"}"></div>
 		<div class="${"content svelte-wg54sw"}"><div><p>${escape(title)}</p>
 				<div style="${"height:12px"}"></div>
-				<div class="${"body-text light-60"}">${escape(trimmed_description)}</div></div>
+				<div class="${"body-text light-60"}">${escape(parseContent(skill.description).chars.slice(0, 160) + "...")}</div></div>
 			<div class="${"sub svelte-wg54sw"}"><p class="${"yellow"}">${escape(user?.username)}</p>
 				<p>4.9<span class="${"light-60"}">(366)</span></p></div></div></div>
-	<div class="${"tag-bar svelte-wg54sw"}"><div class="${"tags svelte-wg54sw"}">${each(tags, (tag) => {
-    return `<div class="${"tag svelte-wg54sw"}"><p class="${"link svelte-wg54sw"}">${escape(tag.value)} <span class="${"light-40 svelte-wg54sw"}">${escape(tag.key)}</span></p></div>
-				${tag != tags[tags.length - 1] ? `<div style="${"width: 4px"}"></div>` : ``}`;
+	<div class="${"tag-bar svelte-wg54sw"}"><div class="${"tags svelte-wg54sw"}">${each(skill.tags, (tag) => {
+    return `<div class="${"tag svelte-wg54sw"}"><p class="${"link svelte-wg54sw"}">#${escape(tag)}</p></div>
+				${tag != skill.tags[skill.tags.length - 1] ? `<div style="${"width: 4px"}"></div>` : ``}`;
   })}</div>
 		<div class="${"actions svelte-wg54sw"}"><div class="${"action svelte-wg54sw"}"><a href="${"/messages"}"><img${add_attribute("src", `${assets}/icons/message.svg`, 0)} alt="${"message"}"></a></div>
 			<div class="${"action svelte-wg54sw"}">${`<img${add_attribute("src", `${assets}/icons/heart.svg`, 0)} alt="${"heart"}">`}</div></div></div></section>
@@ -60,7 +47,7 @@ const Skill = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 });
 const SkillPage_svelte_svelte_type_style_lang = "";
 const css$1 = {
-  code: "main.svelte-17mq2nz.svelte-17mq2nz{width:520px;display:flex;flex-direction:column}.profile-bar.svelte-17mq2nz.svelte-17mq2nz{display:flex;flex-direction:row;justify-content:space-between;align-items:center;border-width:1px 1px 0px 1px;border-style:solid;border-color:var(--color-light-10);cursor:pointer}.profile-bar.svelte-17mq2nz.svelte-17mq2nz:hover{background-color:var(--color-light-2)}.left-section.svelte-17mq2nz.svelte-17mq2nz{display:flex;flex-direction:row;align-items:center}.pfp.svelte-17mq2nz.svelte-17mq2nz{width:40px;height:40px}.gallery.svelte-17mq2nz.svelte-17mq2nz{width:518px;border-width:1px 1px 1px 1px;border-style:solid;border-color:var(--color-light-10);display:flex;flex-direction:column}.gallery-images.svelte-17mq2nz.svelte-17mq2nz{width:100%;height:388px;border-width:0px 0px 1px 0px;border-style:solid;border-color:var(--color-light-10)}.gallery-buttons.svelte-17mq2nz.svelte-17mq2nz{display:flex;flex-direction:row;justify-content:space-between;align-items:center;cursor:pointer}.left-gallery-button.svelte-17mq2nz.svelte-17mq2nz{border-width:0px 1px 0px 0px;border-style:solid;border-color:var(--color-light-10);padding:8px 12px}.right-gallery-button.svelte-17mq2nz.svelte-17mq2nz{border-width:0px 0px 0px 1px;border-style:solid;border-color:var(--color-light-10);padding:8px 12px}.right-gallery-button.svelte-17mq2nz.svelte-17mq2nz:hover{background-color:var(--color-primary)}.right-gallery-button.svelte-17mq2nz:hover p.svelte-17mq2nz{color:var(--color-dark)}.description.svelte-17mq2nz.svelte-17mq2nz{border-width:1px 1px 1px 1px;border-style:solid;border-color:var(--color-light-10);padding:12px}.link-container.svelte-17mq2nz.svelte-17mq2nz{display:flex;flex-direction:row;align-items:center;border-width:1px;border-style:solid;border-color:var(--color-light-10)}.placeholder.svelte-17mq2nz.svelte-17mq2nz{padding:8px 12px;border-width:0px 1px 0px 0px;border-style:solid;border-color:var(--color-light-10)}.wrapper.svelte-17mq2nz.svelte-17mq2nz{position:relative;-ms-overflow-style:none;scrollbar-width:none;overflow-y:scroll;--svrollbar-track-width:1px;--svrollbar-track-opacity:1;--svrollbar-thumb-width:10px;--svrollbar-thumb-background:#d9ab55;--svrollbar-thumb-opacity:1}.viewport.svelte-17mq2nz.svelte-17mq2nz{position:relative;overflow:scroll;box-sizing:border-box;-ms-overflow-style:none;scrollbar-width:none}.viewport.svelte-17mq2nz.svelte-17mq2nz::-webkit-scrollbar{display:none}",
+  code: "main.svelte-17mq2nz.svelte-17mq2nz{width:520px;display:flex;flex-direction:column}.profile-bar.svelte-17mq2nz.svelte-17mq2nz{display:flex;flex-direction:row;justify-content:space-between;align-items:center;border-width:1px 1px 0px 1px;border-style:solid;border-color:var(--color-light-10);cursor:pointer}.profile-bar.svelte-17mq2nz.svelte-17mq2nz:hover{background-color:var(--color-light-2)}.left-section.svelte-17mq2nz.svelte-17mq2nz{display:flex;flex-direction:row;align-items:center}.pfp.svelte-17mq2nz.svelte-17mq2nz{width:40px;height:40px}.gallery.svelte-17mq2nz.svelte-17mq2nz{width:518px;border-width:1px 1px 1px 1px;border-style:solid;border-color:var(--color-light-10);display:flex;flex-direction:column}.gallery-images.svelte-17mq2nz.svelte-17mq2nz{width:100%;height:388px;border-width:0px 0px 1px 0px;border-style:solid;border-color:var(--color-light-10)}.gallery-buttons.svelte-17mq2nz.svelte-17mq2nz{display:flex;flex-direction:row;justify-content:space-between;align-items:center;cursor:pointer}.left-gallery-button.svelte-17mq2nz.svelte-17mq2nz{border-width:0px 1px 0px 0px;border-style:solid;border-color:var(--color-light-10);padding:8px 12px}.right-gallery-button.svelte-17mq2nz.svelte-17mq2nz{border-width:0px 0px 0px 1px;border-style:solid;border-color:var(--color-light-10);padding:8px 12px}.right-gallery-button.svelte-17mq2nz.svelte-17mq2nz:hover{background-color:var(--color-primary)}.right-gallery-button.svelte-17mq2nz:hover p.svelte-17mq2nz{color:var(--color-dark)}.link-container.svelte-17mq2nz.svelte-17mq2nz{display:flex;flex-direction:row;align-items:center;border-width:1px;border-style:solid;border-color:var(--color-light-10)}.placeholder.svelte-17mq2nz.svelte-17mq2nz{padding:8px 12px;border-width:0px 1px 0px 0px;border-style:solid;border-color:var(--color-light-10)}.wrapper.svelte-17mq2nz.svelte-17mq2nz{position:relative;-ms-overflow-style:none;scrollbar-width:none;overflow-y:scroll;--svrollbar-track-width:1px;--svrollbar-track-opacity:1;--svrollbar-thumb-width:10px;--svrollbar-thumb-background:#d9ab55;--svrollbar-thumb-opacity:1}.viewport.svelte-17mq2nz.svelte-17mq2nz{position:relative;overflow:scroll;box-sizing:border-box;-ms-overflow-style:none;scrollbar-width:none}.viewport.svelte-17mq2nz.svelte-17mq2nz::-webkit-scrollbar{display:none}",
   map: null
 };
 const SkillPage = create_ssr_component(($$result, $$props, $$bindings, slots) => {
@@ -74,12 +61,13 @@ const SkillPage = create_ssr_component(($$result, $$props, $$bindings, slots) =>
   let chosen_image = 0;
   let nft_image;
   let ens_name;
+  let trimmed_description;
   let feedHeight = 0;
   const fetchUser = async () => {
     const res = await fetch(`${base}/api/user/${skill.user_address}`);
     user = await res.json();
+    ens_name = user.ens_name ?? await $nodeProvider.lookupAddress(skill.user_address);
     await getNft();
-    ens_name = await $nodeProvider.lookupAddress(skill.user_address);
   };
   const resetState = () => {
     chosen_image = 0;
@@ -110,6 +98,11 @@ const SkillPage = create_ssr_component(($$result, $$props, $$bindings, slots) =>
     }
   }
   trimmed_images = skill.image_urls.filter((url) => url !== "");
+  {
+    if (skill && skill.description) {
+      trimmed_description = skill.description.replace('contenteditable="true"', 'contenteditable="false"');
+    }
+  }
   $$unsubscribe_nodeProvider();
   return `<main class="${"svelte-17mq2nz"}"><a class="${"profile-bar svelte-17mq2nz"}"${add_attribute("href", `${base}/creator/${skill.user_address}`, 0)} target="${"_blank"}" rel="${"noreferrer"}"><div class="${"left-section svelte-17mq2nz"}"><img class="${"pfp svelte-17mq2nz"}"${add_attribute(
     "src",
@@ -126,9 +119,10 @@ const SkillPage = create_ssr_component(($$result, $$props, $$bindings, slots) =>
 						<p>${escape(chosen_image + 1)}/${escape(trimmed_images.length)}</p>
 						<div class="${"right-gallery-button svelte-17mq2nz"}"><p class="${"light-40 svelte-17mq2nz"}">NEXT</p></div></div></div>
 				<div style="${"height:12px;"}"></div>
-				<div class="${"description svelte-17mq2nz"}"><div class="${"body-text light-80"}">${escape(skill.description)}</div></div>
+				<!-- HTML_TAG_START -->${trimmed_description}<!-- HTML_TAG_END -->
+
 				<div style="${"height:12px;"}"></div>
-				<div class="${"links"}">${each(skill.links, (link) => {
+				<div class="${"links"}">${each(skill.links.filter((n) => n != ""), (link) => {
     return `<div class="${"link-container svelte-17mq2nz"}"><p class="${"placeholder light-40 svelte-17mq2nz"}">link</p>
 							<div style="${"width:8px;"}"></div>
 							<a${add_attribute("href", link, 0)}><p class="${"light-80"}">${escape(link)}</p>

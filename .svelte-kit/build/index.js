@@ -6,14 +6,14 @@ import { set_building, set_version } from '../../node_modules/@sveltejs/kit/src/
 import { set_private_env } from '../../node_modules/@sveltejs/kit/src/runtime/env-private.js';
 import { set_public_env } from '../../node_modules/@sveltejs/kit/src/runtime/env-public.js';
 
-const app_template = ({ head, body, assets, nonce }) => "<!DOCTYPE html>\n<html lang=\"en\">\n\t<head>\n\t\t<meta charset=\"utf-8\" />\n\n\t\t<link rel=\"icon\" href=\"" + assets + "/favicon.png\" />\n\t\t<link\n\t\t\trel=\"stylesheet\"\n\t\t\thref=\"" + assets + "/fonts/stylesheet.css\"\n\t\t\ttype=\"text/css\"\n\t\t\tcharset=\"utf-8\"\n\t\t/>\n\t\t<link rel=\"stylesheet\" href=\"" + assets + "/styles.css\" charset=\"utf-8\" />\n\t\t<link rel=\"stylesheet\" href=\"" + assets + "/dark.css\" charset=\"utf-8\" />\n\n\t\t<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n\t\t<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n\t\t<link\n\t\t\thref=\"https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap\"\n\t\t\trel=\"stylesheet\"\n\t\t/>\n\t\t<meta name=\"viewport\" content=\"width=device-width\" />\n\t\t" + head + "\n\t</head>\n\n\t<body>\n\t\t<div style=\"display: contents\">" + body + "</div>\n\t</body>\n</html>\n";
+const app_template = ({ head, body, assets, nonce }) => "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n\t<head>\r\n\t\t<meta charset=\"utf-8\" />\r\n\r\n\t\t<link rel=\"icon\" href=\"" + assets + "/favicon.png\" />\r\n\t\t<link\r\n\t\t\trel=\"stylesheet\"\r\n\t\t\thref=\"" + assets + "/fonts/stylesheet.css\"\r\n\t\t\ttype=\"text/css\"\r\n\t\t\tcharset=\"utf-8\"\r\n\t\t/>\r\n\t\t<link rel=\"stylesheet\" href=\"" + assets + "/styles.css\" charset=\"utf-8\" />\r\n\t\t<link rel=\"stylesheet\" href=\"" + assets + "/dark.css\" charset=\"utf-8\" />\r\n\r\n\t\t<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\r\n\t\t<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\r\n\t\t<link\r\n\t\t\thref=\"https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap\"\r\n\t\t\trel=\"stylesheet\"\r\n\t\t/>\r\n\t\t<script\r\n\t\t\tsrc=\"https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js\"\r\n\t\t\tdata-pace-options='{\"eventLag:false\"}'\r\n\t\t></script>\r\n\r\n\t\t<meta name=\"viewport\" content=\"width=device-width\" />\r\n\t\t" + head + "\r\n\t</head>\r\n\r\n\t<body>\r\n\t\t<div style=\"display: contents\">" + body + "</div>\r\n\t</body>\r\n</html>\r\n";
 
 const error_template = ({ status, message }) => "<!DOCTYPE html>\n<html lang=\"en\">\n\t<head>\n\t\t<meta charset=\"utf-8\" />\n\t\t<title>" + message + "</title>\n\n\t\t<style>\n\t\t\tbody {\n\t\t\t\tfont-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,\n\t\t\t\t\tUbuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n\t\t\t\tdisplay: flex;\n\t\t\t\talign-items: center;\n\t\t\t\tjustify-content: center;\n\t\t\t\theight: 100vh;\n\t\t\t}\n\n\t\t\t.error {\n\t\t\t\tdisplay: flex;\n\t\t\t\talign-items: center;\n\t\t\t\tmax-width: 32rem;\n\t\t\t\tmargin: 0 1rem;\n\t\t\t}\n\n\t\t\t.status {\n\t\t\t\tfont-weight: 200;\n\t\t\t\tfont-size: 3rem;\n\t\t\t\tline-height: 1;\n\t\t\t\tposition: relative;\n\t\t\t\ttop: -0.05rem;\n\t\t\t}\n\n\t\t\t.message {\n\t\t\t\tborder-left: 1px solid #ccc;\n\t\t\t\tpadding: 0 0 0 1rem;\n\t\t\t\tmargin: 0 0 0 1rem;\n\t\t\t\tmin-height: 2.5rem;\n\t\t\t\tdisplay: flex;\n\t\t\t\talign-items: center;\n\t\t\t}\n\n\t\t\t.message h1 {\n\t\t\t\tfont-weight: 400;\n\t\t\t\tfont-size: 1em;\n\t\t\t\tmargin: 0;\n\t\t\t}\n\t\t</style>\n\t</head>\n\t<body>\n\t\t<div class=\"error\">\n\t\t\t<span class=\"status\">" + status + "</span>\n\t\t\t<div class=\"message\">\n\t\t\t\t<h1>" + message + "</h1>\n\t\t\t</div>\n\t\t</div>\n\t</body>\n</html>\n";
 
 let read = null;
 
 set_paths({"base":"","assets":""});
-set_version("1673942634311");
+set_version("1675762665527");
 
 let default_protocol = 'https';
 
@@ -50,7 +50,7 @@ export class Server {
 			app_template,
 			app_template_contains_nonce: false,
 			error_template,
-			version: "1673942634311"
+			version: "1675762665527"
 		};
 	}
 

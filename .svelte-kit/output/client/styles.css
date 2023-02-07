@@ -131,7 +131,7 @@ section {
 p {
 	font-style: normal;
 	font-weight: 400;
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 16px;
 	margin: 0px;
 	/* text-transform: uppercase; */
@@ -155,6 +155,12 @@ a:visited {
 
 .yellow {
 	color: var(--color-primary);
+}
+.green {
+	color: var(--color-success);
+}
+.red {
+	color: var(--color-error);
 }
 
 .light-40 {
@@ -186,6 +192,13 @@ a:visited {
 .link:hover {
 	background-color: var(--color-primary);
 	color: var(--color-dark);
+}
+
+.link-frame {
+	cursor: pointer;
+}
+.link-frame:hover {
+	background-color: var(--color-light-2);
 }
 
 input {
@@ -323,4 +336,49 @@ button:active {
 }
 .button:hover p {
 	color: var(--color-dark);
+}
+.ProseMirror p {
+	font-family: 'Ubuntu Mono', monospace;
+	font-size: 13px;
+	line-height: 20px;
+	font-weight: 300;
+	color: var(--color-light-80);
+}
+.ProseMirror h4 {
+	font-family: 'Proto Mono', monospace;
+	font-size: 13px;
+	line-height: 24px;
+	font-weight: 600;
+	margin: 0px;
+	color: var(--color-primary);
+	padding: 4px 0px;
+}
+.ProseMirror ul {
+	margin: 12px;
+	padding: 4px 8px;
+}
+.ProseMirror {
+	padding: 12px;
+	outline-color: var(--color-light-20);
+	outline-width: 1px;
+	outline-style: solid;
+	outline-offset: -1px;
+	box-sizing: border-box;
+	/* margin-top: 1px;
+	margin-left: 1px; */
+}
+.ProseMirror-focused {
+	outline-color: var(--color-primary);
+	outline-style: solid;
+}
+.ProseMirror strong {
+	color: var(--color-light);
+	font-weight: 900;
+}
+
+.ProseMirror .button:hover {
+	color: var(--color-light);
+}
+.description > p {
+	color: var(--color-light-10);
 }

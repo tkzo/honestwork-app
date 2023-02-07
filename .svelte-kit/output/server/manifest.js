@@ -1,10 +1,10 @@
 export const manifest = {
 	appDir: "_app",
 	appPath: "_app",
-	assets: new Set(["assets/bg.webp","assets/consensys.png","assets/groovepaper.png","assets/sample.png","assets/xcopy.gif","dark.css","favicon.png","fonts/protomono-light-webfont.woff","fonts/protomono-light-webfont.woff2","fonts/protomono-medium-webfont.woff","fonts/protomono-medium-webfont.woff2","fonts/protomono-regular-webfont.woff","fonts/protomono-regular-webfont.woff2","fonts/protomono-semibold-webfont.woff","fonts/protomono-semibold-webfont.woff2","fonts/specimen_files/grid_12-825-55-15.css","fonts/specimen_files/specimen_stylesheet.css","fonts/stylesheet.css","icons/checked.svg","icons/chevron_active.svg","icons/chevron_passive.svg","icons/close.svg","icons/close_passive.svg","icons/corner-left-down_active.svg","icons/corner-right-up_active.svg","icons/corner-right-up_passive.svg","icons/discord.svg","icons/external.svg","icons/fullheart.svg","icons/github.svg","icons/halfheart.svg","icons/heart.svg","icons/landing/airdrop.svg","icons/landing/chevron.svg","icons/landing/lock.svg","icons/landing/mail-multiple.svg","icons/light/checked.svg","icons/light/discord.svg","icons/light/github.svg","icons/light/heart.svg","icons/light/loader.svg","icons/light/twitter.svg","icons/light/unchecked.svg","icons/light/upload.svg","icons/loader.svg","icons/message.svg","icons/post.svg","icons/search_active.svg","icons/search_passive.svg","icons/trending.svg","icons/twitter.svg","icons/unchecked.svg","icons/unchecked_passive.svg","icons/upload.svg","icons/user-x.svg","icons/zap.svg","light.css","robots.txt","styles.css"]),
+	assets: new Set(["assets/bg.webp","assets/consensys.png","assets/groovepaper.png","assets/landing/deer.png","assets/landing/employer_1.webp","assets/landing/employer_2.webp","assets/landing/employer_3.webp","assets/landing/freelancer_1.webp","assets/landing/freelancer_2.webp","assets/landing/freelancer_3.webp","assets/landing/hw.webp","assets/sample.png","assets/xcopy.gif","dark.css","favicon.png","fonts/protomono-light-webfont.woff","fonts/protomono-light-webfont.woff2","fonts/protomono-medium-webfont.woff","fonts/protomono-medium-webfont.woff2","fonts/protomono-regular-webfont.woff","fonts/protomono-regular-webfont.woff2","fonts/protomono-semibold-webfont.woff","fonts/protomono-semibold-webfont.woff2","fonts/specimen_files/grid_12-825-55-15.css","fonts/specimen_files/specimen_stylesheet.css","fonts/stylesheet.css","icons/checked.svg","icons/chevron_active.svg","icons/chevron_left_active.svg","icons/chevron_left_passive.svg","icons/chevron_passive.svg","icons/close.svg","icons/close_passive.svg","icons/copy.svg","icons/corner-left-down_active.svg","icons/corner-right-up_active.svg","icons/corner-right-up_passive.svg","icons/discord.svg","icons/external.svg","icons/fullheart.svg","icons/github.svg","icons/halfheart.svg","icons/heart.svg","icons/landing/airdrop-big.svg","icons/landing/avatar.svg","icons/landing/bitcoin.svg","icons/landing/briefcase-check.svg","icons/landing/bullseye-arrow.svg","icons/landing/check.svg","icons/landing/chevron.svg","icons/landing/cv.svg","icons/landing/discord.svg","icons/landing/drop-full.svg","icons/landing/github.svg","icons/landing/linkedin.svg","icons/landing/list-box.svg","icons/landing/lock-big.svg","icons/landing/logo.svg","icons/landing/mail-multiple.svg","icons/landing/message.svg","icons/landing/sale.svg","icons/landing/script-text.svg","icons/landing/trophy.svg","icons/landing/twitter.svg","icons/landing/wallet.svg","icons/light/checked.svg","icons/light/discord.svg","icons/light/github.svg","icons/light/heart.svg","icons/light/loader.svg","icons/light/twitter.svg","icons/light/unchecked.svg","icons/light/upload.svg","icons/loader.svg","icons/message.svg","icons/notes-plus.svg","icons/post.svg","icons/search_active.svg","icons/search_passive.svg","icons/trending.svg","icons/twitter.svg","icons/unchecked.svg","icons/unchecked_passive.svg","icons/upload.svg","icons/user-x.svg","icons/zap.svg","light.css","robots.txt","styles.css"]),
 	mimeTypes: {".webp":"image/webp",".png":"image/png",".gif":"image/gif",".css":"text/css",".woff":"font/woff",".woff2":"font/woff2",".svg":"image/svg+xml",".txt":"text/plain"},
 	_: {
-		entry: {"file":"_app/immutable/start-fd62b36b.js","imports":["_app/immutable/start-fd62b36b.js","_app/immutable/chunks/paths-98cf1ec3.js","_app/immutable/chunks/singletons-a11fd179.js","_app/immutable/chunks/env-public-f7741390.js"],"stylesheets":[],"fonts":[]},
+		entry: {"file":"_app/immutable/start-51bef4fd.js","imports":["_app/immutable/start-51bef4fd.js","_app/immutable/chunks/index-31c34ea4.js","_app/immutable/chunks/singletons-604ad8d9.js","_app/immutable/chunks/paths-b4419565.js","_app/immutable/chunks/env-public-f7741390.js"],"stylesheets":[],"fonts":[]},
 		nodes: [
 			() => import('./nodes/0.js'),
 			() => import('./nodes/1.js'),
@@ -18,7 +18,8 @@ export const manifest = {
 			() => import('./nodes/9.js'),
 			() => import('./nodes/10.js'),
 			() => import('./nodes/11.js'),
-			() => import('./nodes/12.js')
+			() => import('./nodes/12.js'),
+			() => import('./nodes/13.js')
 		],
 		routes: [
 			{
@@ -36,18 +37,25 @@ export const manifest = {
 				endpoint: () => import('./entries/endpoints/api/alchemy/_addr_/_id_/_server.ts.js')
 			},
 			{
-				id: "/api/auth",
-				pattern: /^\/api\/auth\/?$/,
-				params: [],
-				page: null,
-				endpoint: () => import('./entries/endpoints/api/auth/_server.ts.js')
-			},
-			{
 				id: "/api/auth/login/[address]",
 				pattern: /^\/api\/auth\/login\/([^/]+?)\/?$/,
 				params: [{"name":"address","optional":false,"rest":false,"chained":false}],
 				page: null,
 				endpoint: () => import('./entries/endpoints/api/auth/login/_address_/_server.ts.js')
+			},
+			{
+				id: "/api/(conversation)/conversation_add",
+				pattern: /^\/api\/conversation_add\/?$/,
+				params: [],
+				page: null,
+				endpoint: () => import('./entries/endpoints/api/(conversation)/conversation_add/_server.ts.js')
+			},
+			{
+				id: "/api/(conversation)/conversation/[address]",
+				pattern: /^\/api\/conversation\/([^/]+?)\/?$/,
+				params: [{"name":"address","optional":false,"rest":false,"chained":false}],
+				page: null,
+				endpoint: () => import('./entries/endpoints/api/(conversation)/conversation/_address_/_server.ts.js')
 			},
 			{
 				id: "/api/favorites/add",
@@ -186,28 +194,35 @@ export const manifest = {
 				id: "/jobs",
 				pattern: /^\/jobs\/?$/,
 				params: [],
-				page: { layouts: [0], errors: [1], leaf: 7 },
+				page: { layouts: [0], errors: [1], leaf: 8 },
+				endpoint: null
+			},
+			{
+				id: "/job/[address]",
+				pattern: /^\/job\/([^/]+?)\/?$/,
+				params: [{"name":"address","optional":false,"rest":false,"chained":false}],
+				page: { layouts: [0], errors: [1], leaf: 6 },
 				endpoint: null
 			},
 			{
 				id: "/job/[address]/[slot]",
 				pattern: /^\/job\/([^/]+?)\/([^/]+?)\/?$/,
 				params: [{"name":"address","optional":false,"rest":false,"chained":false},{"name":"slot","optional":false,"rest":false,"chained":false}],
-				page: { layouts: [0], errors: [1], leaf: 6 },
+				page: { layouts: [0], errors: [1], leaf: 7 },
 				endpoint: null
 			},
 			{
 				id: "/listings",
 				pattern: /^\/listings\/?$/,
 				params: [],
-				page: { layouts: [0], errors: [1], leaf: 8 },
+				page: { layouts: [0], errors: [1], leaf: 9 },
 				endpoint: null
 			},
 			{
 				id: "/messages",
 				pattern: /^\/messages\/?$/,
 				params: [],
-				page: { layouts: [0], errors: [1], leaf: 9 },
+				page: { layouts: [0], errors: [1], leaf: 10 },
 				endpoint: null
 			},
 			{
@@ -221,21 +236,21 @@ export const manifest = {
 				id: "/new_job",
 				pattern: /^\/new_job\/?$/,
 				params: [],
-				page: { layouts: [0], errors: [1], leaf: 10 },
+				page: { layouts: [0], errors: [1], leaf: 11 },
 				endpoint: null
 			},
 			{
 				id: "/profile",
 				pattern: /^\/profile\/?$/,
 				params: [],
-				page: { layouts: [0], errors: [1], leaf: 11 },
+				page: { layouts: [0], errors: [1], leaf: 12 },
 				endpoint: null
 			},
 			{
 				id: "/skills",
 				pattern: /^\/skills\/?$/,
 				params: [],
-				page: { layouts: [0], errors: [1], leaf: 12 },
+				page: { layouts: [0], errors: [1], leaf: 13 },
 				endpoint: null
 			}
 		],

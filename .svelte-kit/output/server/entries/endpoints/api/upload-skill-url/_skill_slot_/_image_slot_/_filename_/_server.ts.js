@@ -54,7 +54,7 @@ const GET = async ({ params, cookies }) => {
       Bucket: env.PRIVATE_SPACES_BUCKETNAME,
       Key: `${userAddress}/skill/${params.skill_slot}/${params.image_slot}/${params.filename}`,
       Conditions: [
-        ["content-length-range", 0, 5242880]
+        ["content-length-range", 0, 26214400]
       ],
       Fields: {
         acl: "public-read",

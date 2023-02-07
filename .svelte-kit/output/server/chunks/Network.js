@@ -4,17 +4,17 @@ import "@xmtp/xmtp-js";
 import "./index.js";
 const ToastItem_svelte_svelte_type_style_lang = "";
 const SvelteToast_svelte_svelte_type_style_lang = "";
-let metadata = { title: "" };
+let metadata = { title: "", address: "" };
 let chosen_skill_slot = writable(-1);
 let chosen_job_slot = writable(-1);
 let skill_upload_urls = writable([Array]);
 let skill_add = writable(false);
 let changes_made = writable(false);
 let submitting = writable(false);
-let new_conversation_address = writable("");
 let new_conversation_metadata = writable(metadata);
 writable(Array());
 writable(Array());
+let user_signed_in = writable(false);
 let userConnected = writable(false);
 let userAddress = writable("");
 let networkProvider = writable();
@@ -37,22 +37,22 @@ const connectNode = async () => {
 };
 connectNode();
 export {
-  chainName as a,
-  xmtpConnecting as b,
+  user_signed_in as a,
+  chainName as b,
   connecting as c,
-  userAddress as d,
+  xmtpConnecting as d,
   userState as e,
-  nodeProvider as f,
-  xmtpClient as g,
-  new_conversation_metadata as h,
-  new_conversation_address as i,
-  networkProvider as j,
-  chosen_job_slot as k,
+  userAddress as f,
+  nodeProvider as g,
+  chosen_job_slot as h,
+  xmtpClient as i,
+  new_conversation_metadata as j,
+  networkProvider as k,
   changes_made as l,
   chosen_skill_slot as m,
   networkSigner as n,
-  skill_add as o,
-  submitting as p,
+  submitting as o,
+  skill_add as p,
   connectNode as q,
   skill_upload_urls as s,
   userConnected as u,

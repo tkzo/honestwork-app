@@ -1,12 +1,12 @@
-import { c as create_ssr_component, i as identity, b as subscribe, o as onDestroy, v as validate_component, m as missing_component, d as add_attribute, e as each, f as escape, g as null_to_empty } from "../../chunks/index.js";
-import { u as userConnected, x as xmtpConnected, c as connecting, a as chainName, b as xmtpConnecting, d as userAddress } from "../../chunks/Network.js";
+import { c as create_ssr_component, i as identity, b as subscribe, o as onDestroy, v as validate_component, m as missing_component, d as add_attribute, e as each, f as escape, g as null_to_empty, h as createEventDispatcher } from "../../chunks/index.js";
+import { u as userConnected, x as xmtpConnected, a as user_signed_in, c as connecting, b as chainName, d as xmtpConnecting, e as userState, f as userAddress } from "../../chunks/Network.js";
 import { p as page } from "../../chunks/stores.js";
 import { a as assets } from "../../chunks/paths.js";
+import { n as notifications } from "../../chunks/Constants.js";
 import { Buffer } from "buffer";
 import LogRocket from "logrocket";
 import { w as writable } from "../../chunks/env-public.js";
 import { t as tweened } from "../../chunks/index3.js";
-import { n as notifications } from "../../chunks/Constants.js";
 const defaults = {
   duration: 4e3,
   initial: 1,
@@ -150,15 +150,18 @@ const Navigation = create_ssr_component(($$result, $$props, $$bindings, slots) =
   let $page, $$unsubscribe_page;
   let $userConnected, $$unsubscribe_userConnected;
   let $xmtpConnected, $$unsubscribe_xmtpConnected;
+  let $user_signed_in, $$unsubscribe_user_signed_in;
   let $connecting, $$unsubscribe_connecting;
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
   $$unsubscribe_userConnected = subscribe(userConnected, (value) => $userConnected = value);
   $$unsubscribe_xmtpConnected = subscribe(xmtpConnected, (value) => $xmtpConnected = value);
+  $$unsubscribe_user_signed_in = subscribe(user_signed_in, (value) => $user_signed_in = value);
   $$unsubscribe_connecting = subscribe(connecting, (value) => $connecting = value);
   $$result.css.add(css$3);
   $$unsubscribe_page();
   $$unsubscribe_userConnected();
   $$unsubscribe_xmtpConnected();
+  $$unsubscribe_user_signed_in();
   $$unsubscribe_connecting();
   return `<main class="${"svelte-1och2li"}"><div class="${"logo-section svelte-1och2li"}"><a href="${"/"}"><p class="${"yellow semibold link"}">h0nestw0rk</p></a>
 		<div style="${"width:8px"}"></div>
@@ -176,24 +179,23 @@ const Navigation = create_ssr_component(($$result, $$props, $$bindings, slots) =
     0
   )}>skills
 			</p></a></div>
-	<div class="${"right-section svelte-1och2li"}">${$userConnected && $xmtpConnected ? `<a class="${"messages svelte-1och2li"}" href="${"/messages"}"><p${add_attribute(
+	<div class="${"right-section svelte-1och2li"}">${$userConnected && $xmtpConnected && $user_signed_in ? `<a class="${"messages svelte-1och2li"}" href="${"/messages"}"><p${add_attribute(
     "class",
     $page.route.id == "/messages" ? "yellow" : "light-60 link",
     0
-  )}>messages(<span class="${"yellow"}">4</span>)
-				</p></a>` : ``}
-		${$userConnected ? `<a class="${"messages svelte-1och2li"}" href="${"/listings"}"><p${add_attribute(
+  )}>messages</p></a>` : `${$userConnected && !$xmtpConnected && $user_signed_in ? `<div class="${"messages svelte-1och2li"}"><p class="${"yellow link"}">connect xmtp</p></div>` : ``}`}
+		${$userConnected && $user_signed_in ? `<a class="${"messages svelte-1och2li"}" href="${"/listings"}"><p${add_attribute(
     "class",
     $page.route.id == "/listings" ? "yellow" : "light-60 link",
     0
   )}>listings</p></a>` : ``}
 		<div class="${"wallet-section svelte-1och2li"}">${!$userConnected ? `${$connecting ? `<img${add_attribute("src", `${assets}/icons/loader.svg`, 0)} alt="${"loading"}" class="${"rotating svelte-1och2li"}">` : ``}
 				<div style="${"width:4px"}"></div>
-				<p class="${"yellow semibold link"}">connect</p>` : `<a${add_attribute("href", `/profile`, 0)}><p${add_attribute(
+				<p class="${"yellow semibold link"}">connect</p>` : `${$user_signed_in ? `<a${add_attribute("href", `/profile`, 0)}><p${add_attribute(
     "class",
     $page.route.id == "/profile" ? "yellow" : "light-60 link",
     0
-  )}>profile</p></a>`}</div></div>
+  )}>profile</p></a>` : `<a${add_attribute("href", `/auth`, 0)}><p class="${"yellow"}">login to hw</p></a>`}`}</div></div>
 </main>`;
 });
 const Footer_svelte_svelte_type_style_lang = "";
@@ -205,10 +207,12 @@ const Footer = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $chainName, $$unsubscribe_chainName;
   let $xmtpConnecting, $$unsubscribe_xmtpConnecting;
   let $xmtpConnected, $$unsubscribe_xmtpConnected;
+  let $userState, $$unsubscribe_userState;
   let $userAddress, $$unsubscribe_userAddress;
   $$unsubscribe_chainName = subscribe(chainName, (value) => $chainName = value);
   $$unsubscribe_xmtpConnecting = subscribe(xmtpConnecting, (value) => $xmtpConnecting = value);
   $$unsubscribe_xmtpConnected = subscribe(xmtpConnected, (value) => $xmtpConnected = value);
+  $$unsubscribe_userState = subscribe(userState, (value) => $userState = value);
   $$unsubscribe_userAddress = subscribe(userAddress, (value) => $userAddress = value);
   let pages = [
     { name: "faq", path: "/" },
@@ -219,6 +223,7 @@ const Footer = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   $$unsubscribe_chainName();
   $$unsubscribe_xmtpConnecting();
   $$unsubscribe_xmtpConnected();
+  $$unsubscribe_userState();
   $$unsubscribe_userAddress();
   return `<main class="${"svelte-15pn8wb"}"><div class="${"left-container svelte-15pn8wb"}"><div class="${"brand-section svelte-15pn8wb"}"><a href="${"https://decoded-labs.com"}" target="${"_blank"}" rel="${"noreferrer"}"><p class="${"light-40 semibold"}">ⓒ <span class="${"link"}">decoded</span></p></a></div>
 
@@ -226,23 +231,39 @@ const Footer = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     return `<a${add_attribute("href", page2.path, 0)}><p class="${"light-40 link"}">${escape(page2.name)}</p></a>
 				<div style="${"width:8px"}"></div>`;
   })}</div>
-		<div class="${"social-section svelte-15pn8wb"}"><img${add_attribute("src", `${assets}/icons/github.svg`, 0)} alt="${"Github"}" class="${"svelte-15pn8wb"}">
+		<div class="${"social-section svelte-15pn8wb"}"><a href="${"https://github.com/honestworkdao"}" target="${"_blank"}" rel="${"noreferrer"}"><img${add_attribute("src", `${assets}/icons/github.svg`, 0)} alt="${"Github"}" class="${"svelte-15pn8wb"}"></a>
 			<div style="${"width:8px"}"></div>
-			<img${add_attribute("src", `${assets}/icons/twitter.svg`, 0)} alt="${"Twitter"}" class="${"svelte-15pn8wb"}">
+			<a href="${"https://twitter.com/honestworkdao"}" target="${"_blank"}" rel="${"noreferrer"}"><img${add_attribute("src", `${assets}/icons/twitter.svg`, 0)} alt="${"Twitter"}" class="${"svelte-15pn8wb"}"></a>
 			<div style="${"width:8px"}"></div>
-			<img${add_attribute("src", `${assets}/icons/discord.svg`, 0)} alt="${"Discord"}" class="${"svelte-15pn8wb"}"></div></div>
-	<div class="${"right-container svelte-15pn8wb"}"><div class="${"network-section svelte-15pn8wb"}"><p class="${"light-40 semibold"}">NETWORK <span class="${"yellow"}">${escape($chainName != "" ? $chainName : "n/a")}</span></p></div>
+			<a href="${"https://discord.gg/vP6R5unDBF"}" target="${"_blank"}" rel="${"noreferrer"}"><img${add_attribute("src", `${assets}/icons/discord.svg`, 0)} alt="${"Discord"}" class="${"svelte-15pn8wb"}"></a></div></div>
+	<div class="${"right-container svelte-15pn8wb"}"><div class="${"network-section svelte-15pn8wb"}"><p class="${"light-40 semibold"}">NETWORK <span${add_attribute(
+    "style",
+    $chainName != "" ? "color:var(--color-primary);" : "color:var(--color-error);animation: blinking 2s linear infinite;",
+    0
+  )}>${escape($chainName != "" ? $chainName : "n/a")}</span></p></div>
 		<div class="${"network-section svelte-15pn8wb"}">${!$xmtpConnecting ? `<div style="${"width:4px"}"></div>
 				<p class="${"light-40 "}">xmtp <span${add_attribute(
     "style",
-    $xmtpConnected ? "color:var(--color-success)" : "color:var(--color-primary)",
+    $xmtpConnected ? "color:var(--color-success)" : "color:var(--color-error); animation: blinking 2s linear infinite;",
     0
   )}>${escape($xmtpConnected ? "active" : "n/a")}</span></p>` : `<p class="${"light-40"}">xmtp</p>
 				<div style="${"width:4px"}"></div>
 				<img${add_attribute("src", `${assets}/icons/loader.svg`, 0)} alt="${"loading"}" class="${"rotating svelte-15pn8wb"}">`}</div>
+
+		<div class="${"network-section svelte-15pn8wb"}"><p class="${"light-40"}">membership</p>
+			<div style="${"width:4px"}"></div>
+			<p${add_attribute(
+    "style",
+    $userState > 0 ? "color:var(--color-primary);" : "color:var(--color-error);animation: blinking 2s linear infinite;",
+    0
+  )}>${escape($userState > 0 ? "tier " + $userState : "n/a")}</p></div>
 		<div class="${"network-section svelte-15pn8wb"}"><p class="${"light-40"}">account</p>
 			<div style="${"width:4px"}"></div>
-			<p class="${"light-80"}">${escape($userAddress != "" ? $userAddress.substring(0, 6) + "..." + $userAddress.substring($userAddress.length - 4) : "n/a")}</p></div></div>
+			<p${add_attribute(
+    "style",
+    $userAddress != "" ? "color:var(--color-primary);" : "color:var(--color-error);animation: blinking 2s linear infinite;",
+    0
+  )}>${escape($userAddress != "" ? $userAddress.substring(0, 6) + "..." + $userAddress.substring($userAddress.length - 4) : "n/a")}</p></div></div>
 </main>`;
 });
 const Notification_svelte_svelte_type_style_lang = "";
@@ -252,15 +273,27 @@ const css$1 = {
 };
 const Notification = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { notification } = $$props;
+  createEventDispatcher();
   if ($$props.notification === void 0 && $$bindings.notification && notification !== void 0)
     $$bindings.notification(notification);
   $$result.css.add(css$1);
   return `<main class="${"svelte-5u22qm"}"><div class="${"bar svelte-5u22qm"}"><p class="${"light-80"}">${escape(notification.bodytext)}</p>
 		<div style="${"width:8px"}"></div>
-		<a href="${"/new_job"}" class="${"post-link svelte-5u22qm"}"><p class="${"yellow link underlined svelte-5u22qm"}">${escape(notification.cta)}</p>
+		<div class="${"post-link svelte-5u22qm"}"><p class="${"yellow link underlined svelte-5u22qm"}">${escape(notification.cta)}</p>
 			<div style="${"width:8px"}"></div>
-			<img${add_attribute("src", notification.icon, 0)}${add_attribute("alt", notification.cta, 0)}></a></div>
+			<img${add_attribute("src", notification.icon, 0)}${add_attribute("alt", notification.cta, 0)}></div></div>
 </main>`;
+});
+const NotificationHandler = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let trimmedRoute;
+  let $page, $$unsubscribe_page;
+  $$unsubscribe_page = subscribe(page, (value) => $page = value);
+  trimmedRoute = $page.route.id?.split("/")[1];
+  $$unsubscribe_page();
+  return `${$page.route.id == "/" ? `<a href="${"https://twitter.com/HonestWorkDAO"}" target="${"_blank"}" rel="${"noreferrer"}">${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.launch }, {}, {})}</a>` : `${$page.route.id == "/jobs" || $page.route.id == "/skills" || $page.route.id == "/listings" ? `${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.postjob }, {}, {})}
+	<div style="${"height:16px;"}"></div>` : `${$page.route.id == "/new_job" || $page.route.id == "/messages" || $page.route.id == "/auth" || trimmedRoute == "job" || trimmedRoute == "creator" ? `${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.mint }, {}, {})}
+	<div style="${"height:16px;"}"></div>` : `${$page.route.id == "/profile" ? `${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.upgrade }, {}, {})}
+	<div style="${"height:16px;"}"></div>` : ``}`}`}`}`;
 });
 const _layout_svelte_svelte_type_style_lang = "";
 const css = {
@@ -268,11 +301,12 @@ const css = {
   map: null
 };
 const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let trimmedRoute;
   let $userAddress, $$unsubscribe_userAddress;
   let $page, $$unsubscribe_page;
   $$unsubscribe_userAddress = subscribe(userAddress, (value) => $userAddress = value);
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
+  let { data } = $$props;
+  user_signed_in.set(data.signed);
   LogRocket.init("2wdgml/honestwork");
   const logrocketIdentify = async () => {
     const res = await fetch(`/api/user/${$userAddress}`);
@@ -286,8 +320,9 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     }
   };
   globalThis.Buffer = Buffer;
+  if ($$props.data === void 0 && $$bindings.data && data !== void 0)
+    $$bindings.data(data);
   $$result.css.add(css);
-  trimmedRoute = $page.route.id?.split("/")[1];
   {
     if ($userAddress && $userAddress != "") {
       logrocketIdentify();
@@ -295,7 +330,7 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   }
   $$unsubscribe_userAddress();
   $$unsubscribe_page();
-  return `${$$result.head += `<!-- HEAD_svelte-1679s8d_START --><script async src="${"https://www.googletagmanager.com/gtag/js?id=G-3X3Y5X23HN"}"></script><script>if (typeof window !== 'undefined' && window) {
+  return `${$$result.head += `<!-- HEAD_svelte-ifrfxs_START --><script async src="${"https://www.googletagmanager.com/gtag/js?id=G-3X3Y5X23HN"}"></script><script>if (typeof window !== 'undefined' && window) {
 			window.dataLayer = window.dataLayer || [];
 			function gtag() {
 				window.dataLayer.push(arguments);
@@ -304,25 +339,20 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 
 			gtag('config', 'G-3X3Y5X23HN');
 		}
-	</script><script src="${"https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"}"></script><!-- HEAD_svelte-1679s8d_END -->`, ""}
+	</script><!-- HEAD_svelte-ifrfxs_END -->`, ""}
 
 <main class="${"svelte-d4mzl4"}"><div class="${"toast-container"}">${validate_component(SvelteToast, "SvelteToast").$$render(
     $$result,
     {
-      options: { duration: 8e3, intro: { y: -20 } }
+      options: { duration: 5e3, intro: { y: -20 } }
     },
     {},
     {}
   )}</div>
 	${$page.route.id !== "/" ? `${validate_component(Navigation, "Navigation").$$render($$result, {}, {}, {})}
-		<div style="${"height:32px;"}"></div>` : ``}
-	${$page.route.id == "/jobs" || $page.route.id == "/skills" || $page.route.id == "/listings" ? `${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.postjob }, {}, {})}
-		<div style="${"height:16px;"}"></div>` : `${$page.route.id == "/new_job" ? `${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.mint }, {}, {})}` : `${$page.route.id == "/profile" ? `${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.upgrade }, {}, {})}
-		<div style="${"height:16px;"}"></div>` : ``}`}`}
-	${trimmedRoute == "job" ? `${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.mint }, {}, {})}
-		<div style="${"height:16px;"}"></div>` : `${trimmedRoute == "creator" ? `${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.mint }, {}, {})}
-		<div style="${"height:16px;"}"></div>` : ``}`}
-
+		<div style="${"height:32px;"}"></div>
+		` : ``}
+	${validate_component(NotificationHandler, "NotificationHandler").$$render($$result, {}, {}, {})}
 	${slots.default ? slots.default({}) : ``}
 	${$page.route.id !== "/" ? `${validate_component(Footer, "Footer").$$render($$result, {}, {}, {})}` : ``}
 </main>`;
