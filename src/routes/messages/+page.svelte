@@ -1,7 +1,14 @@
 <script lang="ts">
 	//todo: add types
 
-	import { nodeProvider, userConnected, xmtpClient, userAddress } from '$lib/stores/Network';
+	import {
+		nodeProvider,
+		userConnected,
+		xmtpClient,
+		userAddress,
+		xmtpConnected,
+		xmtpConnecting
+	} from '$lib/stores/Network';
 	import { browser } from '$app/environment';
 	import { shortcut } from '$lib/stores/Shortcut';
 	import { Svrollbar } from 'svrollbar';
@@ -60,11 +67,24 @@
 		}
 	});
 
-	$: if (userConnected && !loaded) {
+	onMount(async () => {
+		connectIfCached();
+		if (userConnected && !loaded) {
+			fetchConversations();
+		}
+	});
+
+	$: if ($xmtpConnected && !$xmtpConnecting) {
 		fetchConversations();
 	}
-	$: feedHeight = window.innerHeight - 165 - 32;
-	$: inboxHeight = window.innerHeight - 128;
+
+	let feedHeight = 0;
+	let inboxHeight = 0;
+
+	$: if (browser) {
+		feedHeight = window.innerHeight - 165 - 32;
+		inboxHeight = window.innerHeight - 128;
+	}
 
 	//todo: doesn't recognize wrapping -fix
 	const updateRows = () => {
@@ -301,7 +321,7 @@
 							{/if}
 						</div>
 					</div>
-					<Svrollbar {viewport} {contents} />
+					<Svrollbar alwaysVisible {viewport} {contents} />
 				</div>
 			</div>
 			<div class="input-field">

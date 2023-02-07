@@ -15,6 +15,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	if (calldata == 'success') {
 		return {};
 	} else {
-		throw redirect(301, '/mint');
+		throw redirect(301, '/auth');
 	}
 };

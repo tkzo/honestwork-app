@@ -30,17 +30,19 @@
 	const handleCreateAgreementOffer = async () => {
 		if (chosen_recruitor === $userAddress) {
 			try {
+				// todo: get values from store accordingly
 				await conversation.send(
 					`Meta:${JSON.stringify({
-						type: 'new agreement offer',
+						type: 'job offer',
 						network: chosen_network,
 						token: chosen_token,
+						token_address: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
 						total_amount: total_amount,
 						downpayment: downpayment
 					})}`
 				);
 				toast.push(
-					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>new agreement offer sent.</p>`
+					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>new job offer sent.</p>`
 				);
 			} catch (error) {
 				toast.push(

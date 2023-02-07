@@ -6,19 +6,19 @@
 	import { slide } from 'svelte/transition';
 	import { ethers } from 'ethers';
 	import { env } from '$env/dynamic/public';
-	import { payment_abi } from '$lib/stores/ABI';
+	import { payment_abi, erc20_abi } from '$lib/stores/ABI';
 	import { toast } from '@zerodevx/svelte-toast';
+	import type { SignedMessage } from '$lib/stores/Types';
 
 	export let message: any;
 	export let index: number;
 	export let array_length: number;
 
+	let signed_message_struct: SignedMessage;
 	let meta_message: any;
 	let parsed = false;
 	let ismeta = message.content.startsWith('Meta:');
 	let show_meta_dropdown = false;
-
-	$: console.log('Message:', message);
 
 	$: if (ismeta) {
 		parseMeta(message.content);
@@ -28,7 +28,6 @@
 		let date = new Date(d);
 		return date.toLocaleString();
 	};
-
 	const parseMeta = (m: string) => {
 		let stringified = m.split(':').slice(1, m.length).join(':');
 		try {
@@ -39,23 +38,106 @@
 		}
 	};
 	const handleAccept = async () => {
-		// let signature = await $networkSigner.signMessage([
-		// 	0,
-		// 	message.conversation.peerAddress,
-		// 	$userAddress,
-		// 	meta_message.token,
-		// 	meta_message.total_amount,
-		// 	meta_message.downpayment
-		// ]);
-		// let signature_arr = ethers.utils.arrayify(signature);
-		// let signature_bytes = ethers.utils.hexlify(signature_arr);
-		// console.log('Signature:', signature_bytes);
+		try {
+			const deadline = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7;
+			const Payment = new ethers.Contract(
+				env.PUBLIC_PAYMENT_CONTRACT_ADDRESS,
+				payment_abi,
+				$networkSigner
+			);
+			signed_message_struct = {
+				recruiter_address: message.conversation.peerAddress,
+				creator_address: $userAddress,
+				token_address: meta_message.token_address,
+				total_amount: ethers.utils.parseEther(meta_message.total_amount),
+				downpayment: ethers.utils.parseEther(meta_message.downpayment),
+				deadline: deadline
+			};
+			const message_hash = await Payment.getMessageHash(
+				signed_message_struct.recruiter_address,
+				signed_message_struct.creator_address,
+				signed_message_struct.token_address,
+				signed_message_struct.total_amount,
+				signed_message_struct.downpayment,
+				signed_message_struct.deadline
+			);
+
+			let hash_array = ethers.utils.arrayify(message_hash);
+			let signature = await $networkSigner.signMessage(hash_array);
+
+			// todo: get values from store accordingly
+			await message.conversation.send(
+				`Meta:${JSON.stringify({
+					type: 'job acceptance',
+					network: meta_message.network,
+					token: meta_message.token,
+					token_address: meta_message.token_address,
+					total_amount: meta_message.total_amount,
+					downpayment: meta_message.downpayment,
+					deadline: signed_message_struct.deadline,
+					signature: signature!
+				})}`
+			);
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-success)'>success: </span>accepted job offer.</p>`
+			);
+		} catch (error) {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>failed to accept job offer.</p>`
+			);
+		}
+	};
+	const approve = async (amount: ethers.BigNumberish) => {
+		try {
+			const Token = new ethers.Contract(meta_message.token_address, erc20_abi, $networkSigner);
+			const tx = await Token.approve(env.PUBLIC_PAYMENT_CONTRACT_ADDRESS, amount);
+			let receipt = await tx.wait();
+			if (receipt && receipt.status == 1) {
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>approved ${meta_message.token}.</p>`
+				);
+			}
+		} catch (error: any) {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error.code}</p>`
+			);
+		}
+	};
+	const handleExecute = async () => {
+		await approve(ethers.utils.parseEther(meta_message.total_amount));
+		try {
+			const Payment = new ethers.Contract(
+				env.PUBLIC_PAYMENT_CONTRACT_ADDRESS,
+				payment_abi,
+				$networkSigner
+			);
+
+			const tx = await Payment.createDealSignature(
+				$userAddress,
+				message.conversation.peerAddress,
+				meta_message.token_address,
+				ethers.utils.parseEther(meta_message.total_amount),
+				ethers.utils.parseEther(meta_message.downpayment),
+				meta_message.deadline,
+				meta_message.signature
+			);
+			await tx.wait();
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-success)'>success: </span>executed agreement.</p>`
+			);
+		} catch (error: any) {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error.code}</p>`
+			);
+		}
+	};
+	const handleInstallment = async () => {
+		await approve(ethers.utils.parseEther(meta_message.installment_amount));
 	};
 </script>
 
 <div style="height:12px" />
-
-{#if ismeta && parsed && meta_message.type == 'new agreement offer'}
+{#if ismeta && parsed}
 	<div class="date ">
 		<div class="body-text light-60">{parseDate(message.sent)}</div>
 	</div>
@@ -74,7 +156,7 @@
 				/>
 			</div>
 			{#if show_meta_dropdown}
-				{#if meta_message.type == 'new agreement offer'}
+				{#if meta_message.type == 'job offer'}
 					<div class="dropdown-container" transition:slide>
 						<div class="dropdown-item">
 							<p class="light-60">network:</p>
@@ -107,6 +189,34 @@
 							</div> -->
 							<div class="action-button yellow" on:click={handleAccept} on:keydown>
 								<p>accept</p>
+							</div>
+						</div>
+					</div>
+				{:else if meta_message.type == 'job acceptance'}
+					<div class="dropdown-container" transition:slide>
+						<div class="dropdown-item">
+							<p class="light-60">network:</p>
+							<p>{meta_message.network}</p>
+						</div>
+						<div class="dropdown-item">
+							<p class="light-60">token:</p>
+							<div class="token-link">
+								<p>{meta_message.token}</p>
+								<div style="width:4px" />
+								<img src={`${assets}/icons/external.svg`} alt="arrow-right" />
+							</div>
+						</div>
+						<div class="dropdown-item">
+							<p class="light-60">total amount:</p>
+							<p>${meta_message.total_amount}</p>
+						</div>
+						<div class="dropdown-item">
+							<p class="light-60">downpayment:</p>
+							<p>${meta_message.downpayment}</p>
+						</div>
+						<div class="command-bar">
+							<div class="action-button yellow" on:click={handleExecute} on:keydown>
+								<p>execute</p>
 							</div>
 						</div>
 					</div>
@@ -256,7 +366,7 @@
 	}
 	.action-button {
 		height: 32px;
-		width: 166px;
+		width: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;

@@ -706,6 +706,11 @@ export const payment_abi = [
 			},
 			{
 				internalType: 'uint256',
+				name: '_downPayment',
+				type: 'uint256'
+			},
+			{
+				internalType: 'uint256',
 				name: '_deadline',
 				type: 'uint256'
 			},
@@ -1125,6 +1130,11 @@ export const payment_abi = [
 			{
 				internalType: 'uint256',
 				name: '_totalPayment',
+				type: 'uint256'
+			},
+			{
+				internalType: 'uint256',
+				name: '_downPayment',
 				type: 'uint256'
 			},
 			{
