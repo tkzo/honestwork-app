@@ -30,16 +30,6 @@
 						<img src={`${assets}/icons/landing/logo.svg`} alt="HonestWork Logo" />
 						<div class="text">H0NESTW0RK</div>
 					</div>
-					<!-- <div class="login link" on:click={handleConnect} on:keydown>LOGIN TO APP</div> -->
-				</div>
-				<div style="height: 100px;" />
-				<div class="header">
-					<h1>A platform for all your web3 freelancing needs</h1>
-					<p class="about">
-						HonestWork connects clients with top-rated blockchain experts, including copywriters,
-						developers, and designers.
-					</p>
-					<!-- <div class="explore" on:click={() => goto('/skills')} on:keydown>START EXPLORING</div> -->
 					<div class="socials">
 						<a href="https://twitter.com/HonestWorkDAO" target="_blank" rel="noopener noreferrer">
 							<img src={`${assets}/icons/landing/twitter.svg`} alt="Twitter" class="icon" />
@@ -58,6 +48,16 @@
 							<img src={`${assets}/icons/landing/linkedin.svg`} alt="LinkedIn" class="icon" />
 						</a>
 					</div>
+					<!-- <div class="login link" on:click={handleConnect} on:keydown>LOGIN TO APP</div> -->
+				</div>
+				<div style="height: 100px;" />
+				<div class="header">
+					<h1>A platform for all your web3 freelancing needs</h1>
+					<p class="about">
+						HonestWork connects clients with top-rated blockchain experts, including copywriters,
+						developers, and designers.
+					</p>
+					<!-- <div class="explore" on:click={() => goto('/skills')} on:keydown>START EXPLORING</div> -->
 					<div style="height: 64px;" />
 					<div class="imgs-container">
 						<img src="{`${assets}/assets/landing/hw.png`} " alt="HonestWork" class="app-img" />

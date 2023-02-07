@@ -3,7 +3,7 @@
 
 <div class="container">
     <div class="benefits-card">
-        <img src="icons/landing/lock.svg" alt="Lock icon" class="icon">
+        <img src="icons/landing/sale.svg" alt="Sale icon" class="icon">
         <h4 class="title">low fees</h4>
         <p class="description">HonestWork employers’ fees are as low as 5%. There are no fees for freelancers, only a one-time investment in HonestWork NFT. </p>
     </div>
@@ -13,7 +13,7 @@
         <p class="description">Provable messages ensure fast and fair dispute resolution without compromising your personal data.</p>
     </div>
     <div class="benefits-card">
-        <img src="icons/landing/airdrop.svg" alt="Airdrop icon" class="icon">
+        <img src="icons/landing/airdrop-big.svg" alt="Airdrop icon" class="icon">
         <h4 class="title">airdrops</h4>
         <p class="description">Keep an eye out for upcoming airdrops! All active HonestWork NFT holders will receive an airdrop with the launch of $WORK token. </p>
     </div>
