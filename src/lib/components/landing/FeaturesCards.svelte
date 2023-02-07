@@ -148,7 +148,7 @@
         width: 100%;
         max-width: 300px;
     }
-    .cta {
+    /* .cta {
         box-sizing: border-box;
         display: flex;
         flex-direction: row;
@@ -162,7 +162,7 @@
         color: var(--color-primary);
         width: 247px;
         transition: border 0.2s ease-in 0s
-    }
+    } */
     .button {
         display: flex;
         flex-direction: row;
@@ -180,9 +180,9 @@
         background-color: var(--color-primary);
         color: var(--color-dark);
     }
-    .cta:hover {
+    /* .cta:hover {
         border: 1px solid var(--color-primary);
-    }
+    } */
     .img-container{
         width: 50%;
     }
