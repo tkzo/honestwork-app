@@ -60,7 +60,7 @@
 					<!-- <div class="explore" on:click={() => goto('/skills')} on:keydown>START EXPLORING</div> -->
 					<div style="height: 64px;" />
 					<div class="imgs-container">
-						<img src="{`${assets}/assets/landing/hw.png`} " alt="HonestWork" class="app-img" />
+						<img src="{`${assets}/assets/landing/hw.webp`} " alt="HonestWork" class="app-img" />
 						<img src="{`${assets}/assets/landing/deer.png`} " alt="HonestWork" class="deer" />
 					</div>
 				</div>
