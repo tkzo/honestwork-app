@@ -3,7 +3,7 @@
 
 <div class="container">
     <div class="benefits-card">
-        <img src="icons/landing/lock.svg" alt="Lock icon" class="icon">
+        <img src="icons/landing/sale.svg" alt="Sale icon" class="icon">
         <h4 class="title">low fees</h4>
         <p class="description">HonestWork employers’ fees are as low as 5%. There are no fees for freelancers, only a one-time investment in HonestWork NFT. </p>
     </div>
