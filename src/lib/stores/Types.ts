@@ -1,3 +1,5 @@
+import type { ethers } from 'ethers';
+
 export type FAQCard = {
 	id: number;
 	question: string;
@@ -97,4 +99,13 @@ export type Favorite = {
 	username: string;
 	title: string;
 	image_url: string;
+};
+
+export type SignedMessage = {
+	recruiter_address: string;
+	creator_address: string;
+	token_address: string;
+	total_amount: ethers.BigNumberish;
+	downpayment: ethers.BigNumberish;
+	deadline: number;
 };
