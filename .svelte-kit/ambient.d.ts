@@ -26,15 +26,7 @@
  * ```
  */
 declare module '$env/static/private' {
-	export const PRODUCTION_ENV: string;
-	export const PRIVATE_ALCHEMY_APIKEY: string;
-	export const PRIVATE_SPACES_KEY: string;
-	export const PRIVATE_SPACES_SECRET: string;
-	export const PRIVATE_SPACES_URL: string;
-	export const PRIVATE_SPACES_BUCKETNAME: string;
-	export const PRIVATE_SPACES_REGION_URL: string;
-	export const PRIVATE_HONESTWORK_API: string;
-	export const PRIVATE_LOCAL_HONESTWORK_API: string;
+	export const npm_config_save_dev: string;
 	export const MANPATH: string;
 	export const NIX_PROFILES: string;
 	export const TERM_PROGRAM: string;
@@ -49,6 +41,7 @@ declare module '$env/static/private' {
 	export const CONDA_SHLVL: string;
 	export const CONDA_PROMPT_MODIFIER: string;
 	export const TERM_PROGRAM_VERSION: string;
+	export const npm_package_optional: string;
 	export const COLOR: string;
 	export const npm_config_noproxy: string;
 	export const npm_config_local_prefix: string;
@@ -57,12 +50,14 @@ declare module '$env/static/private' {
 	export const COMMAND_MODE: string;
 	export const npm_config_globalconfig: string;
 	export const CONDA_EXE: string;
+	export const npm_package_peer: string;
 	export const SSH_AUTH_SOCK: string;
 	export const __CF_USER_TEXT_ENCODING: string;
 	export const WARP_IS_LOCAL_SHELL_SESSION: string;
 	export const npm_execpath: string;
 	export const PAGER: string;
 	export const WARP_USE_SSH_WRAPPER: string;
+	export const npm_package_integrity: string;
 	export const _CE_CONDA: string;
 	export const LSCOLORS: string;
 	export const PATH: string;
@@ -81,13 +76,17 @@ declare module '$env/static/private' {
 	export const npm_package_name: string;
 	export const XPC_FLAGS: string;
 	export const NIX_SSL_CERT_FILE: string;
+	export const npm_package_engines_node: string;
 	export const npm_config_node_gyp: string;
+	export const npm_package_dev: string;
 	export const npm_package_version: string;
 	export const _CE_M: string;
 	export const XPC_SERVICE_NAME: string;
+	export const npm_package_resolved: string;
 	export const SHLVL: string;
 	export const HOME: string;
 	export const HOMEBREW_PREFIX: string;
+	export const npm_package_dev_optional: string;
 	export const npm_config_cache: string;
 	export const CONDA_PYTHON_EXE: string;
 	export const LESS: string;
@@ -102,7 +101,6 @@ declare module '$env/static/private' {
 	export const npm_node_execpath: string;
 	export const npm_config_prefix: string;
 	export const COLORTERM: string;
-	export const NODE_ENV: string;
 }
 
 /**
@@ -115,10 +113,7 @@ declare module '$env/static/private' {
  * ```
  */
 declare module '$env/static/public' {
-	export const PUBLIC_MEMBERSHIP_TOKEN_ADDRESS: string;
-	export const PUBLIC_JOB_LISTING_CONTRACT_ADDRESS: string;
-	export const PUBLIC_PAYMENT_CONTRACT_ADDRESS: string;
-	export const PUBLIC_ETHEREUM_RPC: string;
+
 }
 
 /**
@@ -135,15 +130,7 @@ declare module '$env/static/public' {
  */
 declare module '$env/dynamic/private' {
 	export const env: {
-		PRODUCTION_ENV: string;
-		PRIVATE_ALCHEMY_APIKEY: string;
-		PRIVATE_SPACES_KEY: string;
-		PRIVATE_SPACES_SECRET: string;
-		PRIVATE_SPACES_URL: string;
-		PRIVATE_SPACES_BUCKETNAME: string;
-		PRIVATE_SPACES_REGION_URL: string;
-		PRIVATE_HONESTWORK_API: string;
-		PRIVATE_LOCAL_HONESTWORK_API: string;
+		npm_config_save_dev: string;
 		MANPATH: string;
 		NIX_PROFILES: string;
 		TERM_PROGRAM: string;
@@ -158,6 +145,7 @@ declare module '$env/dynamic/private' {
 		CONDA_SHLVL: string;
 		CONDA_PROMPT_MODIFIER: string;
 		TERM_PROGRAM_VERSION: string;
+		npm_package_optional: string;
 		COLOR: string;
 		npm_config_noproxy: string;
 		npm_config_local_prefix: string;
@@ -166,12 +154,14 @@ declare module '$env/dynamic/private' {
 		COMMAND_MODE: string;
 		npm_config_globalconfig: string;
 		CONDA_EXE: string;
+		npm_package_peer: string;
 		SSH_AUTH_SOCK: string;
 		__CF_USER_TEXT_ENCODING: string;
 		WARP_IS_LOCAL_SHELL_SESSION: string;
 		npm_execpath: string;
 		PAGER: string;
 		WARP_USE_SSH_WRAPPER: string;
+		npm_package_integrity: string;
 		_CE_CONDA: string;
 		LSCOLORS: string;
 		PATH: string;
@@ -190,13 +180,17 @@ declare module '$env/dynamic/private' {
 		npm_package_name: string;
 		XPC_FLAGS: string;
 		NIX_SSL_CERT_FILE: string;
+		npm_package_engines_node: string;
 		npm_config_node_gyp: string;
+		npm_package_dev: string;
 		npm_package_version: string;
 		_CE_M: string;
 		XPC_SERVICE_NAME: string;
+		npm_package_resolved: string;
 		SHLVL: string;
 		HOME: string;
 		HOMEBREW_PREFIX: string;
+		npm_package_dev_optional: string;
 		npm_config_cache: string;
 		CONDA_PYTHON_EXE: string;
 		LESS: string;
@@ -211,7 +205,6 @@ declare module '$env/dynamic/private' {
 		npm_node_execpath: string;
 		npm_config_prefix: string;
 		COLORTERM: string;
-		NODE_ENV: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: string]: string | undefined;
 	}
@@ -229,10 +222,6 @@ declare module '$env/dynamic/private' {
  */
 declare module '$env/dynamic/public' {
 	export const env: {
-		PUBLIC_MEMBERSHIP_TOKEN_ADDRESS: string;
-		PUBLIC_JOB_LISTING_CONTRACT_ADDRESS: string;
-		PUBLIC_PAYMENT_CONTRACT_ADDRESS: string;
-		PUBLIC_ETHEREUM_RPC: string;
 		[key: `PUBLIC_${string}`]: string | undefined;
 	}
 }
