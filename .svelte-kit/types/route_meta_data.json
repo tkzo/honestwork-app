@@ -24,6 +24,9 @@
 	"/api/favorites/remove": [
 		"src/routes/api/favorites/remove/+server.ts"
 	],
+	"/api/(job)/get_job/[address]/[slot]": [
+		"src/routes/api/(job)/get_job/[address]/[slot]/+server.ts"
+	],
 	"/api/(job)/job_apply/[address]/[slot]": [
 		"src/routes/api/(job)/job_apply/[address]/[slot]/+server.ts"
 	],

@@ -46,6 +46,14 @@ export type UserType = {
 	bio: string;
 	links: Array<string>;
 	dms_open: boolean;
+	application: Array<ApplicationType>;
+};
+
+export type ApplicationType = {
+	user_address: string;
+	job_id: string;
+	cover_letter: string;
+	date: number;
 };
 
 export type JobType = {

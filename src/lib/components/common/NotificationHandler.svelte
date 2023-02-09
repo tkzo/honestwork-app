@@ -5,12 +5,19 @@
 	import { goto } from '$app/navigation';
 
 	$: trimmedRoute = $page.route.id?.split('/')[1];
+	let relief_on = true;
 </script>
 
 {#if $page.route.id == '/'}
-	<a href="https://twitter.com/HonestWorkDAO" target="_blank" rel="noreferrer"
-		><Notification notification={notifications.launch} /></a
-	>
+	{#if relief_on}
+		<a href="https://twitter.com/TurkeyReliefDAO" target="_blank" rel="noreferrer">
+			<Notification notification={notifications.relief} cta_class="red" />
+		</a>
+	{:else}
+		<a href="https://twitter.com/HonestWorkDAO" target="_blank" rel="noreferrer"
+			><Notification notification={notifications.launch} /></a
+		>
+	{/if}
 {:else if $page.route.id == '/jobs' || $page.route.id == '/skills' || $page.route.id == '/listings'}
 	<Notification notification={notifications.postjob} on:click={() => goto('/new_job')} />
 	<div style="height:16px;" />

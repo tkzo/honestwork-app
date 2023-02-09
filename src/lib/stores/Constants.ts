@@ -119,7 +119,6 @@ export const freelancersFeatureCards: FeatureCard[] = [
 	}
 ];
 
-
 export let placeholder_image = `${assets}/assets/xcopy.gif`;
 
 export const chains = [
@@ -163,6 +162,11 @@ export const notifications = {
 		bodytext: 'HonestWork is launching soon!',
 		cta: 'follow our twitter for the updates',
 		icon: '/icons/twitter.svg'
+	},
+	relief: {
+		bodytext: 'Turkey needs your help!',
+		cta: 'donate to the relief fund',
+		icon: '/icons/moon-star.svg'
 	}
 };
 

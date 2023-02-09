@@ -2,12 +2,13 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let notification: { bodytext: string; cta: string; icon: string };
-
+	export let cta_class = 'yellow';
 	const dispatch = createEventDispatcher();
 
 	function handleClick() {
 		dispatch('click');
 	}
+	$: console.log('Class:', cta_class);
 </script>
 
 <main>
@@ -15,7 +16,7 @@
 		<p class="light-80">{notification.bodytext}</p>
 		<div style="width:8px" />
 		<div class="post-link" on:click={handleClick} on:keydown>
-			<p class="yellow link underlined">{notification.cta}</p>
+			<p class={`${cta_class} link underlined`}>{notification.cta}</p>
 			<div style="width:8px" />
 			<img src={notification.icon} alt={notification.cta} />
 		</div>

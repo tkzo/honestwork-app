@@ -7,6 +7,7 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	import { parseContent } from '$lib/stores/Parser';
+
 	export let data: PageData;
 
 	let content: string;

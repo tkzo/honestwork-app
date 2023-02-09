@@ -14,8 +14,8 @@ export const actions: Actions = {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'Honestwork-Address': data.get('address')!.toString(),
-				'Honestwork-Signature': data.get('signature')!.toString()
+				'X-Honestwork-Address': data.get('address')!.toString(),
+				'X-Honestwork-Signature': data.get('signature')!.toString()
 			}
 		});
 		let calldata = await callResponse.json();

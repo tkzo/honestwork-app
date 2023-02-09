@@ -29,6 +29,7 @@
 	import { Jumper } from 'svelte-loading-spinners';
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	import { parseContent } from '$lib/stores/Parser';
+	import Applications from '$lib/components/profile/Applications.svelte';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
@@ -361,25 +362,31 @@
 								>
 									favorites
 								</p>
-							</div>
-
-							<div class="save-changes">
-								{#if $submitting}
-									<img
-										src={`${assets}/icons/loader.svg`}
-										alt="loading"
-										class="rotating"
-										style="height:16px;width:16px;"
-									/>
-									<div style="width:4px;" />
-								{/if}
-								<button
-									id="profile_post"
-									class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
-									>save changes</button
+								<p
+									class="tab link semibold light-60"
+									on:click={() => toggle('applications')}
+									on:keydown
 								>
+									applications
+								</p>
 							</div>
 						</section>
+						<div class="save-changes">
+							{#if $submitting}
+								<img
+									src={`${assets}/icons/loader.svg`}
+									alt="loading"
+									class="rotating"
+									style="height:16px;width:16px;"
+								/>
+								<div style="width:4px;" />
+							{/if}
+							<button
+								id="profile_post"
+								class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
+								>save changes</button
+							>
+						</div>
 						<div style="height: 16px" />
 						<section
 							class="infobox"
@@ -687,6 +694,13 @@
 									>
 										favorites
 									</p>
+									<p
+										class="tab link semibold light-60"
+										on:click={() => toggle('applications')}
+										on:keydown
+									>
+										applications
+									</p>
 								</div>
 							</section>
 						{:else}
@@ -703,23 +717,23 @@
 										back to skills
 									</p>
 								</div>
-								<div class="save-changes">
-									{#if $submitting}
-										<img
-											src={`${assets}/icons/loader.svg`}
-											alt="loading"
-											class="rotating"
-											style="height:16px;width:16px;"
-										/>
-										<div style="width:4px;" />
-									{/if}
-									<button
-										id="profile_post"
-										class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
-										>save changes</button
-									>
-								</div>
 							</section>
+							<div class="save-changes">
+								{#if $submitting}
+									<img
+										src={`${assets}/icons/loader.svg`}
+										alt="loading"
+										class="rotating"
+										style="height:16px;width:16px;"
+									/>
+									<div style="width:4px;" />
+								{/if}
+								<button
+									id="profile_post"
+									class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
+									>save changes</button
+								>
+							</div>
 						{/if}
 						<div style="height: 16px" />
 						<Skills {data} on:tag_update={handleTagsUpdate} />
@@ -736,6 +750,13 @@
 							<p class="tab link semibold yellow">watchlist</p>
 							<p class="tab link semibold light-60" on:click={() => toggle('favorites')} on:keydown>
 								favorites
+							</p>
+							<p
+								class="tab link semibold light-60"
+								on:click={() => toggle('applications')}
+								on:keydown
+							>
+								applications
 							</p>
 						</div>
 					</section>
@@ -754,10 +775,37 @@
 								watchlist
 							</p>
 							<p class="tab link semibold yellow">favorites</p>
+							<p
+								class="tab link semibold light-60"
+								on:click={() => toggle('applications')}
+								on:keydown
+							>
+								applications
+							</p>
 						</div>
 					</section>
 					<div style="height: 16px" />
 					<Favorites />
+				{:else if chosenTab == 'applications'}
+					<section class="bar">
+						<div class="tabs">
+							<p class="tab link semibold light-60" on:click={() => toggle('profile')} on:keydown>
+								profile
+							</p>
+							<p class="tab link semibold light-60" on:click={() => toggle('skills')} on:keydown>
+								skills
+							</p>
+							<p class="tab link semibold light-60" on:click={() => toggle('watchlist')} on:keydown>
+								watchlist
+							</p>
+							<p class="tab link semibold light-60" on:click={() => toggle('watchlist')} on:keydown>
+								favorites
+							</p>
+							<p class="tab link semibold yellow">applications</p>
+						</div>
+					</section>
+					<div style="height: 16px" />
+					<Applications user={data.user} />
 				{/if}
 			{:else if $userConnected && $userAddress.toLowerCase() != data.user.address.toLowerCase()}
 				<div style="height: 16px" />
@@ -948,6 +996,10 @@
 		flex-direction: row;
 		justify-content: flex-end;
 		align-items: center;
+		padding: 8px;
+		border-width: 0px 1px 1px 1px;
+		border-style: solid;
+		border-color: var(--color-light-20);
 	}
 
 	.wrapper {

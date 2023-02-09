@@ -66,7 +66,6 @@
 			all_streams.return();
 		}
 	});
-
 	onMount(async () => {
 		connectIfCached();
 		if (userConnected && !loaded) {
