@@ -19,45 +19,49 @@
 </script>
 
 <main>
-	{#each user.application as app}
-		{#await fetchJobs(app)}
-			loading jobs
-		{:then}
-			{#each jobs as job}
-				<div class="container">
-					<div
-						class="header"
-						on:click={() => goto(`${base}/job/${job.user_address}/${job.slot}`)}
-						on:keydown
-					>
-						<img class="job-image" src={job.image_url} alt="sdf" />
-						<div class="content">
-							<p>{job.title}</p>
-							<p class="yellow">{job.username}</p>
+	{#if user.application.length > 0}
+		{#each user.application as app}
+			{#await fetchJobs(app)}
+				loading jobs
+			{:then}
+				{#each jobs as job}
+					<div class="container">
+						<div
+							class="header"
+							on:click={() => goto(`${base}/job/${job.user_address}/${job.slot}`)}
+							on:keydown
+						>
+							<img class="job-image" src={job.image_url} alt="sdf" />
+							<div class="content">
+								<p>{job.title}</p>
+								<p class="yellow">{job.username}</p>
+							</div>
 						</div>
 					</div>
-				</div>
-				{#if drawer_open}
-					{@html job.description}
-				{/if}
-				<div
-					class={drawer_open ? 'drawer drawer-open' : 'drawer'}
-					on:click={() => (drawer_open = !drawer_open)}
-					on:keydown
-				>
 					{#if drawer_open}
-						<p class="light-60">hide cover letter</p>
-						<div style="width:4px" />
-						<img src={`${assets}/icons/corner-right-up_passive.svg`} alt="drawer" />
-					{:else}
-						<img src={`${assets}/icons/corner-left-down_active.svg`} alt="drawer" />
-						<div style="width:4px" />
-						<p class="light-60">show cover letter</p>
+						{@html job.description}
 					{/if}
-				</div>
-			{/each}
-		{/await}
-	{/each}
+					<div
+						class={drawer_open ? 'drawer drawer-open' : 'drawer'}
+						on:click={() => (drawer_open = !drawer_open)}
+						on:keydown
+					>
+						{#if drawer_open}
+							<p class="light-60">hide cover letter</p>
+							<div style="width:4px" />
+							<img src={`${assets}/icons/corner-right-up_passive.svg`} alt="drawer" />
+						{:else}
+							<img src={`${assets}/icons/corner-left-down_active.svg`} alt="drawer" />
+							<div style="width:4px" />
+							<p class="light-60">show cover letter</p>
+						{/if}
+					</div>
+				{/each}
+			{/await}
+		{/each}
+	{:else}
+		<p class="light-60">You have not applied to any jobs yet.</p>
+	{/if}
 </main>
 
 <style>
