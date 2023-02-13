@@ -183,7 +183,6 @@
 		const res = await fetch(
 			`/api/update-job-url/${e.target.files[0].name}/${$userAddress}/${job.slot}`
 		);
-		console.log('Upload res:', res);
 		upload_url = res;
 	};
 	const setSticky = (duration: number) => {

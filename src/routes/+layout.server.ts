@@ -15,13 +15,10 @@ export const load = (async ({ cookies }) => {
 		let calldata = await callResponse.json();
 		console.log('Calldata:', calldata);
 		if (calldata == 'success') {
-			console.log('OK');
 			return {
 				signed: true
 			};
 		} else {
-			console.log('NOT OK');
-
 			throw redirect(301, '/auth');
 		}
 	}

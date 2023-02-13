@@ -8,7 +8,6 @@
 	function handleClick() {
 		dispatch('click');
 	}
-	$: console.log('Class:', cta_class);
 </script>
 
 <main>

@@ -10,6 +10,5 @@ export const GET: RequestHandler = async ({ params }) => {
 	const url = `${apiUrl}/job/${params.address}/${params.slot}`;
 	let response = await fetch(url);
 	let data = await response.json();
-	console.log('API DATA:', data);
 	return json(data);
 };

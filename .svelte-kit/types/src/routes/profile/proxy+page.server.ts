@@ -88,8 +88,6 @@ export const actions = {
 			links: [data.get('link-0'), data.get('link-1'), data.get('link-2')]
 		};
 
-		console.log('Body:', body);
-
 		const url = `${apiUrl}/users/${userAddress}/${userSignature}`;
 		let response = await fetch(url, {
 			method: 'PATCH',
