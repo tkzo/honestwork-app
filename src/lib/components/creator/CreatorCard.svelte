@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { UserType } from '$lib/stores/Types';
 	import { placeholder_image } from '$lib/stores/Constants';
-	import { connectNode, nodeProvider, userAddress, userConnected } from '$lib/stores/Network';
+	import { userConnected } from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 	import { assets, base } from '$app/paths';
 	import { page } from '$app/stores';
@@ -13,13 +13,10 @@
 	let contents: Element;
 
 	let nft_image: string;
-	let ens_loading: boolean = false;
-	let ens_name: string;
 	let feedHeight = 0;
 	$: if (browser) feedHeight = window.innerHeight - 128;
 	onMount(() => {
-		getNft();
-		setEnsName();
+		if (user.show_nft) getNft();
 	});
 
 	const getNft = async () => {
@@ -34,12 +31,6 @@
 				console.log(err);
 			}
 		}
-	};
-	const setEnsName = async () => {
-		ens_loading = true;
-		await connectNode();
-		ens_name = await $nodeProvider.lookupAddress($page.params.address);
-		ens_loading = false;
 	};
 	const handleSendMessage = async () => {
 		if (!$userConnected) {
@@ -74,20 +65,7 @@
 							<div style="width:8px;" />
 							<div class="info">
 								{#if user.show_ens}
-									{#if ens_loading}
-										<div class="ens-loader">
-											<img
-												src={`${assets}/icons/loader.svg`}
-												alt="loading"
-												class="rotating"
-												style="height:16px;width:16px;"
-											/>
-											<div style="width:4px" />
-											<p>loading ens...</p>
-										</div>
-									{:else}
-										<p>{ens_name}</p>
-									{/if}
+									<p>{user.ens_name}</p>
 								{:else}
 									<p>{user.username}</p>
 								{/if}
@@ -98,7 +76,7 @@
 							</div>
 						</div>
 						<div class="right-section">
-							<div class="button" on:click={handleSendMessage}>
+							<div class="button" on:click={handleSendMessage} on:keydown>
 								<p class="yellow">send message</p>
 							</div>
 						</div>

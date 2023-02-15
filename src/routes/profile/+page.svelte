@@ -4,8 +4,6 @@
 	import {
 		userAddress,
 		userState,
-		nodeProvider,
-		connectNode,
 		userConnected,
 		getFavorites,
 		getWatchlist,
@@ -30,8 +28,9 @@
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	import { parseContent } from '$lib/stores/Parser';
 	import Applications from '$lib/components/profile/Applications.svelte';
-	
-  //todo: add non-gateway image resolver for alchemy fetch
+	import { base } from '$app/paths';
+
+	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
 
 	export let data: any;
@@ -131,8 +130,13 @@
 
 	const setEnsName = async () => {
 		ens_loading = true;
-		await connectNode();
-		ens_name = await $nodeProvider.lookupAddress($userAddress);
+		let res = await fetch(`${base}/api/ens/${$userAddress}`);
+		let ens = await res.text();
+		if (ens != 'error') {
+			ens_name = ens;
+		} else {
+			show_ens = false;
+		}
 		ens_loading = false;
 	};
 	const blink = tweened(1, {
@@ -330,7 +334,7 @@
 		class="viewport"
 		style={`width:100%; height:${feedHeight.toString() + 'px'}`}
 	>
-		<div bind:this={contents} class="contents" style={`width:520px;`}>
+		<div bind:this={contents} class="contents">
 			{#if $userAddress.toLowerCase() == data.user.address.toLowerCase() && $userState > 0}
 				{#if chosenTab == 'profile'}
 					<form
@@ -826,7 +830,9 @@
 					</div>
 				</section>
 			{:else}
-				<Jumper />
+				<div class="loader-container">
+					<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
+				</div>
 			{/if}
 			<div style="height: 64px" />
 		</div>
@@ -1032,5 +1038,16 @@
 	.viewport::-webkit-scrollbar {
 		/* hide scrollbar */
 		display: none;
+	}
+
+	.contents {
+		width: 520px;
+	}
+
+	.loader-container {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 </style>

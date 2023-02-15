@@ -8,7 +8,6 @@ import { toast } from '@zerodevx/svelte-toast';
 import { user_watchlist, user_favorites } from '$lib/stores/State';
 
 //todo: typescript
-
 export let userConnected = writable(false);
 export let userAddress = writable('');
 export let networkProvider = writable();
@@ -102,16 +101,6 @@ const setListeners = () => {
 	});
 };
 
-// todo: move to server-side script
-export const connectNode = async () => {
-	try {
-		const provider = new ethers.providers.JsonRpcProvider(env.PUBLIC_ETHEREUM_RPC);
-		nodeProvider.set(provider);
-	} catch (err) {
-		console.log('error:', err);
-	}
-};
-
 const fetchUserState = async () => {
 	try {
 		const contract = new ethers.Contract(token_address, nft_abi, get(networkSigner));
@@ -161,5 +150,3 @@ export const getFavorites = async () => {
 		}
 	}
 };
-
-connectNode();

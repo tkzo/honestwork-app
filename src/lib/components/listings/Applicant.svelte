@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ApplicantType, UserType } from '$lib/stores/Types';
-	import { userConnected, connectNode, nodeProvider, userAddress } from '$lib/stores/Network';
+	import { userConnected, userAddress } from '$lib/stores/Network';
 	import { placeholder_image } from '$lib/stores/Constants';
 	import { slide } from 'svelte/transition';
 	import { expoOut } from 'svelte/easing';
@@ -16,14 +16,11 @@
 
 	const setup = async () => {
 		await fetchUser();
-		setEnsName();
-		getNft();
+		if (user.show_nft) getNft();
 	};
 
 	let fetching_image = false;
-	let ens_loading = false;
 	let nft_image: string | null = null;
-	let ens_name: string | null = null;
 	let drawer_open = false;
 
 	$: trimmed_description = applicant.cover_letter.replace(
@@ -50,12 +47,6 @@
 		}
 		fetching_image = false;
 	};
-	const setEnsName = async () => {
-		ens_loading = true;
-		await connectNode();
-		ens_name = await $nodeProvider.lookupAddress($userAddress);
-		ens_loading = false;
-	};
 </script>
 
 <main>
@@ -75,20 +66,9 @@
 				<div style="width:8px;" />
 				<div class="info">
 					{#if user.show_ens}
-						{#if ens_loading}
-							<div class="ens-loader">
-								<img
-									src={`${assets}/icons/loader.svg`}
-									alt="loading"
-									class="rotating"
-									style="height:16px;width:16px;"
-								/>
-								<div style="width:4px" />
-								<p>loading ens...</p>
-							</div>
-						{:else}
-							<p>{ens_name}</p>
-						{/if}
+						<p>{user.ens_name}</p>
+					{:else}
+						<p>{user.username}</p>
 					{/if}
 					<div style="height:4px;" />
 					<p class="yellow">{user.title}</p>

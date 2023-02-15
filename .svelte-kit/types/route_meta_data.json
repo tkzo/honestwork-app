@@ -15,6 +15,9 @@
 	"/api/(conversation)/conversation/[address]": [
 		"src/routes/api/(conversation)/conversation/[address]/+server.ts"
 	],
+	"/api/ens/[address]": [
+		"src/routes/api/ens/[address]/+server.ts"
+	],
 	"/api/favorites/add": [
 		"src/routes/api/favorites/add/+server.ts"
 	],
