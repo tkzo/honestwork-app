@@ -21,6 +21,7 @@ export const POST: RequestHandler = async ({ request, cookies, params }) => {
 		method: 'POST',
 		body: JSON.stringify(body),
 		headers: {
+			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
 			'Content-Type': 'application/json'
 		}
 	});

@@ -8,6 +8,11 @@ export const GET: RequestHandler = async ({ cookies }) => {
 			? env.PRIVATE_HONESTWORK_API
 			: env.PRIVATE_LOCAL_HONESTWORK_API;
 	const hwapiUrl = `${apiUrl}/watchlist/${userAddress}`;
-	const response = await fetch(hwapiUrl);
+	const response = await fetch(hwapiUrl, {
+		headers: new Headers({
+			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
+			'Content-Type': 'application/json'
+		})
+	});
 	return response;
 };

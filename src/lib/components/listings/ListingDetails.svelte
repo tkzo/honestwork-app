@@ -13,7 +13,6 @@
 	import { onMount } from 'svelte';
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	import { parseContent } from '$lib/stores/Parser';
-
 	import { browser } from '$app/environment';
 
 	export let job: JobType;
@@ -22,7 +21,6 @@
 	let viewport: Element;
 	let contents: Element;
 	let chosen_tab: string = 'applicants' || 'edit mode';
-
 	let file_url: string;
 	let jobForm: HTMLFormElement;
 	let upload_url: Response;

@@ -165,7 +165,7 @@ export const notifications = {
 	},
 	relief: {
 		bodytext: 'Turkey needs your help!',
-		cta: 'donate to the relief fund',
+		cta: 'donate with crypto',
 		icon: '/icons/moon-star.svg'
 	}
 };

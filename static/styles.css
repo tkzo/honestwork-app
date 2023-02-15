@@ -67,6 +67,10 @@
 	}
 }
 
+body::-webkit-scrollbar {
+	display: none;
+}
+
 /* hide scrollbar but allow scrolling */
 body {
 	-ms-overflow-style: none; /* for Internet Explorer, Edge */
@@ -79,10 +83,6 @@ body {
 	--svrollbar-thumb-width: 10px;
 	--svrollbar-thumb-background: #d9ab55;
 	--svrollbar-thumb-opacity: 1;
-}
-
-body::-webkit-scrollbar {
-	display: none !important;
 }
 
 :root {
@@ -381,4 +381,12 @@ button:active {
 }
 .description > p {
 	color: var(--color-light-10);
+}
+
+.wrapper {
+	-ms-overflow-style: none; /* for Internet Explorer, Edge */
+	scrollbar-width: none; /* for Firefox */
+}
+.wrapper::-webkit-scrollbar {
+	display: none;
 }

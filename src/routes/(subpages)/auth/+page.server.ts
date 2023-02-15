@@ -13,9 +13,8 @@ export const actions: Actions = {
 		let callResponse = await fetch(callUrl, {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
-				'X-Honestwork-Address': data.get('address')!.toString(),
-				'X-Honestwork-Signature': data.get('signature')!.toString()
+				Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
+				'Content-Type': 'application/json'
 			}
 		});
 		let calldata = await callResponse.json();
@@ -28,11 +27,11 @@ export const actions: Actions = {
 				sameSite: true,
 				path: '/'
 			};
-
 			cookies.set('honestwork_address', data.get('address')!.toString(), options);
 			cookies.set('honestwork_signature', data.get('signature')!.toString(), options);
-			throw redirect(300, '/profile');
+
+			throw redirect(301, '/profile');
 		}
-		throw redirect(300, '/mint');
+		throw redirect(301, '/mint');
 	}
 };

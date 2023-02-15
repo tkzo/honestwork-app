@@ -10,7 +10,12 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	const userSignature = cookies.get('honestwork_signature');
 
 	const callUrl = `${apiUrl}/verify/${userAddress}/${userSignature}`;
-	let callResponse = await fetch(callUrl);
+	let callResponse = await fetch(callUrl, {
+		headers: new Headers({
+			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
+			'Content-Type': 'application/json'
+		})
+	});
 	let calldata = await callResponse.json();
 	if (calldata == 'success') {
 		return {};

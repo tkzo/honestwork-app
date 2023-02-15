@@ -9,7 +9,12 @@ export const load: PageServerLoad = (async ({ params }) => {
 			: env.PRIVATE_LOCAL_HONESTWORK_API;
 	const url = `${apiUrl}/job/${params.address}/${params.slot}`;
 
-	let response = await fetch(url);
+	let response = await fetch(url, {
+		headers: new Headers({
+			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
+			'Content-Type': 'application/json'
+		})
+	});
 	if (response.status == 200) {
 		let data = await response.json();
 		return {

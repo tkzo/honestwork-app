@@ -148,6 +148,45 @@
 	};
 	const handleInstallment = async () => {
 		await approve(ethers.utils.parseEther(meta_message.installment_amount));
+		try {
+			const Payment = new ethers.Contract(
+				env.PUBLIC_PAYMENT_CONTRACT_ADDRESS!,
+				payment_abi,
+				$networkSigner
+			);
+
+			// find deal_id
+
+			const tx = await Payment.unlockPayment(
+				$userAddress,
+				message.conversation.peerAddress,
+				meta_message.token_address,
+				ethers.utils.parseEther(meta_message.installment_amount)
+			);
+			let receipt = await tx.wait();
+			if (receipt && receipt.status == 1) {
+				let deal = await Payment.getDealsOfAnAddress($userAddress);
+				await message.conversation.send(
+					`Meta:${JSON.stringify({
+						type: 'job execution',
+						deal: deal[deal.length - 1],
+						network: meta_message.network,
+						token: meta_message.token,
+						token_address: meta_message.token_address,
+						total_amount: meta_message.total_amount,
+						downpayment: meta_message.downpayment,
+						deadline: signed_message_struct.deadline
+					})}`
+				);
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>executed agreement.</p>`
+				);
+			}
+		} catch (error: any) {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error.code}</p>`
+			);
+		}
 	};
 	const handleClaim = async () => {
 		try {
@@ -279,6 +318,34 @@
 						</div>
 					</div>
 				{:else if meta_message.type == 'job execution'}
+					<div class="dropdown-container" transition:slide>
+						<div class="dropdown-item">
+							<p class="light-60">network:</p>
+							<p>{meta_message.network}</p>
+						</div>
+						<div class="dropdown-item">
+							<p class="light-60">token:</p>
+							<div class="token-link">
+								<p>{meta_message.token}</p>
+								<div style="width:4px" />
+								<img src={`${assets}/icons/external.svg`} alt="arrow-right" />
+							</div>
+						</div>
+						<div class="dropdown-item">
+							<p class="light-60">total amount:</p>
+							<p>${meta_message.total_amount}</p>
+						</div>
+						<div class="dropdown-item">
+							<p class="light-60">downpayment:</p>
+							<p>${meta_message.downpayment}</p>
+						</div>
+						<div class="command-bar">
+							<div class="action-button yellow" on:click={handleClaim} on:keydown>
+								<p>claim downpayment</p>
+							</div>
+						</div>
+					</div>
+				{:else if meta_message.type == 'installment'}
 					<div class="dropdown-container" transition:slide>
 						<div class="dropdown-item">
 							<p class="light-60">network:</p>

@@ -13,7 +13,12 @@ export const load = async ({ cookies }: Parameters<PageServerLoad>[0]) => {
 
 	if (userAddress && userSignature) {
 		const callUrl = `${apiUrl}/verify/${userAddress}/${userSignature}`;
-		let callResponse = await fetch(callUrl);
+		let callResponse = await fetch(callUrl, {
+			headers: new Headers({
+				Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
+				'Content-Type': 'application/json'
+			})
+		});
 		let calldata = await callResponse.json();
 		if (calldata == 'success') {
 			let user = await getUser(userAddress);
@@ -29,7 +34,12 @@ export const load = async ({ cookies }: Parameters<PageServerLoad>[0]) => {
 
 const getUser = async (address: string) => {
 	const url = `${apiUrl}/users/${address}`;
-	let response = await fetch(url);
+	let response = await fetch(url, {
+		headers: new Headers({
+			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
+			'Content-Type': 'application/json'
+		})
+	});
 	if (response.ok) {
 		let json = await response.json();
 		return json;
@@ -41,7 +51,12 @@ const getUser = async (address: string) => {
 
 const getSkills = async (address: string) => {
 	const url = `${apiUrl}/skills/${address}`;
-	let response = await fetch(url);
+	let response = await fetch(url, {
+		headers: new Headers({
+			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
+			'Content-Type': 'application/json'
+		})
+	});
 	if (response.ok) {
 		let json = await response.json();
 		return { json: json };
@@ -53,7 +68,12 @@ const getSkills = async (address: string) => {
 
 const getJobs = async (address: string) => {
 	const url = `${apiUrl}/jobs/${address}`;
-	let response = await fetch(url);
+	let response = await fetch(url, {
+		headers: new Headers({
+			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
+			'Content-Type': 'application/json'
+		})
+	});
 	if (response.ok) {
 		let json = await response.json();
 		return { json };
@@ -93,6 +113,7 @@ export const actions = {
 			method: 'PATCH',
 			body: JSON.stringify(body),
 			headers: {
+				Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
 				'Content-Type': 'application/json'
 			}
 		});

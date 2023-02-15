@@ -8,7 +8,12 @@ const apiUrl =
 export const load: PageServerLoad = (async ({ params }) => {
 	const jobsResponse = await getJobs(params.address);
 	const url = `${apiUrl}/job/${params.address}/${jobsResponse.length - 1}`;
-	let response = await fetch(url);
+	let response = await fetch(url, {
+		headers: new Headers({
+			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
+			'Content-Type': 'application/json'
+		})
+	});
 	if (response.status == 200) {
 		let data = await response.json();
 		return {
@@ -20,7 +25,12 @@ export const load: PageServerLoad = (async ({ params }) => {
 
 const getJobs = async (address: string) => {
 	const url = `${apiUrl}/jobs/${address}`;
-	let response = await fetch(url);
+	let response = await fetch(url, {
+		headers: new Headers({
+			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
+			'Content-Type': 'application/json'
+		})
+	});
 	let json = await response.json();
 	return json;
 };

@@ -8,12 +8,21 @@ export const load: PageServerLoad = (async ({ params }) => {
 			? env.PRIVATE_HONESTWORK_API
 			: env.PRIVATE_LOCAL_HONESTWORK_API;
 	let url = `${apiUrl}/users/${params.address}`;
-	let response = await fetch(url);
-
+	let response = await fetch(url, {
+		headers: new Headers({
+			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
+			'Content-Type': 'application/json'
+		})
+	});
 	if (response.status == 200) {
 		let user = await response.json();
 		url = `${apiUrl}/skills/${params.address}`;
-		response = await fetch(url);
+		response = await fetch(url, {
+			headers: {
+				Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
+				'Content-Type': 'application/json'
+			}
+		});
 
 		if (response.status == 200) {
 			let skills = await response.json();
@@ -23,6 +32,5 @@ export const load: PageServerLoad = (async ({ params }) => {
 			};
 		}
 	}
-
 	throw error(404, 'Not found');
 }) satisfies PageServerLoad;

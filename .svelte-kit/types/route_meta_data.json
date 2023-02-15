@@ -39,6 +39,9 @@
 	"/api/(job)/job/[sort]/[order]": [
 		"src/routes/api/(job)/job/[sort]/[order]/+server.ts"
 	],
+	"/api/membership/[address]": [
+		"src/routes/api/membership/[address]/+server.ts"
+	],
 	"/api/search": [
 		"src/routes/api/search/+server.ts"
 	],

@@ -11,9 +11,13 @@ export const load = (async ({ cookies }) => {
 
 	if (userAddress && userSignature) {
 		const callUrl = `${apiUrl}/verify/${userAddress}/${userSignature}`;
-		let callResponse = await fetch(callUrl);
+		let callResponse = await fetch(callUrl, {
+			headers: new Headers({
+				Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
+				'Content-Type': 'application/json'
+			})
+		});
 		let calldata = await callResponse.json();
-		console.log('Calldata:', calldata);
 		if (calldata == 'success') {
 			return {
 				signed: true

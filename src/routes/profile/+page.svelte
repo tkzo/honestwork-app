@@ -30,8 +30,8 @@
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	import { parseContent } from '$lib/stores/Parser';
 	import Applications from '$lib/components/profile/Applications.svelte';
-
-	//todo: add non-gateway image resolver for alchemy fetch
+	
+  //todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
 
 	export let data: any;

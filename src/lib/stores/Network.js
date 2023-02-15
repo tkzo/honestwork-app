@@ -102,6 +102,7 @@ const setListeners = () => {
 	});
 };
 
+// todo: move to server-side script
 export const connectNode = async () => {
 	try {
 		const provider = new ethers.providers.JsonRpcProvider(env.PUBLIC_ETHEREUM_RPC);
