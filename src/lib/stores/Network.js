@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { env } from '$env/dynamic/public';
 import { Client } from '@xmtp/xmtp-js';
 import { get } from 'svelte/store';
-import { nft_abi } from '$lib/stores/ABI';
+import { base } from '$app/paths';
 import { toast } from '@zerodevx/svelte-toast';
 import { user_watchlist, user_favorites } from '$lib/stores/State';
 
@@ -103,9 +103,9 @@ const setListeners = () => {
 
 const fetchUserState = async () => {
 	try {
-		const contract = new ethers.Contract(token_address, nft_abi, get(networkSigner));
-		let state = await contract.getUserState(get(userAddress));
-		userState.set(state);
+		let res = await fetch(`${base}/api/membership/${get(userAddress)}`);
+		let tier = await res.json();
+		userState.set(tier);
 	} catch (err) {
 		console.log(err);
 	}

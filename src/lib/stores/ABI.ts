@@ -1773,13 +1773,13 @@ export const nft_abi = [
 		inputs: [
 			{
 				internalType: 'string',
-				name: '_name',
+				name: '_baseUri',
 				type: 'string'
 			},
 			{
-				internalType: 'string',
-				name: '_symbol',
-				type: 'string'
+				internalType: 'address[]',
+				name: '_whitelistedTokens',
+				type: 'address[]'
 			}
 		],
 		stateMutability: 'nonpayable',
@@ -1839,6 +1839,44 @@ export const nft_abi = [
 		anonymous: false,
 		inputs: [
 			{
+				indexed: false,
+				internalType: 'uint256',
+				name: 'id',
+				type: 'uint256'
+			},
+			{
+				indexed: false,
+				internalType: 'address',
+				name: 'user',
+				type: 'address'
+			}
+		],
+		name: 'Mint',
+		type: 'event'
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: 'address',
+				name: 'previousOwner',
+				type: 'address'
+			},
+			{
+				indexed: true,
+				internalType: 'address',
+				name: 'newOwner',
+				type: 'address'
+			}
+		],
+		name: 'OwnershipTransferred',
+		type: 'event'
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
 				indexed: true,
 				internalType: 'address',
 				name: 'from',
@@ -1859,6 +1897,56 @@ export const nft_abi = [
 		],
 		name: 'Transfer',
 		type: 'event'
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: false,
+				internalType: 'uint256',
+				name: 'id',
+				type: 'uint256'
+			},
+			{
+				indexed: false,
+				internalType: 'uint256',
+				name: 'tier',
+				type: 'uint256'
+			}
+		],
+		name: 'Upgrade',
+		type: 'event'
+	},
+	{
+		inputs: [],
+		name: '_tokenIds',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '_value',
+				type: 'uint256'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '_to',
+				type: 'address'
+			},
+			{
+				internalType: 'uint256',
+				name: '_tier',
+				type: 'uint256'
+			}
+		],
+		name: 'adminMint',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
 	},
 	{
 		inputs: [
@@ -1899,9 +1987,15 @@ export const nft_abi = [
 	},
 	{
 		inputs: [],
-		name: 'bind',
-		outputs: [],
-		stateMutability: 'nonpayable',
+		name: 'baseUri',
+		outputs: [
+			{
+				internalType: 'string',
+				name: '',
+				type: 'string'
+			}
+		],
+		stateMutability: 'view',
 		type: 'function'
 	},
 	{
@@ -1926,17 +2020,55 @@ export const nft_abi = [
 	{
 		inputs: [
 			{
-				internalType: 'address',
-				name: '_user',
-				type: 'address'
+				internalType: 'uint256',
+				name: '_tokenId',
+				type: 'uint256'
 			}
 		],
-		name: 'getUserState',
+		name: 'getTokenTier',
 		outputs: [
 			{
 				internalType: 'uint256',
 				name: '',
 				type: 'uint256'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '_user',
+				type: 'address'
+			}
+		],
+		name: 'getUserTier',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '_token',
+				type: 'address'
+			}
+		],
+		name: 'getWhitelistToken',
+		outputs: [
+			{
+				internalType: 'bool',
+				name: '',
+				type: 'bool'
 			}
 		],
 		stateMutability: 'view',
@@ -1968,9 +2100,15 @@ export const nft_abi = [
 	},
 	{
 		inputs: [],
-		name: 'mint',
-		outputs: [],
-		stateMutability: 'nonpayable',
+		name: 'isPaused',
+		outputs: [
+			{
+				internalType: 'bool',
+				name: '',
+				type: 'bool'
+			}
+		],
+		stateMutability: 'view',
 		type: 'function'
 	},
 	{
@@ -1981,6 +2119,19 @@ export const nft_abi = [
 				internalType: 'string',
 				name: '',
 				type: 'string'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'owner',
+		outputs: [
+			{
+				internalType: 'address',
+				name: '',
+				type: 'address'
 			}
 		],
 		stateMutability: 'view',
@@ -2003,6 +2154,46 @@ export const nft_abi = [
 			}
 		],
 		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'pause',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '_token',
+				type: 'address'
+			}
+		],
+		name: 'publicMint',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '_token',
+				type: 'address'
+			}
+		],
+		name: 'removeWhitelistToken',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'renounceOwnership',
+		outputs: [],
+		stateMutability: 'nonpayable',
 		type: 'function'
 	},
 	{
@@ -2077,8 +2268,70 @@ export const nft_abi = [
 	{
 		inputs: [
 			{
+				internalType: 'string',
+				name: '_baseUri',
+				type: 'string'
+			}
+		],
+		name: 'setBaseUri',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'uint256',
+				name: '_tierOneFee',
+				type: 'uint256'
+			},
+			{
+				internalType: 'uint256',
+				name: '_tierTwoFee',
+				type: 'uint256'
+			},
+			{
+				internalType: 'uint256',
+				name: '_tierThreeFee',
+				type: 'uint256'
+			}
+		],
+		name: 'setTiers',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'uint256',
+				name: '_tokenCap',
+				type: 'uint256'
+			}
+		],
+		name: 'setTokenCap',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'bytes32',
+				name: '_root',
+				type: 'bytes32'
+			}
+		],
+		name: 'setWhitelistRoot',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
 				internalType: 'bytes4',
-				name: 'interfaceId',
+				name: '_interfaceId',
 				type: 'bytes4'
 			}
 		],
@@ -2107,17 +2360,124 @@ export const nft_abi = [
 		type: 'function'
 	},
 	{
-		inputs: [],
+		inputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256'
+			}
+		],
 		name: 'tier',
-		outputs: [],
-		stateMutability: 'nonpayable',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'tierOneFee',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'tierThreeFee',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'tierTwoFee',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256'
+			}
+		],
+		stateMutability: 'view',
 		type: 'function'
 	},
 	{
 		inputs: [
 			{
 				internalType: 'uint256',
-				name: 'tokenId',
+				name: 'index',
+				type: 'uint256'
+			}
+		],
+		name: 'tokenByIndex',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'tokenCap',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: 'owner',
+				type: 'address'
+			},
+			{
+				internalType: 'uint256',
+				name: 'index',
+				type: 'uint256'
+			}
+		],
+		name: 'tokenOfOwnerByIndex',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'uint256',
+				name: '_tokenId',
 				type: 'uint256'
 			}
 		],
@@ -2127,6 +2487,19 @@ export const nft_abi = [
 				internalType: 'string',
 				name: '',
 				type: 'string'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'totalSupply',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256'
 			}
 		],
 		stateMutability: 'view',
@@ -2151,6 +2524,139 @@ export const nft_abi = [
 			}
 		],
 		name: 'transferFrom',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: 'newOwner',
+				type: 'address'
+			}
+		],
+		name: 'transferOwnership',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'unpause',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '_token',
+				type: 'address'
+			},
+			{
+				internalType: 'uint256',
+				name: '_levels',
+				type: 'uint256'
+			}
+		],
+		name: 'upgradeToken',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '',
+				type: 'address'
+			}
+		],
+		name: 'whitelistCap',
+		outputs: [
+			{
+				internalType: 'bool',
+				name: '',
+				type: 'bool'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'bytes32[]',
+				name: '_proof',
+				type: 'bytes32[]'
+			}
+		],
+		name: 'whitelistMint',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'whitelistRoot',
+		outputs: [
+			{
+				internalType: 'bytes32',
+				name: '',
+				type: 'bytes32'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '_token',
+				type: 'address'
+			}
+		],
+		name: 'whitelistToken',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '',
+				type: 'address'
+			}
+		],
+		name: 'whitelistedTokens',
+		outputs: [
+			{
+				internalType: 'bool',
+				name: '',
+				type: 'bool'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '_token',
+				type: 'address'
+			},
+			{
+				internalType: 'uint256',
+				name: '_amount',
+				type: 'uint256'
+			}
+		],
+		name: 'withdraw',
 		outputs: [],
 		stateMutability: 'nonpayable',
 		type: 'function'
