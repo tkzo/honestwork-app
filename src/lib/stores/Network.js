@@ -64,11 +64,8 @@ export const connectWallet = async () => {
 		if (local != 'true') {
 			localStorage.setItem('honestwork_connection', 'true');
 		}
-
 		setListeners();
 		connecting.set(false);
-
-		// await connectXmtp();
 		await fetchUserState();
 	} catch (err) {
 		console.log('error:', err);
