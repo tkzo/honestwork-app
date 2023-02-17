@@ -93,6 +93,9 @@ body {
 	min-width: 100vw;
 	margin: 0;
 	background-color: var(--color-dark);
+	background-image: url('/assets/laser-grid.png');
+	background-size: cover;
+	background-repeat: no-repeat;
 	background-size: 100vw 100vh;
 	border-color: var(--color-light-10);
 	box-sizing: border-box;
@@ -364,6 +367,7 @@ button:active {
 	outline-style: solid;
 	outline-offset: -1px;
 	box-sizing: border-box;
+	background-color: var(--color-dark);
 	/* margin-top: 1px;
 	margin-left: 1px; */
 }
@@ -389,4 +393,12 @@ button:active {
 }
 .wrapper::-webkit-scrollbar {
 	display: none;
+}
+
+.link-container {
+	background-color: var(--color-dark);
+}
+
+.feed {
+	background-color: var(--color-dark);
 }

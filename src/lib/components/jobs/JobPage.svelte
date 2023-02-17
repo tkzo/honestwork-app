@@ -133,7 +133,6 @@
 					<div style="height:12px;" />
 				{/if}
 				{@html trimmed_description}
-
 				<div style="height:12px;" />
 				<div class="payment-container">
 					{#if job.tokens_accepted && job.tokens_accepted.length > 0}
@@ -255,12 +254,6 @@
 		align-items: center;
 	}
 
-	.description {
-		border-width: 1px 1px 1px 1px;
-		border-style: solid;
-		border-color: var(--color-light-10);
-		padding: 12px;
-	}
 	.link-container {
 		display: flex;
 		flex-direction: row;

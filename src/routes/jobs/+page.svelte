@@ -77,7 +77,7 @@
 </svelte:head>
 
 <main>
-	<div class="feed" style={`height:${feedHeight + 32}px`}>
+	<div class="feed" style={`height:${feedHeight + 32}px;`}>
 		<div class="search-bar">
 			<div class="input-container">
 				<img

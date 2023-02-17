@@ -890,6 +890,7 @@
 		flex-direction: row;
 		align-items: center;
 		cursor: pointer;
+		background-color: var(--color-dark);
 	}
 	.tag:hover {
 		background-color: var(--color-light-2);
@@ -916,6 +917,7 @@
 		border-style: solid;
 		border-color: var(--color-light-10);
 		box-sizing: border-box;
+		background-color: var(--color-dark);
 	}
 	.network {
 		padding: 8px;
@@ -959,6 +961,7 @@
 		border-width: 1px;
 		border-style: solid;
 		border-color: var(--color-light-10);
+		background-color: var(--color-dark);
 	}
 	.tokens-bar {
 		width: 100%;

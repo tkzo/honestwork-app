@@ -73,7 +73,7 @@
 		height: 16px;
 	}
 	main {
-		background: var(--color-light-2);
+		background: var(--color-dark);
 		border-width: 1px 0px;
 		border-style: solid;
 		border-color: var(--color-light-10);
