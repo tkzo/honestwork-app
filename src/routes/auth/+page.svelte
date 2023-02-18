@@ -7,6 +7,9 @@
 		userState
 	} from '$lib/stores/Network';
 	import { user_signed_in } from '$lib/stores/State';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 
 	let myform: HTMLFormElement;
 	let signature: string;
@@ -26,7 +29,7 @@
 </svelte:head>
 
 <main>
-	{#if $userConnected && $userState > 0 && !$user_signed_in}
+	{#if ($userConnected && $userState > 0 && !$user_signed_in) || data.address != $userAddress}
 		<section>
 			<div class="gm">
 				<div class="gm-inner">
@@ -86,7 +89,6 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		justify-content: center;
 		height: calc(100vh - 64px);
 	}
 	section {

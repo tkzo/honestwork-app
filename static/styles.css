@@ -80,7 +80,7 @@ body {
 	/* --svrollbar-track-background: #85b4b9; */
 	--svrollbar-track-opacity: 1;
 
-	--svrollbar-thumb-width: 10px;
+	--svrollbar-thumb-width: 1px;
 	--svrollbar-thumb-background: #d9ab55;
 	--svrollbar-thumb-opacity: 1;
 }
@@ -408,6 +408,9 @@ button:active {
 .token-container,
 .gallery-buttons,
 .description-title,
-.sticky-chosen {
+.sticky-chosen,
+.inbox,
+.inbox-item,
+.chat {
 	background-color: var(--color-dark);
 }

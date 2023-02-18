@@ -441,16 +441,6 @@
 		--svrollbar-thumb-background: #d9ab55;
 		--svrollbar-thumb-opacity: 1;
 	}
-	/* .viewport {
-		position: relative;
-		overflow: scroll;
-		box-sizing: border-box;
-		-ms-overflow-style: none;
-		scrollbar-width: none;
-	}
-	.viewport::-webkit-scrollbar {
-		display: none;
-	} */
 	.create-conversation {
 		width: 100%;
 		height: 32px;
@@ -480,6 +470,8 @@
 	.inbox-window {
 		display: flex;
 		flex-direction: column;
+		width: 100%;
+		box-sizing: border-box;
 	}
 	.gray-line {
 		border-style: solid;
@@ -508,8 +500,7 @@
 		--svrollbar-track-width: 1px;
 		/* --svrollbar-track-background: #85b4b9; */
 		--svrollbar-track-opacity: 1;
-
-		--svrollbar-thumb-width: 10px;
+		--svrollbar-thumb-width: 1px;
 		--svrollbar-thumb-background: #d9ab55;
 		--svrollbar-thumb-opacity: 1;
 		display: flex;
@@ -538,6 +529,7 @@
 	.inbox-viewport {
 		display: flex;
 		flex-direction: column;
+		width: 100%;
 	}
 	.inbox-contents {
 		display: flex;

@@ -9,8 +9,8 @@
 	"/api/auth/login/[address]": [
 		"src/routes/api/auth/login/[address]/+server.ts"
 	],
-	"/api/(conversation)/conversation_add": [
-		"src/routes/api/(conversation)/conversation_add/+server.ts"
+	"/api/(conversation)/conversation_add/[address]": [
+		"src/routes/api/(conversation)/conversation_add/[address]/+server.ts"
 	],
 	"/api/(conversation)/conversation/[address]": [
 		"src/routes/api/(conversation)/conversation/[address]/+server.ts"
@@ -75,8 +75,8 @@
 	"/api/watchlist/remove": [
 		"src/routes/api/watchlist/remove/+server.ts"
 	],
-	"/(subpages)/auth": [
-		"src/routes/(subpages)/auth/+page.server.ts",
+	"/auth": [
+		"src/routes/auth/+page.server.ts",
 		"src/routes/+layout.server.ts"
 	],
 	"/creator/[address]": [
@@ -103,7 +103,7 @@
 		"src/routes/messages/+page.server.ts",
 		"src/routes/+layout.server.ts"
 	],
-	"/(subpages)/mint": [
+	"/mint": [
 		"src/routes/+layout.server.ts"
 	],
 	"/new_job": [

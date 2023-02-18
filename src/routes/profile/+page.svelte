@@ -29,6 +29,7 @@
 	import { parseContent } from '$lib/stores/Parser';
 	import Applications from '$lib/components/profile/Applications.svelte';
 	import { base } from '$app/paths';
+	import { goto } from '$app/navigation';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
@@ -813,19 +814,23 @@
 				{/if}
 			{:else if $userConnected && $userAddress.toLowerCase() != data.user.address.toLowerCase()}
 				<div style="height: 16px" />
-				<section style="width:400px; display:flex; flex-direction:column;">
-					<div class="gm">
-						<div class="gm-inner">
-							<p class="yellow">wrong account</p>
-						</div>
-					</div>
+				<section style="display:flex; flex-direction:column;">
 					<div class="gm">
 						<p>
-							switch to <span class="yellow"
+							switch to <span class="light-60"
 								>{data.user.address.substring(0, 6) +
 									'...' +
-									data.user.address.substring($userAddress.length - 4)}</span
+									data.user.address.substring(data.user.address.length - 4)}</span
 							> to see this page.
+						</p>
+					</div>
+					<div class="gm link" on:click={() => goto(`${base}/auth`)} on:keydown>
+						<p>
+							or login with <span
+								>{$userAddress.substring(0, 6) +
+									'...' +
+									$userAddress.substring($userAddress.length - 4)}</span
+							>
 						</p>
 					</div>
 				</section>

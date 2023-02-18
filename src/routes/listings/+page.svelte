@@ -91,6 +91,7 @@
 		border-color: var(--color-light-10);
 		overflow-y: hidden;
 		height: auto;
+		box-sizing: border-box;
 	}
 	.job {
 		width: 520px;

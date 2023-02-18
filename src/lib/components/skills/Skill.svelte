@@ -56,6 +56,7 @@
 		const res = await fetch(`/api/user/${user_address}`);
 		user = await res.json();
 	};
+	const addConversation = async () => {};
 </script>
 
 <section class={chosen ? 'chosen' : ''}>

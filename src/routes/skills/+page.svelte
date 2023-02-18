@@ -31,7 +31,7 @@
 	let chosen_sorting_option = 0;
 
 	let feedHeight = 0;
-	$: if (browser) feedHeight = window.innerHeight - 128;
+	$: if (browser) feedHeight = window.innerHeight - 148;
 	$: filteredSkills =
 		search_input != ''
 			? fuzzy
