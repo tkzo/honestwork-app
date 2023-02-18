@@ -88,6 +88,7 @@
 		--svrollbar-thumb-background: #d9ab55;
 		--svrollbar-thumb-opacity: 1;
 		width: 100%;
+		background-color: var(--color-dark);
 	}
 	.viewport {
 		position: relative;

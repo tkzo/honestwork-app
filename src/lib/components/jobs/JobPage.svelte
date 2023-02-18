@@ -127,6 +127,9 @@
 							<div class="tag link">
 								<p>{tag}</p>
 							</div>
+							{#if job.tags.indexOf(tag) != job.tags.length - 1}
+								<div style="width:8px;" />
+							{/if}
 						{/each}
 					</div>
 				{:else}

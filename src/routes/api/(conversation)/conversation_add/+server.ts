@@ -9,8 +9,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 			? env.PRIVATE_HONESTWORK_API
 			: env.PRIVATE_LOCAL_HONESTWORK_API;
 	const body = {
-		matched_user: data.matched_user,
-		muted: false
+		matched_user: data.matched_user
 	};
 	const url = `${apiUrl}/conversations/${data.user_address}/${data.signature}`;
 	const options = {

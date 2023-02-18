@@ -86,7 +86,7 @@ body {
 }
 
 :root {
-	--color-dark: #000000;
+	--color-dark: #0a0f1a;
 }
 body {
 	min-height: 100vh;
@@ -401,6 +401,10 @@ button:active {
 
 .feed,
 .network-tabs,
+.networks-tab,
+.tokens-table,
+.payment-button,
+.receipt,
 .token-container,
 .gallery-buttons,
 .description-title,
