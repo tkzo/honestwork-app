@@ -1,37 +1,53 @@
 <svelte:options immutable={true} />
 
 <script lang="ts">
-	import type { JobType, UserType } from '$lib/stores/Types';
-	import { onMount } from 'svelte';
+	import type { JobType } from '$lib/stores/Types';
 	import { placeholder_image } from '$lib/stores/Constants';
 	import { parseContent } from '$lib/stores/Parser';
+	import { base } from '$app/paths';
+	import { onMount } from 'svelte';
 
 	export let chosen: boolean;
 	export let job: JobType;
 
-	let user: UserType;
 	let hashtags = job.tags;
+	let tier: number = 0;
+
+	onMount(async () => {
+		await getUserTier();
+	});
+
+	const getUserTier = async () => {
+		try {
+			let res = await fetch(`${base}/api/membership/${job.user_address}`);
+			tier = await res.json();
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const parseDate = (date: Date) => {
+		let month = date.getMonth() + 1;
+		let day = date.getDate();
+		let year = date.getFullYear();
+		return `${month}/${day}/${year}`;
+	};
 
 	// todo: inline this
 	$: infos = [
 		{
-			key: 'installments',
-			value: job.installments
+			key: 'listed on:',
+			value: parseDate(new Date(job.created_at))
 		},
 		{
-			key: 'budget',
+			key: 'member tier:',
+			value: tier
+		},
+		{
+			key: 'budget:',
 			value: '$' + job.budget.toString().slice(0, 6)
 		}
 	];
-
-	onMount(() => {
-		fetchUser();
-	});
-
-	const fetchUser = async () => {
-		const res = await fetch(`/api/user/${job.user_address}`);
-		user = await res.json();
-	};
 </script>
 
 <section class={chosen ? 'chosen' : ''}>
@@ -39,7 +55,7 @@
 		<div class="tags">
 			<div class="tag">
 				<p class="yellow">
-					{job.username ?? user.username}
+					{job.username}
 				</p>
 			</div>
 			<div class="tag">
@@ -74,7 +90,7 @@
 			{#if infos && infos.length > 0}
 				{#each infos as info}
 					<div class="tag">
-						<p>{info.value} <span class="light-40">{info.key}</span></p>
+						<p><span class="light-40">{info.key}</span> {info.value}</p>
 					</div>
 				{/each}
 			{/if}
