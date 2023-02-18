@@ -49,7 +49,7 @@
 				<div bind:this={contents} class="contents">
 					<div style="height:8px" />
 					{#if data.jobs.json && data.jobs.json.length != 0}
-						{#each data.jobs.json as job, index}
+						{#each data.jobs.json as job}
 							<div
 								on:click={() => {
 									handleJobSelect(job);
@@ -59,6 +59,8 @@
 								<JobListing chosen={job == active_job} {job} />
 							</div>
 						{/each}
+					{:else}
+						<p>NO JOBS FOUNDS</p>
 					{/if}
 				</div>
 			</div>

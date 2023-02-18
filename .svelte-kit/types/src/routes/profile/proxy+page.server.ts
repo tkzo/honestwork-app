@@ -117,10 +117,6 @@ export const actions = {
 				'Content-Type': 'application/json'
 			}
 		});
-		if (response.ok) {
-			const json = await response.json();
-			console.log(json);
-		}
 	},
 	skills: async ({ cookies, request }: import('./$types').RequestEvent) => {
 		const userAddress = cookies.get('honestwork_address');
@@ -203,29 +199,23 @@ export const actions = {
 			let response = await fetch(url, {
 				method: 'POST',
 				body: JSON.stringify(body),
-				headers: {
+				headers: new Headers({
+					Authorization:
+						'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
 					'Content-Type': 'application/json'
-				}
+				})
 			});
-			if (response.ok) {
-				const json = await response.json();
-				console.log(json);
-			} else {
-				console.log(response);
-			}
 		} else {
 			const url = `${apiUrl}/skills/${userAddress}/${userSignature}/${data.get('skill_slot')}`;
 			let response = await fetch(url, {
 				method: 'PATCH',
 				body: JSON.stringify(body),
-				headers: {
+				headers: new Headers({
+					Authorization:
+						'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
 					'Content-Type': 'application/json'
-				}
+				})
 			});
-			if (response.ok) {
-				const json = await response.json();
-				console.log(json);
-			}
 		}
 	}
 };

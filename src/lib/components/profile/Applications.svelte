@@ -8,57 +8,63 @@
 	let jobs: JobType[] = [];
 	let drawer_open = false;
 
-	const fetchJobs = async (app: ApplicationType) => {
-		for await (const item of user.application) {
-			let record_id = item.job_id.split(':');
+	const fetchJobs = async () => {
+		for await (const app of user.application) {
+			let record_id = app.job_id.split(':');
 			const url = `${base}/api/get_job/${record_id[1]}/${record_id[2]}`;
 			const response = await fetch(url);
-			jobs.push(await response.json());
+			const job: JobType = await response.json();
+			jobs.push(job);
 		}
+	};
+
+	const getCoverLetterForJob = (job: JobType) => {
+		const application = user.application.find(
+			(n) => n.job_id == `job:${job.user_address}:${job.slot}`
+		);
+		return application?.cover_letter;
 	};
 </script>
 
 <main>
 	{#if user.application.length > 0}
-		{#each user.application as app}
-			{#await fetchJobs(app)}
-				loading jobs
-			{:then}
-				{#each jobs as job}
-					<div class="container">
-						<div
-							class="header"
-							on:click={() => goto(`${base}/job/${job.user_address}/${job.slot}`)}
-							on:keydown
-						>
-							<img class="job-image" src={job.image_url} alt="sdf" />
-							<div class="content">
-								<p>{job.title}</p>
-								<p class="yellow">{job.username}</p>
-							</div>
-						</div>
-					</div>
-					{#if drawer_open}
-						{@html job.description}
-					{/if}
+		{#await fetchJobs()}
+			loading jobs
+		{:then}
+			{#each jobs as job}
+				<div class="container">
 					<div
-						class={drawer_open ? 'drawer drawer-open' : 'drawer'}
-						on:click={() => (drawer_open = !drawer_open)}
+						class="header"
+						on:click={() => goto(`${base}/job/${job.user_address}/${job.slot}`)}
 						on:keydown
 					>
-						{#if drawer_open}
-							<p class="light-60">hide cover letter</p>
-							<div style="width:4px" />
-							<img src={`${assets}/icons/corner-right-up_passive.svg`} alt="drawer" />
-						{:else}
-							<img src={`${assets}/icons/corner-left-down_active.svg`} alt="drawer" />
-							<div style="width:4px" />
-							<p class="light-60">show cover letter</p>
-						{/if}
+						<img class="job-image" src={job.image_url} alt="sdf" />
+						<div class="content">
+							<p>{job.title}</p>
+							<p class="yellow">{job.username}</p>
+						</div>
 					</div>
-				{/each}
-			{/await}
-		{/each}
+				</div>
+				{#if drawer_open}
+					{@html getCoverLetterForJob(job)}
+				{/if}
+				<div
+					class={drawer_open ? 'drawer drawer-open' : 'drawer'}
+					on:click={() => (drawer_open = !drawer_open)}
+					on:keydown
+				>
+					{#if drawer_open}
+						<p class="light-60">hide cover letter</p>
+						<div style="width:4px" />
+						<img src={`${assets}/icons/corner-right-up_passive.svg`} alt="drawer" />
+					{:else}
+						<img src={`${assets}/icons/corner-left-down_active.svg`} alt="drawer" />
+						<div style="width:4px" />
+						<p class="light-60">show cover letter</p>
+					{/if}
+				</div>
+			{/each}
+		{/await}
 	{:else}
 		<p class="light-60">You have not applied to any jobs yet.</p>
 	{/if}
