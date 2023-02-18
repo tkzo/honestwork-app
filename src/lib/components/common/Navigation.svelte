@@ -21,21 +21,17 @@
 	</div>
 	<div class="menu-section">
 		<a href="/jobs">
-			<p class={$page.route.id == '/jobs' ? 'yellow semibold link' : 'light-60 semibold link'}>
-				jobs
-			</p>
+			<p class={$page.route.id == '/jobs' ? 'yellow semibold' : 'light-60  link'}>jobs</p>
 		</a>
 		<div style="width:12px" />
 		<a href="/skills">
-			<p class={$page.route.id == '/skills' ? 'yellow semibold link' : 'light-60 semibold link'}>
-				skills
-			</p>
+			<p class={$page.route.id == '/skills' ? 'yellow semibold' : 'light-60  link'}>skills</p>
 		</a>
 	</div>
 	<div class="right-section">
 		{#if $userConnected && $xmtpConnected && $user_signed_in}
 			<a class="messages" href="/messages">
-				<p class={$page.route.id == '/messages' ? 'yellow' : 'light-60 link'}>messages</p>
+				<p class={$page.route.id == '/messages' ? 'yellow semibold' : 'light-60 link'}>messages</p>
 			</a>
 		{:else if $userConnected && !$xmtpConnected && $user_signed_in}
 			<div class="messages">
@@ -44,7 +40,7 @@
 		{/if}
 		{#if $userConnected && $user_signed_in}
 			<a class="messages" href="/listings">
-				<p class={$page.route.id == '/listings' ? 'yellow' : 'light-60 link'}>listings</p>
+				<p class={$page.route.id == '/listings' ? 'yellow semibold' : 'light-60 link'}>listings</p>
 			</a>
 		{/if}
 		<div class="wallet-section">
@@ -56,11 +52,11 @@
 				<p class="yellow semibold link" on:click={connectWallet} on:keydown>connect</p>
 			{:else if $user_signed_in}
 				<a href={`/profile`}>
-					<p class={$page.route.id == '/profile' ? 'yellow' : 'light-60 link'}>profile</p>
+					<p class={$page.route.id == '/profile' ? 'yellow semibold' : 'light-60 link'}>profile</p>
 				</a>
 			{:else}
 				<a href={`/auth`}>
-					<p class="yellow">login to hw</p>
+					<p class="yellow">login</p>
 				</a>
 			{/if}
 		</div>

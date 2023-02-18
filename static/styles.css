@@ -399,6 +399,10 @@ button:active {
 	background-color: var(--color-dark);
 }
 
-.feed {
+.feed,
+.network-tabs,
+.token-container,
+.gallery-buttons,
+.description-title {
 	background-color: var(--color-dark);
 }
