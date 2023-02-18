@@ -193,6 +193,7 @@
 		border-style: solid;
 		border-color: var(--color-light-10);
 		overflow-y: hidden;
+		box-sizing: border-box;
 	}
 	.skill {
 		width: 520px;

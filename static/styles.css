@@ -403,6 +403,7 @@ button:active {
 .network-tabs,
 .token-container,
 .gallery-buttons,
-.description-title {
+.description-title,
+.sticky-chosen {
 	background-color: var(--color-dark);
 }

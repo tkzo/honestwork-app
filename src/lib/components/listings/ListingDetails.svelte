@@ -607,6 +607,7 @@
 		border-style: solid;
 		border-color: var(--color-light-10);
 		box-sizing: border-box;
+		background-color: var(--color-dark);
 	}
 	.bar {
 		height: 32px;
