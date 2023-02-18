@@ -68,14 +68,27 @@
 			<div style="height: 120px;" />
 			<BenefitsCards />
 			<div style="height: 120px;" />
-			<Faq />
+			<div class="faq">
+				<Faq />
+			</div>
 			<div style="height: 120px;" />
+			<img src="{`${assets}/assets/laser-grid.png`} " alt="HonestWork" class="bg" />
 		</div>
 	</div>
 	<Svrollbar alwaysVisible {viewport} {contents} />
 </div>
 
 <style>
+	.faq {
+		z-index: 10;
+	}
+	.bg {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+	}
 	.wrapper {
 		position: relative;
 		-ms-overflow-style: none; /* for Internet Explorer, Edge */
@@ -113,6 +126,7 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+		position: relative;
 	}
 	.hero {
 		background: linear-gradient(180deg, #16181c 0%, var(--color-dark) 100%);
