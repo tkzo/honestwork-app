@@ -241,6 +241,7 @@
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
 		border-color: var(--color-light-10);
+		background-color: var(--color-dark);
 	}
 	.mint-header {
 		display: flex;
@@ -311,6 +312,7 @@
 		border-width: 1px;
 		border-style: solid;
 		border-color: var(--color-light-10);
+		background-color: var(--color-dark);
 	}
 	.rotating {
 		height: 16px;
