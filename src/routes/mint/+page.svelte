@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { userConnected, userState, userAddress, chainID } from '$lib/stores/Network';
+	import {
+		userConnected,
+		userState,
+		userAddress,
+		chainID,
+		connectIfCached
+	} from '$lib/stores/Network';
 	import { base, assets } from '$app/paths';
 	import { placeholder_image } from '$lib/stores/Constants';
 	import { Svrollbar } from 'svrollbar';
@@ -52,6 +58,7 @@
 		getUserBalance();
 	}
 	onMount(() => {
+		connectIfCached();
 		setInterval(() => {
 			fetchNextToken();
 			getUserBalance();
