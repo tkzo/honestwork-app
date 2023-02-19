@@ -2,6 +2,7 @@
 	import { assets } from '$app/paths';
 	import { userAddress } from '$lib/stores/Network';
 	import { toast } from '@zerodevx/svelte-toast';
+	import { env } from '$env/dynamic/public';
 
 	export let show_new_agreement: boolean = false;
 	export let conversation: any = {};
@@ -10,7 +11,7 @@
 
 	let deal = {
 		network: 'bsc',
-		token: 'busd',
+		token: 'mck',
 		'creator Rating': average([4.5, 4.2, 4.1]).toFixed(2),
 		'total amount': 10000,
 		'total paid': 2500
@@ -22,7 +23,7 @@
 	let show_token_dropdown = false;
 	let show_recruitor_dropdown = false;
 	let chosen_network = 'binance smart chain';
-	let chosen_token = 'busd';
+	let chosen_token = 'mck';
 	let chosen_recruitor = $userAddress;
 
 	$: progress = (deal['total paid'] / deal['total amount']) * 100;
@@ -36,7 +37,7 @@
 						type: 'job offer',
 						network: chosen_network,
 						token: chosen_token,
-						token_address: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
+						token_address: env.PUBLIC_MOCK_TOKEN_ADDRESS,
 						total_amount: total_amount,
 						downpayment: downpayment
 					})}`
@@ -138,8 +139,8 @@
 			</div>
 			{#if show_token_dropdown}
 				<div class="dropdown-menu">
-					<div class="dropdown-item" on:click={() => (chosen_token = 'busd')} on:keydown>
-						<p>busd</p>
+					<div class="dropdown-item" on:click={() => (chosen_token = 'mck')} on:keydown>
+						<p>mck</p>
 					</div>
 				</div>
 			{/if}
@@ -157,7 +158,7 @@
 	</div>
 	<div style="height:12px" />
 	<div class="action-button-full link yellow" on:click={handleCreateAgreementOffer} on:keydown>
-		<p>pay & create agreement</p>
+		<p>send offer</p>
 	</div>
 {:else}
 	<section>

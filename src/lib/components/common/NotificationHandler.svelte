@@ -27,4 +27,7 @@
 {:else if $page.route.id == '/profile'}
 	<Notification notification={notifications.upgrade} />
 	<div style="height:16px;" />
+{:else if $page.route.id == '/mint'}
+	<Notification notification={notifications.invitation} />
+	<div style="height:16px;" />
 {/if}

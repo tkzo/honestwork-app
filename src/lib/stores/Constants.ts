@@ -167,6 +167,11 @@ export const notifications = {
 		bodytext: 'Turkey needs your help!',
 		cta: 'donate with crypto',
 		icon: '/icons/moon-star.svg'
+	},
+	invitation: {
+		bodytext: 'if you have a unique skill that’s not listed already',
+		cta: 'apply for invitation',
+		icon: '/icons/message_right.svg'
 	}
 };
 

@@ -128,6 +128,8 @@ declare module '$env/static/public' {
 	export const PUBLIC_MEMBERSHIP_TOKEN_ADDRESS: string;
 	export const PUBLIC_JOB_LISTING_CONTRACT_ADDRESS: string;
 	export const PUBLIC_PAYMENT_CONTRACT_ADDRESS: string;
+	export const PUBLIC_MOCK_TOKEN_ADDRESS: string;
+	export const PUBLIC_DAI_ADDRESS: string;
 }
 
 /**
@@ -251,6 +253,8 @@ declare module '$env/dynamic/public' {
 		PUBLIC_MEMBERSHIP_TOKEN_ADDRESS: string;
 		PUBLIC_JOB_LISTING_CONTRACT_ADDRESS: string;
 		PUBLIC_PAYMENT_CONTRACT_ADDRESS: string;
+		PUBLIC_MOCK_TOKEN_ADDRESS: string;
+		PUBLIC_DAI_ADDRESS: string;
 		[key: `PUBLIC_${string}`]: string | undefined;
 	}
 }

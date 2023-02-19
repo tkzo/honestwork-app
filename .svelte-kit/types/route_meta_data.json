@@ -45,6 +45,12 @@
 	"/api/membership/[address]": [
 		"src/routes/api/membership/[address]/+server.ts"
 	],
+	"/api/nft/next-token-image": [
+		"src/routes/api/nft/next-token-image/+server.ts"
+	],
+	"/api/nft/user-balance/[address]": [
+		"src/routes/api/nft/user-balance/[address]/+server.ts"
+	],
 	"/api/search": [
 		"src/routes/api/search/+server.ts"
 	],
