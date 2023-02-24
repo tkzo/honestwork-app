@@ -125,11 +125,11 @@ declare module '$env/static/private' {
  * ```
  */
 declare module '$env/static/public' {
-	export const PUBLIC_MEMBERSHIP_TOKEN_ADDRESS: string;
-	export const PUBLIC_JOB_LISTING_CONTRACT_ADDRESS: string;
-	export const PUBLIC_PAYMENT_CONTRACT_ADDRESS: string;
-	export const PUBLIC_MOCK_TOKEN_ADDRESS: string;
-	export const PUBLIC_DAI_ADDRESS: string;
+	export const PUBLIC_NFT_ADDRESS: string;
+	export const PUBLIC_LISTING_ADDRESS: string;
+	export const PUBLIC_ESCROW_ADDRESS: string;
+	export const PUBLIC_REGISTRY_ADDRESS: string;
+	export const PUBLIC_MAINNET_DAI_ADDRESS: string;
 }
 
 /**
@@ -250,11 +250,11 @@ declare module '$env/dynamic/private' {
  */
 declare module '$env/dynamic/public' {
 	export const env: {
-		PUBLIC_MEMBERSHIP_TOKEN_ADDRESS: string;
-		PUBLIC_JOB_LISTING_CONTRACT_ADDRESS: string;
-		PUBLIC_PAYMENT_CONTRACT_ADDRESS: string;
-		PUBLIC_MOCK_TOKEN_ADDRESS: string;
-		PUBLIC_DAI_ADDRESS: string;
+		PUBLIC_NFT_ADDRESS: string;
+		PUBLIC_LISTING_ADDRESS: string;
+		PUBLIC_ESCROW_ADDRESS: string;
+		PUBLIC_REGISTRY_ADDRESS: string;
+		PUBLIC_MAINNET_DAI_ADDRESS: string;
 		[key: `PUBLIC_${string}`]: string | undefined;
 	}
 }

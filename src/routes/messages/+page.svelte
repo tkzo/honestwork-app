@@ -19,19 +19,18 @@
 	import { new_conversation_metadata } from '$lib/stores/State';
 	import { onMount } from 'svelte';
 	import { connectIfCached } from '$lib/stores/Network';
-	import { base, assets } from '$app/paths';
-	import Agreement from '$lib/components/messages/Agreement.svelte';
+	import { base } from '$app/paths';
+	import Agreements from '$lib/components/messages/Agreements.svelte';
 
 	onMount(() => {
 		connectIfCached();
 	});
 	//todo: move conversation into its own component
-	export let viewport: Element;
-	export let contents: Element;
-	export let viewport_inbox: Element;
-	export let contents_inbox: Element;
+	let viewport: Element;
+	let contents: Element;
+	let viewport_inbox: Element;
+	let contents_inbox: Element;
 
-	let xmtp: any;
 	let conversations = new Array();
 	let last_messages = new Array();
 	let peers = new Array();
@@ -48,7 +47,6 @@
 	let active_stream: any;
 	let all_streams: any;
 	let chosen_tab = 'messages';
-	let new_agreement = false;
 
 	afterUpdate(async () => {
 		if (first_chat_load && contents.clientHeight > 0 && chosen_tab == 'messages') {
@@ -97,9 +95,10 @@
 			const url = `${base}/api/conversation/${$userAddress}`;
 			const response = await fetch(url);
 			const json = await response.json();
+			console.log('JSON:', json);
 
 			if ($new_conversation_metadata.address != '') {
-				await newConversation($new_conversation_metadata.address);
+				await newConversation();
 				new_conversation_metadata.set({ title: '', address: '' });
 			}
 			conversations = await $xmtpClient.conversations.list();
@@ -108,26 +107,28 @@
 					convo.context?.conversationId &&
 					convo.context.conversationId.startsWith('honestwork.app/')
 			);
-
-			conversations = conversations.filter((convo) => {
-				return json.find((j: any) => {
-					return j.matched_user == convo.peerAddress;
-				});
-			});
-
-			conversations = conversations.filter((convo) => {
-				return json.find((j: any) => {
-					return j.muted == false;
-				});
-			});
-
+			console.log('Conversations:', conversations);
 			if (conversations.length > 0) {
-				await fetchInbox(conversations);
-				for await (const conv of conversations) {
-					peers.push(await fetchPeer(conv.peerAddress));
+				conversations = conversations.filter((convo) => {
+					return json.find((j: any) => {
+						return j.matched_user == convo.peerAddress;
+					});
+				});
+
+				conversations = conversations.filter((convo) => {
+					return json.find((j: any) => {
+						return j.muted == false;
+					});
+				});
+
+				if (conversations.length > 0) {
+					await fetchInbox(conversations);
+					for await (const conv of conversations) {
+						peers.push(await fetchPeer(conv.peerAddress));
+					}
+					peers = peers;
+					chooseItem(conversations[conversations.length - 1]);
 				}
-				peers = peers;
-				chooseItem(conversations[conversations.length - 1]);
 			}
 		}
 		loaded = true;
@@ -145,13 +146,16 @@
 		}
 		last_messages = last_messages;
 	};
-	const newConversation = async (addr: string) => {
-		const convo = await $xmtpClient.conversations.newConversation(addr, {
-			conversationId: 'honestwork.app/conversations',
-			metadata: {
-				title: $new_conversation_metadata.title
+	const newConversation = async () => {
+		const convo = await $xmtpClient.conversations.newConversation(
+			$new_conversation_metadata.address,
+			{
+				conversationId: 'honestwork.app/conversations',
+				metadata: {
+					title: $new_conversation_metadata.title
+				}
 			}
-		});
+		);
 		conversations.push(convo);
 		chooseItem(conversations[conversations.length - 1]);
 		// user_input.focus();
@@ -190,7 +194,6 @@
 	const syncConversations = async () => {
 		all_streams = await $xmtpClient.conversations.stream();
 		for await (const conversation of all_streams) {
-			// console.log(`New conversation started with ${conversation.peerAddress}`);
 			conversations.push(conversation);
 			conversations = conversations;
 		}
@@ -295,16 +298,16 @@
 		</div>
 	</div>
 	<div style="width:12px" />
-	{#if chosen_tab == 'messages'}
-		<div class="chat">
-			<div class="tab-bar">
-				<div class="tab-bar-item">
-					<p class="yellow">messages</p>
-				</div>
-				<div class="tab-bar-item" on:click={() => (chosen_tab = 'agreements')} on:keydown>
-					<p class="light-60">agreements</p>
-				</div>
+	<div class="chat">
+		<div class="tab-bar">
+			<div class="tab-bar-item" on:click={() => (chosen_tab = 'messages')} on:keydown>
+				<p class={`${chosen_tab == 'messages' ? 'yellow' : 'light-60'}`}>messages</p>
 			</div>
+			<div class="tab-bar-item" on:click={() => (chosen_tab = 'agreements')} on:keydown>
+				<p class={`${chosen_tab == 'agreements' ? 'yellow' : 'light-60'}`}>agreements</p>
+			</div>
+		</div>
+		{#if chosen_tab == 'messages'}
 			<div class="chat-window">
 				<div class="wrapper">
 					<div
@@ -345,36 +348,10 @@
 					{/if}
 				</div>
 			</div>
-		</div>
-	{:else if chosen_tab == 'agreements'}
-		<div class="agreements">
-			<div class="tab-bar">
-				<div class="tab-bar-item" on:click={() => (chosen_tab = 'messages')} on:keydown>
-					<p class="light-60">messages</p>
-				</div>
-				<div class="tab-bar-item">
-					<p class="yellow">agreements</p>
-				</div>
-			</div>
-			<div class="agreements-container">
-				{#if new_agreement}
-					<div class="new-agreement" on:click={() => (new_agreement = false)} on:keydown>
-						<img src={`${assets}/icons/chevron_left_active.svg`} alt="New Agreement" />
-						<div style="width:4px;" />
-						<p class="yellow">back to agreements</p>
-					</div>
-				{:else}
-					<div class="new-agreement" on:click={() => (new_agreement = true)} on:keydown>
-						<img src={`${assets}/icons/notes-plus.svg`} alt="New Agreement" />
-						<div style="width:4px;" />
-						<p class="yellow">create new agreement</p>
-					</div>
-				{/if}
-				<div style="height:12px" />
-				<Agreement show_new_agreement={new_agreement} conversation={chosen_conversation} />
-			</div>
-		</div>
-	{/if}
+		{:else if chosen_tab == 'agreements'}
+			<Agreements conversation={chosen_conversation} />
+		{/if}
+	</div>
 </main>
 
 <style>

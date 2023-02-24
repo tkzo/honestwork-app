@@ -8,7 +8,7 @@
 		connectIfCached
 	} from '$lib/stores/Network';
 	import { JobInput } from '$lib/stores/Validation';
-	import type { JobType, Network, Token } from '$lib/stores/Types';
+	import type { JobType, Network } from '$lib/stores/Types';
 	import { chains } from '$lib/stores/Constants';
 	import { erc20_abi } from '$lib/stores/ABI';
 	import { placeholder_image, sticky_data } from '$lib/stores/Constants';
@@ -17,7 +17,7 @@
 	import { ethers } from 'ethers';
 	import Skeleton from '$lib/components/common/Skeleton.svelte';
 	import { env } from '$env/dynamic/public';
-	import { joblisting_abi } from '$lib/stores/ABI';
+	import { listing_abi } from '$lib/stores/ABI';
 	import { form_limitations } from '$lib/stores/Constants';
 	import { Svrollbar } from 'svrollbar';
 	import { toast } from '@zerodevx/svelte-toast';
@@ -91,7 +91,7 @@
 
 	const getAllowance = async () => {
 		let ERC20 = new ethers.Contract(chosen_payment_token.address, erc20_abi, $networkProvider);
-		let allowance = await ERC20.allowance($userAddress, env.PUBLIC_JOB_LISTING_CONTRACT_ADDRESS!);
+		let allowance = await ERC20.allowance($userAddress, env.PUBLIC_LISTING_ADDRESS!);
 		user_allowance = ethers.utils.formatEther(allowance);
 	};
 	const handleSubmit = async (e: any) => {
@@ -271,7 +271,7 @@
 						$networkSigner
 					);
 					let approveAmt = approveMax ? ethers.constants.MaxUint256 : price;
-					let approveTx = await erc20.approve(env.PUBLIC_JOB_LISTING_CONTRACT_ADDRESS!, approveAmt);
+					let approveTx = await erc20.approve(env.PUBLIC_LISTING_ADDRESS!, approveAmt);
 					let receipt = await approveTx.wait();
 					if (receipt.status == 1) {
 						toast.push(`<p class="light-60">Approval successful!</p>`);
@@ -279,8 +279,8 @@
 					userApproved = true;
 				}
 				const joblistingContract = new ethers.Contract(
-					env.PUBLIC_JOB_LISTING_CONTRACT_ADDRESS!,
-					joblisting_abi,
+					env.PUBLIC_LISTING_ADDRESS!,
+					listing_abi,
 					$networkSigner
 				);
 				let tx = await joblistingContract.payForListing(chosen_payment_token.address, price._hex);

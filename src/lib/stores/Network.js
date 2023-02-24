@@ -6,17 +6,18 @@ import { get } from 'svelte/store';
 import { base } from '$app/paths';
 import { toast } from '@zerodevx/svelte-toast';
 import { user_watchlist, user_favorites } from '$lib/stores/State';
+import { nft_abi } from './ABI';
 
 //todo: typescript
 export let userConnected = writable(false);
 export let userAddress = writable('');
 export let networkProvider = writable();
 export let networkSigner = writable();
-export let chainID = writable('');
+export let chainID = writable(0);
 export let userState = writable(-1);
+export let userToken = writable(0);
 export let connecting = writable(false);
 export let chainName = writable('');
-export let token_address = env.PUBLIC_MEMBERSHIP_TOKEN_ADDRESS;
 export let nodeProvider = writable();
 export let xmtpClient = writable();
 export let xmtpConnected = writable(false);
@@ -57,6 +58,10 @@ export const connectWallet = async () => {
 			}
 		}
 		userConnected.set(true);
+		const url = `${base}/api/nft/user-token-id/${addr}`;
+		const res = await fetch(url);
+		const token = await res.json();
+		userToken.set(token.token_id);
 		toast.push(
 			`<p class="light-60"><span style='color:var(--color-success)'>success: </span>wallet connected.</p>`
 		);

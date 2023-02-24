@@ -7,7 +7,6 @@
 	import { page } from '$app/stores';
 	import LogRocket from 'logrocket';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
-	import ToastHandler from '$lib/components/common/ToastHandler.svelte';
 	import type { LayoutServerData } from './$types';
 	import { user_signed_in } from '$lib/stores/State';
 

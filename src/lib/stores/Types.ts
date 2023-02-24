@@ -109,11 +109,24 @@ export type Favorite = {
 	image_url: string;
 };
 
-export type SignedMessage = {
-	recruiter_address: string;
-	creator_address: string;
+export type DealDB = {
+	status: string;
+	network: string;
 	token_address: string;
-	total_amount: ethers.BigNumberish;
-	downpayment: ethers.BigNumberish;
-	deadline: number;
+	total_amount: string;
+	downpayment: string;
+	signature: string;
+};
+
+export type Deal = {
+	recruiter: string;
+	creator: string;
+	paymentToken: string;
+	totalPayment: ethers.BigNumberish;
+	successFee: ethers.BigNumberish;
+	claimedAmount: ethers.BigNumberish;
+	claimableAmount: ethers.BigNumberish;
+	status: number;
+	recruiterRating: Array<number>;
+	creatorRating: Array<number>;
 };

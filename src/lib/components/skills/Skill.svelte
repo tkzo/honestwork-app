@@ -9,6 +9,7 @@
 	import { userConnected } from '$lib/stores/Network';
 	import { toast } from '@zerodevx/svelte-toast';
 	import { parseContent } from '$lib/stores/Parser';
+	import { goto } from '$app/navigation';
 
 	export let chosen: boolean;
 	export let skill: SkillType;
@@ -56,7 +57,36 @@
 		const res = await fetch(`/api/user/${user_address}`);
 		user = await res.json();
 	};
-	const addConversation = async () => {};
+	const handleNewConversation = async () => {
+		try {
+			const url = `${base}/api/conversation_add/${skill.user_address}`;
+			const response = await fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					title: skill.title
+				})
+			});
+			const data = await response.json();
+			console.log('Data:', data);
+			if (data == 'success') {
+				new_conversation_metadata.set({
+					address: skill.user_address,
+					title: skill.title
+				});
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Created new conversation</p>`
+				);
+				goto('/messages');
+			}
+		} catch (err: any) {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-success)'>success: </span>${err.Error()}</p>`
+			);
+		}
+	};
 </script>
 
 <section class={chosen ? 'chosen' : ''}>
@@ -90,14 +120,8 @@
 			{/each}
 		</div>
 		<div class="actions">
-			<div
-				class="action"
-				on:click={() => {
-					new_conversation_metadata.set({ title: title, address: user_address });
-				}}
-				on:keydown
-			>
-				<a href="/messages"> <img src={`${assets}/icons/message.svg`} alt="message" /> </a>
+			<div class="action" on:click={handleNewConversation} on:keydown>
+				<img src={`${assets}/icons/message.svg`} alt="message" />
 			</div>
 			<div
 				class="action"

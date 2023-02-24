@@ -27,7 +27,7 @@
 </script>
 
 <main>
-	{#if user.application.length > 0}
+	{#if user.application?.length > 0}
 		{#await fetchJobs()}
 			loading jobs
 		{:then}

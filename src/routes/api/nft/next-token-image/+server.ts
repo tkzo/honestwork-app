@@ -10,11 +10,7 @@ export const GET: RequestHandler = async ({}) => {
 	let next_id: number = 0;
 	try {
 		const provider = new ethers.providers.JsonRpcProvider(env_priv.PRIVATE_ETHEREUM_RPC);
-		const contract = new ethers.Contract(
-			env_pub.PUBLIC_MEMBERSHIP_TOKEN_ADDRESS,
-			nft_abi,
-			provider
-		);
+		const contract = new ethers.Contract(env_pub.PUBLIC_NFT_ADDRESS, nft_abi, provider);
 		next_id = parseInt(await contract._tokenIds()) + 1;
 		image_url = `https://honestwork-userfiles.fra1.cdn.digitaloceanspaces.com/genesis-nft/${next_id}.png`;
 	} catch (err) {

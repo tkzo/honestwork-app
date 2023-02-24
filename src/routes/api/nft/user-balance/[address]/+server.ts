@@ -9,7 +9,7 @@ export const GET: RequestHandler = async ({ params }) => {
 	let balance: BigNumber = BigNumber.from(0);
 	try {
 		const provider = new ethers.providers.JsonRpcProvider(env_priv.PRIVATE_ETHEREUM_RPC);
-		const contract = new ethers.Contract(env_pub.PUBLIC_DAI_ADDRESS, erc20_abi, provider);
+		const contract = new ethers.Contract(env_pub.PUBLIC_MAINNET_DAI_ADDRESS, erc20_abi, provider);
 		balance = await contract.balanceOf(params.address);
 	} catch (err) {
 		console.log('error:', err);

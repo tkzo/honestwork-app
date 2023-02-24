@@ -3,6 +3,12 @@
 		"src/routes/+layout.server.ts",
 		"src/routes/+layout.server.ts"
 	],
+	"/api/(deal)/accept_deal/[recruiter]/[creator]": [
+		"src/routes/api/(deal)/accept_deal/[recruiter]/[creator]/+server.ts"
+	],
+	"/api/(deal)/add_deal/[recruiter]/[creator]/[signature]": [
+		"src/routes/api/(deal)/add_deal/[recruiter]/[creator]/[signature]/+server.ts"
+	],
 	"/api/alchemy/[addr]/[id]": [
 		"src/routes/api/alchemy/[addr]/[id]/+server.ts"
 	],
@@ -18,6 +24,9 @@
 	"/api/ens/[address]": [
 		"src/routes/api/ens/[address]/+server.ts"
 	],
+	"/api/(deal)/execute_deal/[recruiter]/[creator]/[signature]": [
+		"src/routes/api/(deal)/execute_deal/[recruiter]/[creator]/[signature]/+server.ts"
+	],
 	"/api/favorites/add": [
 		"src/routes/api/favorites/add/+server.ts"
 	],
@@ -26,6 +35,9 @@
 	],
 	"/api/favorites/remove": [
 		"src/routes/api/favorites/remove/+server.ts"
+	],
+	"/api/(deal)/get_deals/[recruiter]/[creator]": [
+		"src/routes/api/(deal)/get_deals/[recruiter]/[creator]/+server.ts"
 	],
 	"/api/(job)/get_job/[address]/[slot]": [
 		"src/routes/api/(job)/get_job/[address]/[slot]/+server.ts"
@@ -50,6 +62,9 @@
 	],
 	"/api/nft/user-balance/[address]": [
 		"src/routes/api/nft/user-balance/[address]/+server.ts"
+	],
+	"/api/nft/user-token-id/[address]": [
+		"src/routes/api/nft/user-token-id/[address]/+server.ts"
 	],
 	"/api/search": [
 		"src/routes/api/search/+server.ts"

@@ -12,7 +12,7 @@
 	import { onMount } from 'svelte';
 	import { ethers } from 'ethers';
 	import { networkSigner } from '$lib/stores/Network';
-	import { nft_abi } from '$lib/stores/ABI';
+	import { nft_abi, erc20_abi } from '$lib/stores/ABI';
 	import { env } from '$env/dynamic/public';
 	import { toast } from '@zerodevx/svelte-toast';
 
@@ -26,7 +26,8 @@
 	export let viewport: Element;
 	export let contents: Element;
 
-	let minting = false;
+	let approving = false;
+	let minting: number | undefined;
 	let upgrading = false;
 	let refreshing = false;
 	let image_url: string;
@@ -80,16 +81,44 @@
 		refreshing = false;
 	};
 
-	const mint = async () => {
-		minting = true;
+	const getUserBalance = async () => {
+		if ($userConnected) {
+			try {
+				const response = await fetch(`${base}/api/nft/user-balance/${$userAddress}`);
+				const jason = await response.json();
+				dai_balance = parseFloat(ethers.utils.formatEther(jason.balance));
+			} catch (error) {
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error}</p>`
+				);
+			}
+		}
+	};
+
+	const approve = async (amount: ethers.BigNumberish) => {
+		approving = true;
+		const Token = new ethers.Contract(env.PUBLIC_MAINNET_DAI_ADDRESS, erc20_abi, $networkSigner);
+		const tx = await Token.approve(env.PUBLIC_NFT_ADDRESS, amount);
+		let receipt = await tx.wait();
+		if (receipt && receipt.status == 1) {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-success)'>success: </span>approved for dai</p>`
+			);
+		} else {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>Approve failed</p>`
+			);
+		}
+		approving = false;
+	};
+
+	const mint = async (index: number) => {
+		minting = index;
 		if ($userState == 0 && parseInt($chainID) == 1) {
 			try {
-				const contract = new ethers.Contract(
-					env.PUBLIC_MEMBERSHIP_TOKEN_ADDRESS,
-					nft_abi,
-					$networkSigner
-				);
-				const tx = await contract.publicMint(env.PUBLIC_DAI_ADDRESS);
+				await approve(ethers.utils.parseEther('100'));
+				const contract = new ethers.Contract(env.PUBLIC_NFT_ADDRESS, nft_abi, $networkSigner);
+				const tx = await contract.publicMint(env.PUBLIC_MAINNET_DAI_ADDRESS);
 				const receipt = await tx.wait();
 				if (receipt.status == 1) {
 					toast.push(
@@ -110,21 +139,32 @@
 				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>you already have a token</p>`
 			);
 		}
-		minting = false;
+		minting = undefined;
+		if (index > 0) {
+			upgrade(index);
+		}
 	};
 
-	const getUserBalance = async () => {
-		if ($userConnected) {
-			try {
-				const response = await fetch(`${base}/api/nft/user-balance/${$userAddress}`);
-				const jason = await response.json();
-				dai_balance = parseFloat(ethers.utils.formatEther(jason.balance));
-			} catch (error) {
+	const upgrade = async (index: number) => {
+		upgrading = true;
+		try {
+			await approve(ethers.utils.parseEther('100'));
+			const contract = new ethers.Contract(env.PUBLIC_NFT_ADDRESS, nft_abi, $networkSigner);
+			const tx = await contract.upgradeToken($userAddress, index + 1);
+			const receipt = await tx.wait();
+			if (receipt.status == 1) {
 				toast.push(
-					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error}</p>`
+					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>upgraded by ${
+						index + 1
+					} levels</p>`
 				);
 			}
+		} catch (error: any) {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error.reason}</p>`
+			);
 		}
+		upgrading = false;
 	};
 </script>
 
@@ -186,13 +226,21 @@
 								</p>
 							</div>
 							<div style="height:28px" />
-							<div class="button link" on:click={mint} on:keydown>
-								{#if i == 0}
-									{#if minting}
-										<img src={`${assets}/icons/loader.svg`} alt="loading" class="rotating" />
-									{/if}
+							<div class="button link" on:click={() => mint(i)} on:keydown>
+								{#if minting == i}
+									<img src={`${assets}/icons/loader.svg`} alt="loading" class="rotating" />
 									<div style="width:4px" />
-									<p class="yellow">mint</p>
+								{/if}
+								{#if i == 0}
+									{#if approving}
+										<p class="yellow">approving</p>
+									{:else if minting}
+										<p class="yellow">minting</p>
+									{:else if upgrading}
+										<p class="yellow">upgrading</p>
+									{:else}
+										<p class="yellow">mint</p>
+									{/if}
 								{:else}
 									<p class="yellow">mint & upgrade</p>
 								{/if}
@@ -323,6 +371,7 @@
 	}
 	.rotating {
 		height: 16px;
+		width: 16px;
 	}
 	.button {
 		display: flex;

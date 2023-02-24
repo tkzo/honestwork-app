@@ -1,7 +1,7 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 
-export const POST: RequestHandler = async ({ request, cookies }) => {
+export const POST: RequestHandler = async ({ request }) => {
 	let data = await request.json();
 
 	const apiUrl =

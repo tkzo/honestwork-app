@@ -9,8 +9,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 	if (userAddress && userSignature) {
 		return { address: userAddress, signature: userSignature };
-	} else {
-		throw redirect(301, '/auth');
 	}
 };
 
