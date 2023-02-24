@@ -95,33 +95,31 @@
 			const url = `${base}/api/conversation/${$userAddress}`;
 			const response = await fetch(url);
 			const json = await response.json();
-			console.log('JSON:', json);
 
 			if ($new_conversation_metadata.address != '') {
 				await newConversation();
 				new_conversation_metadata.set({ title: '', address: '' });
 			}
 			conversations = await $xmtpClient.conversations.list();
-			conversations = conversations.filter(
+			conversations = conversations?.filter(
 				(convo) =>
 					convo.context?.conversationId &&
 					convo.context.conversationId.startsWith('honestwork.app/')
 			);
-			console.log('Conversations:', conversations);
-			if (conversations.length > 0) {
-				conversations = conversations.filter((convo) => {
-					return json.find((j: any) => {
+			if (conversations?.length > 0) {
+				conversations = conversations?.filter((convo) => {
+					return json?.find((j: any) => {
 						return j.matched_user == convo.peerAddress;
 					});
 				});
 
-				conversations = conversations.filter((convo) => {
+				conversations = conversations?.filter((convo) => {
 					return json.find((j: any) => {
 						return j.muted == false;
 					});
 				});
 
-				if (conversations.length > 0) {
+				if (conversations?.length > 0) {
 					await fetchInbox(conversations);
 					for await (const conv of conversations) {
 						peers.push(await fetchPeer(conv.peerAddress));

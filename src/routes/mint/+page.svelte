@@ -114,7 +114,7 @@
 
 	const mint = async (index: number) => {
 		minting = index;
-		if ($userState == 0 && parseInt($chainID) == 1) {
+		if ($userState == 0 && $chainID == 1) {
 			try {
 				await approve(ethers.utils.parseEther('100'));
 				const contract = new ethers.Contract(env.PUBLIC_NFT_ADDRESS, nft_abi, $networkSigner);
@@ -130,7 +130,7 @@
 					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error.reason}</p>`
 				);
 			}
-		} else if ($userState == 0 && parseInt($chainID) != 1) {
+		} else if ($userState == 0 && $chainID != 1) {
 			toast.push(
 				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>switch to ethereum mainnet to mint</p>`
 			);
