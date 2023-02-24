@@ -1,12 +1,10 @@
 import { writable } from 'svelte/store';
 import { ethers } from 'ethers';
-import { env } from '$env/dynamic/public';
 import { Client } from '@xmtp/xmtp-js';
 import { get } from 'svelte/store';
 import { base } from '$app/paths';
 import { toast } from '@zerodevx/svelte-toast';
 import { user_watchlist, user_favorites } from '$lib/stores/State';
-import { nft_abi } from './ABI';
 
 //todo: typescript
 export let userConnected = writable(false);
