@@ -47,6 +47,16 @@
 		}
 		fetching_image = false;
 	};
+	const getRating = async () => {
+		try {
+			const url = `${base}/api/rating/${applicant.user_address}`;
+			const response = await fetch(url);
+			const data = await response.json();
+			return data;
+		} catch (e) {
+			console.log(e);
+		}
+	};
 </script>
 
 <main>
@@ -73,7 +83,16 @@
 					<div style="height:4px;" />
 					<p class="yellow">{user.title}</p>
 					<div style="height:4px;" />
-					<p>4.8<span class="light-60">(377 votes)</span></p>
+					{#await getRating()}
+						<img
+							src={`${assets}/icons/loader.svg`}
+							alt="loading"
+							class="rotating"
+							style="height:16px;width:16px;"
+						/>
+					{:then rating}
+						<p><span class="light-60">rating:</span>{rating}/10</p>
+					{/await}
 				</div>
 			</div>
 			<div class="right-section">

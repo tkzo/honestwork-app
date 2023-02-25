@@ -14,9 +14,6 @@
 	export let chosen: boolean;
 	export let skill: SkillType;
 
-	let title = skill.title;
-	let image_urls = skill.image_urls;
-	let user_address = skill.user_address;
 	let user: UserType;
 	let hovering_heart: boolean = false;
 
@@ -54,7 +51,7 @@
 		}
 	};
 	const fetchUser = async () => {
-		const res = await fetch(`/api/user/${user_address}`);
+		const res = await fetch(`/api/user/${skill.user_address}`);
 		user = await res.json();
 	};
 	const handleNewConversation = async () => {
@@ -87,16 +84,26 @@
 			);
 		}
 	};
+	const getRating = async () => {
+		try {
+			const url = `${base}/api/rating/${skill.user_address}`;
+			const response = await fetch(url);
+			const data = await response.json();
+			return data;
+		} catch (e) {
+			console.log(e);
+		}
+	};
 </script>
 
 <section class={chosen ? 'chosen' : ''}>
 	<div class="contents">
 		<div class="thumbnail">
-			<img src={image_urls[0] ?? placeholder_image} alt="gallery" class="preview-image" />
+			<img src={skill.image_urls[0] ?? placeholder_image} alt="gallery" class="preview-image" />
 		</div>
 		<div class="content">
 			<div>
-				<p>{title}</p>
+				<p>{skill.title}</p>
 				<div style="height:12px" />
 				<div class="body-text light-60">
 					{parseContent(skill.description).chars.slice(0, 160) + '...'}
@@ -104,7 +111,16 @@
 			</div>
 			<div class="sub">
 				<p class="yellow">{user?.username}</p>
-				<p>4.9<span class="light-60">(366)</span></p>
+				{#await getRating()}
+					<img
+						src={`${assets}/icons/loader.svg`}
+						alt="loading"
+						class="rotating"
+						style="height:16px;width:16px;"
+					/>
+				{:then rating}
+					<p><span class="light-60">rating:</span>{rating}/10</p>
+				{/await}
 			</div>
 		</div>
 	</div>

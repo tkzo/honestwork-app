@@ -69,6 +69,9 @@
 	"/api/nft/user-token-id/[address]": [
 		"src/routes/api/nft/user-token-id/[address]/+server.ts"
 	],
+	"/api/rating/[address]": [
+		"src/routes/api/rating/[address]/+server.ts"
+	],
 	"/api/search": [
 		"src/routes/api/search/+server.ts"
 	],
