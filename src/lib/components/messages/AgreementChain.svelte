@@ -120,6 +120,40 @@
 			);
 		}
 	};
+	const handleWithdraw = async () => {
+		try {
+			const Payment = new ethers.Contract(env.PUBLIC_ESCROW_ADDRESS, escrow_abi, $networkSigner);
+			const tx = await Payment.withdrawPayment(id);
+			const receipt = await tx.wait();
+			if (receipt && receipt.status == 1) {
+				await conversation.send(
+					`Meta:${JSON.stringify({
+						type: 'job cancelled',
+						deal: id,
+						network: findChainName($chainID),
+						token: findTokenName(findChainName($chainID), deal.paymentToken),
+						token_address: deal.paymentToken,
+						total_amount: deal.totalPayment,
+						withdrawn_amount:
+							parseFloat(ethers.utils.formatEther(deal.totalPayment)) -
+							parseFloat(ethers.utils.formatEther(deal.claimableAmount)) -
+							parseFloat(ethers.utils.formatEther(deal.claimedAmount))
+					})}`
+				);
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>claimed payment</p>`
+				);
+			} else {
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>failed to claim payment</p>`
+				);
+			}
+		} catch (error: any) {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error}</p>`
+			);
+		}
+	};
 </script>
 
 <main>
@@ -184,7 +218,6 @@
 		style={`width:${progress}%; ${progress == 100 ? 'border-color: var(--color-success)' : ''}`}
 	/>
 	{#if progress != 100 && $userAddress == deal.recruiter}
-		<div style="height:8px" />
 		<div class="command-bar">
 			<div class="command" style="width: 164px">
 				<div class="placeholder"><p>amount($)</p></div>
@@ -198,8 +231,12 @@
 				<p>unlock payment</p>
 			</div>
 		</div>
+		<div class="command-bar">
+			<div class="action-button light-60 link" on:click={handleWithdraw} on:keydown>
+				<p>cancel and withdraw remaining</p>
+			</div>
+		</div>
 	{:else if $userAddress == deal.creator && claimable() > 0}
-		<div style="height:8px" />
 		<div class="command-bar">
 			<div class="command" style="width: 134px">
 				<div class="placeholder"><p>rating</p></div>
@@ -223,7 +260,6 @@
 		align-items: center;
 		width: 100%;
 		height: 32px;
-		/* padding: 4px; */
 		box-sizing: border-box;
 		margin-top: 8px;
 		gap: 12px;

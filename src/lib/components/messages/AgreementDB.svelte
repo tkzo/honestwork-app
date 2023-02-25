@@ -136,8 +136,8 @@
 	};
 </script>
 
-<main>
-	{#if deal.status == 'offered'}
+{#if deal.status == 'offered'}
+	<main>
 		<section>
 			{#each Object.entries(deal) as [key, value]}
 				{#if key != 'signature'}
@@ -174,7 +174,9 @@
 				</div>
 			</div>
 		{/if}
-	{:else if deal.status == 'accepted'}
+	</main>
+{:else if deal.status == 'accepted'}
+	<main>
 		<section>
 			{#each Object.entries(deal) as [key, value]}
 				{#if key != 'signature'}
@@ -206,8 +208,8 @@
 				</div>
 			</div>
 		{/if}
-	{/if}
-</main>
+	</main>
+{/if}
 
 <style>
 	main {
@@ -228,6 +230,7 @@
 		width: 100%;
 		height: 32px;
 		box-sizing: border-box;
+		margin-top: 8px;
 	}
 	.command {
 		display: flex;
@@ -263,7 +266,7 @@
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
-		border-width: 0px 1px 1px 1px;
+		border-width: 1px;
 		border-style: solid;
 		border-color: var(--color-light-20);
 		cursor: pointer;

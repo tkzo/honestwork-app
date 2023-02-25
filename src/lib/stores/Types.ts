@@ -130,3 +130,73 @@ export type Deal = {
 	recruiterRating: Array<number>;
 	creatorRating: Array<number>;
 };
+
+export type APIConfig = {
+	API: {
+		Port: string;
+	};
+	DB: {
+		Port: string;
+		ID: number;
+	};
+	Settings: {
+		Skills: {
+			Tier_1: number;
+			Tier_2: number;
+			Tier_3: number;
+		};
+		Jobs: {
+			ServiceFee: string;
+			SuccessFeeBrackets: {
+				Bracked_0: number;
+				Bracked_1: number;
+				Bracked_2: number;
+				Bracked_3: number;
+				Bracked_4: number;
+			};
+			SuccessFeePercentages: {
+				Percentage_0: number;
+				Percentage_1: number;
+				Percentage_2: number;
+				Percentage_3: number;
+				Percentage_4: number;
+			};
+			HighlightPrices: {
+				StickyPrices: {
+					Week: string;
+					Biweek: string;
+					Month: string;
+				};
+				HighlightFrame: {
+					Default: string;
+				};
+			};
+		};
+		Charlimits: {
+			Profile: {
+				Username: number;
+				Title: number;
+				Bio: number;
+			};
+		};
+	};
+	ContractAddresses: {
+		MembershipNFT: string;
+		JobPayments: string;
+		Registry: string;
+	};
+	Network: {
+		Eth: {
+			ID: number;
+			RPCURL: string;
+		};
+		Polygon: {
+			ID: number;
+			RPCURL: string;
+		};
+		Binance: {
+			ID: number;
+			RPCURL: string;
+		};
+	};
+};

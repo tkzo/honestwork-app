@@ -192,6 +192,29 @@
 							<p>${meta_message.installment}</p>
 						</div>
 					</div>
+				{:else if meta_message.type == 'job cancelled'}
+					<div class="dropdown-container" transition:slide>
+						<div class="dropdown-item">
+							<p class="light-60">network:</p>
+							<p>{meta_message.network}</p>
+						</div>
+						<div class="dropdown-item">
+							<p class="light-60">token:</p>
+							<div class="token-link">
+								<p>{meta_message.token}</p>
+								<div style="width:4px" />
+								<img src={`${assets}/icons/external.svg`} alt="arrow-right" />
+							</div>
+						</div>
+						<div class="dropdown-item">
+							<p class="light-60">total amount:</p>
+							<p>${ethers.utils.formatEther(meta_message.total_amount)}</p>
+						</div>
+						<div class="dropdown-item">
+							<p class="light-60">withdrawn amount:</p>
+							<p>${meta_message.withdrawn_amount}</p>
+						</div>
+					</div>
 				{/if}
 			{/if}
 		</div>

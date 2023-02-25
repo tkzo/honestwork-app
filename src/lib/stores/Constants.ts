@@ -1,6 +1,9 @@
 import { assets } from '$app/paths';
 import type { FAQCard } from '$lib/stores/Types';
-import type { FeatureCard } from '$lib/stores/Types';
+import type { FeatureCard, APIConfig } from '$lib/stores/Types';
+import { writable } from 'svelte/store';
+
+export let api_config = writable();
 
 export let FAQCards: FAQCard[] = [
 	{

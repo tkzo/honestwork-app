@@ -114,20 +114,28 @@
 
 	const mint = async (index: number) => {
 		minting = index;
-		if ($userState == 0 && $chainID == 1) {
-			try {
-				await approve(ethers.utils.parseEther('100'));
-				const contract = new ethers.Contract(env.PUBLIC_NFT_ADDRESS, nft_abi, $networkSigner);
-				const tx = await contract.publicMint(env.PUBLIC_MAINNET_DAI_ADDRESS);
-				const receipt = await tx.wait();
-				if (receipt.status == 1) {
+		if (index > 0) {
+			upgrade(index);
+		} else if ($userState == 0 && $chainID == 1) {
+			if (dai_balance > 100) {
+				try {
+					await approve(ethers.utils.parseEther('100'));
+					const contract = new ethers.Contract(env.PUBLIC_NFT_ADDRESS, nft_abi, $networkSigner);
+					const tx = await contract.publicMint(env.PUBLIC_MAINNET_DAI_ADDRESS);
+					const receipt = await tx.wait();
+					if (receipt.status == 1) {
+						toast.push(
+							`<p class="light-60"><span style='color:var(--color-success)'>success: </span>you have been minted a token</p>`
+						);
+					}
+				} catch (error: any) {
 					toast.push(
-						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>you have been minted a token</p>`
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error.reason}</p>`
 					);
 				}
-			} catch (error: any) {
+			} else {
 				toast.push(
-					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error.reason}</p>`
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>you need at least 100 dai to mint</p>`
 				);
 			}
 		} else if ($userState == 0 && $chainID != 1) {
@@ -140,28 +148,33 @@
 			);
 		}
 		minting = undefined;
-		if (index > 0) {
-			upgrade(index);
-		}
 	};
 
 	const upgrade = async (index: number) => {
 		upgrading = true;
-		try {
-			await approve(ethers.utils.parseEther('100'));
-			const contract = new ethers.Contract(env.PUBLIC_NFT_ADDRESS, nft_abi, $networkSigner);
-			const tx = await contract.upgradeToken($userAddress, index + 1);
-			const receipt = await tx.wait();
-			if (receipt.status == 1) {
+		// todo: remove hardcoded values
+		const amount_to_upgrade = index == 1 ? 250 : 300;
+		if (dai_balance > 100) {
+			try {
+				await approve(ethers.utils.parseEther(amount_to_upgrade.toString()));
+				const contract = new ethers.Contract(env.PUBLIC_NFT_ADDRESS, nft_abi, $networkSigner);
+				const tx = await contract.upgradeToken($userAddress, index + 1);
+				const receipt = await tx.wait();
+				if (receipt.status == 1) {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>upgraded by ${
+							index + 1
+						} levels</p>`
+					);
+				}
+			} catch (error: any) {
 				toast.push(
-					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>upgraded by ${
-						index + 1
-					} levels</p>`
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error.reason}</p>`
 				);
 			}
-		} catch (error: any) {
+		} else {
 			toast.push(
-				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error.reason}</p>`
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>you need ${amount_to_upgrade} dai to upgrade</p>`
 			);
 		}
 		upgrading = false;
@@ -239,10 +252,10 @@
 									{:else if upgrading}
 										<p class="yellow">upgrading</p>
 									{:else}
-										<p class="yellow">mint</p>
+										<p class={`${$userState == 0 ? 'yellow' : 'light-40'}`}>mint</p>
 									{/if}
 								{:else}
-									<p class="yellow">mint & upgrade</p>
+									<p class={`${$userState > 0 ? 'yellow' : 'light-40'}`}>mint & upgrade</p>
 								{/if}
 							</div>
 						</section>

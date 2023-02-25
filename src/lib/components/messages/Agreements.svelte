@@ -97,23 +97,40 @@
 						<div style="width:4px;" />
 						<p class="yellow">create new agreement</p>
 					</div>
-					<div style="height:12px" />
+					<div style="height:28px" />
 					{#await fetchDealsDB() then deals}
+						<div class="section-title">
+							<img src={`${assets}/icons/clipboard.svg`} alt="Human Run" />
+							<div style="width:4px" />
+							<p class="yellow">drafts</p>
+						</div>
+						<div style="height:8px" />
 						{#each deals.recruiter_deals as deal, i}
-							<AgreementDB {conversation} role={'recruiter'} {deal} slot={i} />
-							{#if i < deals.recruiter_deals.length - 1}
-								<div style="height:12px" />
+							{#if deal.status == 'offered' || deal.status == 'accepted'}
+								<AgreementDB {conversation} role={'recruiter'} {deal} slot={i} />
+								{#if i < deals.recruiter_deals.length - 1}
+									<div style="height:12px" />
+								{/if}
 							{/if}
 						{/each}
-						<div style="height:12px" />
 						{#each deals.creator_deals as deal, j}
-							<AgreementDB {conversation} role={'creator'} {deal} slot={j} />
-							{#if j < deals.creator_deals.length - 1}
-								<div style="height:12px" />
+							{#if deal.status == 'offered' || deal.status == 'accepted'}
+								<AgreementDB {conversation} role={'creator'} {deal} slot={j} />
+								{#if j < deals.creator_deals.length - 1}
+									<div style="height:12px" />
+								{/if}
 							{/if}
 						{/each}
 					{/await}
+					<div style="height:28px" />
+
 					{#await fetchDealsChain() then deals}
+						<div class="section-title">
+							<img src={`${assets}/icons/human-run.svg`} alt="Human Run" />
+							<div style="width:4px" />
+							<p class="yellow">ongoing deals</p>
+						</div>
+						<div style="height:8px" />
 						{#each Object.entries(deals) as [id, deal]}
 							<AgreementChain {conversation} {deal} {id} />
 						{/each}
@@ -126,6 +143,11 @@
 </main>
 
 <style>
+	.section-title {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
 	main {
 		width: 520px;
 		height: calc(100vh - 128px);

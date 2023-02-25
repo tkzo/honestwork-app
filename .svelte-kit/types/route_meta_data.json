@@ -15,6 +15,9 @@
 	"/api/auth/login/[address]": [
 		"src/routes/api/auth/login/[address]/+server.ts"
 	],
+	"/api/config": [
+		"src/routes/api/config/+server.ts"
+	],
 	"/api/(conversation)/conversation_add/[address]": [
 		"src/routes/api/(conversation)/conversation_add/[address]/+server.ts"
 	],
