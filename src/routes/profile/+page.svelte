@@ -873,7 +873,7 @@
 		background-color: var(--color-dark);
 		border-width: 1px 0px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		padding: 8px;
 	}
@@ -908,7 +908,7 @@
 		padding: 8px 12px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 	}
 	.flex-input {
@@ -930,7 +930,7 @@
 	.gm {
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		padding: 12px;
 		display: flex;
 		flex-direction: column;
@@ -952,7 +952,7 @@
 		position: relative;
 		border-width: 0px 1px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		cursor: pointer;
 	}
 
@@ -970,7 +970,7 @@
 		padding: 8px;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		font-size: 13px;
 		line-height: 16px;
 		box-sizing: border-box;

@@ -491,7 +491,7 @@
 		background-repeat: no-repeat;
 		cursor: pointer;
 		position: relative;
-		border: solid 1px var(--color-light-10);
+		border: solid 1px var(--color-light-20);
 		box-sizing: border-box;
 	}
 	.image-tint {
@@ -550,7 +550,7 @@
 		background-color: var(--color-dark);
 		border-width: 1px 0px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		padding: 8px;
 	}
@@ -604,7 +604,7 @@
 		padding: 8px;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: row;

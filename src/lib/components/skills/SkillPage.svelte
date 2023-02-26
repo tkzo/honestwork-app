@@ -154,7 +154,7 @@
 		align-items: center;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		cursor: pointer;
 	}
 	.profile-bar:hover {
@@ -173,7 +173,7 @@
 		width: 518px;
 		border-width: 1px 1px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		display: flex;
 		flex-direction: column;
 	}
@@ -182,7 +182,7 @@
 		height: 388px;
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.gallery-buttons {
 		display: flex;
@@ -194,13 +194,13 @@
 	.left-gallery-button {
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		padding: 8px 12px;
 	}
 	.right-gallery-button {
 		border-width: 0px 0px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		padding: 8px 12px;
 	}
 	.right-gallery-button:hover {
@@ -212,7 +212,7 @@
 	.description {
 		border-width: 1px 1px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		padding: 12px;
 	}
 	.link-container {
@@ -221,13 +221,13 @@
 		align-items: center;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.placeholder {
 		padding: 8px 12px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.wrapper {
 		position: relative;

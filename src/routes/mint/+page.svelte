@@ -308,7 +308,7 @@
 		box-sizing: border-box;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		background-color: var(--color-dark);
 	}
 	.mint-header {
@@ -368,7 +368,7 @@
 	.divider {
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.buy-tokens {
 		width: 760px;
@@ -379,7 +379,7 @@
 		box-sizing: border-box;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		background-color: var(--color-dark);
 	}
 	.rotating {

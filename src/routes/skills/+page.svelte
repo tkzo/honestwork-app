@@ -76,12 +76,16 @@
 
 <main>
 	<div class="feed">
-		<div class="search-bar">
+		<div
+			class="search-bar"
+			style={`${
+				input_active
+					? 'border-color:var(--color-primary)'
+					: 'background-color:var(--color-light-10)'
+			}`}
+		>
 			<div class="input-container">
-				<img
-					src={input_active ? 'icons/search_active.svg' : 'icons/search_passive.svg'}
-					alt="search icon"
-				/>
+				<img src={'icons/search_active.svg'} alt="search icon" />
 				<input
 					class="search-input"
 					type="text"
@@ -191,7 +195,7 @@
 		width: 520px;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		overflow-y: hidden;
 		box-sizing: border-box;
 	}
@@ -201,11 +205,10 @@
 	.search-bar {
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		background: var(--color-light-2);
 	}
 	.input-container {
 		width: 320px;
@@ -215,16 +218,18 @@
 		align-items: center;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		position: relative;
 	}
 	input {
 		border: none;
 		width: 240px;
-		background: var(--color-light-2);
 	}
 	input:focus {
 		outline: none;
+	}
+	::placeholder {
+		color: var(--color-light-80);
 	}
 	.search-input {
 		padding: 8px;
@@ -293,7 +298,7 @@
 		padding: 8px;
 		border-width: 0px 0px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		flex: 1;
 	}
 </style>

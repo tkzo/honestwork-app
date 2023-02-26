@@ -605,7 +605,7 @@
 		width: 100%;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		background-color: var(--color-dark);
 	}
@@ -618,7 +618,7 @@
 		justify-content: flex-start;
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		padding: 0 12px 0 0;
 	}
@@ -631,7 +631,7 @@
 		padding: 8px 12px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		cursor: pointer;
 	}
@@ -692,7 +692,7 @@
 		background-color: var(--color-dark);
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 	}
 	form {
@@ -715,7 +715,7 @@
 	.gm {
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		padding: 12px;
 		display: flex;
 		flex-direction: column;
@@ -734,7 +734,7 @@
 		background-repeat: no-repeat;
 		cursor: pointer;
 		position: relative;
-		border: solid 1px var(--color-light-10);
+		border: solid 1px var(--color-light-20);
 		box-sizing: border-box;
 	}
 	.image-tint {
@@ -780,7 +780,7 @@
 		background-color: var(--color-dark);
 		border-width: 1px 0px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		padding: 8px;
 	}
@@ -808,7 +808,7 @@
 		padding: 8px;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: row;
@@ -827,7 +827,7 @@
 		background-color: var(--color-dark);
 		border-width: 0px 1px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		flex: 1;
 		width: 100%;
@@ -857,7 +857,7 @@
 		padding: 8px;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.description {
 		width: 100%;
@@ -868,7 +868,7 @@
 		height: 100%;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		padding: 8px;
 		resize: none;
@@ -885,7 +885,7 @@
 		padding: 8px;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: row;
@@ -916,7 +916,7 @@
 		align-items: center;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		background-color: var(--color-dark);
 	}
@@ -924,7 +924,7 @@
 		padding: 8px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: row;
@@ -961,7 +961,7 @@
 		box-sizing: border-box;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		background-color: var(--color-dark);
 	}
 	.tokens-bar {
@@ -972,7 +972,7 @@
 		justify-content: space-between;
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		padding: 0px 0px 8px 0px;
 	}
 	.sticky {

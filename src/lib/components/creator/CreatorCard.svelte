@@ -101,7 +101,7 @@
 		width: 518px;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.profile-bar {
 		display: flex;
@@ -110,7 +110,7 @@
 		align-items: flex-start;
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		cursor: pointer;
 		padding: 12px;
 	}
@@ -140,7 +140,7 @@
 		justify-content: center;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		padding: 4px 8px;
 		cursor: pointer;
 	}
@@ -155,13 +155,13 @@
 		padding: 12px;
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.item {
 		padding: 8px;
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;

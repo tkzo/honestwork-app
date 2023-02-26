@@ -105,7 +105,7 @@
 				<p>{skill.title}</p>
 				<div style="height:12px" />
 				<div class="body-text light-60">
-					{parseContent(skill.description).chars.slice(0, 160) + '...'}
+					{parseContent(skill.description).chars.slice(0, 140) + '...'}
 				</div>
 			</div>
 			<div class="sub">
@@ -165,7 +165,7 @@
 		cursor: pointer;
 		border-width: 1px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	section:hover {
 		background-color: var(--color-light-2);
@@ -175,7 +175,7 @@
 		flex-direction: row;
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.thumbnail {
 		height: 180px;
@@ -211,7 +211,7 @@
 		padding: 8px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.tag:hover {
 		background-color: var(--color-primary);
@@ -232,7 +232,7 @@
 		padding: 8px;
 		border-width: 0px 0px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.chosen {
 		background-color: var(--color-light-2);

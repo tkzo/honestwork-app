@@ -139,7 +139,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		border-bottom: 1px solid var(--color-light-10);
+		border-bottom: 1px solid var(--color-light-20);
 		width: 80vw;
 		max-width: 960px;
 		padding: 12px;

@@ -1,6 +1,6 @@
 :root {
 	--toastBackground: var(--color-light-2);
-	--toastBorder: 1px solid var(--color-light-10);
+	--toastBorder: 1px solid var(--color-light-20);
 	--toastBarHeight: 2px;
 	--toastMsgPadding: 12px;
 	--toastMinHeight: 100%;
@@ -10,6 +10,22 @@
 	--toastWidth: auto;
 	--toastBarBackground: var(--color-primary);
 	--toastBtnFont: 12px;
+}
+
+:root {
+	--color-dark: #000000;
+	--color-light: #ffffff;
+	--color-light-80: rgba(255, 255, 255, 0.8);
+	--color-light-60: rgba(255, 255, 255, 0.6);
+	--color-light-40: rgba(255, 255, 255, 0.4);
+	--color-light-20: rgba(255, 255, 255, 0.2);
+	--color-light-10: rgba(255, 255, 255, 0.1);
+	--color-light-2: #161616;
+	--color-primary: #ffd369;
+	--color-error: #ff6b69;
+	--color-success: #78ff69;
+	font-family: 'Proto Mono', monospace;
+	color: var(--color-light);
 }
 
 .toast-container {
@@ -50,9 +66,6 @@ body {
 	--svrollbar-thumb-opacity: 1;
 }
 
-:root {
-	--color-dark: #0a0f1a;
-}
 body {
 	min-height: 100vh;
 	min-width: 100vw;
@@ -62,7 +75,7 @@ body {
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-size: 100vw 100vh;
-	border-color: var(--color-light-10);
+	border-color: var(--color-light-20);
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
@@ -74,7 +87,7 @@ section {
 	background-color: var(--color-dark);
 	border-width: 1px;
 	border-style: solid;
-	border-color: var(--color-light-10);
+	border-color: var(--color-light-20);
 	box-sizing: border-box;
 }
 
@@ -83,7 +96,7 @@ section {
 	background-color: var(--color-dark);
 	border-width: 1px;
 	border-style: solid;
-	border-color: var(--color-light-10);
+	border-color: var(--color-light-20);
 	box-sizing: border-box;
 }
 
@@ -92,7 +105,7 @@ section {
 	background-color: var(--color-dark);
 	border-width: 0px 0px 1px 0px;
 	border-style: solid;
-	border-color: var(--color-light-10);
+	border-color: var(--color-light-20);
 	box-sizing: border-box;
 }
 
@@ -179,14 +192,13 @@ input {
 }
 
 input {
-	background-color: var(--color-dark);
 	font-family: 'dm mono', monospace;
 	color: var(--color-light-80);
 	padding: 8px;
 	box-sizing: border-box;
 	border-width: 1px;
 	border-style: solid;
-	border-color: var(--color-light-10);
+	border-color: var(--color-light-20);
 	font-size: 13px;
 	line-height: 16px;
 }
@@ -199,7 +211,7 @@ textarea {
 	box-sizing: border-box;
 	border-width: 1px;
 	border-style: solid;
-	border-color: var(--color-light-10);
+	border-color: var(--color-light-20);
 	font-size: 13px;
 	line-height: 20px;
 }
@@ -293,7 +305,7 @@ button:active {
 	justify-content: center;
 	border-width: 1px;
 	border-style: solid;
-	border-color: var(--color-light-10);
+	border-color: var(--color-light-20);
 	padding: 4px 8px;
 	cursor: pointer;
 	box-sizing: border-box;
@@ -332,8 +344,6 @@ button:active {
 	outline-offset: -1px;
 	box-sizing: border-box;
 	background-color: var(--color-dark);
-	/* margin-top: 1px;
-	margin-left: 1px; */
 }
 .ProseMirror-focused {
 	outline-color: var(--color-primary);
@@ -348,7 +358,7 @@ button:active {
 	color: var(--color-light);
 }
 .description > p {
-	color: var(--color-light-10);
+	color: var(--color-light-20);
 }
 
 .wrapper {
@@ -357,10 +367,6 @@ button:active {
 }
 .wrapper::-webkit-scrollbar {
 	display: none;
-}
-
-.link-container {
-	background-color: var(--color-dark);
 }
 
 .feed,
@@ -375,7 +381,8 @@ button:active {
 .sticky-chosen,
 .inbox,
 .inbox-item,
-.chat {
+.chat,
+.link-container {
 	background-color: var(--color-dark);
 }
 .pace {

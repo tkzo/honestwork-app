@@ -61,7 +61,7 @@
 		padding: 8px 12px;
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 	}
 	.gallery {
@@ -73,7 +73,7 @@
 		box-sizing: border-box;
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.preview-image {
 		height: 115px;

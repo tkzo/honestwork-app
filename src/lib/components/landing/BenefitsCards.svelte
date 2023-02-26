@@ -43,7 +43,7 @@
 		padding: 20px;
 		gap: 22px;
 		background: var(--color-dark);
-		border: 1px solid var(--color-light-10);
+		border: 1px solid var(--color-light-20);
 		width: 100%;
 		max-width: 340px;
 	}

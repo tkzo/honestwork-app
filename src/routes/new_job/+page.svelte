@@ -731,7 +731,7 @@
 		background-color: var(--color-dark);
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 	}
 	form {
@@ -754,7 +754,7 @@
 	.gm {
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		padding: 12px;
 		display: flex;
 		flex-direction: column;
@@ -773,7 +773,7 @@
 		background-repeat: no-repeat;
 		cursor: pointer;
 		position: relative;
-		border: solid 1px var(--color-light-10);
+		border: solid 1px var(--color-light-20);
 		box-sizing: border-box;
 	}
 	.image-tint {
@@ -819,7 +819,7 @@
 		background-color: var(--color-dark);
 		border-width: 1px 0px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		padding: 8px;
 	}
@@ -847,7 +847,7 @@
 		padding: 8px;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: row;
@@ -866,7 +866,7 @@
 		background-color: var(--color-dark);
 		border-width: 0px 1px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		flex: 1;
 		width: 100%;
@@ -897,7 +897,7 @@
 		padding: 8px;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.description {
 		width: 100%;
@@ -915,7 +915,7 @@
 		padding: 8px;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: row;
@@ -945,14 +945,14 @@
 		align-items: center;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 	}
 	.network {
 		padding: 8px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: row;
@@ -989,7 +989,7 @@
 		box-sizing: border-box;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.tokens-bar {
 		width: 100%;
@@ -999,7 +999,7 @@
 		justify-content: space-between;
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		padding: 0px 0px 8px 0px;
 	}
 	.payment-section {
@@ -1017,7 +1017,7 @@
 		box-sizing: border-box;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		padding: 12px;
 	}
 	.receipt-item {
@@ -1030,7 +1030,7 @@
 	.receipt-total {
 		border-width: 1px 0px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		padding: 8px 0px 0px 0px;
 	}
 	.payment-module {

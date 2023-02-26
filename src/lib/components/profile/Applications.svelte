@@ -76,7 +76,7 @@
 		flex-direction: column;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		align-items: flex-start;
 		padding: 8px;
 		box-sizing: border-box;
@@ -111,7 +111,7 @@
 		justify-content: center;
 		border-width: 1px 1px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		cursor: pointer;
 		padding: 8px;
 		background-color: var(--color-light-2);

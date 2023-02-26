@@ -71,7 +71,7 @@
 		align-items: center;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.bar {
 		height: 32px;
@@ -82,7 +82,7 @@
 		justify-content: flex-start;
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		padding: 0 12px 0 0;
 	}
@@ -95,7 +95,7 @@
 		padding: 8px 12px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		cursor: pointer;
 	}

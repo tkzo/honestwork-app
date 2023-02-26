@@ -88,7 +88,7 @@
 		width: 520px;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		overflow-y: hidden;
 		height: auto;
 		box-sizing: border-box;

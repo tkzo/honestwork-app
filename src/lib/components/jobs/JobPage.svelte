@@ -256,7 +256,7 @@
 		align-items: flex-start;
 		border-width: 1px 1px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		cursor: pointer;
 		padding: 12px;
 	}
@@ -287,13 +287,13 @@
 		align-items: center;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.placeholder {
 		padding: 8px 12px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.wrapper {
 		position: relative;
@@ -330,7 +330,7 @@
 		justify-content: center;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		padding: 4px 8px;
 		cursor: pointer;
 	}
@@ -346,7 +346,7 @@
 		align-items: center;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		cursor: pointer;
 	}
 	.network-tab:hover {
@@ -362,12 +362,12 @@
 		padding: 8px 12px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.token-container {
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		padding: 12px;
 	}
 	.token-tabs {
@@ -378,7 +378,7 @@
 	.token-wrapper {
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 	.token {
 		display: flex;
@@ -408,6 +408,6 @@
 		padding: 8px 12px;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 	}
 </style>

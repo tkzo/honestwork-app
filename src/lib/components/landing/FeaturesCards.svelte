@@ -83,7 +83,7 @@
 	}
 	.line {
 		height: 1px;
-		background-color: var(--color-light-10);
+		background-color: var(--color-light-20);
 		width: 100%;
 		max-width: 371px;
 	}
@@ -96,7 +96,7 @@
 		width: 80vw;
 		max-width: 960px;
 		padding-bottom: 120px;
-		border-bottom: 1px solid var(--color-light-10);
+		border-bottom: 1px solid var(--color-light-20);
 	}
 	.features-card {
 		display: flex;
@@ -163,7 +163,7 @@
         align-items: center;
         padding: 8px;
         gap: 10px;
-        border: 1px solid var(--color-light-10);
+        border: 1px solid var(--color-light-20);
 		box-shadow: 0px 0px 50px rgba(255, 211, 105, 0.1);
         cursor: pointer;
         color: var(--color-primary);

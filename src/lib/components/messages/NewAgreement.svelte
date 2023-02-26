@@ -210,7 +210,7 @@
 		background-color: var(--color-dark);
 		border-width: 1px 0px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		padding: 8px;
 		color: var(--color-light-40);
@@ -242,7 +242,7 @@
 		padding: 8px;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: row;
@@ -261,7 +261,7 @@
 		background-color: var(--color-dark);
 		border-width: 0px 1px 1px 1px;
 		border-style: solid;
-		border-color: var(--color-light-10);
+		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		flex: 1;
 		width: 100%;
