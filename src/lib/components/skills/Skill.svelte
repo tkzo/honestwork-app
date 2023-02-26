@@ -67,7 +67,6 @@
 				})
 			});
 			const data = await response.json();
-			console.log('Data:', data);
 			if (data == 'success') {
 				new_conversation_metadata.set({
 					address: skill.user_address,

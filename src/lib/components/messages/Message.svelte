@@ -29,6 +29,7 @@
 			meta_message = JSON.parse(stringified);
 			parsed = true;
 		} catch (e) {
+			// todo: propagate error to user
 			console.log('Error parsing meta message: ', e);
 		}
 	};

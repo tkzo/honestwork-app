@@ -63,9 +63,6 @@
 					},
 					body: JSON.stringify(body)
 				});
-				const data = await response.json();
-				console.log('Execute deal response:', data);
-
 				await conversation.send(
 					`Meta:${JSON.stringify({
 						type: 'job execution',

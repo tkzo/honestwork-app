@@ -78,7 +78,12 @@
 	const getRating = async () => {
 		try {
 			const url = `${base}/api/rating/${job.user_address}`;
-			const response = await fetch(url);
+			const response = await fetch(url, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
 			const data = await response.json();
 			return data;
 		} catch (e) {

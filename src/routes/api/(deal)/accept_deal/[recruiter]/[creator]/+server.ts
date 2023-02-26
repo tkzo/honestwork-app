@@ -13,7 +13,6 @@ export const PATCH: RequestHandler = async ({ cookies, request, params }) => {
 		slot: data.slot,
 		signature: data.signature
 	};
-	console.log('body: ', body);
 	const url = `${apiUrl}/deals/${params.recruiter}/${params.creator}/${userSignature}`;
 	const options = {
 		method: 'PATCH',
