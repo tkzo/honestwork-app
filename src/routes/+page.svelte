@@ -193,7 +193,7 @@
 		margin: 0 0 36px;
 	}
 	.about {
-		font-family: 'dm mono';
+		font-family: 'DM Mono';
 		font-size: 16px;
 		line-height: 24px;
 		margin: 0 0 20px;

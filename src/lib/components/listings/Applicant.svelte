@@ -5,6 +5,10 @@
 	import { slide } from 'svelte/transition';
 	import { expoOut } from 'svelte/easing';
 	import { base, assets } from '$app/paths';
+	import { toast } from '@zerodevx/svelte-toast';
+	import { goto } from '$app/navigation';
+	import { new_conversation_metadata } from '$lib/stores/State';
+	import { browser } from '$app/environment';
 
 	export let applicant: ApplicantType;
 
@@ -48,13 +52,48 @@
 		fetching_image = false;
 	};
 	const getRating = async () => {
+		if (browser) {
+			try {
+				const url = `${base}/api/rating/${applicant.user_address}`;
+				const response = await fetch(url);
+				const data = await response.json();
+				return data;
+			} catch (e) {
+				console.log(e);
+			}
+		}
+	};
+	const handleNewConversation = async () => {
 		try {
-			const url = `${base}/api/rating/${applicant.user_address}`;
-			const response = await fetch(url);
+			const url = `${base}/api/conversation_add/${applicant.user_address}`;
+			const response = await fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					title: applicant.job_id
+				})
+			});
 			const data = await response.json();
-			return data;
-		} catch (e) {
-			console.log(e);
+			if (data == 'success') {
+				new_conversation_metadata.set({
+					address: applicant.user_address,
+					title: applicant.job_id
+				});
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Created new conversation</p>`
+				);
+				goto('/messages');
+			} else {
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
+				);
+			}
+		} catch (err: any) {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-success)'>success: </span>${err.Error()}</p>`
+			);
 		}
 	};
 </script>
@@ -68,7 +107,9 @@
 						class="pfp"
 						src={user.show_nft && nft_image != null
 							? nft_image
-							: user.image_url ?? placeholder_image}
+							: user.image_url != ''
+							? user.image_url
+							: placeholder_image}
 						alt="Profile"
 						placeholder={placeholder_image}
 					/>
@@ -96,7 +137,7 @@
 				</div>
 			</div>
 			<div class="right-section">
-				<div class="button">
+				<div class="button" on:click={handleNewConversation} on:keydown>
 					<p class="yellow">send message</p>
 				</div>
 				<div style="height:8px" />

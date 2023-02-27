@@ -192,7 +192,7 @@ input {
 }
 
 input {
-	font-family: 'dm mono', monospace;
+	font-family: 'DM Mono', monospace;
 	color: var(--color-light-80);
 	padding: 8px;
 	box-sizing: border-box;
@@ -205,7 +205,7 @@ input {
 
 textarea {
 	background-color: var(--color-dark);
-	font-family: 'dm mono', monospace;
+	font-family: 'DM Mono', monospace;
 	color: var(--color-light-80);
 	padding: 8px;
 	box-sizing: border-box;
@@ -317,7 +317,7 @@ button:active {
 	color: var(--color-dark);
 }
 .ProseMirror p {
-	font-family: 'dm mono', monospace;
+	font-family: 'DM Mono', monospace;
 	font-size: 13px;
 	line-height: 20px;
 	font-weight: 300;

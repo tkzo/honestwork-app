@@ -1,16 +1,25 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import type { UserType, SkillType } from '$lib/stores/Types';
+	import type { SkillType, UserType } from '$lib/stores/Types';
 	import CreatorCard from '$lib/components/creator/CreatorCard.svelte';
 	import Skill from '$lib/components/profile/Skill.svelte';
 	import SkillCard from '$lib/components/creator/SkillCard.svelte';
+	import { page } from '$app/stores';
+	import { browser } from '$app/environment';
+	import { Svrollbar } from 'svrollbar';
 
 	export let data: PageData;
 
+	let viewport: Element;
+	let contents: Element;
+	let feedHeight = 0;
+	$: if (browser) feedHeight = window.innerHeight - 128;
+
 	let chosen_tab: string = 'skills' || 'job history';
-	let user: UserType = data.user;
-	let skills: SkillType[] = data.skills;
 	let chosen_skill: SkillType | null = null;
+
+	let user: UserType = data.user;
+	let addr: string = $page.params['address'];
 </script>
 
 <svelte:head>
@@ -18,52 +27,61 @@
 	<meta name="description" content="HonestWork Skills Page" />
 </svelte:head>
 
-<main>
-	<CreatorCard {user} />
-	<div style="width: 12px" />
-	<div class="details">
-		<div class="bar">
-			{#if chosen_tab == 'skills' && chosen_skill == null}
-				<div class="bar-item" on:click={() => (chosen_tab = 'skills')} on:keydown>
-					<p class={'yellow'}>skills</p>
+<main class="wrapper">
+	<div
+		bind:this={viewport}
+		class="viewport"
+		style={`width:520px; height:${feedHeight.toString() + 'px'}`}
+	>
+		<div bind:this={contents} class="contents">
+			<CreatorCard {user} {addr} />
+			<div style="width: 12px" />
+			<div class="details">
+				<div class="bar">
+					{#if chosen_tab == 'skills' && chosen_skill == null}
+						<div class="bar-item" on:click={() => (chosen_tab = 'skills')} on:keydown>
+							<p class={'yellow'}>skills</p>
+						</div>
+						<div class="bar-item" on:click={() => (chosen_tab = 'job history')} on:keydown>
+							<p class={'light-60 link'}>job history</p>
+						</div>
+					{:else if chosen_tab == 'skills' && chosen_skill != null}
+						<div class="bar-item" on:click={() => (chosen_skill = null)} on:keydown>
+							<p class="yellow link">back to skills</p>
+						</div>
+					{:else}
+						<div class="bar-item" on:click={() => (chosen_tab = 'skills')} on:keydown>
+							<p class={'light-60 link'}>skills</p>
+						</div>
+						<div class="bar-item" on:click={() => (chosen_tab = 'job history')} on:keydown>
+							<p class={chosen_tab == 'job history' ? 'yellow' : 'light-60 link'}>job history</p>
+						</div>
+					{/if}
 				</div>
-				<div class="bar-item" on:click={() => (chosen_tab = 'job history')} on:keydown>
-					<p class={'light-60 link'}>job history</p>
-				</div>
-			{:else if chosen_tab == 'skills' && chosen_skill != null}
-				<div class="bar-item" on:click={() => (chosen_skill = null)} on:keydown>
-					<p class="yellow link">back to skills</p>
-				</div>
-			{:else}
-				<div class="bar-item" on:click={() => (chosen_tab = 'skills')} on:keydown>
-					<p class={'light-60 link'}>skills</p>
-				</div>
-				<div class="bar-item" on:click={() => (chosen_tab = 'job history')} on:keydown>
-					<p class={chosen_tab == 'job history' ? 'yellow' : 'light-60 link'}>job history</p>
-				</div>
-			{/if}
+				{#if chosen_tab == 'skills'}
+					{#if chosen_skill == null}
+						{#each data.skills as skill, i}
+							<div style="height: 12px" />
+							<div on:click={() => (chosen_skill = skill)} on:keydown>
+								<Skill slot={i} {skill} />
+							</div>
+						{/each}
+					{:else}
+						<SkillCard skill={chosen_skill} />
+					{/if}
+				{/if}
+			</div>
 		</div>
-		{#if chosen_tab == 'skills'}
-			{#if chosen_skill == null}
-				{#each skills as skill, i}
-					<div style="height: 12px" />
-					<div on:click={() => (chosen_skill = skill)} on:keydown>
-						<Skill slot={i} {skill} />
-					</div>
-				{/each}
-			{:else}
-				<SkillCard skill={chosen_skill} />
-			{/if}
-		{/if}
 	</div>
+	<Svrollbar {viewport} {contents} />
 </main>
 
 <style>
-	main {
+	/* main {
 		display: flex;
 		flex-direction: row;
 		align-items: flex-start;
-	}
+	} */
 	.details {
 		width: 520px;
 		display: flex;
@@ -98,5 +116,33 @@
 		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		cursor: pointer;
+	}
+	.wrapper {
+		position: relative;
+		-ms-overflow-style: none; /* for Internet Explorer, Edge */
+		scrollbar-width: none; /* for Firefox */
+		overflow-y: scroll;
+		--svrollbar-track-width: 1px;
+		/* --svrollbar-track-background: #85b4b9; */
+		--svrollbar-track-opacity: 1;
+
+		--svrollbar-thumb-width: 10px;
+		--svrollbar-thumb-background: #d9ab55;
+		--svrollbar-thumb-opacity: 1;
+	}
+	.viewport {
+		position: relative;
+		overflow: scroll;
+		box-sizing: border-box;
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+
+	.viewport::-webkit-scrollbar {
+		display: none;
+	}
+	.contents {
+		display: flex;
+		flex-direction: row;
 	}
 </style>

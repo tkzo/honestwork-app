@@ -61,7 +61,7 @@
 		transition: all 0.4s ease-out;
 	}
 	.answer {
-		font-family: 'dm mono';
+		font-family: 'DM Mono';
 		font-style: normal;
 		font-weight: 400;
 		font-size: 16px;

@@ -10,6 +10,7 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import { parseContent } from '$lib/stores/Parser';
 	import { goto } from '$app/navigation';
+	import { browser } from '$app/environment';
 
 	export let chosen: boolean;
 	export let skill: SkillType;
@@ -76,6 +77,10 @@
 					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Created new conversation</p>`
 				);
 				goto('/messages');
+			} else {
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
+				);
 			}
 		} catch (err: any) {
 			toast.push(
@@ -84,13 +89,15 @@
 		}
 	};
 	const getRating = async () => {
-		try {
-			const url = `${base}/api/rating/${skill.user_address}`;
-			const response = await fetch(url);
-			const data = await response.json();
-			return data;
-		} catch (e) {
-			console.log(e);
+		if (browser) {
+			try {
+				const url = `${base}/api/rating/${skill.user_address}`;
+				const response = await fetch(url);
+				const data = await response.json();
+				return data;
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	};
 </script>

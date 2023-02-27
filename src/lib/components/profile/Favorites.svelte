@@ -40,6 +40,11 @@
 </script>
 
 <main>
+	{#if $user_favorites.length == 0}
+		<div class="message-container">
+			<p class="light-60">You didn't favorite any skill yet.</p>
+		</div>
+	{/if}
 	{#each $user_favorites as item}
 		<div class="container">
 			<div class="left">
@@ -100,5 +105,12 @@
 	.left {
 		display: flex;
 		flex-direction: row;
+	}
+	.message-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
 	}
 </style>

@@ -66,11 +66,20 @@
 			{/each}
 		{/await}
 	{:else}
-		<p class="light-60">You have not applied to any jobs yet.</p>
+		<div class="message-container">
+			<p class="light-60">You didn't apply to any jobs yet.</p>
+		</div>
 	{/if}
 </main>
 
 <style>
+	.message-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+	}
 	.container {
 		display: flex;
 		flex-direction: column;

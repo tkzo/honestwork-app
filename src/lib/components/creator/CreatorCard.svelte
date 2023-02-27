@@ -1,14 +1,17 @@
 <script lang="ts">
 	import type { UserType } from '$lib/stores/Types';
 	import { placeholder_image } from '$lib/stores/Constants';
-	import { userConnected } from '$lib/stores/Network';
+	import { userAddress, xmtpConnected } from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 	import { assets, base } from '$app/paths';
-	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 	import { toast } from '@zerodevx/svelte-toast';
+	import { new_conversation_metadata } from '$lib/stores/State';
+	import { goto } from '$app/navigation';
+	import { Svrollbar } from 'svrollbar';
 
 	export let user: UserType;
+	export let addr: string;
 	let viewport: Element;
 	let contents: Element;
 
@@ -18,6 +21,11 @@
 	onMount(() => {
 		if (user.show_nft) getNft();
 	});
+
+	let trimmed_description: string;
+	$: if (user.bio) {
+		trimmed_description = user.bio.replace('contenteditable="true"', 'contenteditable="false"');
+	}
 
 	const getNft = async () => {
 		if (user.nft_address && user.nft_id) {
@@ -32,11 +40,55 @@
 			}
 		}
 	};
-	const handleSendMessage = async () => {
-		if (!$userConnected) {
+	const handleNewConversation = async () => {
+		if (!$xmtpConnected) {
 			toast.push(
-				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>wallet not connected.</p>`
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>XMTP not connected.</p>`
 			);
+		} else {
+			try {
+				const url = `${base}/api/conversation_add/${addr}`;
+				const response = await fetch(url, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						title: $userAddress
+					})
+				});
+				const data = await response.json();
+				if (data == 'success') {
+					new_conversation_metadata.set({
+						address: addr,
+						title: $userAddress
+					});
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Created new conversation</p>`
+					);
+					goto('/messages');
+				} else {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
+					);
+				}
+			} catch (err: any) {
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>${err.Error()}</p>`
+				);
+			}
+		}
+	};
+	const getRating = async () => {
+		if (browser) {
+			try {
+				const url = `${base}/api/rating/${addr}`;
+				const response = await fetch(url);
+				const data = await response.json();
+				return data;
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	};
 </script>
@@ -72,17 +124,26 @@
 								<div style="height:4px;" />
 								<p class="yellow">{user.title}</p>
 								<div style="height:4px;" />
-								<p>4.8<span class="light-60">(377 votes)</span></p>
+								{#await getRating()}
+									<img
+										src={`${assets}/icons/loader.svg`}
+										alt="loading"
+										class="rotating"
+										style="height:16px;width:16px;"
+									/>
+								{:then rating}
+									<p><span class="light-60">rating:</span>{rating}/10</p>
+								{/await}
 							</div>
 						</div>
 						<div class="right-section">
-							<div class="button" on:click={handleSendMessage} on:keydown>
+							<div class="button" on:click={handleNewConversation} on:keydown>
 								<p class="yellow">send message</p>
 							</div>
 						</div>
 					</div>
 					<div class="bio">
-						<div class="body-text light-80">{@html user.bio}</div>
+						<div class="body-text light-80">{@html trimmed_description}</div>
 					</div>
 					{#each user.links as link, i}
 						<a class="item" href={link} target="_blank" rel="noreferrer">
@@ -94,6 +155,7 @@
 			</main>
 		</div>
 	</div>
+	<Svrollbar {viewport} {contents} />
 </div>
 
 <style>
@@ -127,11 +189,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-	}
-	.ens-loader {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
 	}
 	.button {
 		display: flex;
@@ -167,6 +224,7 @@
 		justify-content: space-between;
 		align-items: center;
 		cursor: pointer;
+		background-color: var(--color-dark);
 	}
 	.item:hover {
 		background-color: var(--color-light-2);

@@ -803,7 +803,7 @@
 							<p class="tab link semibold light-60" on:click={() => toggle('watchlist')} on:keydown>
 								watchlist
 							</p>
-							<p class="tab link semibold light-60" on:click={() => toggle('watchlist')} on:keydown>
+							<p class="tab link semibold light-60" on:click={() => toggle('favorites')} on:keydown>
 								favorites
 							</p>
 							<p class="tab link semibold yellow">applications</p>

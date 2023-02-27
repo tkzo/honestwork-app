@@ -58,7 +58,7 @@
 		margin: 0;
 	}
 	.description {
-		font-family: 'dm mono';
+		font-family: 'DM Mono';
 		font-weight: 400;
 		font-size: 14px;
 		line-height: 24px;

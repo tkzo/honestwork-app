@@ -146,7 +146,7 @@
 		gap: 24px;
 	}
 	.feature {
-		font-family: 'dm mono';
+		font-family: 'DM Mono';
 		font-weight: 400;
 		font-size: 16px;
 		line-height: 24px;
