@@ -37,7 +37,7 @@
 						HonestWork connects clients with top-rated blockchain experts, including copywriters,
 						developers, and designers.
 					</p>
-					<div class="explore" on:click={() => goto('/skills')} on:keydown>START EXPLORING</div>
+					<div class="explore" on:click={() => goto('/jobs')} on:keydown>START EXPLORING</div>
 					<div class="socials">
 						<a href="https://twitter.com/HonestWorkDAO" target="_blank" rel="noopener noreferrer">
 							<img src={`${assets}/icons/landing/twitter.svg`} alt="Twitter" class="icon" />
