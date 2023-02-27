@@ -115,12 +115,13 @@
 	.info {
 		display: flex;
 		flex-direction: column;
-		gap: 40px;
-		width: 50%;
+		gap: 24px;
+		width: 45%;
 	}
 	.icon {
 		height: 32px;
 		width: 32px;
+		margin-top: 8px;
 	}
 	.title {
 		text-transform: uppercase;
@@ -142,7 +143,7 @@
 	.description {
 		display: flex;
 		flex-direction: row;
-		align-items: center;
+		align-items: flex-start;
 		gap: 24px;
 	}
 	.feature {
