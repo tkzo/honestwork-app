@@ -299,6 +299,9 @@
 		box-sizing: border-box;
 		padding: 12px;
 	}
+	section:hover {
+		background-color: var(--color-light-10);
+	}
 	.image-header {
 		width: 760px;
 		display: flex;
