@@ -300,7 +300,7 @@
 		padding: 12px;
 	}
 	section:hover {
-		background-color: var(--color-light-10);
+		background-color: var(--color-light-2);
 	}
 	.image-header {
 		width: 760px;
@@ -312,7 +312,7 @@
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
 		border-color: var(--color-light-20);
-		background-color: var(--color-dark);
+		background-color: var(--color-light-2);
 	}
 	.mint-header {
 		display: flex;
