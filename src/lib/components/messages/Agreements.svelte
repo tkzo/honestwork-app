@@ -10,6 +10,7 @@
 	import type { Deal } from '$lib/stores/Types';
 	import { Svrollbar } from 'svrollbar';
 	import { browser } from '$app/environment';
+	import { fade } from 'svelte/transition';
 
 	export let conversation: any;
 
@@ -73,13 +74,14 @@
 			creator_deals
 		};
 	};
+	const fakeTransition = (node: any) => fade(node, { duration: 0 });
 </script>
 
 <main class="wrapper">
 	<div
 		bind:this={viewport}
 		class="viewport"
-		style={`height:${(feedHeight - 32).toString() + 'px'}`}
+		style={`height:${(feedHeight - 160).toString() + 'px'}`}
 	>
 		<div bind:this={contents} class="contents">
 			<div class="agreements-container">
@@ -123,7 +125,6 @@
 						{/each}
 					{/await}
 					<div style="height:28px" />
-
 					{#await fetchDealsChain() then deals}
 						<div class="section-title">
 							<img src={`${assets}/icons/human-run.svg`} alt="Human Run" />
@@ -139,7 +140,13 @@
 			</div>
 		</div>
 	</div>
-	<Svrollbar alwaysVisible {viewport} {contents} />
+	<Svrollbar
+		alwaysVisible
+		{viewport}
+		{contents}
+		vThumbOut={fakeTransition}
+		vTrackOut={fakeTransition}
+	/>
 </main>
 
 <style>
@@ -151,13 +158,14 @@
 	main {
 		width: 520px;
 		height: calc(100vh - 128px);
+		margin-top: 32px;
 		display: flex;
 		flex-direction: column;
-		padding: 20px;
 		box-sizing: border-box;
 	}
 	.agreements-container {
 		width: 100%;
+		height: 100%;
 		flex-direction: row;
 		justify-content: flex-start;
 		align-items: center;
@@ -185,6 +193,7 @@
 		--svrollbar-thumb-width: 1px;
 		--svrollbar-thumb-background: #d9ab55;
 		--svrollbar-thumb-opacity: 1;
+		height: 100%;
 	}
 
 	.viewport {
@@ -205,5 +214,6 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		padding: 16px;
 	}
 </style>

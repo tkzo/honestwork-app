@@ -6,12 +6,6 @@
 	import fuzzy from 'fuzzy';
 	import { browser } from '$app/environment';
 	import { fly } from 'svelte/transition';
-	import { onMount } from 'svelte';
-	import { connectIfCached } from '$lib/stores/Network';
-
-	onMount(() => {
-		connectIfCached();
-	});
 
 	export let data: any;
 	export let viewport: Element;

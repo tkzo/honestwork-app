@@ -4,8 +4,7 @@
 		networkSigner,
 		userConnected,
 		connectWallet,
-		userAddress,
-		connectIfCached
+		userAddress
 	} from '$lib/stores/Network';
 	import { JobInput } from '$lib/stores/Validation';
 	import type { JobType, Network } from '$lib/stores/Types';
@@ -24,13 +23,8 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import { assets } from '$app/paths';
-	import { onMount } from 'svelte';
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	import { parseContent } from '$lib/stores/Parser';
-
-	onMount(() => {
-		connectIfCached();
-	});
 
 	// todo: upgrade tags when api is rdy
 	// add autosuggest from redis
@@ -444,20 +438,6 @@
 					<div style="height:8px" />
 					<div class="input-field">
 						<div class="placeholder">
-							<p class="light-40">installments</p>
-						</div>
-						<input
-							name="installments"
-							class="flex-input"
-							type="number"
-							min={form_limitations.job.installments.min}
-							max={form_limitations.job.installments.max}
-							placeholder="Between 2 and 5"
-						/>
-					</div>
-					<div style="height:8px" />
-					<div class="input-field">
-						<div class="placeholder">
 							<p class="yellow">stay sticky!</p>
 						</div>
 						<div class="sticky">
@@ -812,6 +792,7 @@
 	.flex-input {
 		flex: 1;
 		height: 32px;
+		background-color: var(--color-dark);
 	}
 	.placeholder {
 		height: 32px;

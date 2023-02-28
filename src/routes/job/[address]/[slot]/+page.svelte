@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import JobPage from '$lib/components/jobs/JobPage.svelte';
-	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import { userConnected, userAddress } from '$lib/stores/Network';
 	import { toast } from '@zerodevx/svelte-toast';

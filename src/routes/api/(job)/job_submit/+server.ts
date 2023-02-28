@@ -32,7 +32,6 @@ export const POST: RequestHandler = async ({ request }) => {
 		image_url: cloud_url,
 		token_paid: data.token_paid,
 		budget: parseInt(data.budget),
-		installments: parseInt(data.installments),
 		sticky_duration: parseInt(data.sticky_duration),
 		links: data.links,
 		highlight: parseInt(data.highlight),

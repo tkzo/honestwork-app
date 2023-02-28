@@ -9,6 +9,12 @@
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import type { LayoutServerData } from './$types';
 	import { user_signed_in } from '$lib/stores/State';
+	import { onMount } from 'svelte';
+	import { connectIfCached } from '$lib/stores/Network';
+
+	onMount(() => {
+		connectIfCached();
+	});
 
 	export let data: LayoutServerData;
 	user_signed_in.set(data.signed!);

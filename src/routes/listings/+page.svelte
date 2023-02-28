@@ -20,7 +20,6 @@
 	}
 
 	onMount(() => {
-		connectIfCached();
 		if (data.jobs.json && data.jobs.json.length != 0) {
 			handleJobSelect(data?.jobs.json[0]);
 		}

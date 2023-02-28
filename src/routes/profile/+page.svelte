@@ -6,8 +6,7 @@
 		userState,
 		userConnected,
 		getFavorites,
-		getWatchlist,
-		connectIfCached
+		getWatchlist
 	} from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 	import { tweened } from 'svelte/motion';
@@ -91,7 +90,6 @@
 	let tags: string[] = [];
 
 	onMount(async () => {
-		connectIfCached();
 		changes_made.set(false);
 		await getNft();
 		getWatchlist();

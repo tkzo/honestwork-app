@@ -13,6 +13,14 @@
 	}
 	$: trimmed_images = skill.image_urls.filter((url: string) => url !== '');
 
+	let trimmed_description: string;
+	$: if (skill.description) {
+		trimmed_description = skill.description.replace(
+			'contenteditable="true"',
+			'contenteditable="false"'
+		);
+	}
+
 	const nextImage = () => {
 		if (chosen_image < trimmed_images.length - 1) {
 			chosen_image++;
@@ -53,20 +61,20 @@
 	</div>
 	<div class="description">
 		<div class="body-text light-80">
-			{@html skill.description}
+			{@html trimmed_description}
 		</div>
 	</div>
 	<div style="height:12px;" />
 	<div class="links">
-		{#each skill.links as link}
-			<div class="link-container">
-				<p class="placeholder light-40">link</p>
-				<div style="width:8px;" />
-				<a href={link}>
-					<p class="light-80">{link}</p>
-				</a>
-			</div>
-			{#if link !== skill.links[skill.links.length - 1]}
+		{#each skill.links as link, i}
+			{#if link != ''}
+				<div class="link-container">
+					<p class="placeholder light-40">link</p>
+					<div style="width:8px;" />
+					<a href={link}>
+						<p class="light-80">{link}</p>
+					</a>
+				</div>
 				<div style="height:8px;" />
 			{/if}
 		{/each}

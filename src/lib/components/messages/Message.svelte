@@ -227,7 +227,7 @@
 		</div>
 	</div>
 {:else if message.senderAddress == $userAddress}
-	<div class="date ">
+	<div class="date">
 		<div class="body-text light-60">{parseDate(message.sent)}</div>
 	</div>
 	<div class="self-message">
@@ -236,8 +236,10 @@
 		</div>
 	</div>
 {:else}
+	<div class="peer-date">
+		<div class="body-text light-60">{parseDate(message.sent)}</div>
+	</div>
 	<div class="peer-message">
-		<div class="date" />
 		<div class="message-contents gray-line">
 			<div class="body-text light-80">{message.content}</div>
 		</div>
@@ -264,6 +266,12 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: flex-start;
+	}
+	.peer-date {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		padding: 4px;
 	}
 	.self-meta-message {
 		display: flex;

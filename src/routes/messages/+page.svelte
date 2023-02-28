@@ -1,6 +1,5 @@
 <script lang="ts">
 	//todo: add types
-
 	import {
 		nodeProvider,
 		userConnected,
@@ -13,18 +12,14 @@
 	import { shortcut } from '$lib/stores/Shortcut';
 	import { Svrollbar } from 'svrollbar';
 	import Message from '$lib/components/messages/Message.svelte';
-	import { afterUpdate } from 'svelte';
 	import { Jumper } from 'svelte-loading-spinners';
 	import { onDestroy } from 'svelte';
 	import { new_conversation_metadata } from '$lib/stores/State';
 	import { onMount } from 'svelte';
-	import { connectIfCached } from '$lib/stores/Network';
 	import { base } from '$app/paths';
 	import Agreements from '$lib/components/messages/Agreements.svelte';
+	import { fade } from 'svelte/transition';
 
-	onMount(() => {
-		connectIfCached();
-	});
 	//todo: move conversation into its own component
 	let viewport: Element;
 	let contents: Element;
@@ -38,7 +33,6 @@
 	let user_input: HTMLTextAreaElement;
 	let placeholder_image = 'assets/xcopy.gif';
 	let chosen_messages = new Array();
-	let first_chat_load = true;
 	let new_message = '';
 	let rows = 1;
 	let chosen_conversation: any;
@@ -48,14 +42,6 @@
 	let all_streams: any;
 	let chosen_tab = 'messages';
 
-	afterUpdate(async () => {
-		if (first_chat_load && contents.clientHeight > 0 && chosen_tab == 'messages') {
-			scroll('auto');
-			first_chat_load = false;
-		} else if (chosen_tab == 'messages') {
-			scroll('auto');
-		}
-	});
 	onDestroy(() => {
 		if (active_stream) {
 			active_stream.return();
@@ -65,30 +51,45 @@
 		}
 	});
 	onMount(async () => {
-		connectIfCached();
 		if (userConnected && !loaded) {
-			fetchConversations();
+			await fetchConversations();
+			if (chosen_tab == 'messages') {
+				scroll('auto');
+				console.log('SCROLLING');
+			}
 		}
 	});
 
 	$: if ($xmtpConnected && !$xmtpConnecting) {
 		fetchConversations();
 	}
+	$: if (chosen_tab == 'messages' && viewport_inbox && contents_inbox) {
+		scroll('auto');
+	}
 
 	let feedHeight = 0;
 	let inboxHeight = 0;
 
 	$: if (browser) {
-		feedHeight = window.innerHeight - 165 - 32;
+		console.log('ADJUSTING');
+		feedHeight = window.innerHeight - 197;
 		inboxHeight = window.innerHeight - 128;
 	}
+
+	const parseMeta = (m: string) => {
+		let stringified = m.split(':').slice(1, m.length).join(':');
+		return stringified;
+	};
 
 	//todo: doesn't recognize wrapping -fix
 	const updateRows = () => {
 		rows = user_input.value.split(/\r\n|\r|\n/).length;
 	};
 	const scroll = (behavior: any) => {
-		if (viewport && contents) viewport.scroll({ top: contents.clientHeight, behavior: behavior });
+		if (viewport_inbox && contents_inbox) {
+			console.log('Scrolling to ', contents_inbox.clientHeight, ' with behavior ', behavior);
+			viewport_inbox.scroll({ top: contents_inbox.clientHeight, behavior: behavior });
+		}
 	};
 	const fetchConversations = async () => {
 		if (browser && $xmtpClient) {
@@ -161,20 +162,24 @@
 	};
 	const chooseItem = async (convo: any) => {
 		chosen_conversation = convo;
-		first_chat_load = true;
 		getChatMessages(convo);
+		scroll('auto');
 		// user_input.focus();
 	};
 	const getLastMessage = async (convo: any) => {
+		let meta_message;
 		let convo_messages = await convo.messages();
 		if (convo_messages.length == 0) {
 			return 'No messages yet...';
 		}
 		let msg = convo_messages[convo_messages.length - 1].content;
-		if (msg.length > 30) {
-			msg = msg.substring(0, 30) + '...';
+		console.log(msg);
+		if (msg.startsWith('Meta:')) {
+			meta_message = JSON.parse(parseMeta(msg));
+			return `[${meta_message.type}]`;
+		} else {
+			return msg.slice(0, 30) + '...';
 		}
-		return msg;
 	};
 	const getChatMessages = async (convo: any) => {
 		let convo_messages = await convo.messages();
@@ -215,6 +220,7 @@
 		user_input.value = '';
 		await convo.send(input_);
 		new_message = '';
+		scroll('auto');
 	};
 	const getNft = async (addr: string, id: number) => {
 		try {
@@ -227,6 +233,7 @@
 			console.log(err);
 		}
 	};
+	const fakeTransition = (node: any) => fade(node, { duration: 0 });
 </script>
 
 <main>
@@ -305,50 +312,58 @@
 				<p class={`${chosen_tab == 'agreements' ? 'yellow' : 'light-60'}`}>agreements</p>
 			</div>
 		</div>
-		{#if chosen_tab == 'messages'}
-			<div class="chat-window">
-				<div class="wrapper">
-					<div
-						bind:this={viewport}
-						class="viewport chat-viewport"
-						style={`height:${feedHeight.toString() + 'px'}`}
-					>
-						<div bind:this={contents} class="contents">
-							{#if loaded && chosen_messages.length > 0}
-								{#each chosen_messages as message, index}
-									<Message {message} {index} array_length={chosen_messages.length} />
-								{/each}
-							{/if}
+		<div class="sections-container">
+			{#if chosen_tab == 'messages'}
+				<div class="chat-window">
+					<div class="wrapper">
+						<div
+							bind:this={viewport_inbox}
+							class="viewport chat-viewport"
+							style={`height:${feedHeight.toString() + 'px'}`}
+						>
+							<div bind:this={contents_inbox} class="contents">
+								{#if loaded && chosen_messages.length > 0}
+									{#each chosen_messages as message, index}
+										<Message {message} {index} array_length={chosen_messages.length} />
+									{/each}
+								{/if}
+							</div>
 						</div>
+						<Svrollbar
+							alwaysVisible
+							viewport={viewport_inbox}
+							contents={contents_inbox}
+							vThumbOut={fakeTransition}
+							vTrackOut={fakeTransition}
+						/>
 					</div>
-					<Svrollbar alwaysVisible {viewport} {contents} />
 				</div>
-			</div>
-			<div class="input-field">
-				<textarea
-					placeholder="Write a message..."
-					bind:this={user_input}
-					name="message"
-					{rows}
-					maxlength="1000"
-					on:input={updateRows}
-				/>
-				<div
-					class="send-button"
-					on:click={() => sendMessage(chosen_conversation)}
-					on:keydown
-					use:shortcut={{ shift: true, code: 'Enter' }}
-				>
-					{#if new_message.length > 0}
-						<img src="icons/loader.svg" alt="loading" class="rotating" />
-					{:else}
-						<img src="/icons/message.svg" alt="send" />
-					{/if}
+				<div class="input-field">
+					<textarea
+						placeholder="Write a message..."
+						bind:this={user_input}
+						name="message"
+						{rows}
+						maxlength="1000"
+						on:input={updateRows}
+					/>
+					<div
+						class="send-button"
+						on:click={() => sendMessage(chosen_conversation)}
+						on:keydown
+						use:shortcut={{ code: 'Enter' }}
+					>
+						{#if new_message.length > 0}
+							<img src="icons/loader.svg" alt="loading" class="rotating" />
+						{:else}
+							<img src="/icons/message.svg" alt="send" />
+						{/if}
+					</div>
 				</div>
-			</div>
-		{:else if chosen_tab == 'agreements'}
-			<Agreements conversation={chosen_conversation} />
-		{/if}
+			{:else if chosen_tab == 'agreements'}
+				<Agreements conversation={chosen_conversation} />
+			{/if}
+		</div>
 	</div>
 </main>
 
@@ -429,6 +444,7 @@
 		cursor: pointer;
 	}
 	.chat {
+		position: relative;
 		width: 520px;
 		height: calc(100vh - 128px);
 		border-style: solid;
@@ -512,6 +528,8 @@
 		align-items: flex-start;
 	}
 	.tab-bar {
+		position: absolute;
+		top: 0px;
 		width: 100%;
 		height: 32px;
 		display: flex;
@@ -522,6 +540,7 @@
 		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		align-items: center;
+		z-index: 10;
 	}
 	.tab-bar-item {
 		height: 30px;
@@ -569,5 +588,9 @@
 	}
 	.new-agreement:hover {
 		background-color: var(--color-light-2);
+	}
+	.sections-container {
+		display: flex;
+		flex-direction: column;
 	}
 </style>
