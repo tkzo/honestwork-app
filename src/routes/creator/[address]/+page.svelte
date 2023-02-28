@@ -13,7 +13,7 @@
 	let viewport: Element;
 	let contents: Element;
 	let feedHeight = 0;
-	$: if (browser) feedHeight = window.innerHeight - 128;
+	$: if (browser) feedHeight = window.innerHeight - 146;
 
 	let chosen_tab: string = 'skills' || 'job history';
 	let chosen_skill: SkillType | null = null;
@@ -27,61 +27,64 @@
 	<meta name="description" content="HonestWork Skills Page" />
 </svelte:head>
 
-<main class="wrapper">
-	<div
-		bind:this={viewport}
-		class="viewport"
-		style={`width:520px; height:${feedHeight.toString() + 'px'}`}
-	>
-		<div bind:this={contents} class="contents">
-			<CreatorCard {user} {addr} />
-			<div style="width: 12px" />
-			<div class="details">
-				<div class="bar">
-					{#if chosen_tab == 'skills' && chosen_skill == null}
-						<div class="bar-item" on:click={() => (chosen_tab = 'skills')} on:keydown>
-							<p class={'yellow'}>skills</p>
-						</div>
-						<div class="bar-item" on:click={() => (chosen_tab = 'job history')} on:keydown>
-							<p class={'light-60 link'}>job history</p>
-						</div>
-					{:else if chosen_tab == 'skills' && chosen_skill != null}
-						<div class="bar-item" on:click={() => (chosen_skill = null)} on:keydown>
-							<p class="yellow link">back to skills</p>
-						</div>
-					{:else}
-						<div class="bar-item" on:click={() => (chosen_tab = 'skills')} on:keydown>
-							<p class={'light-60 link'}>skills</p>
-						</div>
-						<div class="bar-item" on:click={() => (chosen_tab = 'job history')} on:keydown>
-							<p class={chosen_tab == 'job history' ? 'yellow' : 'light-60 link'}>job history</p>
-						</div>
-					{/if}
+<main>
+	<CreatorCard {user} {addr} />
+	<div style="width: 12px" />
+	<div class="details">
+		<div class="bar">
+			{#if chosen_tab == 'skills' && chosen_skill == null}
+				<div class="bar-item" on:click={() => (chosen_tab = 'skills')} on:keydown>
+					<p class={'yellow'}>skills</p>
 				</div>
-				{#if chosen_tab == 'skills'}
-					{#if chosen_skill == null}
-						{#each data.skills as skill, i}
-							<div style="height: 12px" />
-							<div on:click={() => (chosen_skill = skill)} on:keydown>
-								<Skill slot={i} {skill} />
-							</div>
-						{/each}
-					{:else}
-						<SkillCard skill={chosen_skill} />
+				<div class="bar-item" on:click={() => (chosen_tab = 'job history')} on:keydown>
+					<p class={'light-60 link'}>job history</p>
+				</div>
+			{:else if chosen_tab == 'skills' && chosen_skill != null}
+				<div class="bar-item" on:click={() => (chosen_skill = null)} on:keydown>
+					<p class="yellow link">back to skills</p>
+				</div>
+			{:else}
+				<div class="bar-item" on:click={() => (chosen_tab = 'skills')} on:keydown>
+					<p class={'light-60 link'}>skills</p>
+				</div>
+				<div class="bar-item" on:click={() => (chosen_tab = 'job history')} on:keydown>
+					<p class={chosen_tab == 'job history' ? 'yellow' : 'light-60 link'}>job history</p>
+				</div>
+			{/if}
+		</div>
+		<div class="wrapper">
+			<div
+				class="viewport"
+				bind:this={viewport}
+				style={`width:520px; height:${feedHeight.toString() + 'px'}`}
+			>
+				<div class="contents" bind:this={contents}>
+					{#if chosen_tab == 'skills'}
+						{#if chosen_skill == null}
+							{#each data.skills as skill, i}
+								<div style="height: 8px" />
+								<div on:click={() => (chosen_skill = skill)} on:keydown>
+									<Skill slot={i} {skill} width={508} />
+								</div>
+							{/each}
+						{:else}
+							<SkillCard skill={chosen_skill} />
+						{/if}
 					{/if}
-				{/if}
+					<div style="height:32px;" />
+				</div>
 			</div>
+			<Svrollbar {viewport} {contents} alwaysVisible />
 		</div>
 	</div>
-	<Svrollbar {viewport} {contents} />
 </main>
 
 <style>
-	/* main {
+	main {
 		display: flex;
 		flex-direction: row;
 		align-items: flex-start;
-	} */
+	}
 	.details {
 		width: 520px;
 		display: flex;
@@ -126,9 +129,10 @@
 		/* --svrollbar-track-background: #85b4b9; */
 		--svrollbar-track-opacity: 1;
 
-		--svrollbar-thumb-width: 10px;
+		--svrollbar-thumb-width: 1px;
 		--svrollbar-thumb-background: #d9ab55;
 		--svrollbar-thumb-opacity: 1;
+		background-color: var(--color-dark);
 	}
 	.viewport {
 		position: relative;
@@ -142,7 +146,9 @@
 		display: none;
 	}
 	.contents {
+		width: 100%;
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
+		align-items: center;
 	}
 </style>

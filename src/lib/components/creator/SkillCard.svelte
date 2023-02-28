@@ -5,12 +5,9 @@
 
 	export let skill: SkillType;
 
-	let viewport: Element;
-	let contents: Element;
 	let chosen_image: number = 0;
 
 	let feedHeight = 0;
-	$: if (browser) feedHeight = window.innerHeight - 136;
 	$: if (skill && browser) {
 		resetState();
 	}
@@ -32,61 +29,52 @@
 </script>
 
 <main>
-	<div class="wrapper">
-		<div bind:this={viewport} class="viewport" style={`height:${feedHeight.toString() + 'px'}`}>
-			<div bind:this={contents} class="contents">
-				<div class="gallery">
-					<img class="gallery-images" src={trimmed_images[chosen_image]} alt="Gallery" />
-					<div class="gallery-buttons">
-						<div class="left-gallery-button" on:click={previousImage} on:keydown>
-							<p class="light-40">PREVIOUS</p>
-						</div>
-						<p>{chosen_image + 1}/{trimmed_images.length}</p>
-						<div class="right-gallery-button" on:click={nextImage} on:keydown>
-							<p class="light-40">NEXT</p>
-						</div>
-					</div>
-				</div>
-				<div class="tags">
-					{#each skill.tags as tag}
-						<div class="tag link">
-							<p>{tag}</p>
-						</div>
-						{#if tag !== skill.tags[skill.tags.length - 1]}
-							<div style="width:8px;" />
-						{/if}
-					{/each}
-				</div>
-				<div class="description">
-					<div class="body-text light-80">
-						{@html skill.description}
-					</div>
-				</div>
-				<div style="height:12px;" />
-				<div class="links">
-					{#each skill.links as link}
-						<div class="link-container">
-							<p class="placeholder light-40">link</p>
-							<div style="width:8px;" />
-							<a href={link}>
-								<p class="light-80">{link}</p>
-							</a>
-						</div>
-						{#if link !== skill.links[skill.links.length - 1]}
-							<div style="height:8px;" />
-						{/if}
-					{/each}
-				</div>
-				<div style="height:32px;" />
+	<div class="gallery">
+		<img class="gallery-images" src={trimmed_images[chosen_image]} alt="Gallery" />
+		<div class="gallery-buttons">
+			<div class="left-gallery-button" on:click={previousImage} on:keydown>
+				<p class="light-40">PREVIOUS</p>
+			</div>
+			<p>{chosen_image + 1}/{trimmed_images.length}</p>
+			<div class="right-gallery-button" on:click={nextImage} on:keydown>
+				<p class="light-40">NEXT</p>
 			</div>
 		</div>
-		<Svrollbar alwaysVisible {viewport} {contents} />
+	</div>
+	<div class="tags">
+		{#each skill.tags as tag}
+			<div class="tag link">
+				<p>{tag}</p>
+			</div>
+			{#if tag !== skill.tags[skill.tags.length - 1]}
+				<div style="width:8px;" />
+			{/if}
+		{/each}
+	</div>
+	<div class="description">
+		<div class="body-text light-80">
+			{@html skill.description}
+		</div>
+	</div>
+	<div style="height:12px;" />
+	<div class="links">
+		{#each skill.links as link}
+			<div class="link-container">
+				<p class="placeholder light-40">link</p>
+				<div style="width:8px;" />
+				<a href={link}>
+					<p class="light-80">{link}</p>
+				</a>
+			</div>
+			{#if link !== skill.links[skill.links.length - 1]}
+				<div style="height:8px;" />
+			{/if}
+		{/each}
 	</div>
 </main>
 
 <style>
 	main {
-		width: 520px;
 		display: flex;
 		flex-direction: column;
 	}
@@ -149,34 +137,6 @@
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
 		border-color: var(--color-light-20);
-	}
-	.wrapper {
-		position: relative;
-		-ms-overflow-style: none; /* for Internet Explorer, Edge */
-		scrollbar-width: none; /* for Firefox */
-		overflow-y: scroll;
-		--svrollbar-track-width: 1px;
-		/* --svrollbar-track-background: #85b4b9; */
-		--svrollbar-track-opacity: 1;
-
-		--svrollbar-thumb-width: 10px;
-		--svrollbar-thumb-background: #d9ab55;
-		--svrollbar-thumb-opacity: 1;
-	}
-
-	.viewport {
-		position: relative;
-		overflow: scroll;
-		box-sizing: border-box;
-
-		/* hide scrollbar */
-		-ms-overflow-style: none;
-		scrollbar-width: none;
-	}
-
-	.viewport::-webkit-scrollbar {
-		/* hide scrollbar */
-		display: none;
 	}
 	.tags {
 		display: flex;

@@ -17,7 +17,7 @@
 
 	let nft_image: string;
 	let feedHeight = 0;
-	$: if (browser) feedHeight = window.innerHeight - 128;
+	$: if (browser) feedHeight = window.innerHeight - 113;
 	onMount(() => {
 		if (user.show_nft) getNft();
 	});
@@ -146,10 +146,12 @@
 						<div class="body-text light-80">{@html trimmed_description}</div>
 					</div>
 					{#each user.links as link, i}
-						<a class="item" href={link} target="_blank" rel="noreferrer">
-							<p>link #{i + 1} <span class="light-60">{link}</span></p>
-							<img src={`${assets}/icons/external.svg`} alt="link" />
-						</a>
+						{#if link != ''}
+							<a class="item" href={link} target="_blank" rel="noreferrer">
+								<p>link #{i + 1} <span class="light-60">{link}</span></p>
+								<img src={`${assets}/icons/external.svg`} alt="link" />
+							</a>
+						{/if}
 					{/each}
 				{/if}
 			</main>
@@ -160,10 +162,11 @@
 
 <style>
 	main {
-		width: 518px;
+		width: 520px;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
 		border-color: var(--color-light-20);
+		box-sizing: border-box;
 	}
 	.profile-bar {
 		display: flex;
@@ -175,6 +178,7 @@
 		border-color: var(--color-light-20);
 		cursor: pointer;
 		padding: 12px;
+		box-sizing: border-box;
 	}
 	.left-section {
 		display: flex;
@@ -238,7 +242,7 @@
 		/* --svrollbar-track-background: #85b4b9; */
 		--svrollbar-track-opacity: 1;
 
-		--svrollbar-thumb-width: 10px;
+		--svrollbar-thumb-width: 1px;
 		--svrollbar-thumb-background: #d9ab55;
 		--svrollbar-thumb-opacity: 1;
 	}

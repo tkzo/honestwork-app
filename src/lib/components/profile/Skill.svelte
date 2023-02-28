@@ -5,9 +5,10 @@
 
 	export let slot: number;
 	export let skill: SkillType;
+	export let width: number = 520;
 </script>
 
-<section>
+<section style={`width:${width}px;`}>
 	<div class="header">
 		<p class="light"><span class="light-40">#{slot + 1} </span>{skill.title}</p>
 		<p class="yellow">></p>
@@ -43,7 +44,6 @@
 
 <style>
 	section {
-		width: 520px;
 		flex-direction: column;
 		cursor: pointer;
 	}
