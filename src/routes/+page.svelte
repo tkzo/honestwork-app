@@ -61,7 +61,7 @@
 						<iframe
 							width="960"
 							height="540"
-							src="https://www.youtube.com/embed/re8Ac9jpup0?controls=0"
+							src="https://www.youtube.com/embed/re8Ac9jpup0?controls=0&autoplay=1"
 							title="YouTube video player"
 							frameborder="0"
 							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
