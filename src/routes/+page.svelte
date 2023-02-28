@@ -58,8 +58,17 @@
 					</div>
 					<div style="height: 64px;" />
 					<div class="imgs-container">
-						<img src="{`${assets}/assets/landing/hw.webp`} " alt="HonestWork" class="app-img" />
-						<img src="{`${assets}/assets/landing/deer.png`} " alt="HonestWork" class="deer" />
+						<iframe
+							width="960"
+							height="540"
+							src="https://www.youtube.com/embed/re8Ac9jpup0?controls=0"
+							title="YouTube video player"
+							frameborder="0"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+							allowfullscreen
+						/>
+						<!-- <img src="{`${assets}/assets/landing/hw.webp`} " alt="HonestWork" class="app-img" />
+						<img src="{`${assets}/assets/landing/deer.png`} " alt="HonestWork" class="deer" /> -->
 					</div>
 				</div>
 			</div>
