@@ -218,13 +218,13 @@
 		font-size: 16px;
 		line-height: 24px;
 		margin: 0 0 20px;
-		max-width: 496px;
+		max-width: 560px;
 	}
 	.explore {
 		padding: 8px 12px;
 		background: #101112;
 		border: 1px solid rgba(255, 255, 255, 0.2);
-		box-shadow: 0px 0px 50px rgba(255, 211, 105, 0.1);
+		box-shadow: 0px 0px 50px rgba(255, 211, 105, 0.2);
 		cursor: pointer;
 		font-weight: 600;
 		color: var(--color-primary);
@@ -248,32 +248,7 @@
 		left: 0;
 		width: 80vw;
 		max-width: 960px;
-		filter: drop-shadow(0px 0px 150px rgba(255, 211, 105, 0.15));
-	}
-	.app-img {
-		position: relative;
-		top: 0;
-		left: 0;
-		width: 100%;
-	}
-	.deer {
-		position: absolute;
-		bottom: 0px;
-		right: -50px;
-		height: 420px;
-		width: auto;
-	}
-	@media (max-width: 900px) {
-		.deer {
-			right: -40px;
-			height: 350px;
-		}
-	}
-	@media (max-width: 800px) {
-		.deer {
-			right: -30px;
-			height: 300px;
-		}
+		/* filter: drop-shadow(0px 0px 150px rgba(255, 211, 105, 0.1)); */
 	}
 	@media (max-width: 720px) {
 		.header {
@@ -283,25 +258,13 @@
 			font-size: 32px;
 			line-height: 40px;
 		}
-		.deer {
-			right: -20px;
-			height: 250px;
-		}
 	}
 	@media (max-width: 550px) {
-		.deer {
-			height: 200px;
-		}
 		h1 {
 			font-size: 24px;
 		}
 		.about {
 			font-size: 14px;
-		}
-	}
-	@media (max-width: 450px) {
-		.deer {
-			height: 150px;
 		}
 	}
 </style>
