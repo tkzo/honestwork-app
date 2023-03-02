@@ -10,7 +10,7 @@
 	let contents: Element;
 	const handleConnect = async () => {
 		await connectWallet();
-		goto('/skills');
+		goto('/jobs');
 	};
 </script>
 
@@ -89,7 +89,7 @@
 			<img src="{`${assets}/assets/laser-grid.png`} " alt="HonestWork" class="bg" />
 		</div>
 	</div>
-	<Svrollbar alwaysVisible {viewport} {contents} />
+	<Svrollbar {viewport} {contents} />
 </div>
 
 <style>
@@ -149,7 +149,7 @@
 		flex-direction: column;
 		align-items: center;
 	}
-	.nav {
+	/* .nav {
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
@@ -158,14 +158,14 @@
 		width: 80vw;
 		max-width: 960px;
 		padding: 12px;
-	}
+	} */
 	.socials {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		gap: 8px;
 	}
-	.logo {
+	/* .logo {
 		display: flex;
 		flex-direction: row;
 		gap: 8px;
@@ -192,7 +192,7 @@
 	}
 	.link:hover {
 		color: var(--color-dark);
-	}
+	} */
 	.header {
 		display: flex;
 		flex-direction: column;

@@ -8,13 +8,14 @@
 	export let card: FeatureCard;
 	export let index: number;
 
-	$: _index = card.type === 'employer' ? index : index - 3;
-	$: console.log('Index:', index, '_Index:', _index);
-	let interval: any = null;
-	let iteration = 0;
 	const letters = 'abcdefghijklmnopqrstuvwxyz';
 
+	let interval: any = null;
+	let iteration = 0;
 	let isInView;
+
+	$: _index = card.type === 'employer' ? index : index - 3;
+	$: console.log('Index:', index, '_Index:', _index);
 
 	const handleChange = ({ detail }: CustomEvent<ObserverEventDetails>) =>
 		(isInView = detail.inView);
