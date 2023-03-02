@@ -106,21 +106,18 @@
 							<div style="width:4px" />
 							<p class="yellow">drafts</p>
 						</div>
-						<div style="height:8px" />
+						<div style="height:12px" />
 						{#each deals.recruiter_deals as deal, i}
 							{#if deal.status == 'offered' || deal.status == 'accepted'}
 								<AgreementDB {conversation} role={'recruiter'} {deal} slot={i} />
-								{#if i < deals.recruiter_deals.length - 1}
-									<div style="height:12px" />
-								{/if}
+								<div style="height:24px" />
 							{/if}
 						{/each}
+
 						{#each deals.creator_deals as deal, j}
 							{#if deal.status == 'offered' || deal.status == 'accepted'}
 								<AgreementDB {conversation} role={'creator'} {deal} slot={j} />
-								{#if j < deals.creator_deals.length - 1}
-									<div style="height:12px" />
-								{/if}
+								<div style="height:24px" />
 							{/if}
 						{/each}
 					{/await}
@@ -131,7 +128,7 @@
 							<div style="width:4px" />
 							<p class="yellow">ongoing deals</p>
 						</div>
-						<div style="height:8px" />
+						<div style="height:12px" />
 						{#each Object.entries(deals) as [id, deal]}
 							<AgreementChain {conversation} {deal} {id} />
 						{/each}
