@@ -46,7 +46,7 @@
 </script>
 
 <main
-	class={`${card.type === 'employer' ? 'img-right' : 'img-left'}`}
+	class={`${index % 2 == 0 ? 'img-right' : 'img-left'}`}
 	in:fly={{ y: 80, delay: 50 + _index * 150, duration: 1000, easing: quintOut }}
 	out:fade={{ duration: 50 }}
 >
@@ -76,6 +76,7 @@
 				<p class="feature">{card.feature2}</p>
 			</div>
 		</div>
+		<div style="height:12px" />
 		<a href="/jobs" class="cta">{card.buttontext}</a>
 	</div>
 	<div class="img-container">
@@ -107,7 +108,6 @@
 	.icon {
 		height: 32px;
 		width: 32px;
-		margin-top: 8px;
 	}
 	.title {
 		max-width: 320px;
@@ -191,7 +191,7 @@
 		font-weight: 600;
 		font-size: 24px;
 		line-height: 32px;
-		inline-size: 400px;
+		inline-size: 320px;
 		overflow-wrap: break-word;
 	}
 	.description-container {
@@ -210,9 +210,9 @@
 	.feature {
 		font-family: 'DM Mono';
 		font-weight: 400;
-		font-size: 16px;
-		line-height: 24px;
-		color: var(--color-light);
+		font-size: 14px;
+		line-height: 20px;
+		color: var(--color-light-80);
 		text-transform: none;
 		width: 100%;
 		max-width: 300px;

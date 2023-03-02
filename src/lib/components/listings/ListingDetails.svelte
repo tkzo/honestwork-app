@@ -863,16 +863,6 @@
 		width: 100%;
 		height: 100%;
 	}
-	textarea {
-		width: 100%;
-		height: 100%;
-		border-width: 1px;
-		border-style: solid;
-		border-color: var(--color-light-20);
-		box-sizing: border-box;
-		padding: 8px;
-		resize: none;
-	}
 	.tags {
 		width: calc(100% - 100px);
 		display: flex;

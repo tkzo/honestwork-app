@@ -19,7 +19,7 @@
 	let trimmed_description: string;
 	let feedHeight = 0;
 
-	$: if (browser) feedHeight = window.innerHeight - 136;
+	$: if (browser) feedHeight = window.innerHeight - 154;
 	$: if (skill && browser) {
 		nft_image = '';
 		resetState();
@@ -118,7 +118,6 @@
 				</div>
 				<div style="height:12px;" />
 				{@html trimmed_description}
-
 				<div style="height:12px;" />
 				<div class="links">
 					{#each skill.links.filter((n) => n != '') as link}
@@ -208,12 +207,6 @@
 	}
 	.right-gallery-button:hover p {
 		color: var(--color-dark);
-	}
-	.description {
-		border-width: 1px 1px 1px 1px;
-		border-style: solid;
-		border-color: var(--color-light-20);
-		padding: 12px;
 	}
 	.link-container {
 		display: flex;

@@ -861,9 +861,9 @@
 	.input-field {
 		display: flex;
 		flex-direction: row;
-		/* min-width: 320px; */
 		justify-content: flex-start;
 		position: relative;
+		background-color: var(--color-dark);
 	}
 	.placeholder {
 		height: 32px;
@@ -912,6 +912,7 @@
 	.flex-input {
 		height: 32px;
 		flex: 1;
+		background-color: var(--color-dark);
 	}
 	.error {
 		border-color: var(--color-error);

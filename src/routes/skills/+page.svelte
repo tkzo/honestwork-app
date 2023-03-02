@@ -25,7 +25,7 @@
 	let chosen_sorting_option = 0;
 
 	let feedHeight = 0;
-	$: if (browser) feedHeight = window.innerHeight - 148;
+	$: if (browser) feedHeight = window.innerHeight - 147;
 	$: filteredSkills =
 		search_input != ''
 			? fuzzy
@@ -68,6 +68,7 @@
 	<meta name="description" content="HonestWork Skills Page" />
 </svelte:head>
 
+<div style="height:16px" />
 <main>
 	<div class="feed">
 		<div

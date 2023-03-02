@@ -202,11 +202,6 @@
 		flex-direction: column;
 		justify-content: center;
 	}
-	.ens-loader {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
 	.button {
 		display: flex;
 		flex-direction: row;

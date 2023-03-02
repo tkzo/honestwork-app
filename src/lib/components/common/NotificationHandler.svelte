@@ -14,20 +14,16 @@
 	>
 {:else if $page.route.id == '/jobs' || $page.route.id == '/skills' || $page.route.id == '/listings'}
 	<Notification notification={notifications.mint} on:click={() => goto('/mint')} />
-	<div style="height:16px;" />
 {:else if $page.route.id == '/new_job' || $page.route.id == '/messages' || $page.route.id == '/auth' || trimmedRoute == 'job' || trimmedRoute == 'creator'}
 	<a href={`${base}/mint`}>
 		<Notification notification={notifications.mint} />
 	</a>
-	<div style="height:16px;" />
 {:else if $page.route.id == '/profile'}
 	<a href={`${base}/mint`}>
 		<Notification notification={notifications.upgrade} />
 	</a>
-	<div style="height:16px;" />
 {:else if $page.route.id == '/mint'}
 	<a href="https://forms.gle/T1ngCzLwtYHx1ZGt9" target="_blank" rel="noreferrer">
 		<Notification notification={notifications.invitation} />
 	</a>
-	<div style="height:16px;" />
 {/if}

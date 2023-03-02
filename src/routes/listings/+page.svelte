@@ -16,7 +16,7 @@
 	let feedHeight = 0;
 
 	$: if (browser) {
-		feedHeight = window.innerHeight - 112;
+		feedHeight = window.innerHeight - 114;
 	}
 
 	onMount(() => {
@@ -37,6 +37,7 @@
 	<meta name="description" content="HonestWork Jobs Page" />
 </svelte:head>
 
+<div style="height: 16px" />
 <main>
 	<div class="feed" style={`height:${feedHeight + 32}px`}>
 		<div class="wrapper">

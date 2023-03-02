@@ -20,7 +20,7 @@
 	let trimmed_description: string;
 
 	let feedHeight = 0;
-	$: if (browser) feedHeight = window.innerHeight - 200;
+	$: if (browser) feedHeight = window.innerHeight - 233;
 	$: if (job && browser) {
 		if (job.tokens_accepted) {
 			chosen_network = job.tokens_accepted[0].id;

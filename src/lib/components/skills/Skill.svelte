@@ -226,9 +226,6 @@
 	.tag:hover p {
 		color: var(--color-dark);
 	}
-	.tag:hover span {
-		color: var(--color-dark);
-	}
 	.actions {
 		display: flex;
 		flex-direction: row;

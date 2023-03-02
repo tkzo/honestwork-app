@@ -1,6 +1,3 @@
-<script lang="ts">
-</script>
-
 <div class="container">
 	<div class="benefits-card">
 		<img src="icons/landing/sale.svg" alt="Sale icon" class="icon" />

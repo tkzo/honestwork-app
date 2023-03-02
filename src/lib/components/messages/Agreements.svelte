@@ -113,7 +113,6 @@
 								<div style="height:24px" />
 							{/if}
 						{/each}
-
 						{#each deals.creator_deals as deal, j}
 							{#if deal.status == 'offered' || deal.status == 'accepted'}
 								<AgreementDB {conversation} role={'creator'} {deal} slot={j} />

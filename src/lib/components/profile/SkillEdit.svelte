@@ -29,7 +29,6 @@
 	let file_url_5: string;
 	let file_url_6: string;
 	let file_url_7: string;
-	let myTextarea: HTMLTextAreaElement;
 	let image_url: string;
 	let image_url_0: string = skill.image_urls[0];
 	let image_url_1: string = skill.image_urls[1];
@@ -553,10 +552,6 @@
 		border-color: var(--color-light-20);
 		box-sizing: border-box;
 		padding: 8px;
-	}
-	textarea {
-		width: 100%;
-		resize: none;
 	}
 	.description {
 		position: relative;

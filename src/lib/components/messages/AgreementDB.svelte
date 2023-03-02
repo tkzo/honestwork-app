@@ -36,7 +36,6 @@
 		await approve(ethers.utils.parseEther(deal.total_amount));
 		try {
 			const Payment = new ethers.Contract(env.PUBLIC_ESCROW_ADDRESS!, escrow_abi, $networkSigner);
-
 			const tx = await Payment.createDealSignature(
 				$userAddress,
 				conversation.peerAddress,
