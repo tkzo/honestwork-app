@@ -52,6 +52,7 @@
 		"pace-js": "^1.2.4",
 		"svelte-clipboard": "^1.0.0",
 		"svelte-file-dropzone": "^1.0.0",
+		"svelte-inview": "^3.0.4",
 		"svelte-lazy": "^1.1.0",
 		"svelte-loading-skeleton": "^1.0.1",
 		"svelte-loading-spinners": "^0.3.4",

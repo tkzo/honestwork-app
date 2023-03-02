@@ -1,75 +1,28 @@
 <script lang="ts">
-	import { quintOut } from 'svelte/easing';
-	import { fade, fly } from 'svelte/transition';
-	import { employersFeatureCards, freelancersFeatureCards } from '$lib/stores/Constants';
-	let employer = true;
+	import { featureCards } from '$lib/stores/Constants';
+	import FeatureCard from './FeatureCard.svelte';
+	let chosen_tab: 'employer' | 'freelancer' = 'employer';
 </script>
 
 <div class="buttons-container">
 	<div class="line" />
-	<button on:click={() => (employer = true)} class={employer ? 'selected button' : 'button'}
-		>Employers</button
+	<button
+		on:click={() => (chosen_tab = 'employer')}
+		class={chosen_tab == 'employer' ? 'selected button' : 'button'}>Employers</button
 	>
-	<button on:click={() => (employer = false)} class={!employer ? 'selected button' : 'button'}
-		>Freelancers</button
+	<button
+		on:click={() => (chosen_tab = 'freelancer')}
+		class={chosen_tab != 'employer' ? 'selected button' : 'button'}>Freelancers</button
 	>
 	<div class="line" />
 </div>
 <div style="height: 100px;" />
 <div class="container">
-	{#if employer}
-		{#each employersFeatureCards as card, index}
-			<div
-				class="features-card {index % 2 == 0 ? 'img-right' : 'img-left'}"
-				in:fly={{ y: 200, delay: 200, duration: 2000, easing: quintOut }}
-				out:fade={{ duration: 400, delay: 100 }}
-			>
-				<div class="info">
-					<h3 class="title">{card.title}</h3>
-					<div class="description-container">
-						<div class="description">
-							<img src={card.icon1} alt={card.icon1alt} class="icon" />
-							<p class="feature">{card.feature1}</p>
-						</div>
-						<div class="description">
-							<img src={card.icon2} alt={card.icon2alt} class="icon" />
-							<p class="feature">{card.feature2}</p>
-						</div>
-					</div>
-					<!-- <a href="/jobs" class="cta">{card.buttontext}</a> -->
-				</div>
-				<div class="img-container">
-					<img src={card.imgsrc} alt={card.imgalt} class="featured-image" />
-				</div>
-			</div>
-		{/each}
-	{:else}
-		{#each freelancersFeatureCards as card, index}
-			<div
-				class="features-card {index % 2 == 0 ? 'img-right' : 'img-left'}"
-				in:fly={{ y: 200, delay: 200, duration: 2000, easing: quintOut }}
-				out:fade={{ duration: 400, delay: 100 }}
-			>
-				<div class="info">
-					<h3 class="title">{card.title}</h3>
-					<div class="description-container">
-						<div class="description">
-							<img src={card.icon1} alt={card.icon1alt} class="icon" />
-							<p class="feature">{card.feature1}</p>
-						</div>
-						<div class="description">
-							<img src={card.icon2} alt={card.icon2alt} class="icon" />
-							<p class="feature">{card.feature2}</p>
-						</div>
-					</div>
-					<!-- <a href="/jobs" class="cta">{card.buttontext}</a> -->
-				</div>
-				<div class="img-container">
-					<img src={card.imgsrc} alt={card.imgalt} class="featured-image" />
-				</div>
-			</div>
-		{/each}
-	{/if}
+	{#each featureCards as card, index}
+		{#if chosen_tab == card.type}
+			<FeatureCard {card} {index} />
+		{/if}
+	{/each}
 </div>
 
 <style>
@@ -124,14 +77,17 @@
 		margin-top: 8px;
 	}
 	.title {
+		max-width: 400px;
 		text-transform: uppercase;
 		color: var(--color-primary);
 		margin: 0;
 		font-family: 'Proto Mono';
 		font-style: normal;
 		font-weight: 600;
-		font-size: 28px;
-		line-height: 40px;
+		font-size: 24px;
+		line-height: 32px;
+		inline-size: 400px;
+		overflow-wrap: break-word;
 	}
 	.description-container {
 		display: flex;

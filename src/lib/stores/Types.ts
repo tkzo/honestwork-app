@@ -7,6 +7,7 @@ export type FAQCard = {
 };
 
 export type FeatureCard = {
+	type: string;
 	title: string;
 	icon1: string;
 	icon1alt: string;
