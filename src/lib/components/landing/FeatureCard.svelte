@@ -76,8 +76,8 @@
 				<p class="feature">{card.feature2}</p>
 			</div>
 		</div>
-		<div style="height:12px" />
-		<a href="/jobs" class="cta">{card.buttontext}</a>
+		<!-- <div style="height:12px" />
+		<a href="/jobs" class="cta">{card.buttontext}</a> -->
 	</div>
 	<div class="img-container">
 		<img src={card.imgsrc} alt={card.imgalt} class="featured-image" />

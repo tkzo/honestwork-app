@@ -62,18 +62,25 @@
 						</a>
 					</div>
 					<div style="height: 64px;" />
-					<div class="imgs-container">
+					<div class="desktop-iframe">
 						<iframe
 							width="960"
 							height="540"
 							src="https://www.youtube.com/embed/re8Ac9jpup0?controls=0"
 							title="YouTube video player"
 							frameborder="0"
-							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-							allowfullscreen
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
 						/>
-						<!-- <img src="{`${assets}/assets/landing/hw.webp`} " alt="HonestWork" class="app-img" />
-						<img src="{`${assets}/assets/landing/deer.png`} " alt="HonestWork" class="deer" /> -->
+					</div>
+					<div class="mobile-iframe">
+						<iframe
+							width="320"
+							height="180"
+							src="https://www.youtube.com/embed/re8Ac9jpup0?controls=0"
+							title="YouTube video player"
+							frameborder="0"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+						/>
 					</div>
 				</div>
 			</div>
@@ -242,14 +249,6 @@
 	.icon:hover {
 		opacity: 1;
 	}
-	.imgs-container {
-		position: relative;
-		top: 0;
-		left: 0;
-		width: 80vw;
-		max-width: 960px;
-		/* filter: drop-shadow(0px 0px 150px rgba(255, 211, 105, 0.1)); */
-	}
 	@media (max-width: 720px) {
 		.header {
 			max-width: 80vw;
@@ -265,6 +264,29 @@
 		}
 		.about {
 			font-size: 14px;
+		}
+	}
+	.desktop-iframe {
+		position: relative;
+		top: 0;
+		left: 0;
+		width: 80vw;
+		max-width: 960px;
+	}
+	.mobile-iframe {
+		display: none;
+		position: relative;
+		top: 0;
+		left: 0;
+		width: 80vw;
+		max-width: 960px;
+	}
+	@media (max-width: 550px) {
+		.mobile-iframe {
+			display: block;
+		}
+		.desktop-iframe {
+			display: none;
 		}
 	}
 </style>
