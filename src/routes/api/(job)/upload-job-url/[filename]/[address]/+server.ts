@@ -22,9 +22,10 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 	const hwapiUrl = `${apiUrl}/jobs/${params.address}`;
 	const response = await fetch(hwapiUrl, {
 		method: 'GET',
-		headers: {
+		headers: new Headers({
+			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
 			'Content-Type': 'application/json'
-		}
+		})
 	});
 	let jobs = await response.json();
 	if (jobs == null) {

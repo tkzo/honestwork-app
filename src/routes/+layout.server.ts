@@ -9,7 +9,13 @@ const apiUrl =
 
 export const load = (async ({ cookies, fetch }) => {
 	const config_url = `${base}/api/config`;
-	let config_response = await fetch(config_url);
+	let config_response = await fetch(config_url, {
+		method: 'GET',
+		headers: new Headers({
+			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
+			'Content-Type': 'application/json'
+		})
+	});
 	let config_data: APIConfig = await config_response.json();
 	// console.log('Config data with type:', config_data);
 

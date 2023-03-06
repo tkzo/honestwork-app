@@ -20,7 +20,7 @@
 	</div>
 	<div class="description">
 		<div class="body-text light-60">
-			{parseContent(skill.description).chars.slice(0, 160) + '...'}
+			{parseContent(skill.description).slice(0, 160) + '...'}
 		</div>
 	</div>
 	<div class="tag-bar">
@@ -69,15 +69,15 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		padding: 8px 12px;
+		padding: 8px;
 		box-sizing: border-box;
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
 		border-color: var(--color-light-20);
 	}
 	.preview-image {
-		height: 115px;
-		width: 115px;
+		height: 90px;
+		width: 120px;
 	}
 	.description {
 		padding: 8px 12px;

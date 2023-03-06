@@ -27,6 +27,7 @@
 	<meta name="description" content="HonestWork Skills Page" />
 </svelte:head>
 
+<div style="height: 16px" />
 <main>
 	<CreatorCard {user} {addr} />
 	<div style="width: 12px" />

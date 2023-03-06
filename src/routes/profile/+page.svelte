@@ -80,7 +80,6 @@
 	let title_input_length: number;
 	let title_input_limit = 50;
 	let bio_element: HTMLTextAreaElement;
-	let bio_length: number;
 	let bio_limit = 2000;
 	let infobox_marginleft = '532px';
 	let feedHeight = 0;
@@ -94,7 +93,6 @@
 		await getNft();
 		getWatchlist();
 		getFavorites();
-		//todo: move to layout
 		updateInputLengths();
 	});
 
@@ -311,14 +309,13 @@
 			: data.user.username.length;
 
 		title_input_length = title_input_element?.value.length ?? data.user.title.length;
-		bio_length = bio_element?.value.length ?? data.user.bio.length;
 	};
 	const handleTagsUpdate = (e: any) => {
 		tags = e.detail.tags;
 	};
 	const handleContentInput = (e: any) => {
-		content = e.detail.content;
-		total_chars = parseContent(e.detail.content).total_chars;
+		content = JSON.stringify(e.detail.content);
+		total_chars = parseContent(content).length;
 	};
 </script>
 
@@ -334,6 +331,7 @@
 		style={`width:100%; height:${feedHeight.toString() + 'px'}`}
 	>
 		<div bind:this={contents} class="contents">
+			<div style="height:16px" />
 			{#if $userAddress.toLowerCase() == data.user.address.toLowerCase() && $userState > 0}
 				{#if chosenTab == 'profile'}
 					<form
@@ -659,7 +657,7 @@
 							<p class="chars light-60"><span class="yellow">{total_chars}</span>/{bio_limit}</p>
 						</div>
 						<div class="bio">
-							<Tiptap on:content={handleContentInput} content={data.user.bio} />
+							<Tiptap on:content={handleContentInput} content={JSON.parse(data.user.bio)} />
 						</div>
 					</form>
 				{:else if chosenTab == 'skills'}

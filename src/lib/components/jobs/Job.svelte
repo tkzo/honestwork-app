@@ -6,6 +6,7 @@
 	import { parseContent } from '$lib/stores/Parser';
 	import { base } from '$app/paths';
 	import { onMount } from 'svelte';
+	import { stringify } from 'querystring';
 
 	export let chosen: boolean;
 	export let job: JobType;
@@ -68,7 +69,7 @@
 		<div style="width:12px;" />
 		<div class="content">
 			<div class="body-text light-60">
-				{parseContent(job.description).chars.slice(0, 160) + '...'}
+				{parseContent(job.description)}
 			</div>
 			<div style="height: 16px" />
 			<div class="hashtags">

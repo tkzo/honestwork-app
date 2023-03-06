@@ -55,7 +55,6 @@
 			await fetchConversations();
 			if (chosen_tab == 'messages') {
 				scroll('auto');
-				console.log('SCROLLING');
 			}
 		}
 	});
@@ -71,7 +70,6 @@
 	let inboxHeight = 0;
 
 	$: if (browser) {
-		console.log('ADJUSTING');
 		feedHeight = window.innerHeight - 197;
 		inboxHeight = window.innerHeight - 128;
 	}
@@ -87,7 +85,6 @@
 	};
 	const scroll = (behavior: any) => {
 		if (viewport_inbox && contents_inbox) {
-			console.log('Scrolling to ', contents_inbox.clientHeight, ' with behavior ', behavior);
 			viewport_inbox.scroll({ top: contents_inbox.clientHeight, behavior: behavior });
 		}
 	};

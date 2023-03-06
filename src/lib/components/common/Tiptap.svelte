@@ -6,9 +6,9 @@
 	import { createEventDispatcher } from 'svelte';
 
 	let editor: Readable<Editor>;
-
 	const dispatch = createEventDispatcher();
 
+	export let editable = true;
 	export let content = `<h4>Example Heading</h4>
           <p>Hey, try to select some text here. There will popup a menu for selecting some inline styles.
              Remember: you have full control about content and styling of this menu..</p><ul><p>Some list item..</p></ul>
@@ -17,18 +17,21 @@
 	onMount(() => {
 		editor = createEditor({
 			extensions: [StarterKit],
-			content: content
+			content: content,
+			editable: editable
+		});
+		$editor.on('update', () => {
+			dispatch('content', {
+				content: $editor.getJSON()
+			});
+		});
+		$editor.on('create', () => {
+			dispatch('content', {
+				content: $editor.getJSON()
+			});
 		});
 	});
-	$: if ($editor && $editor.contentElement) emitInput();
 
-	const emitInput = () => {
-		if ($editor && $editor.contentElement) {
-			dispatch('content', {
-				content: $editor.contentElement.innerHTML
-			});
-		}
-	};
 	const toggleBold = () => {
 		$editor.chain().focus().toggleBold().run();
 	};

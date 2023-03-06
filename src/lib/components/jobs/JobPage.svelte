@@ -8,6 +8,7 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import { base, assets } from '$app/paths';
 	import { page } from '$app/stores';
+	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	//@ts-ignore
 	import Clipboard from 'svelte-clipboard';
 
@@ -17,7 +18,6 @@
 	let viewport: Element;
 	let contents: Element;
 	let chosen_network: number;
-	let trimmed_description: string;
 
 	let feedHeight = 0;
 	$: if (browser) feedHeight = window.innerHeight - 233;
@@ -25,12 +25,6 @@
 		if (job.tokens_accepted) {
 			chosen_network = job.tokens_accepted[0].id;
 		}
-	}
-	$: if (job && job.description) {
-		trimmed_description = job.description.replace(
-			'contenteditable="true"',
-			'contenteditable="false"'
-		);
 	}
 
 	const getChainName = (chain_id: number) => {
@@ -94,6 +88,7 @@
 	};
 </script>
 
+<div style="height:16px" />
 <main>
 	<div class="profile-bar">
 		<div class="left-section">
@@ -161,7 +156,7 @@
 				{:else}
 					<div style="height:12px;" />
 				{/if}
-				{@html trimmed_description}
+				<Tiptap content={JSON.parse(job.description)} editable={false} />
 				<div style="height:12px;" />
 				<div class="payment-container">
 					{#if job.tokens_accepted && job.tokens_accepted.length > 0}

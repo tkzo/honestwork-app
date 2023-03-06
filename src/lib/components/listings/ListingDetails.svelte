@@ -224,8 +224,8 @@
 		return t ? true : false;
 	};
 	const handleContentInput = (e: any) => {
-		content = e.detail.content;
-		total_chars = parseContent(e.detail.content).total_chars;
+		content = JSON.stringify(e.detail.content);
+		total_chars = parseContent(content).length;
 	};
 </script>
 
@@ -474,7 +474,11 @@
 									</p>
 								</div>
 								<div class="description">
-									<Tiptap on:content={handleContentInput} content={job.description} />
+									<Tiptap
+										on:content={handleContentInput}
+										content={JSON.parse(job.description)}
+										editable={true}
+									/>
 								</div>
 								<div style="height:24px" />
 								{#each new Array(3) as _, i}

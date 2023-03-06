@@ -2,6 +2,7 @@ import { assets } from '$app/paths';
 import type { FAQCard } from '$lib/stores/Types';
 import type { FeatureCard, APIConfig } from '$lib/stores/Types';
 import { writable } from 'svelte/store';
+import { env } from '$env/dynamic/public';
 
 export let api_config = writable();
 
@@ -129,15 +130,16 @@ export let featureCards: FeatureCard[] = [
 
 export let placeholder_image = `${assets}/assets/xcopy.gif`;
 
+// todo: fetch dynamically on network store
 export const chains = [
 	{
 		name: 'binance',
 		id: 56,
 		tokens: [
 			{
-				name: 'BUSD',
-				symbol: 'BUSD',
-				address: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
+				name: 'MOCK',
+				symbol: 'MOCK',
+				address: env.PUBLIC_BINANCE_MOCK_TOKEN_ADDRESS,
 				max_allowed: '100000000000000000000000'
 			}
 		],

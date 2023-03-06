@@ -43,8 +43,8 @@
 		}
 	};
 	const handleContentInput = (e: any) => {
-		content = e.detail.content;
-		total_chars = parseContent(e.detail.content).total_chars;
+		content = JSON.stringify(e.detail.content);
+		total_chars = parseContent(content).length;
 	};
 </script>
 
@@ -53,6 +53,7 @@
 	<meta name="description" content="HonestWork Job Page" />
 </svelte:head>
 
+<div style="height:16px" />
 <main>
 	<JobPage job={data.job} show_tags={true} />
 	<div style="width:12px" />
@@ -68,7 +69,7 @@
 		</div>
 		<div style="height:8px" />
 		<div class="description">
-			<Tiptap on:content={handleContentInput} {content} />
+			<Tiptap on:content={handleContentInput} editable={true} />
 		</div>
 	</div>
 </main>

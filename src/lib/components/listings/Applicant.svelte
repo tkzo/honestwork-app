@@ -1,14 +1,13 @@
 <script lang="ts">
 	import type { ApplicantType, UserType } from '$lib/stores/Types';
-	import { userConnected, userAddress } from '$lib/stores/Network';
+	import { userConnected } from '$lib/stores/Network';
 	import { placeholder_image } from '$lib/stores/Constants';
-	import { slide } from 'svelte/transition';
-	import { expoOut } from 'svelte/easing';
 	import { base, assets } from '$app/paths';
 	import { toast } from '@zerodevx/svelte-toast';
 	import { goto } from '$app/navigation';
 	import { new_conversation_metadata } from '$lib/stores/State';
 	import { browser } from '$app/environment';
+	import Tiptap from '$lib/components/common/Tiptap.svelte';
 
 	export let applicant: ApplicantType;
 
@@ -23,21 +22,14 @@
 		if (user.show_nft) getNft();
 	};
 
-	let fetching_image = false;
 	let nft_image: string | null = null;
 	let drawer_open = false;
-
-	$: trimmed_description = applicant.cover_letter.replace(
-		'contenteditable="true"',
-		'contenteditable="false"'
-	);
 
 	const fetchUser = async () => {
 		const response = await fetch(`/api/user/${applicant.user_address}`);
 		user = await response.json();
 	};
 	const getNft = async () => {
-		fetching_image = true;
 		if (user.nft_address && user.nft_id) {
 			try {
 				const response = await fetch(`api/alchemy/${user.nft_address}/${user.nft_id}`);
@@ -49,7 +41,6 @@
 				console.log(err);
 			}
 		}
-		fetching_image = false;
 	};
 	const getRating = async () => {
 		if (browser) {
@@ -147,9 +138,11 @@
 			</div>
 		</div>
 		{#if drawer_open}
-			<div class="drawer_container" in:slide={{ duration: 500, easing: expoOut }}>
+			<div class="drawer_container">
 				<div class="bio">
-					<div class="body-text light-80">{@html trimmed_description}</div>
+					<div class="body-text light-80">
+						<Tiptap content={JSON.parse(applicant.cover_letter)} editable={false} />
+					</div>
 				</div>
 				{#each user.links as link, i}
 					<a class="item" href={link} target="_blank" rel="noreferrer">

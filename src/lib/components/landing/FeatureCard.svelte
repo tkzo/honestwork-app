@@ -15,12 +15,10 @@
 	let isInView;
 
 	$: _index = card.type === 'employer' ? index : index - 3;
-	$: console.log('Index:', index, '_Index:', _index);
 
 	const handleChange = ({ detail }: CustomEvent<ObserverEventDetails>) =>
 		(isInView = detail.inView);
 	const runx = (event: any) => {
-		console.log('Running');
 		iteration = 0;
 		if (event.target.innerText === event.target.getAttribute('data-text')) {
 			clearInterval(interval);

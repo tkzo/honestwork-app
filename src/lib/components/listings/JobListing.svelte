@@ -9,7 +9,6 @@
 	export let job: JobType;
 
 	let hashtags = job.tags;
-	let trimmed_description: string;
 
 	// todo: inline this
 	$: infos = [
@@ -28,12 +27,6 @@
 	];
 
 	$: humandate = new Date(job.created_at).toLocaleDateString();
-	$: if (job && job.description) {
-		trimmed_description = job.description.replace(
-			'contenteditable="true"',
-			'contenteditable="false"'
-		);
-	}
 </script>
 
 <section class={chosen ? 'chosen' : ''}>
@@ -62,7 +55,7 @@
 		<div style="width:12px;" />
 		<div class="content">
 			<div class="body-text light-60">
-				{parseContent(job.description).chars.slice(0, 160) + '...'}
+				{parseContent(job.description).slice(0, 160) + '...'}
 			</div>
 			<div style="height: 16px" />
 			<div class="hashtags">

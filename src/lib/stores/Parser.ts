@@ -1,41 +1,30 @@
-export const parseContent = (content: string) => {
-	let total_chars = 0;
-	let c = content;
-	let ps = c.split('<p>');
-	for (let i = 0; i < ps.length; i++) {
-		if (ps[i].includes('</p>')) {
-			ps[i] = ps[i].split('</p>')[0];
-		}
-		if (ps[i].includes('<em>')) {
-			ps[i] = ps[i].replace('<em>', '');
-		}
-		if (ps[i].includes('</em>')) {
-			ps[i] = ps[i].replace('</em>', '');
-		}
-		if (ps[i].includes('<strong>')) {
-			ps[i] = ps[i].replace('<strong>', '');
-		}
-		if (ps[i].includes('</strong>')) {
-			ps[i] = ps[i].replace('</strong>', '');
+export const parseContent = (contents: any) => {
+	let parsed_content: string = '';
+	let json_contents = JSON.parse(contents);
+	let content = json_contents.content;
+	for (let i = 0; i < content.length; i++) {
+		if (content[i].type === 'paragraph' || content[i].type === 'heading') {
+			if (content[i].content) {
+				parsed_content += content[i].content[0].text + ' ';
+			}
+		} else if (content[i].type === 'bulletList') {
+			parsed_content += parseListItems(content[i].content) + ' ';
 		}
 	}
-	ps.shift();
-	let h4s = c.split('<h4>');
-	for (let i = 0; i < h4s.length; i++) {
-		if (h4s[i].includes('</h4>')) {
-			h4s[i] = h4s[i].split('</h4>')[0];
+	return parsed_content;
+};
+
+const parseListItems = (listItems: any) => {
+	let parsed_items: string = '';
+	for (let i = 0; i < listItems.length; i++) {
+		for (let j = 0; j < listItems[i].content.length; j++) {
+			if (listItems[i].content[j].type === 'paragraph') {
+				if (listItems[i].content[j].content)
+					parsed_items += listItems[i].content[j].content[0].text;
+			} else if (listItems[i].content[j].type === 'listItem') {
+				parsed_items += parseListItems(listItems[i].content[j].content);
+			}
 		}
 	}
-	h4s.shift();
-	for (let i = 0; i < ps.length; i++) {
-		total_chars += ps[i].length;
-	}
-	for (let i = 0; i < h4s.length; i++) {
-		total_chars += h4s[i].length;
-	}
-	let chars: string = '';
-	for (let i = 0; i < ps.length; i++) {
-		chars += ps[i] + '...';
-	}
-	return { total_chars: total_chars, chars: chars };
+	return parsed_items;
 };

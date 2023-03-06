@@ -6,6 +6,7 @@
 	import { browser } from '$app/environment';
 	import { base, assets } from '$app/paths';
 	import { placeholder_image } from '$lib/stores/Constants';
+	import Tiptap from '$lib/components/common/Tiptap.svelte';
 
 	export let skill: SkillType;
 
@@ -117,7 +118,7 @@
 					</div>
 				</div>
 				<div style="height:12px;" />
-				{@html trimmed_description}
+				<Tiptap content={JSON.parse(trimmed_description)} editable={false} />
 				<div style="height:12px;" />
 				<div class="links">
 					{#each skill.links.filter((n) => n != '') as link}

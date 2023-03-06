@@ -1,25 +1,16 @@
 <script lang="ts">
 	import type { SkillType } from '$lib/stores/Types';
-	import { Svrollbar } from 'svrollbar';
 	import { browser } from '$app/environment';
+	import { parseContent } from '$lib/stores/Parser';
 
 	export let skill: SkillType;
 
 	let chosen_image: number = 0;
 
-	let feedHeight = 0;
 	$: if (skill && browser) {
 		resetState();
 	}
 	$: trimmed_images = skill.image_urls.filter((url: string) => url !== '');
-
-	let trimmed_description: string;
-	$: if (skill.description) {
-		trimmed_description = skill.description.replace(
-			'contenteditable="true"',
-			'contenteditable="false"'
-		);
-	}
 
 	const nextImage = () => {
 		if (chosen_image < trimmed_images.length - 1) {
@@ -60,8 +51,8 @@
 		{/each}
 	</div>
 	<div class="description">
-		<div class="body-text light-80">
-			{@html trimmed_description}
+		<div class="body-text light-60">
+			{parseContent(skill.description)}
 		</div>
 	</div>
 	<div style="height:12px;" />

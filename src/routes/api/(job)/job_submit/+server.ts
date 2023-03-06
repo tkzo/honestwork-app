@@ -3,7 +3,6 @@ import { env } from '$env/dynamic/private';
 
 export const POST: RequestHandler = async ({ request }) => {
 	let data = await request.json();
-
 	const apiUrl =
 		parseInt(env.PRODUCTION_ENV) == 1
 			? env.PRIVATE_HONESTWORK_API
@@ -11,9 +10,10 @@ export const POST: RequestHandler = async ({ request }) => {
 	const hwapiUrl = `${apiUrl}/jobs/${data.user_address}`;
 	const jobs_response = await fetch(hwapiUrl, {
 		method: 'GET',
-		headers: {
+		headers: new Headers({
+			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
 			'Content-Type': 'application/json'
-		}
+		})
 	});
 	const jobs = await jobs_response.json();
 	const index = jobs != null ? jobs.length : 0;
@@ -52,7 +52,6 @@ export const POST: RequestHandler = async ({ request }) => {
 			'Content-Type': 'application/json'
 		}
 	};
-
 	let response = await fetch(url, options);
 	return response;
 };

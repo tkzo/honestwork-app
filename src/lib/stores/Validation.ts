@@ -4,6 +4,7 @@ import { ethers } from 'ethers';
 import { chains } from '$lib/stores/Constants';
 
 // todo: multichain support
+// todo: initialize with dynamic config values from api
 const tokens = chains[0].tokens;
 
 export const JobInput = z.object({
@@ -11,12 +12,12 @@ export const JobInput = z.object({
 	user_address: z.string().refine((val) => ethers.utils.isAddress(val), {
 		message: 'Invalid address'
 	}),
-	token_paid: z.string().refine((val) => tokens.find((t) => t.address == val) == undefined),
+	token_paid: z.string().refine((val) => tokens.find((t) => t.address == val) != undefined),
 	title: z.string().min(5).max(50),
 	description: z
 		.string()
-		.refine((val) => 2000 >= parseContent(val).total_chars && parseContent(val).total_chars >= 200),
-	tags: z.string().url().array().min(1).max(3),
+		.refine((val) => 2000 >= parseContent(val).length && parseContent(val).length >= 200),
+	tags: z.string().array().min(1).max(3),
 	links: z.string().url().array().min(1).max(3),
 	budget: z
 		.string()
@@ -30,17 +31,6 @@ export const JobInput = z.object({
 				message: 'Wrong amount'
 			}
 		), // todo: bigInt
-	installments: z
-		.string()
-		.refine((val) => !Number.isNaN(parseInt(val, 10)), {
-			message: 'Expected number, received a string'
-		})
-		.refine(
-			(val) => !Number.isNaN(parseInt(val, 10)) && parseInt(val, 10) > 2 && parseInt(val, 10) < 5,
-			{
-				message: 'Wrong amount'
-			}
-		),
 	timezone: z.enum([
 		'UTC+0',
 		'UTC+1',
@@ -73,7 +63,7 @@ export const JobInput = z.object({
 			id: z.number(),
 			tokens: z
 				.object({
-					address: z.string().refine((val) => tokens.find((t) => t.address == val) == undefined)
+					address: z.string().refine((val) => tokens.find((t) => t.address == val) != undefined)
 				})
 				.array()
 		})
@@ -102,7 +92,7 @@ export const ProfileInput = z.object({
 	email: z.string().email(),
 	bio: z
 		.string()
-		.refine((val) => 2000 >= parseContent(val).total_chars && parseContent(val).total_chars >= 200),
+		.refine((val) => 2000 >= parseContent(val).length && parseContent(val).length >= 200),
 	links: z.string().url().array().min(1).max(3),
 	rating: z.never()
 });
@@ -115,7 +105,7 @@ export const SkillInput = z.object({
 	title: z.string().min(5).max(50),
 	description: z
 		.string()
-		.refine((val) => 2000 >= parseContent(val).total_chars && parseContent(val).total_chars >= 200),
+		.refine((val) => 2000 >= parseContent(val).length && parseContent(val).length >= 200),
 	tags: z.string().url().array().min(1).max(3),
 	links: z.string().url().array().min(1).max(3),
 	image_urls: z.string().url().array().min(1).max(3),
@@ -151,7 +141,7 @@ export const CoverLetterInput = z.object({
 		),
 	cover_letter: z
 		.string()
-		.refine((val) => 2000 >= parseContent(val).total_chars && parseContent(val).total_chars >= 200),
+		.refine((val) => 2000 >= parseContent(val).length && parseContent(val).length >= 200),
 	date: z.never()
 });
 export type CoverLetterInput = z.infer<typeof CoverLetterInput>;

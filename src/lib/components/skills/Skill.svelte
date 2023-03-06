@@ -112,7 +112,7 @@
 				<p>{skill.title}</p>
 				<div style="height:12px" />
 				<div class="body-text light-60">
-					{parseContent(skill.description).chars.slice(0, 140) + '...'}
+					{parseContent(skill.description).slice(0, 140) + '...'}
 				</div>
 			</div>
 			<div class="sub">

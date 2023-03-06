@@ -93,7 +93,9 @@
 			return;
 		}
 		userPublishing = true;
-		const res = await fetch(`/api/auth/login/${$userAddress}`);
+		const res = await fetch(`/api/auth/login/${$userAddress}`, {
+			method: 'POST'
+		});
 		salt = await res.json();
 		jobForm.signature.value = await $networkSigner.signMessage(salt);
 
@@ -121,8 +123,10 @@
 		formObj.timezone = timezone >= 0 ? `UTC+${timezone}` : `UTC${timezone}`;
 		formObj.description = content;
 
-		//todo: consume errors and show them to the user
+		// todo: consume errors and show them to the user
+		console.log('Form:', formObj);
 		let parsed = JobInput.safeParse(formObj);
+
 		if (!parsed.success) {
 			console.log(parsed.error);
 			return;
@@ -131,6 +135,7 @@
 			formObj.image_url = parsed_filename;
 			jobForm.tokens_accepted = JSON.stringify(formObj.tokens_accepted);
 			let stringified = JSON.stringify(formObj);
+			console.log('Form:', formObj);
 			const url = '/api/job_submit';
 			const options = {
 				method: 'POST',
@@ -293,8 +298,8 @@
 		}
 	};
 	const handleContentInput = (e: any) => {
-		content = e.detail.content;
-		total_chars = parseContent(e.detail.content).total_chars;
+		content = JSON.stringify(e.detail.content);
+		total_chars = parseContent(content).length;
 	};
 </script>
 

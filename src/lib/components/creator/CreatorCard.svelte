@@ -9,6 +9,8 @@
 	import { new_conversation_metadata } from '$lib/stores/State';
 	import { goto } from '$app/navigation';
 	import { Svrollbar } from 'svrollbar';
+	import { parseContent } from '$lib/stores/Parser';
+	import Tiptap from '../common/Tiptap.svelte';
 
 	export let user: UserType;
 	export let addr: string;
@@ -21,11 +23,6 @@
 	onMount(() => {
 		if (user.show_nft) getNft();
 	});
-
-	let trimmed_description: string;
-	$: if (user.bio) {
-		trimmed_description = user.bio.replace('contenteditable="true"', 'contenteditable="false"');
-	}
 
 	const getNft = async () => {
 		if (user.nft_address && user.nft_id) {
@@ -143,7 +140,7 @@
 						</div>
 					</div>
 					<div class="bio">
-						<div class="body-text light-80">{@html trimmed_description}</div>
+						<Tiptap content={JSON.parse(user.bio)} editable={false} />
 					</div>
 					{#each user.links as link, i}
 						{#if link != ''}

@@ -137,8 +137,9 @@
 		});
 	};
 	const handleContentInput = (e: any) => {
-		content = e.detail.content;
-		total_chars = parseContent(e.detail.content).total_chars;
+		content = JSON.stringify(e.detail.content);
+		console.log('SKILL CONTENT:', content);
+		total_chars = parseContent(content).length;
 	};
 </script>
 
@@ -465,7 +466,7 @@
 		<p class="chars light-60"><span class="yellow">{total_chars}</span>/{description_chars}</p>
 	</div>
 	<div class="bio">
-		<Tiptap on:content={handleContentInput} content={skill.description} />
+		<Tiptap on:content={handleContentInput} content={JSON.parse(skill.description)} />
 	</div>
 </div>
 
@@ -542,6 +543,7 @@
 	}
 	.flex-input {
 		flex: 1;
+		background-color: var(--color-dark);
 	}
 	.placeholder {
 		height: 32px;
