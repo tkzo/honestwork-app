@@ -17,9 +17,7 @@ export const load = (async ({ cookies, fetch }) => {
 		})
 	});
 	let config_data: APIConfig = await config_response.json();
-	// console.log('Config data with type:', config_data);
-
-	// todo: update all states with api config data
+	// todo: implement config
 
 	const userAddress = cookies.get('honestwork_address');
 	const userSignature = cookies.get('honestwork_signature');
