@@ -30,6 +30,7 @@
 	<meta name="description" content="HonestWork" />
 </svelte:head>
 
+<div style="height: 16px;" />
 <main>
 	{#if ($userConnected && $userState > 0 && !$user_signed_in) || data.address != $userAddress}
 		<section>
