@@ -12,8 +12,12 @@
 	<a href="https://twitter.com/HonestWorkDAO" target="_blank" rel="noreferrer"
 		><Notification notification={notifications.launch} /></a
 	>
-{:else if $page.route.id == '/jobs' || $page.route.id == '/skills' || $page.route.id == '/listings'}
+{:else if $page.route.id == '/skills' || $page.route.id == '/listings'}
 	<Notification notification={notifications.mint} on:click={() => goto('/mint')} />
+{:else if $page.route.id == '/jobs'}
+	<a href={`${base}/new_job`}>
+		<Notification notification={notifications.postjob} />
+	</a>
 {:else if $page.route.id == '/new_job' || $page.route.id == '/messages' || $page.route.id == '/auth' || trimmedRoute == 'job' || trimmedRoute == 'creator'}
 	<a href={`${base}/mint`}>
 		<Notification notification={notifications.mint} />
