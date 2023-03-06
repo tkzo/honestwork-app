@@ -204,7 +204,6 @@
 			bind:value={file_url_0}
 			bind:this={comp_0}
 		/>
-		<input hidden type="text" name="image_url_0" bind:value={image_url_0} />
 		<input hidden type="number" name="image_slot_0" value="0" />
 	</div>
 	<div
@@ -228,7 +227,6 @@
 			bind:value={file_url_1}
 			bind:this={comp_1}
 		/>
-		<input hidden type="text" name="image_url_1" bind:value={image_url_1} />
 		<input hidden type="number" name="image_slot_1" value="1" />
 	</div>
 	<div
@@ -252,7 +250,6 @@
 			bind:value={file_url_2}
 			bind:this={comp_2}
 		/>
-		<input hidden type="text" name="image_url_2" bind:value={image_url_2} />
 		<input hidden type="number" name="image_slot_2" value="2" />
 	</div>
 	<div
@@ -276,7 +273,6 @@
 			bind:value={file_url_3}
 			bind:this={comp_3}
 		/>
-		<input hidden type="text" name="image_url_3" bind:value={image_url_3} />
 		<input hidden type="number" name="image_slot_3" value="3" />
 	</div>
 	<div
@@ -300,7 +296,6 @@
 			bind:value={file_url_4}
 			bind:this={comp_4}
 		/>
-		<input hidden type="text" name="image_url_4" bind:value={image_url_4} />
 		<input hidden type="number" name="image_slot_4" value="4" />
 	</div>
 	<div
@@ -324,7 +319,6 @@
 			bind:value={file_url_5}
 			bind:this={comp_5}
 		/>
-		<input hidden type="text" name="image_url_5" bind:value={image_url_5} />
 		<input hidden type="number" name="image_slot_5" value="5" />
 	</div>
 	<div
@@ -348,7 +342,6 @@
 			bind:value={file_url_6}
 			bind:this={comp_6}
 		/>
-		<input hidden type="text" name="image_url_6" bind:value={image_url_6} />
 		<input hidden type="number" name="image_slot_6" value="6" />
 	</div>
 	<div
@@ -372,7 +365,6 @@
 			bind:value={file_url_7}
 			bind:this={comp_7}
 		/>
-		<input hidden type="text" name="image_url_7" bind:value={image_url_7} />
 		<input hidden type="number" name="image_slot_7" value="7" />
 	</div>
 </section>
