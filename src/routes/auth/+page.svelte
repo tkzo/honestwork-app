@@ -16,7 +16,9 @@
 	let salt: string;
 
 	const getSalt = async () => {
-		const res = await fetch(`/api/auth/login/${$userAddress}`);
+		const res = await fetch(`/api/auth/login/${$userAddress}`, {
+			method: 'POST'
+		});
 		salt = await res.json();
 		myform.signature.value = await $networkSigner.signMessage(salt);
 		myform.submit();

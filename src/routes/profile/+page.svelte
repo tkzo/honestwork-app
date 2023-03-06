@@ -657,7 +657,10 @@
 							<p class="chars light-60"><span class="yellow">{total_chars}</span>/{bio_limit}</p>
 						</div>
 						<div class="bio">
-							<Tiptap on:content={handleContentInput} content={JSON.parse(data.user.bio)} />
+							<Tiptap
+								on:content={handleContentInput}
+								content={data.user.bio != '' ? JSON.parse(data.user.bio) : ''}
+							/>
 						</div>
 					</form>
 				{:else if chosenTab == 'skills'}
