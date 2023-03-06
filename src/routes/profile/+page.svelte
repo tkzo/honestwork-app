@@ -432,7 +432,6 @@
 											infobox_marginleft = '532px';
 										}}
 									/>
-									<input hidden type="text" name="image_url" bind:value={image_url} />
 									<div class="pseudo-file-input-container">
 										<p class="pseudo-file-input">UPLOAD FILE</p>
 									</div>
