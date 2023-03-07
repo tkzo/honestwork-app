@@ -12,7 +12,6 @@
 
 	let viewport: Element;
 	let contents: Element;
-
 	let user: UserType;
 	let chosen_image: number = 0;
 	let nft_image: any;
@@ -111,7 +110,9 @@
 					</div>
 				</div>
 				<div style="height:12px;" />
-				<Tiptap content={JSON.parse(skill.description)} editable={false} />
+				{#key skill.description}
+					<Tiptap content={JSON.parse(skill.description)} editable={false} />
+				{/key}
 				<div style="height:12px;" />
 				<div class="links">
 					{#each skill.links.filter((n) => n != '') as link}
