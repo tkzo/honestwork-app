@@ -88,6 +88,7 @@
 		let allowance = await ERC20.allowance($userAddress, env.PUBLIC_LISTING_ADDRESS!);
 		user_allowance = ethers.utils.formatEther(allowance);
 	};
+	// todo: refactor with a single form reference
 	const handleSubmit = async (e: any) => {
 		if (e.submitter?.id != 'job_post') {
 			return;
@@ -125,7 +126,6 @@
 
 		// todo: consume errors and show them to the user
 		let parsed = JobInput.safeParse(formObj);
-
 		if (!parsed.success) {
 			console.log(parsed.error);
 			return;

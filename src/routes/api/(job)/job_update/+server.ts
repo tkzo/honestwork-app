@@ -39,7 +39,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		image_url: cloud_url
 	};
 
-	const url = `${apiUrl}/jobs/${userAddress}/${userSignature}`;
+	const url = `${apiUrl}/jobs/${userAddress}/${data.signature}`;
 	const options = {
 		method: 'PATCH',
 		body: JSON.stringify(body),

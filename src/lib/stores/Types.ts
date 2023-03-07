@@ -48,6 +48,8 @@ export type UserType = {
 	links: Array<string>;
 	dms_open: boolean;
 	application: Array<ApplicationType>;
+	favorites: Array<FavoriteType>;
+	watchlist: Array<WatchlistType>;
 };
 
 export type ApplicationType = {
@@ -90,7 +92,7 @@ export type Token = {
 	address: string;
 };
 
-export type Watchlist = {
+export type WatchlistType = {
 	input: {
 		address: string;
 		slot: number;
@@ -100,7 +102,7 @@ export type Watchlist = {
 	image_url: string;
 };
 
-export type Favorite = {
+export type FavoriteType = {
 	input: {
 		address: string;
 		slot: number;

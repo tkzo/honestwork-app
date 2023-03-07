@@ -63,12 +63,7 @@
 </script>
 
 <main>
-	<a
-		class="profile-bar"
-		href={`${base}/creator/${skill.user_address}`}
-		target="_blank"
-		rel="noreferrer"
-	>
+	<a class="profile-bar" href={`${base}/creator/${skill.user_address}`}>
 		<div class="left-section">
 			<img
 				class="pfp"

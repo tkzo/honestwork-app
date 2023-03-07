@@ -33,8 +33,8 @@
 	"/api/favorites/add": [
 		"src/routes/api/favorites/add/+server.ts"
 	],
-	"/api/favorites/get": [
-		"src/routes/api/favorites/get/+server.ts"
+	"/api/favorites/get/[address]": [
+		"src/routes/api/favorites/get/[address]/+server.ts"
 	],
 	"/api/favorites/remove": [
 		"src/routes/api/favorites/remove/+server.ts"

@@ -3,9 +3,9 @@
 	import { assets, base } from '$app/paths';
 	import { userConnected, getFavorites } from '$lib/stores/Network';
 	import { toast } from '@zerodevx/svelte-toast';
-	import type { Favorite } from '$lib/stores/Types';
+	import type { FavoriteType } from '$lib/stores/Types';
 
-	const handleRemove = async (item: Favorite) => {
+	const handleRemove = async (item: FavoriteType) => {
 		if ($userConnected) {
 			try {
 				const url = `${base}/api/favorites/remove`;
@@ -49,12 +49,7 @@
 		<div class="container">
 			<div class="left">
 				<img src={item.image_url} alt={item.username} class="job-image" />
-				<a
-					class="content"
-					href={`${base}/creator/${item.input.address}/`}
-					target="_blank"
-					rel="noreferrer"
-				>
+				<a class="content" href={`${base}/creator/${item.input.address}/`}>
 					<div class="username">
 						<p class="link">{item.username}</p>
 						<div style="width:4px" />

@@ -1,6 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import type { PageServerLoad } from './$types';
+import type { UserType, SkillType } from '$lib/stores/Types';
 
 export const load: PageServerLoad = (async ({ params }) => {
 	const apiUrl =
@@ -15,7 +16,7 @@ export const load: PageServerLoad = (async ({ params }) => {
 		})
 	});
 	if (response.status == 200) {
-		let user = await response.json();
+		let user: UserType = await response.json();
 		url = `${apiUrl}/skills/${params.address}`;
 		response = await fetch(url, {
 			headers: {
@@ -25,7 +26,7 @@ export const load: PageServerLoad = (async ({ params }) => {
 		});
 
 		if (response.status == 200) {
-			let skills = await response.json();
+			let skills: SkillType[] = await response.json();
 			return {
 				user: user,
 				skills: skills

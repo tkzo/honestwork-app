@@ -7,6 +7,8 @@
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 	import { Svrollbar } from 'svrollbar';
+	import Favorite from '$lib/components/creator/Favorite.svelte';
+	import Watchlist from '$lib/components/creator/Watchlist.svelte';
 
 	export let data: PageData;
 
@@ -15,7 +17,8 @@
 	let feedHeight = 0;
 	$: if (browser) feedHeight = window.innerHeight - 146;
 
-	let chosen_tab: string = 'skills' || 'job history';
+	let tabs: string[] = ['skills', 'favorites', 'watchlist', 'job history'];
+	let chosen_tab: string = 'skills';
 	let chosen_skill: SkillType | null = null;
 
 	let user: UserType = data.user;
@@ -33,25 +36,11 @@
 	<div style="width: 12px" />
 	<div class="details">
 		<div class="bar">
-			{#if chosen_tab == 'skills' && chosen_skill == null}
-				<div class="bar-item" on:click={() => (chosen_tab = 'skills')} on:keydown>
-					<p class={'yellow'}>skills</p>
+			{#each tabs as tab, index}
+				<div class="bar-item" on:click={() => (chosen_tab = tabs[index])} on:keydown>
+					<p class={chosen_tab == tab ? 'yellow' : 'light-60'}>{tab}</p>
 				</div>
-				<div class="bar-item" on:click={() => (chosen_tab = 'job history')} on:keydown>
-					<p class={'light-60 link'}>job history</p>
-				</div>
-			{:else if chosen_tab == 'skills' && chosen_skill != null}
-				<div class="bar-item" on:click={() => (chosen_skill = null)} on:keydown>
-					<p class="yellow link">back to skills</p>
-				</div>
-			{:else}
-				<div class="bar-item" on:click={() => (chosen_tab = 'skills')} on:keydown>
-					<p class={'light-60 link'}>skills</p>
-				</div>
-				<div class="bar-item" on:click={() => (chosen_tab = 'job history')} on:keydown>
-					<p class={chosen_tab == 'job history' ? 'yellow' : 'light-60 link'}>job history</p>
-				</div>
-			{/if}
+			{/each}
 		</div>
 		<div class="wrapper">
 			<div
@@ -60,6 +49,13 @@
 				style={`width:520px; height:${feedHeight.toString() + 'px'}`}
 			>
 				<div class="contents" bind:this={contents}>
+					{#if chosen_skill != null}
+						<div class="back-container">
+							<div class="bar-item" on:click={() => (chosen_skill = null)} on:keydown>
+								<p class="yellow link">back to skills</p>
+							</div>
+						</div>
+					{/if}
 					{#if chosen_tab == 'skills'}
 						{#if chosen_skill == null}
 							{#if data.skills != null}
@@ -72,6 +68,18 @@
 							{/if}
 						{:else}
 							<SkillCard skill={chosen_skill} />
+						{/if}
+					{:else if chosen_tab == 'favorites'}
+						{#if data.user.favorites != null}
+							{#each data.user.favorites as favorite}
+								<Favorite {favorite} />
+							{/each}
+						{/if}
+					{:else if chosen_tab == 'watchlist'}
+						{#if data.user.watchlist != null}
+							{#each data.user.watchlist as watchlist}
+								<Watchlist {watchlist} />
+							{/each}
 						{/if}
 					{/if}
 					<div style="height:32px;" />
@@ -153,5 +161,12 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+	}
+	.back-container {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
 	}
 </style>

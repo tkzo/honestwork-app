@@ -3,10 +3,10 @@
 	import { assets, base } from '$app/paths';
 	import { userConnected, getWatchlist } from '$lib/stores/Network';
 	import { toast } from '@zerodevx/svelte-toast';
-	import type { Watchlist } from '$lib/stores/Types';
+	import type { WatchlistType } from '$lib/stores/Types';
 	import { fly } from 'svelte/transition';
 
-	const handleRemove = async (item: Watchlist) => {
+	const handleRemove = async (item: WatchlistType) => {
 		if ($userConnected) {
 			try {
 				const url = `${base}/api/watchlist/remove`;
@@ -45,12 +45,7 @@
 		<div class="container" in:fly={{ duration: 100 + 50 * index, x: 50 }}>
 			<div class="left">
 				<img src={item.image_url} alt={item.username} class="job-image" />
-				<a
-					class="content"
-					href={`${base}/job/${item.input.address}/${item.input.slot}`}
-					target="_blank"
-					rel="noreferrer"
-				>
+				<a class="content" href={`${base}/job/${item.input.address}/${item.input.slot}`}>
 					<div class="username">
 						<p class="link">{item.username}</p>
 						<div style="width:4px" />

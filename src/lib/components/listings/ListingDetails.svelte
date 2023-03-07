@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Applicant from './Applicant.svelte';
-	import { userConnected, connectWallet, userAddress } from '$lib/stores/Network';
+	import { userConnected, connectWallet, userAddress, networkSigner } from '$lib/stores/Network';
 	import { JobInput } from '$lib/stores/Validation';
 	import type { JobType, Network } from '$lib/stores/Types';
 	import { chains } from '$lib/stores/Constants';
@@ -38,6 +38,7 @@
 	let parsed_filename: string;
 	let content: string;
 	let total_chars = 0;
+	let signature: string;
 
 	let username = job.username;
 	let title = job.title;
@@ -78,69 +79,77 @@
 	}
 	$: sticky_item = sticky_data.find((n) => n.duration == sticky_duration) ?? sticky_data[0];
 
+	// todo: refactor with a single form reference
 	const handleSubmit = async (e: any) => {
-		if (e.submitter?.id != 'job_post') {
-			return;
-		}
-		const formData = new FormData(e.target! as HTMLFormElement);
-		let formObj: JobType = {} as JobType;
-		formObj = Object.fromEntries(formData.entries()) as unknown as JobType;
-		formObj.tokens_accepted = [] as Network[];
+		if ($userConnected) {
+			if (e.submitter?.id != 'job_post') {
+				return;
+			}
 
-		for (let i = 0; i < tokens_selected.length; i++) {
-			let chain_id = tokens_selected[i].chain_id;
-			let existing = formObj.tokens_accepted?.find((n) => n.id == chain_id);
-			if (existing) {
-				existing.tokens.push({ address: tokens_selected[i].token_address });
+			const res = await fetch(`/api/auth/login/${$userAddress}`, {
+				method: 'POST'
+			});
+			let salt = await res.json();
+			jobForm.signature.value = await $networkSigner.signMessage(salt);
+
+			const formData = new FormData(e.target! as HTMLFormElement);
+			let formObj: JobType = {} as JobType;
+			formObj = Object.fromEntries(formData.entries()) as unknown as JobType;
+			formObj.tokens_accepted = [] as Network[];
+			for (let i = 0; i < tokens_selected.length; i++) {
+				let chain_id = tokens_selected[i].chain_id;
+				let existing = formObj.tokens_accepted?.find((n) => n.id == chain_id);
+				if (existing) {
+					existing.tokens.push({ address: tokens_selected[i].token_address });
+				} else {
+					formObj.tokens_accepted.push({
+						id: chain_id,
+						tokens: [{ address: tokens_selected[i].token_address }]
+					});
+				}
+			}
+			formObj.links = links;
+			formObj.tags = tags;
+			formObj.sticky_duration = sticky_duration.toString();
+			formObj.timezone = timezone >= 0 ? `UTC+${timezone}` : `UTC-${timezone}`;
+			formObj.description = content;
+
+			//todo: consume errors and show them to the user
+			let parsed = JobInput.safeParse(formObj);
+			if (!parsed.success) {
+				console.log(parsed.error);
+				return;
 			} else {
-				formObj.tokens_accepted.push({
-					id: chain_id,
-					tokens: [{ address: tokens_selected[i].token_address }]
-				});
+				if (upload_url) {
+					uploadImage(e);
+					formObj.image_url = parsed_filename;
+				}
+
+				jobForm.tokens_accepted = JSON.stringify(formObj.tokens_accepted);
+				let stringified = JSON.stringify(formObj);
+				const url = '/api/job_update';
+				const options = {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: stringified
+				};
+				let res = await fetch(url, options);
+				let data = await res.json();
+				if (data == 'success') {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>job listing updated.</p>`
+					);
+				} else {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>job listing could not be updated.</p>`
+					);
+				}
 			}
+			changes_made.set(false);
+			if (browser) window.location.reload();
 		}
-
-		formObj.links = links;
-		formObj.tags = tags;
-		formObj.sticky_duration = sticky_duration.toString();
-		formObj.timezone = timezone >= 0 ? `UTC+${timezone}` : `UTC-${timezone}`;
-		formObj.description = content;
-
-		//todo: consume errors and show them to the user
-		let parsed = JobInput.safeParse(formObj);
-		if (!parsed.success) {
-			console.log(parsed.error);
-			return;
-		} else {
-			if (upload_url) {
-				uploadImage(e);
-				formObj.image_url = parsed_filename;
-			}
-
-			jobForm.tokens_accepted = JSON.stringify(formObj.tokens_accepted);
-			let stringified = JSON.stringify(formObj);
-			const url = '/api/job_update';
-			const options = {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: stringified
-			};
-			let res = await fetch(url, options);
-			let data = await res.json();
-			if (data == 'success') {
-				toast.push(
-					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>job listing updated.</p>`
-				);
-			} else {
-				toast.push(
-					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>job listing could not be updated.</p>`
-				);
-			}
-		}
-		changes_made.set(false);
-		if (browser) window.location.reload();
 	};
 	const uploadImage = async (e: any) => {
 		let target_file;
@@ -282,6 +291,7 @@
 								<input hidden type="text" name="tx_hash" value={tx_hash} />
 								<input hidden type="text" name="token_paid" value={chosen_payment_token.address} />
 								<input hidden type="text" name="file_url" value={file_url} />
+								<input hidden type="text" name="signature" bind:value={signature} />
 								<div class="image-section">
 									<div
 										class="image-card"

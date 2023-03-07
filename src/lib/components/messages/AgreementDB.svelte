@@ -48,7 +48,9 @@
 			let receipt = await tx.wait();
 			if (receipt && receipt.status == 1) {
 				//todo: move to event watcher / indexer
-				const res = await fetch(`/api/auth/login/${$userAddress}`);
+				const res = await fetch(`/api/auth/login/${$userAddress}`, {
+					method: 'POST'
+				});
 				const salt = await res.json();
 				const signature = await $networkSigner.signMessage(salt);
 				const url = `${base}/api/execute_deal/${$userAddress}/${conversation.peerAddress}/${signature}`;

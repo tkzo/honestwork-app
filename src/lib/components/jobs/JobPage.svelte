@@ -88,7 +88,6 @@
 	};
 </script>
 
-<div style="height:16px" />
 <main>
 	<div class="profile-bar">
 		<div class="left-section">

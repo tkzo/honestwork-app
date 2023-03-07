@@ -9,7 +9,6 @@
 	import { new_conversation_metadata } from '$lib/stores/State';
 	import { goto } from '$app/navigation';
 	import { Svrollbar } from 'svrollbar';
-	import { parseContent } from '$lib/stores/Parser';
 	import Tiptap from '../common/Tiptap.svelte';
 
 	export let user: UserType;
