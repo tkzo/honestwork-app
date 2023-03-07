@@ -156,7 +156,9 @@
 				{:else}
 					<div style="height:12px;" />
 				{/if}
-				<Tiptap content={JSON.parse(job.description)} editable={false} />
+				{#key job.description}
+					<Tiptap content={JSON.parse(job.description)} editable={false} />
+				{/key}
 				<div style="height:12px;" />
 				<div class="payment-container">
 					{#if job.tokens_accepted && job.tokens_accepted.length > 0}

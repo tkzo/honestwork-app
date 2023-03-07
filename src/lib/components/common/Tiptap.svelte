@@ -14,8 +14,6 @@
              Remember: you have full control about content and styling of this menu..</p><ul><p>Some list item..</p></ul>
         `;
 
-	$: console.log('Content:', content);
-
 	onMount(() => {
 		editor = createEditor({
 			extensions: [StarterKit],

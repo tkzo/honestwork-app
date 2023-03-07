@@ -474,11 +474,13 @@
 									</p>
 								</div>
 								<div class="description">
-									<Tiptap
-										on:content={handleContentInput}
-										content={JSON.parse(job.description)}
-										editable={true}
-									/>
+									{#key job.description}
+										<Tiptap
+											on:content={handleContentInput}
+											content={JSON.parse(job.description)}
+											editable={true}
+										/>
+									{/key}
 								</div>
 								<div style="height:24px" />
 								{#each new Array(3) as _, i}
