@@ -17,7 +17,7 @@
 			<p class="yellow semibold link">h0nestw0rk</p>
 		</a>
 		<div style="width:8px" />
-		<p class="light-40">alpha/v0.1</p>
+		<p class="light-40">alpha</p>
 	</div>
 	<div class="menu-section">
 		<a href="/jobs">

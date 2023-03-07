@@ -62,12 +62,14 @@
 				<div class="contents" bind:this={contents}>
 					{#if chosen_tab == 'skills'}
 						{#if chosen_skill == null}
-							{#each data.skills as skill, i}
-								<div style="height: 8px" />
-								<div on:click={() => (chosen_skill = skill)} on:keydown>
-									<Skill slot={i} {skill} width={508} />
-								</div>
-							{/each}
+							{#if data.skills != null}
+								{#each data.skills as skill, i}
+									<div style="height: 8px" />
+									<div on:click={() => (chosen_skill = skill)} on:keydown>
+										<Skill slot={i} {skill} width={508} />
+									</div>
+								{/each}
+							{/if}
 						{:else}
 							<SkillCard skill={chosen_skill} />
 						{/if}
