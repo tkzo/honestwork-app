@@ -24,7 +24,9 @@
 	const handleCreateAgreementOffer = async () => {
 		if (chosen_recruitor === $userAddress) {
 			try {
-				const res = await fetch(`/api/auth/login/${$userAddress}`);
+				const res = await fetch(`/api/auth/login/${$userAddress}`, {
+					method: 'POST'
+				});
 				const salt = await res.json();
 				const signature = await $networkSigner.signMessage(salt);
 				const url = `${base}/api/add_deal/${$userAddress}/${conversation.peerAddress}/${signature}`;

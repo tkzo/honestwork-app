@@ -124,7 +124,6 @@
 		formObj.description = content;
 
 		// todo: consume errors and show them to the user
-		console.log('Form:', formObj);
 		let parsed = JobInput.safeParse(formObj);
 
 		if (!parsed.success) {
@@ -135,7 +134,6 @@
 			formObj.image_url = parsed_filename;
 			jobForm.tokens_accepted = JSON.stringify(formObj.tokens_accepted);
 			let stringified = JSON.stringify(formObj);
-			console.log('Form:', formObj);
 			const url = '/api/job_submit';
 			const options = {
 				method: 'POST',

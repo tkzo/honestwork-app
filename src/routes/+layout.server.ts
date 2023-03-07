@@ -8,16 +8,16 @@ const apiUrl =
 	parseInt(env.PRODUCTION_ENV) == 1 ? env.PRIVATE_HONESTWORK_API : env.PRIVATE_LOCAL_HONESTWORK_API;
 
 export const load = (async ({ cookies, fetch }) => {
-	const config_url = `${base}/api/config`;
-	let config_response = await fetch(config_url, {
-		method: 'GET',
-		headers: new Headers({
-			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
-			'Content-Type': 'application/json'
-		})
-	});
-	let config_data: APIConfig = await config_response.json();
 	// todo: implement config
+	// const config_url = `${base}/api/config`;
+	// let config_response = await fetch(config_url, {
+	// 	method: 'GET',
+	// 	headers: new Headers({
+	// 		Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
+	// 		'Content-Type': 'application/json'
+	// 	})
+	// });
+	// let config_data: APIConfig = await config_response.json();
 
 	const userAddress = cookies.get('honestwork_address');
 	const userSignature = cookies.get('honestwork_signature');
