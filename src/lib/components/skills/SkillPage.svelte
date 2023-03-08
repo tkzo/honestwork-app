@@ -10,6 +10,7 @@
 
 	export let skill: SkillType;
 
+	let loading_gallery_image = false;
 	let viewport: Element;
 	let contents: Element;
 	let user: UserType;
@@ -17,6 +18,8 @@
 	let nft_image: any;
 	let ens_name: string;
 	let feedHeight = 0;
+
+	$: console.log('Loading state:', loading_gallery_image);
 
 	$: if (browser) feedHeight = window.innerHeight - 154;
 	$: if (skill && browser) {
@@ -33,6 +36,7 @@
 		await getNft();
 	};
 	const nextImage = () => {
+		loading_gallery_image = true;
 		if (chosen_image < trimmed_images.length - 1) {
 			chosen_image++;
 		}
@@ -93,14 +97,28 @@
 		<div bind:this={viewport} class="viewport" style={`height:${feedHeight.toString() + 'px'}`}>
 			<div bind:this={contents} class="contents">
 				<div class="gallery">
-					<img class="gallery-images" src={trimmed_images[chosen_image]} alt="Gallery" />
-					<div class="gallery-buttons">
-						<div class="left-gallery-button" on:click={previousImage} on:keydown>
-							<p class="light-40">PREVIOUS</p>
+					<img
+						class="gallery-images"
+						src={trimmed_images[chosen_image]}
+						alt="Gallery"
+						on:load={() => {
+							loading_gallery_image = false;
+						}}
+					/>
+					{#if loading_gallery_image}
+						<div class="skeleton-container">
+							<Skeleton width="518px" height="389px" />
 						</div>
-						<p>{chosen_image + 1}/{trimmed_images.length}</p>
-						<div class="right-gallery-button" on:click={nextImage} on:keydown>
-							<p class="light-40">NEXT</p>
+					{/if}
+					<div class="gallery-buttons">
+						<div class="left-gallery-button link" on:click={previousImage} on:keydown>
+							<p class="light-60">PREVIOUS</p>
+						</div>
+						<p class="light-60">
+							<span class="yellow">{chosen_image + 1}</span>/{trimmed_images.length}
+						</p>
+						<div class="right-gallery-button link" on:click={nextImage} on:keydown>
+							<p class="light-60">NEXT</p>
 						</div>
 					</div>
 				</div>
@@ -192,10 +210,10 @@
 		border-color: var(--color-light-20);
 		padding: 8px 12px;
 	}
-	.right-gallery-button:hover {
-		background-color: var(--color-primary);
-	}
 	.right-gallery-button:hover p {
+		color: var(--color-dark);
+	}
+	.left-gallery-button:hover p {
 		color: var(--color-dark);
 	}
 	.link-container {
@@ -239,5 +257,12 @@
 	.viewport::-webkit-scrollbar {
 		/* hide scrollbar */
 		display: none;
+	}
+	.skeleton-container {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
 	}
 </style>
