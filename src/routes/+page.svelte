@@ -62,23 +62,16 @@
 						</a>
 					</div>
 					<div style="height: 64px;" />
+				</div>
+				<div class="iframe-wrapper">
 					<div class="desktop-iframe">
 						<iframe
-							width="960"
-							height="540"
+							class="myframe"
 							src="https://www.youtube.com/embed/re8Ac9jpup0?controls=0"
 							title="YouTube video player"
 							frameborder="0"
-							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
-						/>
-					</div>
-					<div class="mobile-iframe">
-						<iframe
-							width="320"
-							height="180"
-							src="https://www.youtube.com/embed/re8Ac9jpup0?controls=0"
-							title="YouTube video player"
-							frameborder="0"
+							width="100%"
+							loading="lazy"
 							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
 						/>
 					</div>
@@ -266,27 +259,24 @@
 			font-size: 14px;
 		}
 	}
+	.iframe-wrapper {
+		max-width: 960px;
+		width: 90%;
+	}
 	.desktop-iframe {
 		position: relative;
-		top: 0;
-		left: 0;
-		width: 80vw;
+		overflow: hidden;
+		padding-top: 56.25%;
+		width: 100%;
 		max-width: 960px;
 	}
-	.mobile-iframe {
-		display: none;
-		position: relative;
+	.myframe {
+		position: absolute;
 		top: 0;
 		left: 0;
-		width: 80vw;
-		max-width: 960px;
-	}
-	@media (max-width: 550px) {
-		.mobile-iframe {
-			display: block;
-		}
-		.desktop-iframe {
-			display: none;
-		}
+		bottom: 0;
+		right: 0;
+		width: 100%;
+		height: 100%;
 	}
 </style>
