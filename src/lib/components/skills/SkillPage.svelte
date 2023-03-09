@@ -19,8 +19,6 @@
 	let ens_name: string;
 	let feedHeight = 0;
 
-	$: console.log('Loading state:', loading_gallery_image);
-
 	$: if (browser) feedHeight = window.innerHeight - 154;
 	$: if (skill && browser) {
 		nft_image = '';
@@ -36,14 +34,18 @@
 		await getNft();
 	};
 	const nextImage = () => {
-		loading_gallery_image = true;
 		if (chosen_image < trimmed_images.length - 1) {
+			loading_gallery_image = true;
 			chosen_image++;
+		} else {
+			chosen_image = 0;
 		}
 	};
 	const previousImage = () => {
 		if (chosen_image > 0) {
 			chosen_image--;
+		} else {
+			chosen_image = trimmed_images.length - 1;
 		}
 	};
 	const resetState = () => {
@@ -97,14 +99,16 @@
 		<div bind:this={viewport} class="viewport" style={`height:${feedHeight.toString() + 'px'}`}>
 			<div bind:this={contents} class="contents">
 				<div class="gallery">
-					<img
-						class="gallery-images"
-						src={trimmed_images[chosen_image]}
-						alt="Gallery"
-						on:load={() => {
-							loading_gallery_image = false;
-						}}
-					/>
+					{#key trimmed_images[chosen_image]}
+						<img
+							class="gallery-images"
+							src={trimmed_images[chosen_image]}
+							alt="Gallery"
+							on:load={() => {
+								loading_gallery_image = false;
+							}}
+						/>
+					{/key}
 					{#if loading_gallery_image}
 						<div class="skeleton-container">
 							<Skeleton width="518px" height="389px" />
