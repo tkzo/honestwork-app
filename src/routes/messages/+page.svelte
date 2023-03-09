@@ -59,9 +59,6 @@
 		}
 	});
 
-	$: if ($xmtpConnected && !$xmtpConnecting) {
-		fetchConversations();
-	}
 	$: if (chosen_tab == 'messages' && viewport_inbox && contents_inbox) {
 		scroll('auto');
 	}
@@ -205,10 +202,6 @@
 			let img_url = await getNft(jason.nft_address, jason.nft_id);
 			jason.nft_image_url = img_url;
 		}
-		if (jason.show_ens) {
-			let ens_name = await $nodeProvider.lookupAddress(peer);
-			jason.ens_name = ens_name;
-		}
 		return jason;
 	};
 	const sendMessage = async (convo: any) => {
@@ -233,6 +226,7 @@
 	const fakeTransition = (node: any) => fade(node, { duration: 0 });
 </script>
 
+<div style="height:16px" />
 <main>
 	<div class="inbox">
 		{#if error_message != ''}

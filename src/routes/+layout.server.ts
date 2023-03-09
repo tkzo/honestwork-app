@@ -9,20 +9,20 @@ const apiUrl =
 
 export const load = (async ({ cookies, fetch }) => {
 	// todo: implement config
-	// const config_url = `${base}/api/config`;
-	// let config_response = await fetch(config_url, {
-	// 	method: 'GET',
-	// 	headers: new Headers({
-	// 		Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
-	// 		'Content-Type': 'application/json'
-	// 	})
-	// });
-	// let config_data: APIConfig = await config_response.json();
+	const config_url = `${base}/api/config`;
+	let config_response = await fetch(config_url, {
+		method: 'GET',
+		headers: new Headers({
+			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
+			'Content-Type': 'application/json'
+		})
+	});
+	let config_data: APIConfig = await config_response.json();
 
 	const userAddress = cookies.get('honestwork_address');
 	const userSignature = cookies.get('honestwork_signature');
 
-	if (userAddress && userSignature) {
+	if (userAddress != null && userSignature != null) {
 		const callUrl = `${apiUrl}/verify/${userAddress}/${userSignature}`;
 		let callResponse = await fetch(callUrl, {
 			headers: new Headers({
@@ -36,7 +36,6 @@ export const load = (async ({ cookies, fetch }) => {
 				signed: true
 			};
 		} else {
-			throw redirect(301, '/auth');
 		}
 	}
 }) satisfies LayoutServerLoad;

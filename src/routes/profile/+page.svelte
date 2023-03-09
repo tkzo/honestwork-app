@@ -74,10 +74,10 @@
 	let ens_loading: boolean = false;
 	let file_url: string;
 	let username_input_element: HTMLInputElement;
-	let username_input_length: number;
+	let username_input_length: number = 0;
 	let username_input_limit = 50;
 	let title_input_element: HTMLInputElement;
-	let title_input_length: number;
+	let title_input_length: number = 0;
 	let title_input_limit = 50;
 	let bio_element: HTMLTextAreaElement;
 	let bio_limit = 2000;
