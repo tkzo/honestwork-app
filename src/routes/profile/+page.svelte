@@ -499,8 +499,9 @@
 										on:keyup={updateInputLengths}
 									/>
 									{#if !show_ens}
+										<div style="width:8px" />
 										<div class="limit">
-											<p>
+											<p class="light-60">
 												<span class="yellow">{username_input_length}</span>/{username_input_limit}
 											</p>
 										</div>
@@ -539,8 +540,11 @@
 										on:focusout={() => deFocusInput()}
 										on:keyup={updateInputLengths}
 									/>
+									<div style="width:8px" />
 									<div class="limit">
-										<p><span class="yellow">{title_input_length}</span>/{title_input_limit}</p>
+										<p class="light-60">
+											<span class="yellow">{title_input_length}</span>/{title_input_limit}
+										</p>
 									</div>
 								</div>
 								<div style="height: 8px" />
@@ -865,6 +869,7 @@
 		justify-content: flex-start;
 		position: relative;
 		background-color: var(--color-dark);
+		align-items: center;
 	}
 	.placeholder {
 		height: 32px;
@@ -981,9 +986,7 @@
 		justify-content: flex-start;
 	}
 	.limit {
-		position: absolute;
-		right: 12px;
-		transform: translateY(50%);
+		position: relative;
 	}
 	.description-bar {
 		display: flex;

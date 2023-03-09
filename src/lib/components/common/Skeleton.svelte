@@ -14,12 +14,12 @@
 
 <style>
 	.skeleton {
-		background-color: var(--baseColor);
+		background-color: var(--color-dark);
 		background-image: linear-gradient(
 			90deg,
-			var(--baseColor),
+			var(--color-dark),
 			var(--highlightColor),
-			var(--baseColor)
+			var(--color-dark)
 		);
 		background-size: 200px 100%;
 		background-repeat: no-repeat;
