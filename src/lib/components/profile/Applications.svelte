@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { assets, base } from '$app/paths';
 	import type { JobType, UserType, ApplicationType } from '$lib/stores/Types';
+	import Tiptap from '$lib/components/common/Tiptap.svelte';
 
 	export let user: UserType;
 
@@ -22,7 +23,7 @@
 		const application = user.application.find(
 			(n) => n.job_id == `job:${job.user_address}:${job.slot}`
 		);
-		return application?.cover_letter;
+		return application!.cover_letter;
 	};
 </script>
 
@@ -46,7 +47,7 @@
 					</div>
 				</div>
 				{#if drawer_open}
-					{@html getCoverLetterForJob(job)}
+					<Tiptap content={JSON.parse(getCoverLetterForJob(job))} editable={false} />
 				{/if}
 				<div
 					class={drawer_open ? 'drawer drawer-open' : 'drawer'}

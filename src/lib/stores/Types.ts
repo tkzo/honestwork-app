@@ -131,7 +131,7 @@ export type Deal = {
 	claimedAmount: ethers.BigNumberish;
 	claimableAmount: ethers.BigNumberish;
 	status: number;
-	job_id: number;
+	jobId: number;
 	recruiterRating: Array<number>;
 	creatorRating: Array<number>;
 };

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import type { SkillType, UserType } from '$lib/stores/Types';
+	import type { Deal, SkillType, UserType, JobType } from '$lib/stores/Types';
 	import CreatorCard from '$lib/components/creator/CreatorCard.svelte';
 	import Skill from '$lib/components/profile/Skill.svelte';
 	import SkillCard from '$lib/components/creator/SkillCard.svelte';
@@ -9,6 +9,12 @@
 	import { Svrollbar } from 'svrollbar';
 	import Favorite from '$lib/components/creator/Favorite.svelte';
 	import Watchlist from '$lib/components/creator/Watchlist.svelte';
+	import { userAddress } from '$lib/stores/Network';
+	import { ethers } from 'ethers';
+	import { env } from '$env/dynamic/public';
+	import { escrow_abi } from '$lib/stores/ABI';
+	import { networkSigner } from '$lib/stores/Network';
+	import { base, assets } from '$app/paths';
 
 	export let data: PageData;
 
@@ -23,6 +29,19 @@
 
 	let user: UserType = data.user;
 	let addr: string = $page.params['address'];
+
+	const fetchDeals = async () => {
+		const Escrow = new ethers.Contract(env.PUBLIC_ESCROW_ADDRESS!, escrow_abi, $networkSigner);
+		const deals = await Escrow.getDealsOf($userAddress);
+		console.log('Deals: ', deals, '');
+		return deals;
+	};
+	const fetchJob = async (deal: Deal) => {
+		const url = `${base}/api/get_job/${deal.recruiter}/${deal.jobId}`;
+		const response = await fetch(url);
+		const job: JobType = await response.json();
+		return job;
+	};
 </script>
 
 <svelte:head>
@@ -81,6 +100,32 @@
 								<Watchlist {watchlist} />
 							{/each}
 						{/if}
+					{:else if chosen_tab == 'job history'}
+						{#await fetchDeals() then deals}
+							{#if deals != null}
+								{#each deals as deal}
+									{#await fetchJob(deal.jobId) then job}
+										<div class="container">
+											<div class="left">
+												<img src={job.image_url} alt={job.username} class="job-image" />
+												<a class="content" href={`${base}/job/${deal.recruiter}/${job.slot}`}>
+													<div class="username">
+														<p class="link">{job.username}</p>
+														<div style="width:4px" />
+														<img
+															src={`${assets}/icons/external.svg`}
+															alt="external"
+															style="margin-top:-2px"
+														/>
+													</div>
+													<p class="light-60">{job.title}</p>
+												</a>
+											</div>
+										</div>
+									{/await}
+								{/each}
+							{/if}
+						{/await}
 					{/if}
 					<div style="height:32px;" />
 				</div>
@@ -168,5 +213,33 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: flex-start;
+	}
+	.container {
+		display: flex;
+		flex-direction: row;
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--color-light-20);
+		justify-content: space-between;
+		align-items: center;
+	}
+	.job-image {
+		width: 60px;
+		height: 60px;
+	}
+	.content {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		padding: 12px;
+	}
+	.username {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+	}
+	.left {
+		display: flex;
+		flex-direction: row;
 	}
 </style>
