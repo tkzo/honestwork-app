@@ -36,6 +36,7 @@
 		}
 	};
 	const handleExecute = async () => {
+		const recruiter_address = role == 'recruiter' ? $userAddress : conversation.peerAddress;
 		await approve(ethers.utils.parseEther(deal.total_amount));
 		try {
 			const Payment = new ethers.Contract(env.PUBLIC_ESCROW_ADDRESS!, escrow_abi, $networkSigner);
@@ -76,6 +77,7 @@
 						token_address: deal.token_address,
 						total_amount: deal.total_amount,
 						downpayment: deal.downpayment,
+						recruiter: recruiter_address,
 						job_id: deal.job_id
 					})}`
 				);
@@ -126,6 +128,7 @@
 						token_address: deal.token_address,
 						total_amount: deal.total_amount,
 						downpayment: deal.downpayment,
+						recruiter: recruiter_address,
 						job_id: deal.job_id
 					})}`
 				);

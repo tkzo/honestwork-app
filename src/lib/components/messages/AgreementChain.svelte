@@ -71,7 +71,9 @@
 						token: findTokenName(findChainName($chainID), deal.paymentToken),
 						token_address: deal.paymentToken,
 						total_amount: deal.totalPayment,
-						installment: ethers.utils.parseEther(amount.toString())
+						installment: ethers.utils.parseEther(amount.toString()),
+						job_id: deal.job_id,
+						recruiter: deal.recruiter
 					})}`
 				);
 				toast.push(
@@ -103,7 +105,9 @@
 						token: findTokenName(findChainName($chainID), deal.paymentToken),
 						token_address: deal.paymentToken,
 						total_amount: deal.totalPayment,
-						installment: ethers.utils.parseEther(amount.toString())
+						installment: ethers.utils.parseEther(amount.toString()),
+						job_id: deal.job_id,
+						recruiter: deal.recruiter
 					})}`
 				);
 				toast.push(
@@ -129,6 +133,7 @@
 				await conversation.send(
 					`Meta:${JSON.stringify({
 						type: 'job cancelled',
+						job_id: deal.job_id,
 						deal: id,
 						network: findChainName($chainID),
 						token: findTokenName(findChainName($chainID), deal.paymentToken),

@@ -94,6 +94,19 @@
 				{:else if meta_message.type == 'job acceptance'}
 					<div class="dropdown-container" transition:slide>
 						<div class="dropdown-item">
+							<p class="light-60">job:</p>
+							<a
+								class="token-link"
+								href={`${base}/job/${meta_message.recruiter}/${meta_message.job_id}`}
+								target="_blank"
+								rel="noreferrer"
+							>
+								<p>linked job</p>
+								<div style="width:4px" />
+								<img src={`${assets}/icons/external.svg`} alt="arrow-right" />
+							</a>
+						</div>
+						<div class="dropdown-item">
 							<p class="light-60">network:</p>
 							<p>{meta_message.network}</p>
 						</div>
@@ -117,28 +130,18 @@
 				{:else if meta_message.type == 'job execution'}
 					<div class="dropdown-container" transition:slide>
 						<div class="dropdown-item">
-							<p class="light-60">network:</p>
-							<p>{meta_message.network}</p>
-						</div>
-						<div class="dropdown-item">
-							<p class="light-60">token:</p>
-							<div class="token-link">
-								<p>{meta_message.token}</p>
+							<p class="light-60">job:</p>
+							<a
+								class="token-link"
+								href={`${base}/job/${meta_message.recruiter}/${meta_message.job_id}`}
+								target="_blank"
+								rel="noreferrer"
+							>
+								<p>linked job</p>
 								<div style="width:4px" />
 								<img src={`${assets}/icons/external.svg`} alt="arrow-right" />
-							</div>
+							</a>
 						</div>
-						<div class="dropdown-item">
-							<p class="light-60">total amount:</p>
-							<p>${ethers.utils.formatEther(meta_message.total_amount)}</p>
-						</div>
-						<div class="dropdown-item">
-							<p class="light-60">downpayment:</p>
-							<p>${ethers.utils.formatEther(meta_message.downpayment)}</p>
-						</div>
-					</div>
-				{:else if meta_message.type == 'installment'}
-					<div class="dropdown-container" transition:slide>
 						<div class="dropdown-item">
 							<p class="light-60">network:</p>
 							<p>{meta_message.network}</p>
@@ -163,6 +166,19 @@
 				{:else if meta_message.type == 'new payment'}
 					<div class="dropdown-container" transition:slide>
 						<div class="dropdown-item">
+							<p class="light-60">job:</p>
+							<a
+								class="token-link"
+								href={`${base}/job/${meta_message.recruiter}/${meta_message.job_id}`}
+								target="_blank"
+								rel="noreferrer"
+							>
+								<p>linked job</p>
+								<div style="width:4px" />
+								<img src={`${assets}/icons/external.svg`} alt="arrow-right" />
+							</a>
+						</div>
+						<div class="dropdown-item">
 							<p class="light-60">network:</p>
 							<p>{meta_message.network}</p>
 						</div>
@@ -186,6 +202,19 @@
 				{:else if meta_message.type == 'payment claimed'}
 					<div class="dropdown-container" transition:slide>
 						<div class="dropdown-item">
+							<p class="light-60">job:</p>
+							<a
+								class="token-link"
+								href={`${base}/job/${meta_message.recruiter}/${meta_message.job_id}`}
+								target="_blank"
+								rel="noreferrer"
+							>
+								<p>linked job</p>
+								<div style="width:4px" />
+								<img src={`${assets}/icons/external.svg`} alt="arrow-right" />
+							</a>
+						</div>
+						<div class="dropdown-item">
 							<p class="light-60">network:</p>
 							<p>{meta_message.network}</p>
 						</div>
@@ -208,6 +237,19 @@
 					</div>
 				{:else if meta_message.type == 'job cancelled'}
 					<div class="dropdown-container" transition:slide>
+						<div class="dropdown-item">
+							<p class="light-60">job:</p>
+							<a
+								class="token-link"
+								href={`${base}/job/${meta_message.recruiter}/${meta_message.job_id}`}
+								target="_blank"
+								rel="noreferrer"
+							>
+								<p>linked job</p>
+								<div style="width:4px" />
+								<img src={`${assets}/icons/external.svg`} alt="arrow-right" />
+							</a>
+						</div>
 						<div class="dropdown-item">
 							<p class="light-60">network:</p>
 							<p>{meta_message.network}</p>
