@@ -72,12 +72,9 @@
 			whitelist.find((address: string) => address == $userAddress)
 				? (whitelisted = true)
 				: (whitelisted = false);
-			console.log('Whitelisted:', whitelisted);
-			console.log('Whitelist', whitelist);
 			const leaves = whitelist.map((address: string) => keccak256(address));
 			const tree = new MerkleTree(leaves, keccak256, { sortPairs: true });
 			proof = tree.getHexProof(keccak256($userAddress));
-			console.log('Proof:', proof);
 		} catch (error) {
 			toast.push(
 				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error}</p>`

@@ -5,7 +5,6 @@
 	export let width: string;
 	export let height: string;
 	export let loading = false;
-	$: console.log('Loading -> ', loading);
 </script>
 
 <div class="container" style={`width:${width};height:${height}`}>

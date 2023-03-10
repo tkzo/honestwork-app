@@ -13,9 +13,6 @@
 	export let role: string;
 	export let deal: DealDB;
 
-	$: console.log('deal', deal);
-	$: console.log('role', role);
-
 	const approve = async (amount: ethers.BigNumberish) => {
 		try {
 			const Token = new ethers.Contract(deal.token_address, erc20_abi, $networkSigner);
@@ -104,7 +101,6 @@
 				deal.downpayment,
 				deal.job_id
 			);
-			console.log('msg:', message_hash);
 
 			let hash_array = ethers.utils.arrayify(message_hash);
 			let signature = await $networkSigner.signMessage(hash_array);

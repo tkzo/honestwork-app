@@ -136,7 +136,6 @@ export const getFavorites = async () => {
 		try {
 			const response = await fetch(`/api/favorites/get/${get(userAddress)}`);
 			const data = await response.json();
-			console.log('DATA:', data);
 			user_favorites.set([]);
 			if (data != null && data.length > 0) {
 				data.forEach((item) => {
