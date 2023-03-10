@@ -4,9 +4,8 @@
 	import type { JobType } from '$lib/stores/Types';
 	import { placeholder_image } from '$lib/stores/Constants';
 	import { parseContent } from '$lib/stores/Parser';
-	import { base } from '$app/paths';
+	import { base, assets } from '$app/paths';
 	import { onMount } from 'svelte';
-	import { stringify } from 'querystring';
 
 	export let chosen: boolean;
 	export let job: JobType;
@@ -62,6 +61,19 @@
 			<div class="tag">
 				<p>{job.title}</p>
 			</div>
+		</div>
+		<div class="status-tag">
+			{#if job.deal_id != null}
+				<p style="color:var(--color-success)">available</p>
+				<div style="width: 4px" />
+				<img src={`${assets}/icons/calendar-check.svg`} alt="arrow" />
+				<div style="width: 8px" />
+			{:else}
+				<p style="color:var(--color-error)">taken</p>
+				<div style="width: 4px" />
+				<img src={`${assets}/icons/calendar-remove.svg`} alt="arrow" />
+				<div style="width: 8px" />
+			{/if}
 		</div>
 	</div>
 	<div class="contents">
@@ -149,6 +161,10 @@
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
 		border-color: var(--color-light-20);
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
 	}
 	.chosen {
 		background-color: var(--color-light-2);
@@ -169,5 +185,10 @@
 	}
 	.hashtag:hover p {
 		color: var(--color-dark);
+	}
+	.status-tag {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
 	}
 </style>

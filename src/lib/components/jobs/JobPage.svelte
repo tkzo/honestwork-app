@@ -113,7 +113,7 @@
 			</div>
 		</div>
 		<div class="right-section">
-			{#if $page.route.id == '/jobs'}
+			{#if $page.route.id == '/jobs' && job.deal_id == null}
 				<a class="button" href={`/job/${job.user_address}/${job.slot}`}>
 					<p class="yellow">apply to this job</p>
 				</a>

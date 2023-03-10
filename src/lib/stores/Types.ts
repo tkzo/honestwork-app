@@ -76,6 +76,8 @@ export type JobType = {
 	sticky_duration: string;
 	timezone: string;
 	application: Array<ApplicantType>;
+	deal_network_id: number;
+	deal_id: number;
 };
 
 export type ApplicantType = {
