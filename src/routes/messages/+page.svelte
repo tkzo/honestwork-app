@@ -1,7 +1,6 @@
 <script lang="ts">
 	//todo: add types
 	import {
-		nodeProvider,
 		userConnected,
 		xmtpClient,
 		userAddress,
