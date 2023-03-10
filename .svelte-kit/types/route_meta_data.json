@@ -42,6 +42,9 @@
 	"/api/(deal)/get_deals/[recruiter]/[creator]": [
 		"src/routes/api/(deal)/get_deals/[recruiter]/[creator]/+server.ts"
 	],
+	"/api/(job)/get_jobs/[address]": [
+		"src/routes/api/(job)/get_jobs/[address]/+server.ts"
+	],
 	"/api/(job)/get_job/[address]/[slot]": [
 		"src/routes/api/(job)/get_job/[address]/[slot]/+server.ts"
 	],

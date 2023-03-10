@@ -14,12 +14,25 @@
 	let show_network_dropdown = false;
 	let show_token_dropdown = false;
 	let show_recruitor_dropdown = false;
+	let show_job_dropdown = false;
 
 	// todo: fix these
 	let chosen_network = 'choose network';
 	let chosen_token = 'choose token';
 	let chosen_token_address = '';
 	let chosen_recruitor = $userAddress;
+	let chosen_job = 'choose job';
+	let chosen_job_slot = -1;
+
+	const fetchJobs = async () => {
+		try {
+			const res = await fetch(`${base}/api/get_jobs/${$userAddress}`);
+			const jobs = await res.json();
+			return jobs;
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	const handleCreateAgreementOffer = async () => {
 		if (chosen_recruitor === $userAddress) {
@@ -36,6 +49,7 @@
 					token_address: chosen_token_address,
 					total_amount: ethers.utils.parseEther(total_amount.toString()).toString(),
 					downpayment: ethers.utils.parseEther(downpayment.toString()).toString(),
+					job_id: chosen_job_slot,
 					signature: ''
 				};
 				const response = await fetch(url, {
@@ -53,7 +67,9 @@
 							token: chosen_token,
 							token_address: chosen_token_address,
 							total_amount: ethers.utils.parseEther(total_amount.toString()).toString(),
-							downpayment: ethers.utils.parseEther(downpayment.toString()).toString()
+							downpayment: ethers.utils.parseEther(downpayment.toString()).toString(),
+							job_id: chosen_job_slot,
+							recruiter: $userAddress
 						})}`
 					);
 					toast.push(
@@ -111,6 +127,67 @@
 						<span class="light-60">(YOU)</span>
 					</p>
 				</div>
+			</div>
+		{/if}
+	</div>
+</div>
+<div style="height:8px" />
+<div class="dropdown-container">
+	<div class="placeholder"><p>job</p></div>
+	<div class="dropdown">
+		<div
+			class="dropdown-chosen"
+			on:click={() => (show_job_dropdown = !show_job_dropdown)}
+			on:keydown
+		>
+			<p>{chosen_job}</p>
+			<img
+				src={show_job_dropdown
+					? `${assets}/icons/chevron_active.svg`
+					: `${assets}/icons/chevron_passive.svg`}
+				alt="Dropdown"
+				style="width:10px;"
+			/>
+		</div>
+		{#if show_job_dropdown}
+			<div class="dropdown-menu">
+				{#await fetchJobs() then jobs}
+					{#if jobs != null}
+						{#each jobs as job}
+							<div
+								class="dropdown-item"
+								on:click={() => {
+									chosen_job = `#${job.slot} ${job.title} $${job.budget}`;
+									chosen_job_slot = job.slot;
+									show_job_dropdown = false;
+								}}
+								on:keydown
+							>
+								<p>
+									<span class="yellow">#{job.slot}</span>
+									{job.title} <span class="light-60">${job.budget}</span>
+								</p>
+							</div>
+						{/each}
+						{#if chosen_job_slot != -1}
+							<div
+								class="dropdown-item"
+								on:click={() => {
+									chosen_job = 'deal without job';
+									chosen_job_slot = -1;
+									show_job_dropdown = false;
+								}}
+								on:keydown
+							>
+								<p class="light-60">deal without job</p>
+							</div>
+						{/if}
+					{:else}
+						<div class="dropdown-item">
+							<p class="light-60">you don't have any job listings online.</p>
+						</div>
+					{/if}
+				{/await}
 			</div>
 		{/if}
 	</div>

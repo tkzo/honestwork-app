@@ -119,6 +119,7 @@ export type DealDB = {
 	total_amount: string;
 	downpayment: string;
 	signature: string;
+	job_id: number;
 };
 
 export type Deal = {
@@ -130,6 +131,7 @@ export type Deal = {
 	claimedAmount: ethers.BigNumberish;
 	claimableAmount: ethers.BigNumberish;
 	status: number;
+	job_id: number;
 	recruiterRating: Array<number>;
 	creatorRating: Array<number>;
 };

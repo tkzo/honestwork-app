@@ -1,7 +1,7 @@
 <svelte:options immutable={true} />
 
 <script lang="ts">
-	import { assets } from '$app/paths';
+	import { assets, base } from '$app/paths';
 	import { userAddress } from '$lib/stores/Network';
 	import { slide } from 'svelte/transition';
 	import { ethers } from 'ethers';
@@ -57,6 +57,19 @@
 			{#if show_meta_dropdown}
 				{#if meta_message.type == 'job offer'}
 					<div class="dropdown-container" transition:slide>
+						<div class="dropdown-item">
+							<p class="light-60">job:</p>
+							<a
+								class="token-link"
+								href={`${base}/job/${meta_message.recruiter}/${meta_message.job_id}`}
+								target="_blank"
+								rel="noreferrer"
+							>
+								<p>linked job</p>
+								<div style="width:4px" />
+								<img src={`${assets}/icons/external.svg`} alt="arrow-right" />
+							</a>
+						</div>
 						<div class="dropdown-item">
 							<p class="light-60">network:</p>
 							<p>{meta_message.network}</p>

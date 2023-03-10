@@ -13,6 +13,9 @@
 	export let role: string;
 	export let deal: DealDB;
 
+	$: console.log('deal', deal);
+	$: console.log('role', role);
+
 	const approve = async (amount: ethers.BigNumberish) => {
 		try {
 			const Token = new ethers.Contract(deal.token_address, erc20_abi, $networkSigner);
@@ -43,6 +46,7 @@
 				deal.total_amount,
 				deal.downpayment,
 				$userToken,
+				deal.job_id,
 				deal.signature
 			);
 			let receipt = await tx.wait();
@@ -71,7 +75,8 @@
 						token: findTokenName(deal.network, deal.token_address),
 						token_address: deal.token_address,
 						total_amount: deal.total_amount,
-						downpayment: deal.downpayment
+						downpayment: deal.downpayment,
+						job_id: deal.job_id
 					})}`
 				);
 				toast.push(
@@ -94,8 +99,10 @@
 				creator_address,
 				deal.token_address,
 				deal.total_amount,
-				deal.downpayment
+				deal.downpayment,
+				deal.job_id
 			);
+			console.log('msg:', message_hash);
 
 			let hash_array = ethers.utils.arrayify(message_hash);
 			let signature = await $networkSigner.signMessage(hash_array);
@@ -118,7 +125,8 @@
 						token: findTokenName(deal.network, deal.token_address),
 						token_address: deal.token_address,
 						total_amount: deal.total_amount,
-						downpayment: deal.downpayment
+						downpayment: deal.downpayment,
+						job_id: deal.job_id
 					})}`
 				);
 				toast.push(
@@ -158,6 +166,17 @@
 							>
 						{:else if key === 'total_amount' || key === 'downpayment'}
 							<p>${parseFloat(ethers.utils.formatEther(value)).toLocaleString()}</p>
+						{:else if key === 'job_id'}
+							<a
+								class="info-value"
+								href={`${base}/job/${
+									role == 'recruiter' ? $userAddress : conversation.peerAddress
+								}/${value}`}
+							>
+								<p>linked job</p>
+								<div style="width:4px" />
+								<img src={`${assets}/icons/external.svg`} alt="arrow-right" />
+							</a>
 						{:else}
 							<p>{value}</p>
 						{/if}
@@ -192,6 +211,17 @@
 							>
 						{:else if key === 'total_amount' || key === 'downpayment'}
 							<p>${parseFloat(ethers.utils.formatEther(value)).toLocaleString()}</p>
+						{:else if key === 'job_id'}
+							<a
+								class="info-value"
+								href={`${base}/job/${
+									role == 'recruiter' ? $userAddress : conversation.peerAddress
+								}/${value}`}
+							>
+								<p>linked job</p>
+								<div style="width:4px" />
+								<img src={`${assets}/icons/external.svg`} alt="arrow-right" />
+							</a>
 						{:else}
 							<p>{value}</p>
 						{/if}
@@ -230,34 +260,6 @@
 		box-sizing: border-box;
 		margin-top: 8px;
 	}
-	.command {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: flex-start;
-		width: 164px;
-	}
-	.placeholder {
-		height: 32px;
-		display: flex;
-		background-color: var(--color-dark);
-		border-width: 1px 0px 1px 1px;
-		border-style: solid;
-		border-color: var(--color-light-20);
-		box-sizing: border-box;
-		padding: 8px;
-		color: var(--color-light-40);
-	}
-	.action-button {
-		height: 32px;
-		width: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		cursor: pointer;
-		box-sizing: border-box;
-		border: 1px solid var(--color-light-20);
-	}
 	.action-button-full {
 		width: 100%;
 		display: flex;
@@ -286,5 +288,10 @@
 		flex-direction: row;
 		align-items: center;
 		cursor: pointer;
+	}
+	.job-container {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
 	}
 </style>

@@ -11,7 +11,8 @@ export const POST: RequestHandler = async ({ request, params }) => {
 		network: data.network,
 		token_address: data.token_address,
 		total_amount: data.total_amount,
-		downpayment: data.downpayment
+		downpayment: data.downpayment,
+		job_id: data.job_id
 	};
 	const url = `${apiUrl}/deals/${params.recruiter}/${params.creator}/${params.signature}`;
 	const options = {

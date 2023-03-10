@@ -726,6 +726,11 @@ export const escrow_abi = [
 				type: 'uint256'
 			},
 			{
+				internalType: 'uint256',
+				name: '_jobId',
+				type: 'uint256'
+			},
+			{
 				internalType: 'uint8',
 				name: 'v',
 				type: 'uint8'
@@ -782,6 +787,11 @@ export const escrow_abi = [
 			{
 				internalType: 'uint256',
 				name: '_recruiterNFTId',
+				type: 'uint256'
+			},
+			{
+				internalType: 'uint256',
+				name: '_jobId',
 				type: 'uint256'
 			},
 			{
@@ -860,6 +870,11 @@ export const escrow_abi = [
 				type: 'uint256'
 			},
 			{
+				internalType: 'uint256',
+				name: 'jobId',
+				type: 'uint256'
+			},
+			{
 				internalType: 'enum HWEscrow.Status',
 				name: 'status',
 				type: 'uint8'
@@ -903,6 +918,95 @@ export const escrow_abi = [
 	{
 		inputs: [
 			{
+				internalType: 'address',
+				name: '_address',
+				type: 'address'
+			}
+		],
+		name: 'getAggregatedRating',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'getAllDeals',
+		outputs: [
+			{
+				components: [
+					{
+						internalType: 'address',
+						name: 'recruiter',
+						type: 'address'
+					},
+					{
+						internalType: 'address',
+						name: 'creator',
+						type: 'address'
+					},
+					{
+						internalType: 'address',
+						name: 'paymentToken',
+						type: 'address'
+					},
+					{
+						internalType: 'uint256',
+						name: 'totalPayment',
+						type: 'uint256'
+					},
+					{
+						internalType: 'uint256',
+						name: 'successFee',
+						type: 'uint256'
+					},
+					{
+						internalType: 'uint256',
+						name: 'claimedAmount',
+						type: 'uint256'
+					},
+					{
+						internalType: 'uint256',
+						name: 'claimableAmount',
+						type: 'uint256'
+					},
+					{
+						internalType: 'uint256',
+						name: 'jobId',
+						type: 'uint256'
+					},
+					{
+						internalType: 'enum HWEscrow.Status',
+						name: 'status',
+						type: 'uint8'
+					},
+					{
+						internalType: 'uint128[]',
+						name: 'recruiterRating',
+						type: 'uint128[]'
+					},
+					{
+						internalType: 'uint128[]',
+						name: 'creatorRating',
+						type: 'uint128[]'
+					}
+				],
+				internalType: 'struct HWEscrow.Deal[]',
+				name: '',
+				type: 'tuple[]'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
 				internalType: 'uint256',
 				name: '_dealId',
 				type: 'uint256'
@@ -933,63 +1037,6 @@ export const escrow_abi = [
 				internalType: 'uint256',
 				name: '',
 				type: 'uint256'
-			}
-		],
-		stateMutability: 'view',
-		type: 'function'
-	},
-	{
-		inputs: [
-			{
-				internalType: 'uint256',
-				name: '_dealId',
-				type: 'uint256'
-			}
-		],
-		name: 'getClaimableAmount',
-		outputs: [
-			{
-				internalType: 'uint256',
-				name: '',
-				type: 'uint256'
-			}
-		],
-		stateMutability: 'view',
-		type: 'function'
-	},
-	{
-		inputs: [
-			{
-				internalType: 'uint256',
-				name: '_dealId',
-				type: 'uint256'
-			}
-		],
-		name: 'getCreator',
-		outputs: [
-			{
-				internalType: 'address',
-				name: '',
-				type: 'address'
-			}
-		],
-		stateMutability: 'view',
-		type: 'function'
-	},
-	{
-		inputs: [
-			{
-				internalType: 'uint256',
-				name: '_dealId',
-				type: 'uint256'
-			}
-		],
-		name: 'getCreatorRating',
-		outputs: [
-			{
-				internalType: 'uint128[]',
-				name: '',
-				type: 'uint128[]'
 			}
 		],
 		stateMutability: 'view',
@@ -1043,6 +1090,11 @@ export const escrow_abi = [
 						type: 'uint256'
 					},
 					{
+						internalType: 'uint256',
+						name: 'jobId',
+						type: 'uint256'
+					},
+					{
 						internalType: 'enum HWEscrow.Status',
 						name: 'status',
 						type: 'uint8'
@@ -1069,63 +1121,6 @@ export const escrow_abi = [
 	{
 		inputs: [
 			{
-				internalType: 'uint256',
-				name: '_dealId',
-				type: 'uint256'
-			}
-		],
-		name: 'getDealCompletionRate',
-		outputs: [
-			{
-				internalType: 'uint256',
-				name: '',
-				type: 'uint256'
-			}
-		],
-		stateMutability: 'view',
-		type: 'function'
-	},
-	{
-		inputs: [
-			{
-				internalType: 'uint256',
-				name: '_dealId',
-				type: 'uint256'
-			}
-		],
-		name: 'getDealStatus',
-		outputs: [
-			{
-				internalType: 'uint256',
-				name: '',
-				type: 'uint256'
-			}
-		],
-		stateMutability: 'view',
-		type: 'function'
-	},
-	{
-		inputs: [
-			{
-				internalType: 'uint256',
-				name: '_dealId',
-				type: 'uint256'
-			}
-		],
-		name: 'getDealSuccessFee',
-		outputs: [
-			{
-				internalType: 'uint256',
-				name: '',
-				type: 'uint256'
-			}
-		],
-		stateMutability: 'view',
-		type: 'function'
-	},
-	{
-		inputs: [
-			{
 				internalType: 'address',
 				name: '_address',
 				type: 'address'
@@ -1137,25 +1132,6 @@ export const escrow_abi = [
 				internalType: 'uint256[]',
 				name: '',
 				type: 'uint256[]'
-			}
-		],
-		stateMutability: 'view',
-		type: 'function'
-	},
-	{
-		inputs: [
-			{
-				internalType: 'uint256',
-				name: '_amount',
-				type: 'uint256'
-			}
-		],
-		name: 'getEthPrice',
-		outputs: [
-			{
-				internalType: 'uint256',
-				name: '',
-				type: 'uint256'
 			}
 		],
 		stateMutability: 'view',
@@ -1206,6 +1182,11 @@ export const escrow_abi = [
 				internalType: 'uint256',
 				name: '_downPayment',
 				type: 'uint256'
+			},
+			{
+				internalType: 'uint256',
+				name: '_jobId',
+				type: 'uint256'
 			}
 		],
 		name: 'getMessageHash',
@@ -1220,14 +1201,8 @@ export const escrow_abi = [
 		type: 'function'
 	},
 	{
-		inputs: [
-			{
-				internalType: 'uint256',
-				name: '_tokenId',
-				type: 'uint256'
-			}
-		],
-		name: 'getNFTGrossRevenue',
+		inputs: [],
+		name: 'getPrecision',
 		outputs: [
 			{
 				internalType: 'uint256',
@@ -1235,107 +1210,12 @@ export const escrow_abi = [
 				type: 'uint256'
 			}
 		],
-		stateMutability: 'view',
-		type: 'function'
-	},
-	{
-		inputs: [
-			{
-				internalType: 'uint256',
-				name: '_dealId',
-				type: 'uint256'
-			}
-		],
-		name: 'getPaymentToken',
-		outputs: [
-			{
-				internalType: 'address',
-				name: '',
-				type: 'address'
-			}
-		],
-		stateMutability: 'view',
-		type: 'function'
-	},
-	{
-		inputs: [
-			{
-				internalType: 'uint256',
-				name: '_dealId',
-				type: 'uint256'
-			}
-		],
-		name: 'getRecruiter',
-		outputs: [
-			{
-				internalType: 'address',
-				name: '',
-				type: 'address'
-			}
-		],
-		stateMutability: 'view',
-		type: 'function'
-	},
-	{
-		inputs: [
-			{
-				internalType: 'uint256',
-				name: '_dealId',
-				type: 'uint256'
-			}
-		],
-		name: 'getRecruiterRating',
-		outputs: [
-			{
-				internalType: 'uint128[]',
-				name: '',
-				type: 'uint128[]'
-			}
-		],
-		stateMutability: 'view',
-		type: 'function'
-	},
-	{
-		inputs: [
-			{
-				internalType: 'uint256',
-				name: '_dealId',
-				type: 'uint256'
-			}
-		],
-		name: 'getTotalPayment',
-		outputs: [
-			{
-				internalType: 'uint256',
-				name: '',
-				type: 'uint256'
-			}
-		],
-		stateMutability: 'view',
+		stateMutability: 'pure',
 		type: 'function'
 	},
 	{
 		inputs: [],
 		name: 'getTotalSuccessFee',
-		outputs: [
-			{
-				internalType: 'uint256',
-				name: '',
-				type: 'uint256'
-			}
-		],
-		stateMutability: 'view',
-		type: 'function'
-	},
-	{
-		inputs: [
-			{
-				internalType: 'uint256',
-				name: '_dealId',
-				type: 'uint256'
-			}
-		],
-		name: 'getclaimedAmount',
 		outputs: [
 			{
 				internalType: 'uint256',

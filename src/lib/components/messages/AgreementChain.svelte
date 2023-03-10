@@ -6,7 +6,7 @@
 	import { findTokenName, findChainName } from '$lib/stores/Constants';
 	import type { Deal } from '$lib/stores/Types';
 	import { toast } from '@zerodevx/svelte-toast';
-	import { assets } from '$app/paths';
+	import { base, assets } from '$app/paths';
 
 	export let conversation: any;
 	export let deal: Deal;
@@ -158,6 +158,13 @@
 
 <main>
 	<section>
+		<div class="info">
+			<a href={`${base}/job/${deal.recruiter}/${deal.job_id}`}>
+				<p>linked job</p>
+				<div style="width:4px" />
+				<img src={`${assets}/icons/external.svg`} alt="arrow-right" />
+			</a>
+		</div>
 		<div class="info">
 			<p class="light-60">network</p>
 			<p>{findChainName($chainID)}</p>
