@@ -29,6 +29,7 @@
 	import Applications from '$lib/components/profile/Applications.svelte';
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
+	import { JobInput, ProfileInput } from '$lib/stores/Validation';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
@@ -145,6 +146,8 @@
 	const getNft = async () => {
 		fetching_image = true;
 		infobox_show = false;
+		let fetching_address = nft_address;
+		let fetching_id = nft_id;
 		if (nft_address && nft_id) {
 			try {
 				const response = await fetch(`api/alchemy/${nft_address}/${nft_id}`);
@@ -166,6 +169,9 @@
 			} catch (err) {
 				console.log(err);
 			}
+		}
+		if (fetching_address != nft_address || fetching_id != nft_id) {
+			await getNft();
 		}
 	};
 	const focusInput = (input: string) => {
@@ -239,6 +245,36 @@
 			return;
 		}
 		submitting.set(true);
+
+		const input: ProfileInput = {
+			username: username,
+			show_ens: show_ens,
+			ens_name: ens_name,
+			title: title,
+			email: email,
+			bio: parseContent(content),
+			image_url: image_url,
+			nft_address: nft_address,
+			nft_id: nft_id.toString(),
+			show_nft: show_nft,
+			dms_open: dms_open,
+			timezone: 'UTC+3',
+			links: [link_0, link_1, link_2]
+		};
+
+		let parsed = ProfileInput.safeParse(input);
+		console.log('BIO: ', parseContent(content));
+		if (!parsed.success) {
+			console.log('PArsed:', parsed.error.errors);
+
+			for (let i = 0; i < parsed.error.errors.length; i++) {
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>${parsed.error.errors[i].path}: </span>${parsed.error.errors[i].message}</p>`
+				);
+			}
+			return;
+		}
+
 		//todo: proper handling
 		if (show_nft && !is_owner) {
 			console.log('Nope.');

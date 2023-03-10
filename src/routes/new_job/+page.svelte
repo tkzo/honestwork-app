@@ -127,7 +127,9 @@
 		// todo: consume errors and show them to the user
 		let parsed = JobInput.safeParse(formObj);
 		if (!parsed.success) {
-			console.log(parsed.error);
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${parsed.error}</p>`
+			);
 			return;
 		} else {
 			uploadImage(e);

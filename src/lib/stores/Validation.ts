@@ -3,7 +3,6 @@ import { parseContent } from '$lib/stores/Parser';
 import { ethers } from 'ethers';
 import { chains } from '$lib/stores/Constants';
 
-// todo: multichain support
 // todo: initialize with dynamic config values from api
 const tokens = chains[0].tokens;
 
@@ -79,6 +78,34 @@ export const ProfileInput = z.object({
 	title: z.string().min(5).max(50),
 	image_url: z.string().url(),
 	show_nft: z.boolean(),
+	dms_open: z.boolean(),
+	timezone: z.enum([
+		'UTC+0',
+		'UTC+1',
+		'UTC+2',
+		'UTC+3',
+		'UTC+4',
+		'UTC+5',
+		'UTC+6',
+		'UTC+7',
+		'UTC+8',
+		'UTC+9',
+		'UTC+10',
+		'UTC+11',
+		'UTC+12',
+		'UTC-1',
+		'UTC-2',
+		'UTC-3',
+		'UTC-4',
+		'UTC-5',
+		'UTC-6',
+		'UTC-7',
+		'UTC-8',
+		'UTC-9',
+		'UTC-10',
+		'UTC-11',
+		'UTC-12'
+	]),
 	nft_address: z.optional(
 		z.string().refine((val) => ethers.utils.isAddress(val), {
 			message: 'Invalid address'
@@ -90,11 +117,8 @@ export const ProfileInput = z.object({
 		})
 	),
 	email: z.string().email(),
-	bio: z
-		.string()
-		.refine((val) => 2000 >= parseContent(val).length && parseContent(val).length >= 200),
-	links: z.string().url().array().min(1).max(3),
-	rating: z.never()
+	bio: z.string().min(200).max(2000),
+	links: z.string().url().array().min(1).max(3)
 });
 export type ProfileInput = z.infer<typeof ProfileInput>;
 
