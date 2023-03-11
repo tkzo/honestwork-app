@@ -12,6 +12,7 @@
 	//todo: move images to img elements instead of div backgrounds (won't show ones with empty letter in its name)
 
 	export let skill: any;
+	$: console.log('Skill in component: ', skill);
 
 	let description_chars = 2000;
 	let description_text = skill.description;
@@ -71,19 +72,39 @@
 		image_url_6 != (skill.image_urls ? skill.image_urls[6] : '') ||
 		image_url_7 != (skill.image_urls ? skill.image_urls[7] : '') ||
 		minimum != skill.minimum_price ||
-		publish != skill.publish
+		publish != skill.publish ||
+		tags != skill.tags
 	) {
 		changes_made.set(true);
+		dispatchSkill();
 	} else {
 		changes_made.set(false);
 	}
 	onMount(() => {
 		updateInputLengths();
-		dispatch('tag_update', {
-			tags: skill.tags
-		});
 	});
-
+	const dispatchSkill = () => {
+		dispatch('skill_update', {
+			skill: {
+				title: title,
+				description: description_text,
+				links: [link_0, link_1, link_2],
+				image_urls: [
+					image_url_0,
+					image_url_1,
+					image_url_2,
+					image_url_3,
+					image_url_4,
+					image_url_5,
+					image_url_6,
+					image_url_7
+				],
+				minimum_price: minimum,
+				publish: publish,
+				tags: tags
+			}
+		});
+	};
 	const uploadPhoto = async (e: any) => {
 		const file = e.target.files[0]!;
 		if (file == null) return;
@@ -124,17 +145,13 @@
 	const handleTagEntry = (e: any) => {
 		if (e.target?.value !== '' && e.pointerType != 'mouse') tags.push(e.target?.value);
 		tags = tags;
-		dispatch('tag_update', {
-			tags: tags
-		});
+		dispatchSkill();
 		tag_input.value = '';
 	};
 	const handleRemoveTag = (index: number) => {
 		tags.splice(index, 1);
 		tags = tags;
-		dispatch('tag_update', {
-			tags: tags
-		});
+		dispatchSkill();
 	};
 	const handleContentInput = (e: any) => {
 		content = JSON.stringify(e.detail.content);

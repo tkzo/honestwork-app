@@ -61,7 +61,7 @@
 {:else}
 	<SkillEdit
 		skill={data.skills.json ? data.skills.json[$chosen_skill_slot] ?? empty_skill : empty_skill}
-		on:tag_update
+		on:skill_update
 	/>
 {/if}
 

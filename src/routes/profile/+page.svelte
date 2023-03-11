@@ -310,10 +310,29 @@
 		}
 	};
 	const submitSkills = async (e: any) => {
-		if (e.submitter?.id != 'profile_post') {
+		if (e.submitter?.id == 'profile_post') {
 			return;
 		}
 		submitting.set(true);
+
+		const input: SkillInput = {
+			user_address: $userAddress,
+			title: new_skill.title,
+			description: new_skill.description,
+			tags: new_skill.tags,
+			links: new_skill.links,
+			minimum_price: new_skill.minimum_price,
+			publish: new_skill.publish
+		};
+		let parsed = SkillInput.safeParse(input);
+		if (!parsed.success) {
+			for (let i = 0; i < parsed.error.errors.length; i++) {
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>${parsed.error.errors[i].path}: </span>${parsed.error.errors[i].message}</p>`
+				);
+			}
+			return;
+		}
 
 		let counter = 0;
 		for await (let t of e.target) {
@@ -346,6 +365,7 @@
 				counter++;
 			}
 		}
+		skillsForm.tags.value = new_skill.tags;
 		skillsForm.submit();
 	};
 	const updateInputLengths = () => {
@@ -355,8 +375,10 @@
 
 		title_input_length = title_input_element?.value.length ?? data.user.title.length;
 	};
-	const handleTagsUpdate = (e: any) => {
-		tags = e.detail.tags;
+	let new_skill: any;
+	const handleSkillUpdate = (e: any) => {
+		new_skill = e.detail.skill;
+		console.log('Skill:', new_skill);
 	};
 	const handleContentInput = (e: any) => {
 		content = JSON.stringify(e.detail.content);
@@ -781,14 +803,14 @@
 									<div style="width:4px;" />
 								{/if}
 								<button
-									id="profile_post"
+									id="skills_post"
 									class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
 									>save changes</button
 								>
 							</div>
 						{/if}
 						<div style="height: 16px" />
-						<Skills {data} on:tag_update={handleTagsUpdate} />
+						<Skills {data} on:skill_update={handleSkillUpdate} />
 					</form>
 				{:else if chosenTab == 'watchlist'}
 					<section class="bar">
