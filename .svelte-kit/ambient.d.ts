@@ -61,6 +61,7 @@ declare module '$env/static/private' {
 	export const npm_config_local_prefix: string;
 	export const ZSH: string;
 	export const USER: string;
+	export const LS_COLORS: string;
 	export const COMMAND_MODE: string;
 	export const npm_config_globalconfig: string;
 	export const CONDA_EXE: string;
@@ -183,6 +184,7 @@ declare module '$env/dynamic/private' {
 		npm_config_local_prefix: string;
 		ZSH: string;
 		USER: string;
+		LS_COLORS: string;
 		COMMAND_MODE: string;
 		npm_config_globalconfig: string;
 		CONDA_EXE: string;

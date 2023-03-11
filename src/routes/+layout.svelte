@@ -57,7 +57,7 @@
 	<div class="toast-container">
 		<SvelteToast options={{ duration: 5000, intro: { y: -20 } }} />
 	</div>
-	{#if $page.route.id !== '/'}
+	{#if $page.route.id !== '/' && $page.route.id !== '/mint'}
 		<Navigation />
 		<div style="height:32px;" />
 		<!-- {:else}
