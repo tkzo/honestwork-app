@@ -350,7 +350,7 @@
 						{/if}
 					</div>
 				</div>
-			{:else if chosen_tab == 'agreements'}
+			{:else if chosen_tab == 'agreements' && chosen_conversation != null}
 				<Agreements conversation={chosen_conversation} />
 			{/if}
 		</div>
