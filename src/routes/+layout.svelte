@@ -13,7 +13,7 @@
 	import { connectIfCached } from '$lib/stores/Network';
 
 	onMount(() => {
-		connectIfCached();
+		if ($page.route.id !== '/') connectIfCached();
 	});
 
 	export let data: LayoutServerData;
