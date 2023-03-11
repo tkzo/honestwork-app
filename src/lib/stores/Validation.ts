@@ -13,9 +13,7 @@ export const JobInput = z.object({
 	}),
 	token_paid: z.string().refine((val) => tokens.find((t) => t.address == val) != undefined),
 	title: z.string().min(5).max(50),
-	description: z
-		.string()
-		.refine((val) => 2000 >= parseContent(val).length && parseContent(val).length >= 200),
+	description: z.string().min(200).max(2000),
 	tags: z.string().array().min(1).max(3),
 	links: z.string().url().array().min(1).max(3),
 	budget: z
@@ -65,9 +63,11 @@ export const JobInput = z.object({
 					address: z.string().refine((val) => tokens.find((t) => t.address == val) != undefined)
 				})
 				.array()
+				.min(1)
 		})
-		.array(),
-	sticky_duration: z.enum(['7', '14', '30', '0'])
+		.array()
+		.min(1),
+	sticky_duration: z.number().refine((val) => val == 0 || val == 7 || val == 14 || val == 30)
 });
 export type JobInput = z.infer<typeof JobInput>;
 
@@ -127,9 +127,7 @@ export const SkillInput = z.object({
 		message: 'Invalid address'
 	}),
 	title: z.string().min(5).max(50),
-	description: z
-		.string()
-		.refine((val) => 2000 >= parseContent(val).length && parseContent(val).length >= 200),
+	description: z.string().min(200).max(2000),
 	tags: z.string().url().array().min(1).max(3),
 	links: z.string().url().array().min(1).max(3),
 	image_urls: z.string().url().array().min(1).max(3),
@@ -158,14 +156,11 @@ export const CoverLetterInput = z.object({
 		.string()
 		.refine(
 			(val) =>
-				ethers.utils.isAddress(val.split(':')[0]) && !Number.isNaN(parseInt(val.split(':')[1], 10)),
+				ethers.utils.isAddress(val.split(':')[1]) && !Number.isNaN(parseInt(val.split(':')[2], 10)),
 			{
 				message: 'Invalid job address or id'
 			}
 		),
-	cover_letter: z
-		.string()
-		.refine((val) => 2000 >= parseContent(val).length && parseContent(val).length >= 200),
-	date: z.never()
+	cover_letter: z.string().min(200).max(2000)
 });
 export type CoverLetterInput = z.infer<typeof CoverLetterInput>;

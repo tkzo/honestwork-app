@@ -30,10 +30,14 @@
 	// add autosuggest from redis
 
 	type TokenSelection = {
-		chain_id: number;
-		token_address: string;
+		address: string;
+	};
+	type NetworkSelection = {
+		id: number;
+		tokens: TokenSelection[];
 	};
 
+	let network_selection_array: NetworkSelection[] = [];
 	export let viewport: Element;
 	export let contents: Element;
 
@@ -41,7 +45,6 @@
 	let file_url: string;
 	let service_fee = 10; // in $
 	let jobForm: HTMLFormElement;
-	let tokens_selected: TokenSelection[] = [];
 	let image_url: string | undefined = undefined;
 	let upload_url: Response;
 	let show_ens: boolean = false;
@@ -93,67 +96,72 @@
 		if (e.submitter?.id != 'job_post') {
 			return;
 		}
+
+		const input: JobInput = {
+			username: username_element.value,
+			user_address: $userAddress,
+			title: title_element.value,
+			token_paid: chosen_payment_token.address,
+			description: parseContent(content),
+			tags: tags,
+			links: links,
+			budget: jobForm.budget.value,
+			sticky_duration: sticky_duration,
+			timezone: 'UTC+3',
+			tokens_accepted: network_selection_array
+		};
+		let parsed = JobInput.safeParse(input);
+		if (!parsed.success) {
+			for (let i = 0; i < parsed.error.errors.length; i++) {
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>${parsed.error.errors[i].path}: </span>${parsed.error.errors[i].message}</p>`
+				);
+			}
+			return;
+		}
+
 		userPublishing = true;
-		const res = await fetch(`/api/auth/login/${$userAddress}`, {
+		const salt_res = await fetch(`/api/auth/login/${$userAddress}`, {
 			method: 'POST'
 		});
-		salt = await res.json();
+		salt = await salt_res.json();
 		jobForm.signature.value = await $networkSigner.signMessage(salt);
 
 		const formData = new FormData(e.target! as HTMLFormElement);
 		let formObj: JobType = {} as JobType;
 		formObj = Object.fromEntries(formData.entries()) as unknown as JobType;
-		formObj.tokens_accepted = [] as Network[];
-
-		for (let i = 0; i < tokens_selected.length; i++) {
-			let chain_id = tokens_selected[i].chain_id;
-			let existing = formObj.tokens_accepted?.find((n) => n.id == chain_id);
-			if (existing) {
-				existing.tokens.push({ address: tokens_selected[i].token_address });
-			} else {
-				formObj.tokens_accepted.push({
-					id: chain_id,
-					tokens: [{ address: tokens_selected[i].token_address }]
-				});
-			}
-		}
-
+		formObj.tokens_accepted = network_selection_array;
 		formObj.links = links;
 		formObj.tags = tags;
 		formObj.sticky_duration = sticky_duration.toString();
 		formObj.timezone = timezone >= 0 ? `UTC+${timezone}` : `UTC${timezone}`;
 		formObj.description = content;
 
-		// todo: consume errors and show them to the user
-		let parsed = JobInput.safeParse(formObj);
-		if (!parsed.success) {
+		uploadImage(e);
+		formObj.image_url = parsed_filename;
+		let stringified = JSON.stringify(formObj);
+		const url = '/api/job_submit';
+		const options = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: stringified
+		};
+		let res = await fetch(url, options);
+		let data = await res.json();
+		if (data == 'success') {
+			userPublished = true;
 			toast.push(
-				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${parsed.error}</p>`
+				`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Job listing posted</p>`
 			);
-			return;
+			userPublishing = false;
+			goto(`/job/${$userAddress}`);
 		} else {
-			uploadImage(e);
-			formObj.image_url = parsed_filename;
-			jobForm.tokens_accepted = JSON.stringify(formObj.tokens_accepted);
-			let stringified = JSON.stringify(formObj);
-			const url = '/api/job_submit';
-			const options = {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: stringified
-			};
-			let res = await fetch(url, options);
-			let data = await res.json();
-			if (data == 'success') {
-				userPublished = true;
-				toast.push(`<p class="light-60">Job listing published.</p>`);
-			}
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
+			);
 		}
-
-		userPublishing = false;
-		goto(`/job/${$userAddress}`);
 	};
 	const uploadImage = async (e: any) => {
 		let target_file;
@@ -176,9 +184,13 @@
 			});
 			//todo: stop exec if not ok
 			if (upload.ok) {
-				console.log('Uploaded successfully!');
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>uploaded image</p>`
+				);
 			} else {
-				console.error('Upload failed.');
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>failed to upload image</p>`
+				);
 			}
 		}
 	};
@@ -211,17 +223,17 @@
 		tags = tags;
 	};
 	const handleTokenUpdate = (address: string) => {
-		if (!getTokenState(address)) {
-			tokens_selected.push({
-				chain_id: chosen_network.id,
-				token_address: address
-			});
+		let i = network_selection_array.findIndex((network) => network.id == chosen_network.id);
+		if (i != -1 && !getTokenState(address)) {
+			network_selection_array[i].tokens.push({ address: address });
+		} else if (i == -1 && !getTokenState(address)) {
+			network_selection_array.push({ id: chosen_network.id, tokens: [{ address: address }] });
 		} else {
-			tokens_selected = tokens_selected.filter(
-				(token) => token.chain_id == chosen_network.id && token.token_address !== address
+			network_selection_array[i].tokens = network_selection_array[i].tokens.filter(
+				(n) => n.address != address
 			);
 		}
-		tokens_selected = tokens_selected;
+		network_selection_array = network_selection_array;
 	};
 	const getTokenName = (address: string) => {
 		let chain = chains.find((chain) => chain.id == chosen_network.id);
@@ -229,9 +241,10 @@
 		return tokenName;
 	};
 	const getTokenState = (address: string) => {
-		let t = tokens_selected.find(
-			(n) => n.chain_id == chosen_network.id && n.token_address == address
-		);
+		if (network_selection_array.length == 0) return false;
+		let network_selection = network_selection_array.find((n) => n.id == chosen_network.id);
+		if (!network_selection) return false;
+		let t = network_selection?.tokens.find((n) => n.address == address);
 		return t ? true : false;
 	};
 	const getTokenBalance = async (token_address: string) => {
@@ -548,31 +561,32 @@
 						</div>
 						<div class="tokens">
 							<div style="height:8px" />
-							{#each chosen_network.tokens as token, i}
-								<div class="token" on:click={() => handleTokenUpdate(token.address)} on:keydown>
-									<div class="token-left">
-										{#if tokens_selected && getTokenState(token.address)}
-											<img src={`${assets}/icons/checked.svg`} alt="Check" />
-										{:else}
-											<img src={`${assets}/icons/unchecked_passive.svg`} alt="Plus" />
-										{/if}
-										<div style="width:4px" />
-										<p class={tokens_selected && getTokenState(token.address) ? '' : 'light-60'}>
-											{getTokenName(token.address)}
+							{#key network_selection_array}
+								{#each chosen_network.tokens as token, i}
+									<div class="token" on:click={() => handleTokenUpdate(token.address)} on:keydown>
+										<div class="token-left">
+											{#if getTokenState(token.address)}
+												<img src={`${assets}/icons/checked.svg`} alt="Check" />
+											{:else}
+												<img src={`${assets}/icons/unchecked_passive.svg`} alt="Plus" />
+											{/if}
+											<div style="width:4px" />
+											<p class={getTokenState(token.address) ? '' : 'light-60'}>
+												{getTokenName(token.address)}
+											</p>
+										</div>
+										<p class={getTokenState(token.address) ? '' : 'light-60'}>
+											{token.address}
 										</p>
 									</div>
-									<p class={tokens_selected && getTokenState(token.address) ? '' : 'light-60'}>
-										{token.address}
-									</p>
-								</div>
-								{#if i < chosen_network.tokens.length - 1}
-									<div style="height:8px" />
-								{/if}
-							{/each}
+									{#if i < chosen_network.tokens.length - 1}
+										<div style="height:8px" />
+									{/if}
+								{/each}
+							{/key}
 						</div>
 					</div>
 					<div style="height:8px" />
-
 					<div class="payment-section">
 						<div class="receipt">
 							<div class="receipt-item">
@@ -591,7 +605,6 @@
 								<p class="yellow">${sticky_item.price + 10}</p>
 							</div>
 						</div>
-
 						<div class="payment-module">
 							<div class="token-selector input-field">
 								<div class="placeholder">

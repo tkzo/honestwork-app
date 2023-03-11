@@ -29,7 +29,7 @@
 	import Applications from '$lib/components/profile/Applications.svelte';
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import { JobInput, ProfileInput } from '$lib/stores/Validation';
+	import { ProfileInput, SkillInput } from '$lib/stores/Validation';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
@@ -261,12 +261,8 @@
 			timezone: 'UTC+3',
 			links: [link_0, link_1, link_2]
 		};
-
 		let parsed = ProfileInput.safeParse(input);
-		console.log('BIO: ', parseContent(content));
 		if (!parsed.success) {
-			console.log('PArsed:', parsed.error.errors);
-
 			for (let i = 0; i < parsed.error.errors.length; i++) {
 				toast.push(
 					`<p class="light-60"><span style='color:var(--color-error)'>${parsed.error.errors[i].path}: </span>${parsed.error.errors[i].message}</p>`
@@ -277,7 +273,9 @@
 
 		//todo: proper handling
 		if (show_nft && !is_owner) {
-			console.log('Nope.');
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-error)'>Error: </span>You're not the nft owner</p>`
+			);
 		} else {
 			let target_file;
 			for (let t of e.target) {
@@ -298,9 +296,14 @@
 				});
 				//todo: stop exec if not ok
 				if (upload.ok) {
-					console.log('Uploaded successfully!');
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-success)'>Uploaded file</p>`
+					);
 				} else {
-					console.error('Upload failed.');
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-error)'>Upload failed</p>`
+					);
+					return;
 				}
 			}
 			profileForm.submit();
@@ -311,6 +314,7 @@
 			return;
 		}
 		submitting.set(true);
+
 		let counter = 0;
 		for await (let t of e.target) {
 			if (t.files != null) {
@@ -323,16 +327,20 @@
 					Object.entries({ ...fields, file }).forEach(([key, value]) => {
 						formData.append(key, value as string);
 					});
-					console.log('Form data before post:', formData);
 					const upload = await fetch(url, {
 						method: 'POST',
 						body: formData
 					});
 					//todo: stop exec if not ok
 					if (upload.ok) {
-						console.log('Uploaded successfully!');
+						toast.push(
+							`<p class="light-60"><span style='color:var(--color-success)'>Uploaded file</p>`
+						);
 					} else {
-						console.error('Upload failed.');
+						toast.push(
+							`<p class="light-60"><span style='color:var(--color-error)'>Upload failed</p>`
+						);
+						return;
 					}
 				}
 				counter++;

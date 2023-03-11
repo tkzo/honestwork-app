@@ -64,7 +64,7 @@
 		</div>
 		<div class="status-tag">
 			{#if job.deal_id == -1}
-				<p style="color:var(--color-success)">available</p>
+				<p style="color:var(--color-success)">active</p>
 				<div style="width: 4px" />
 				<img src={`${assets}/icons/calendar-check.svg`} alt="arrow" />
 				<div style="width: 8px" />

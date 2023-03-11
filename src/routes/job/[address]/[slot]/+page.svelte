@@ -6,6 +6,7 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	import { parseContent } from '$lib/stores/Parser';
+	import { CoverLetterInput } from '$lib/stores/Validation';
 
 	export let data: PageData;
 
@@ -13,6 +14,22 @@
 	let total_chars = 0;
 
 	const handleApply = async () => {
+		const input: CoverLetterInput = {
+			user_address: $userAddress,
+			job_id: `job:${data.job.user_address}:${data.job.slot}`,
+			cover_letter: parseContent(content)
+		};
+		console.log(input);
+		let parsed = CoverLetterInput.safeParse(input);
+		if (!parsed.success) {
+			for (let i = 0; i < parsed.error.errors.length; i++) {
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>${parsed.error.errors[i].path}: </span>${parsed.error.errors[i].message}</p>`
+				);
+			}
+			return;
+		}
+
 		if ($userConnected) {
 			try {
 				const url = `${base}/api/job_apply/${data.job.user_address}/${data.job.slot}`;
