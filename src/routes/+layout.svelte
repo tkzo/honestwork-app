@@ -20,21 +20,21 @@
 	user_signed_in.set(data.signed!);
 
 	// trackers
-	LogRocket.init('2wdgml/honestwork');
-	$: if ($userAddress && $userAddress != '') {
-		logrocketIdentify();
-	}
-	const logrocketIdentify = async () => {
-		const res = await fetch(`/api/user/${$userAddress}`);
-		const user = await res.json();
-		if (user.username != '') {
-			LogRocket.identify($userAddress, {
-				name: user.username,
-				email: user.email,
-				tier: 3
-			});
-		}
-	};
+	// LogRocket.init('2wdgml/honestwork');
+	// $: if ($userAddress && $userAddress != '') {
+	// 	logrocketIdentify();
+	// }
+	// const logrocketIdentify = async () => {
+	// 	const res = await fetch(`/api/user/${$userAddress}`);
+	// 	const user = await res.json();
+	// 	if (user.username != '') {
+	// 		LogRocket.identify($userAddress, {
+	// 			name: user.username,
+	// 			email: user.email,
+	// 			tier: 3
+	// 		});
+	// 	}
+	// };
 	globalThis.Buffer = Buffer;
 </script>
 
