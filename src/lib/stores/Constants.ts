@@ -133,13 +133,13 @@ export let placeholder_image = `${assets}/assets/xcopy.gif`;
 // todo: fetch dynamically on network store
 export const chains = [
 	{
-		name: 'binance',
-		id: 56,
+		name: 'arbitrum',
+		id: 42161,
 		tokens: [
 			{
-				name: 'MOCK',
-				symbol: 'MOCK',
-				address: env.PUBLIC_BINANCE_MOCK_TOKEN_ADDRESS,
+				name: 'USDC',
+				symbol: 'USDC',
+				address: env.PUBLIC_ARBITRUM_USDC_ADDRESS!,
 				max_allowed: '100000000000000000000000'
 			}
 		],

@@ -27,8 +27,8 @@
 	let show_ens: boolean = false;
 	let show_sticky_menu: boolean = false;
 	let chosen_network: Network = chains[0];
-	let polygonTokens = chains.find((chain) => chain.id == 56)?.tokens!;
-	let chosen_payment_token = polygonTokens[0];
+	let arbitrumTokens = chains.find((chain) => chain.id == 42161)?.tokens!;
+	let chosen_payment_token = arbitrumTokens[0];
 	let tag_input: HTMLInputElement;
 	let username_length = 0;
 	let username_element: HTMLInputElement;

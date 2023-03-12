@@ -23,9 +23,7 @@ export let xmtpConnecting = writable(false);
 
 let chain_names = {
 	1: 'mainnet',
-	56: 'binance',
-	137: 'polygon',
-	1453: 'devm'
+	42161: 'arbitrum'
 };
 
 export const connectIfCached = async () => {

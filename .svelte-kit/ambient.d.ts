@@ -131,6 +131,7 @@ declare module '$env/static/public' {
 	export const PUBLIC_ESCROW_ADDRESS: string;
 	export const PUBLIC_REGISTRY_ADDRESS: string;
 	export const PUBLIC_MAINNET_DAI_ADDRESS: string;
+	export const PUBLIC_ARBITRUM_USDC_ADDRESS: string;
 	export const PUBLIC_BINANCE_MOCK_TOKEN_ADDRESS: string;
 	export const PUBLIC_BINANCE_BUSD_ADDRESS: string;
 }
@@ -259,6 +260,7 @@ declare module '$env/dynamic/public' {
 		PUBLIC_ESCROW_ADDRESS: string;
 		PUBLIC_REGISTRY_ADDRESS: string;
 		PUBLIC_MAINNET_DAI_ADDRESS: string;
+		PUBLIC_ARBITRUM_USDC_ADDRESS: string;
 		PUBLIC_BINANCE_MOCK_TOKEN_ADDRESS: string;
 		PUBLIC_BINANCE_BUSD_ADDRESS: string;
 		[key: `PUBLIC_${string}`]: string | undefined;

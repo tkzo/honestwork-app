@@ -53,9 +53,9 @@
 	let sticky_duration: number = 7;
 	let links: string[] = [];
 	let tags: string[] = [];
-	let chosen_network: Network = chains[0];
-	let binanceTokens = chains.find((chain) => chain.id == 56)?.tokens!;
-	let chosen_payment_token = binanceTokens[0];
+	let chosen_network: Network = chains[0]!;
+	let arbitrumTokens = chains.find((chain) => chain.id == 42161)?.tokens!;
+	let chosen_payment_token = arbitrumTokens[0];
 	let paymentTokenBalance = 0;
 	let userPaying = false;
 	let userSigned = false;
@@ -248,19 +248,11 @@
 		return t ? true : false;
 	};
 	const getTokenBalance = async (token_address: string) => {
+		// todo: add decimal prop to tokens
 		if ($userConnected) {
 			try {
-				if (token_address == '0x0000000000000000000000000000000000000000') {
-					paymentTokenBalance = parseFloat(
-						ethers.utils.formatEther(await $networkProvider.getBalance($userAddress))
-					);
-					return;
-				}
-
 				const ERC20 = new ethers.Contract(token_address, erc20_abi, $networkProvider);
-				paymentTokenBalance = parseFloat(
-					ethers.utils.formatEther(await ERC20.balanceOf($userAddress))
-				);
+				return parseFloat(ethers.utils.formatUnits(await ERC20.balanceOf($userAddress), 6));
 			} catch (e) {
 				console.log(e);
 			}
@@ -271,10 +263,11 @@
 		show_token_menu = false;
 	};
 	const pay = async () => {
+		// todo: add decimal prop to tokens
 		if ($userConnected) {
 			userPaying = true;
 			let amount_to_pay = sticky_item.price + service_fee;
-			let price = ethers.utils.parseEther(amount_to_pay.toString());
+			let price = ethers.utils.parseUnits(amount_to_pay.toString(), 6);
 			try {
 				if (parseFloat(user_allowance) < amount_to_pay) {
 					const erc20 = new ethers.Contract(
@@ -629,8 +622,8 @@
 									</div>
 									{#if show_token_menu}
 										<div class="sticky-menu">
-											{#if binanceTokens}
-												{#each binanceTokens as token}
+											{#if arbitrumTokens}
+												{#each arbitrumTokens as token}
 													<div
 														class="sticky-item"
 														on:click={() => handlePaymentTokenUpdate(token)}
@@ -648,10 +641,10 @@
 							<div class="balance receipt-item">
 								<p class="light-40">your balance</p>
 								{#if chosen_payment_token}
-									{#await getTokenBalance(chosen_payment_token?.address)}
+									{#await getTokenBalance(chosen_payment_token.address)}
 										<Skeleton height="16px" width="100px" />
 									{:then balance}
-										<p>{paymentTokenBalance.toFixed(2)}</p>
+										<p>{balance?.toFixed(2)}</p>
 									{/await}
 								{/if}
 							</div>

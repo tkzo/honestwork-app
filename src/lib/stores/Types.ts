@@ -201,7 +201,7 @@ export type APIConfig = {
 			ID: number;
 			RPCURL: string;
 		};
-		Binance: {
+		Arbitrum: {
 			ID: number;
 			RPCURL: string;
 		};
