@@ -150,7 +150,7 @@
 						<p class="light-60">{key}</p>
 						{#if key === 'token_address'}
 							<a
-								href={`https://bscscan.com/address/${value}`}
+								href={`https://arbiscan.com/address/${value}`}
 								target="_blank"
 								rel="noreferrer"
 								class="info-value"
@@ -199,7 +199,7 @@
 					<div class="info">
 						<p class="light-60">{key}</p>
 						{#if key === 'token_address'}
-							<a href="https://bscscan.com/" target="_blank" rel="noreferrer" class="info-value">
+							<a href="https://arbiscan.com/" target="_blank" rel="noreferrer" class="info-value">
 								<p class="link">
 									{value.toString().substring(0, 6) +
 										'...' +

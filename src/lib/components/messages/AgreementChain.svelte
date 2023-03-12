@@ -72,7 +72,7 @@
 						token_address: deal.paymentToken,
 						total_amount: deal.totalPayment,
 						installment: ethers.utils.parseEther(amount.toString()),
-						job_id: deal.job_id,
+						job_id: deal.jobId,
 						recruiter: deal.recruiter
 					})}`
 				);
@@ -106,7 +106,7 @@
 						token_address: deal.paymentToken,
 						total_amount: deal.totalPayment,
 						installment: ethers.utils.parseEther(amount.toString()),
-						job_id: deal.job_id,
+						job_id: deal.jobId,
 						recruiter: deal.recruiter
 					})}`
 				);
@@ -133,7 +133,7 @@
 				await conversation.send(
 					`Meta:${JSON.stringify({
 						type: 'job cancelled',
-						job_id: deal.job_id,
+						job_id: deal.jobId,
 						deal: id,
 						network: findChainName($chainID),
 						token: findTokenName(findChainName($chainID), deal.paymentToken),
@@ -164,7 +164,7 @@
 <main>
 	<section>
 		<div class="info">
-			<a href={`${base}/job/${deal.recruiter}/${deal.job_id}`}>
+			<a href={`${base}/job/${deal.recruiter}/${deal.jobId}`}>
 				<p>linked job</p>
 				<div style="width:4px" />
 				<img src={`${assets}/icons/external.svg`} alt="arrow-right" />
@@ -177,7 +177,7 @@
 		<div class="info">
 			<p class="light-60">token</p>
 			<a
-				href={`https://bscscan.com/address/${deal.paymentToken}`}
+				href={`https://arbiscan.com/address/${deal.paymentToken}`}
 				target="_blank"
 				rel="noreferrer"
 				class="info-value"

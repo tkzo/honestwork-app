@@ -276,7 +276,7 @@
 						$networkSigner
 					);
 					let approveAmt = approveMax ? ethers.constants.MaxUint256 : price;
-					let approveTx = await erc20.approve(env.PUBLIC_LISTING_ADDRESS!, approveAmt);
+					let approveTx = await erc20.approve(env.PUBLIC_LISTING_ADDRESS, approveAmt);
 					let receipt = await approveTx.wait();
 					if (receipt.status == 1) {
 						toast.push(`<p class="light-60">Approval successful!</p>`);
@@ -284,7 +284,7 @@
 					userApproved = true;
 				}
 				const joblistingContract = new ethers.Contract(
-					env.PUBLIC_LISTING_ADDRESS!,
+					env.PUBLIC_LISTING_ADDRESS,
 					listing_abi,
 					$networkSigner
 				);

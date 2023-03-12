@@ -143,7 +143,7 @@ export const chains = [
 				max_allowed: '100000000000000000000000'
 			}
 		],
-		explorer: 'https://bscscan.com/address'
+		explorer: 'https://arbiscan.com/address'
 	}
 ];
 
