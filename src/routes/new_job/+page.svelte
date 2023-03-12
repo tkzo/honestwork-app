@@ -314,7 +314,12 @@
 		<div class="contents" bind:this={contents}>
 			<div style="height:16px" />
 			{#if $userConnected}
-				<form method="POST" on:submit|preventDefault={handleSubmit} bind:this={jobForm}>
+				<form
+					method="POST"
+					on:submit|preventDefault={handleSubmit}
+					bind:this={jobForm}
+					autocomplete="off"
+				>
 					<input hidden type="number" name="job_slot" bind:value={$chosen_job_slot} />
 					<input hidden type="text" name="user_address" bind:value={$userAddress} />
 					<input hidden type="text" name="signature" bind:value={signature} />

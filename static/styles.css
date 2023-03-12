@@ -190,6 +190,17 @@ input {
 	-moz-box-shadow: none;
 	box-shadow: none;
 }
+input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0 50px rgb(0, 0, 0) inset; /* Change the color to your own background color */
+	-webkit-text-fill-color: #fff;
+}
+
+input:-webkit-autofill:focus {
+	-webkit-box-shadow: 0 0 0 50px rgb(0, 0, 0) inset !important;
+
+	-webkit-text-fill-color: #fff;
+	border-color: var(--color-light-20);
+}
 
 input {
 	font-family: 'DM Mono', monospace;
