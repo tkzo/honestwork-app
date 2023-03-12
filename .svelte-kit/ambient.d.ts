@@ -39,6 +39,7 @@ declare module '$env/static/private' {
 	export const PRIVATE_CLIENT_KEY: string;
 	export const PRIVATE_CLIENT_PASSWORD: string;
 	export const MANPATH: string;
+	export const BROWSERSLIST_IGNORE_OLD_DATA: string;
 	export const NIX_PROFILES: string;
 	export const TERM_PROGRAM: string;
 	export const NODE: string;
@@ -52,6 +53,7 @@ declare module '$env/static/private' {
 	export const CONDA_SHLVL: string;
 	export const TERM_PROGRAM_VERSION: string;
 	export const CONDA_PROMPT_MODIFIER: string;
+	export const NODE_OPTIONS: string;
 	export const ZDOTDIR: string;
 	export const FIG_NEW_SESSION: string;
 	export const ORIGINAL_XDG_CURRENT_DESKTOP: string;
@@ -75,6 +77,7 @@ declare module '$env/static/private' {
 	export const npm_package_json: string;
 	export const npm_config_engine_strict: string;
 	export const _: string;
+	export const PW_TS_ESM_ON: string;
 	export const npm_config_userconfig: string;
 	export const npm_config_init_module: string;
 	export const USER_ZDOTDIR: string;
@@ -105,11 +108,13 @@ declare module '$env/static/private' {
 	export const npm_lifecycle_script: string;
 	export const VSCODE_GIT_IPC_HANDLE: string;
 	export const CONDA_DEFAULT_ENV: string;
+	export const BROWSER: string;
 	export const npm_config_user_agent: string;
 	export const VSCODE_GIT_ASKPASS_NODE: string;
 	export const GIT_ASKPASS: string;
 	export const INFOPATH: string;
 	export const HOMEBREW_CELLAR: string;
+	export const PLAYWRIGHT_TEST_BASE_URL: string;
 	export const npm_node_execpath: string;
 	export const npm_config_prefix: string;
 	export const COLORTERM: string;
@@ -132,8 +137,6 @@ declare module '$env/static/public' {
 	export const PUBLIC_REGISTRY_ADDRESS: string;
 	export const PUBLIC_MAINNET_DAI_ADDRESS: string;
 	export const PUBLIC_ARBITRUM_USDC_ADDRESS: string;
-	export const PUBLIC_BINANCE_MOCK_TOKEN_ADDRESS: string;
-	export const PUBLIC_BINANCE_BUSD_ADDRESS: string;
 }
 
 /**
@@ -163,6 +166,7 @@ declare module '$env/dynamic/private' {
 		PRIVATE_CLIENT_KEY: string;
 		PRIVATE_CLIENT_PASSWORD: string;
 		MANPATH: string;
+		BROWSERSLIST_IGNORE_OLD_DATA: string;
 		NIX_PROFILES: string;
 		TERM_PROGRAM: string;
 		NODE: string;
@@ -176,6 +180,7 @@ declare module '$env/dynamic/private' {
 		CONDA_SHLVL: string;
 		TERM_PROGRAM_VERSION: string;
 		CONDA_PROMPT_MODIFIER: string;
+		NODE_OPTIONS: string;
 		ZDOTDIR: string;
 		FIG_NEW_SESSION: string;
 		ORIGINAL_XDG_CURRENT_DESKTOP: string;
@@ -199,6 +204,7 @@ declare module '$env/dynamic/private' {
 		npm_package_json: string;
 		npm_config_engine_strict: string;
 		_: string;
+		PW_TS_ESM_ON: string;
 		npm_config_userconfig: string;
 		npm_config_init_module: string;
 		USER_ZDOTDIR: string;
@@ -229,11 +235,13 @@ declare module '$env/dynamic/private' {
 		npm_lifecycle_script: string;
 		VSCODE_GIT_IPC_HANDLE: string;
 		CONDA_DEFAULT_ENV: string;
+		BROWSER: string;
 		npm_config_user_agent: string;
 		VSCODE_GIT_ASKPASS_NODE: string;
 		GIT_ASKPASS: string;
 		INFOPATH: string;
 		HOMEBREW_CELLAR: string;
+		PLAYWRIGHT_TEST_BASE_URL: string;
 		npm_node_execpath: string;
 		npm_config_prefix: string;
 		COLORTERM: string;
@@ -261,8 +269,6 @@ declare module '$env/dynamic/public' {
 		PUBLIC_REGISTRY_ADDRESS: string;
 		PUBLIC_MAINNET_DAI_ADDRESS: string;
 		PUBLIC_ARBITRUM_USDC_ADDRESS: string;
-		PUBLIC_BINANCE_MOCK_TOKEN_ADDRESS: string;
-		PUBLIC_BINANCE_BUSD_ADDRESS: string;
 		[key: `PUBLIC_${string}`]: string | undefined;
 	}
 }

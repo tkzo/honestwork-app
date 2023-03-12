@@ -1,67 +1,13 @@
-import { c as create_ssr_component, i as identity, b as subscribe, o as onDestroy, v as validate_component, m as missing_component, d as add_attribute, e as each, f as escape, g as null_to_empty } from "../../chunks/index.js";
-import { u as userConnected, x as xmtpConnected, c as connecting, a as chainName, b as xmtpConnecting, d as userAddress } from "../../chunks/Network.js";
+import { c as create_ssr_component, i as identity, b as subscribe, o as onDestroy, v as validate_component, m as missing_component, d as add_attribute, e as each, f as escape, g as null_to_empty, h as createEventDispatcher } from "../../chunks/index3.js";
+import { u as userConnected, x as xmtpConnected, c as connecting, a as chainName, b as xmtpConnecting, d as userState, e as userAddress } from "../../chunks/Network.js";
 import { p as page } from "../../chunks/stores.js";
-import { a as assets } from "../../chunks/paths.js";
+import { a as assets, b as base } from "../../chunks/paths.js";
+import { u as user_signed_in } from "../../chunks/State.js";
+import { n as notifications } from "../../chunks/Constants.js";
 import { Buffer } from "buffer";
 import LogRocket from "logrocket";
-import { w as writable } from "../../chunks/env-public.js";
-import { t as tweened } from "../../chunks/index3.js";
-import { n as notifications } from "../../chunks/Constants.js";
-const defaults = {
-  duration: 4e3,
-  initial: 1,
-  next: 0,
-  pausable: false,
-  dismissable: true,
-  reversed: false,
-  intro: { x: 256 }
-};
-const createToast = () => {
-  const { subscribe: subscribe2, update } = writable([]);
-  let count = 0;
-  const options = {};
-  const _obj = (obj) => obj instanceof Object;
-  const push = (msg, opts = {}) => {
-    const param = { target: "default", ..._obj(msg) ? msg : { ...opts, msg } };
-    const conf = options[param.target] || {};
-    const entry = {
-      ...defaults,
-      ...conf,
-      ...param,
-      theme: { ...conf.theme, ...param.theme },
-      classes: [...conf.classes || [], ...param.classes || []],
-      id: ++count
-    };
-    update((n) => entry.reversed ? [...n, entry] : [entry, ...n]);
-    return count;
-  };
-  const pop = (id) => {
-    update((n) => {
-      if (!n.length || id === 0)
-        return [];
-      if (_obj(id))
-        return n.filter((i) => id(i));
-      const target = id || Math.max(...n.map((i) => i.id));
-      return n.filter((i) => i.id !== target);
-    });
-  };
-  const set = (id, opts = {}) => {
-    const param = _obj(id) ? { ...id } : { ...opts, id };
-    update((n) => {
-      const idx = n.findIndex((i) => i.id === param.id);
-      if (idx > -1) {
-        n[idx] = { ...n[idx], ...param };
-      }
-      return n;
-    });
-  };
-  const _init = (target = "default", opts = {}) => {
-    options[target] = opts;
-    return options;
-  };
-  return { subscribe: subscribe2, push, pop, set, _init };
-};
-const toast = createToast();
+import { t as toast } from "../../chunks/stores2.js";
+import { t as tweened } from "../../chunks/index4.js";
 const css$5 = {
   code: "._toastItem.svelte-95rq8t{width:var(--toastWidth, 16rem);height:var(--toastHeight, auto);min-height:var(--toastMinHeight, 3.5rem);margin:var(--toastMargin, 0 0 0.5rem 0);padding:var(--toastPadding, 0);background:var(--toastBackground, rgba(66, 66, 66, 0.9));color:var(--toastColor, #fff);box-shadow:var(\n    --toastBoxShadow,\n    0 4px 6px -1px rgba(0, 0, 0, 0.1),\n    0 2px 4px -1px rgba(0, 0, 0, 0.06)\n  );border:var(--toastBorder, none);border-radius:var(--toastBorderRadius, 0.125rem);position:relative;display:flex;flex-direction:row;align-items:center;overflow:hidden;will-change:transform, opacity;-webkit-tap-highlight-color:transparent}._toastMsg.svelte-95rq8t{padding:var(--toastMsgPadding, 0.75rem 0.5rem);flex:1 1 0%}.pe.svelte-95rq8t,._toastMsg.svelte-95rq8t a{pointer-events:auto}._toastBtn.svelte-95rq8t{width:var(--toastBtnWidth, 2rem);height:var(--toastBtnHeight, 100%);cursor:pointer;outline:none}._toastBtn.svelte-95rq8t::after{content:var(--toastBtnContent, '✕');font:var(--toastBtnFont, 1rem sans-serif);display:flex;align-items:center;justify-content:center}._toastBar.svelte-95rq8t{top:var(--toastBarTop, auto);right:var(--toastBarRight, auto);bottom:var(--toastBarBottom, 0);left:var(--toastBarLeft, 0);height:var(--toastBarHeight, 6px);width:var(--toastBarWidth, 100%);position:absolute;display:block;-webkit-appearance:none;-moz-appearance:none;appearance:none;border:none;background:transparent;pointer-events:none}._toastBar.svelte-95rq8t::-webkit-progress-bar{background:transparent}._toastBar.svelte-95rq8t::-webkit-progress-value{background:var(--toastProgressBackground, var(--toastBarBackground, rgba(33, 150, 243, 0.75)))}._toastBar.svelte-95rq8t::-moz-progress-bar{background:var(--toastProgressBackground, var(--toastBarBackground, rgba(33, 150, 243, 0.75)))}",
   map: null
@@ -143,72 +89,74 @@ const SvelteToast = create_ssr_component(($$result, $$props, $$bindings, slots) 
 });
 const Navigation_svelte_svelte_type_style_lang = "";
 const css$3 = {
-  code: "img.svelte-1och2li{width:16px;height:16px}main.svelte-1och2li{background:var(--color-light-2);border-width:1px 0px;border-style:solid;border-color:var(--color-light-10);box-sizing:border-box;display:flex;flex-direction:row;justify-content:space-between;align-items:center;position:fixed;width:100%;z-index:99;height:32px}.logo-section.svelte-1och2li{height:100%;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;padding:8px 12px;border-width:0px 1px 0px 0px;border-style:solid;border-color:var(--color-light-10);box-sizing:border-box}.menu-section.svelte-1och2li{position:absolute;display:flex;flex-direction:row;transform:translate(-50%, 0);left:50%;align-items:center;justify-content:center}.right-section.svelte-1och2li{height:100%;display:flex;flex-direction:row;align-items:center;justify-content:flex-end;box-sizing:border-box}.wallet-section.svelte-1och2li{height:100%;display:flex;flex-direction:row;align-items:center;justify-content:flex-end;padding:8px 12px;border-width:0px 0px 0px 1px;border-style:solid;border-color:var(--color-light-10);box-sizing:border-box}.messages.svelte-1och2li{height:100%;border-width:0px 0px 0px 1px;border-style:solid;border-color:var(--color-light-10);display:flex;flex-direction:row;align-items:center;padding:0px 8px}",
+  code: "img.svelte-1qbw74r{width:16px;height:16px}main.svelte-1qbw74r{background:var(--color-dark);border-width:1px 0px;border-style:solid;border-color:var(--color-light-20);box-sizing:border-box;display:flex;flex-direction:row;justify-content:space-between;align-items:center;position:fixed;width:100%;z-index:99;height:32px}.logo-section.svelte-1qbw74r{height:100%;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;padding:8px 12px;border-width:0px 1px 0px 0px;border-style:solid;border-color:var(--color-light-20);box-sizing:border-box}.menu-section.svelte-1qbw74r{position:absolute;display:flex;flex-direction:row;transform:translate(-50%, 0);left:50%;align-items:center;justify-content:center}.right-section.svelte-1qbw74r{height:100%;display:flex;flex-direction:row;align-items:center;justify-content:flex-end;box-sizing:border-box}.wallet-section.svelte-1qbw74r{height:100%;display:flex;flex-direction:row;align-items:center;justify-content:flex-end;padding:8px 12px;border-width:0px 0px 0px 1px;border-style:solid;border-color:var(--color-light-20);box-sizing:border-box}.messages.svelte-1qbw74r{height:100%;border-width:0px 0px 0px 1px;border-style:solid;border-color:var(--color-light-20);display:flex;flex-direction:row;align-items:center;padding:0px 8px}",
   map: null
 };
 const Navigation = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $page, $$unsubscribe_page;
   let $userConnected, $$unsubscribe_userConnected;
   let $xmtpConnected, $$unsubscribe_xmtpConnected;
+  let $user_signed_in, $$unsubscribe_user_signed_in;
   let $connecting, $$unsubscribe_connecting;
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
   $$unsubscribe_userConnected = subscribe(userConnected, (value) => $userConnected = value);
   $$unsubscribe_xmtpConnected = subscribe(xmtpConnected, (value) => $xmtpConnected = value);
+  $$unsubscribe_user_signed_in = subscribe(user_signed_in, (value) => $user_signed_in = value);
   $$unsubscribe_connecting = subscribe(connecting, (value) => $connecting = value);
   $$result.css.add(css$3);
   $$unsubscribe_page();
   $$unsubscribe_userConnected();
   $$unsubscribe_xmtpConnected();
+  $$unsubscribe_user_signed_in();
   $$unsubscribe_connecting();
-  return `<main class="${"svelte-1och2li"}"><div class="${"logo-section svelte-1och2li"}"><a href="${"/"}"><p class="${"yellow semibold link"}">h0nestw0rk</p></a>
+  return `<main class="${"svelte-1qbw74r"}"><div class="${"logo-section svelte-1qbw74r"}"><a href="${"/"}"><p class="${"yellow semibold link"}">h0nestw0rk</p></a>
 		<div style="${"width:8px"}"></div>
-		<p class="${"light-40"}">v0.10</p></div>
-	<div class="${"menu-section svelte-1och2li"}"><a href="${"/jobs"}"><p${add_attribute(
+		<p class="${"light-40"}">alpha</p></div>
+	<div class="${"menu-section svelte-1qbw74r"}"><a href="${"/jobs"}"><p${add_attribute(
     "class",
-    $page.route.id == "/jobs" ? "yellow semibold link" : "light-60 semibold link",
+    $page.route.id == "/jobs" ? "yellow semibold" : "light-60  link",
     0
-  )}>jobs
-			</p></a>
+  )}>jobs</p></a>
 		<div style="${"width:12px"}"></div>
 		<a href="${"/skills"}"><p${add_attribute(
     "class",
-    $page.route.id == "/skills" ? "yellow semibold link" : "light-60 semibold link",
+    $page.route.id == "/skills" ? "yellow semibold" : "light-60  link",
     0
-  )}>skills
-			</p></a></div>
-	<div class="${"right-section svelte-1och2li"}">${$userConnected && $xmtpConnected ? `<a class="${"messages svelte-1och2li"}" href="${"/messages"}"><p${add_attribute(
+  )}>skills</p></a></div>
+	<div class="${"right-section svelte-1qbw74r"}">${$userConnected && $xmtpConnected && $user_signed_in ? `<a class="${"messages svelte-1qbw74r"}" href="${"/messages"}"><p${add_attribute(
     "class",
-    $page.route.id == "/messages" ? "yellow" : "light-60 link",
+    $page.route.id == "/messages" ? "yellow semibold" : "light-60 link",
     0
-  )}>messages(<span class="${"yellow"}">4</span>)
-				</p></a>` : ``}
-		${$userConnected ? `<a class="${"messages svelte-1och2li"}" href="${"/listings"}"><p${add_attribute(
+  )}>messages</p></a>` : `${$userConnected && !$xmtpConnected && $user_signed_in ? `<div class="${"messages svelte-1qbw74r"}"><p class="${"yellow link"}">connect xmtp</p></div>` : ``}`}
+		${$userConnected && $user_signed_in ? `<a class="${"messages svelte-1qbw74r"}" href="${"/listings"}"><p${add_attribute(
     "class",
-    $page.route.id == "/listings" ? "yellow" : "light-60 link",
+    $page.route.id == "/listings" ? "yellow semibold" : "light-60 link",
     0
   )}>listings</p></a>` : ``}
-		<div class="${"wallet-section svelte-1och2li"}">${!$userConnected ? `${$connecting ? `<img${add_attribute("src", `${assets}/icons/loader.svg`, 0)} alt="${"loading"}" class="${"rotating svelte-1och2li"}">` : ``}
+		<div class="${"wallet-section svelte-1qbw74r"}">${!$userConnected ? `${$connecting ? `<img${add_attribute("src", `${assets}/icons/loader.svg`, 0)} alt="${"loading"}" class="${"rotating svelte-1qbw74r"}">` : ``}
 				<div style="${"width:4px"}"></div>
-				<p class="${"yellow semibold link"}">connect</p>` : `<a${add_attribute("href", `/profile`, 0)}><p${add_attribute(
+				<p class="${"yellow semibold link"}">connect</p>` : `${$user_signed_in ? `<a${add_attribute("href", `/profile`, 0)}><p${add_attribute(
     "class",
-    $page.route.id == "/profile" ? "yellow" : "light-60 link",
+    $page.route.id == "/profile" ? "yellow semibold" : "light-60 link",
     0
-  )}>profile</p></a>`}</div></div>
+  )}>profile</p></a>` : `<a${add_attribute("href", `/auth`, 0)}><p class="${"yellow"}">login</p></a>`}`}</div></div>
 </main>`;
 });
 const Footer_svelte_svelte_type_style_lang = "";
 const css$2 = {
-  code: "img.svelte-15pn8wb{height:16px;width:16px}main.svelte-15pn8wb{background:var(--color-light-2);border-width:1px 0px;border-style:solid;border-color:var(--color-light-10);box-sizing:border-box;display:flex;flex-direction:row;justify-content:space-between;align-items:center;position:fixed;bottom:0px;width:100%;z-index:99;height:32px}.brand-section.svelte-15pn8wb{height:30px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;padding:8px 12px;border-width:0px 1px 0px 0px;border-style:solid;border-color:var(--color-light-10);box-sizing:border-box}.social-section.svelte-15pn8wb{height:30px;display:flex;flex-direction:row;padding:8px 12px;border-width:0px 1px 0px 0px;border-style:solid;border-color:var(--color-light-10);box-sizing:border-box}.sitemap-section.svelte-15pn8wb{height:30px;display:flex;flex-direction:row;align-items:center;justify-content:flex-end;padding:8px 12px;border-width:0px 1px 0px 0px;border-style:solid;border-color:var(--color-light-10);box-sizing:border-box}.network-section.svelte-15pn8wb{height:30px;display:flex;flex-direction:row;align-items:center;justify-content:flex-end;padding:8px 12px;border-width:0px 0px 0px 1px;border-style:solid;border-color:var(--color-light-10);box-sizing:border-box}.left-container.svelte-15pn8wb{display:flex;flex-direction:row;align-items:center}.right-container.svelte-15pn8wb{display:flex;flex-direction:row-reverse;align-items:center}",
+  code: "img.svelte-1l0fqb3{height:16px;width:16px}main.svelte-1l0fqb3{background:var(--color-dark);border-width:1px 0px;border-style:solid;border-color:var(--color-light-20);box-sizing:border-box;display:flex;flex-direction:row;justify-content:space-between;align-items:center;position:fixed;bottom:0px;width:100%;z-index:99;height:32px}.brand-section.svelte-1l0fqb3{height:30px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;padding:8px 12px;border-width:0px 1px 0px 0px;border-style:solid;border-color:var(--color-light-20);box-sizing:border-box}.social-section.svelte-1l0fqb3{height:30px;display:flex;flex-direction:row;padding:8px 12px;border-width:0px 1px 0px 0px;border-style:solid;border-color:var(--color-light-20);box-sizing:border-box}.sitemap-section.svelte-1l0fqb3{height:30px;display:flex;flex-direction:row;align-items:center;justify-content:flex-end;padding:8px 12px;border-width:0px 1px 0px 0px;border-style:solid;border-color:var(--color-light-20);box-sizing:border-box}.network-section.svelte-1l0fqb3{height:30px;display:flex;flex-direction:row;align-items:center;justify-content:flex-end;padding:8px 12px;border-width:0px 0px 0px 1px;border-style:solid;border-color:var(--color-light-20);box-sizing:border-box}.left-container.svelte-1l0fqb3{display:flex;flex-direction:row;align-items:center}.right-container.svelte-1l0fqb3{display:flex;flex-direction:row-reverse;align-items:center}",
   map: null
 };
 const Footer = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $chainName, $$unsubscribe_chainName;
   let $xmtpConnecting, $$unsubscribe_xmtpConnecting;
   let $xmtpConnected, $$unsubscribe_xmtpConnected;
+  let $userState, $$unsubscribe_userState;
   let $userAddress, $$unsubscribe_userAddress;
   $$unsubscribe_chainName = subscribe(chainName, (value) => $chainName = value);
   $$unsubscribe_xmtpConnecting = subscribe(xmtpConnecting, (value) => $xmtpConnecting = value);
   $$unsubscribe_xmtpConnected = subscribe(xmtpConnected, (value) => $xmtpConnected = value);
+  $$unsubscribe_userState = subscribe(userState, (value) => $userState = value);
   $$unsubscribe_userAddress = subscribe(userAddress, (value) => $userAddress = value);
   let pages = [
     { name: "faq", path: "/" },
@@ -219,60 +167,90 @@ const Footer = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   $$unsubscribe_chainName();
   $$unsubscribe_xmtpConnecting();
   $$unsubscribe_xmtpConnected();
+  $$unsubscribe_userState();
   $$unsubscribe_userAddress();
-  return `<main class="${"svelte-15pn8wb"}"><div class="${"left-container svelte-15pn8wb"}"><div class="${"brand-section svelte-15pn8wb"}"><a href="${"https://decoded-labs.com"}" target="${"_blank"}" rel="${"noreferrer"}"><p class="${"light-40 semibold"}">ⓒ <span class="${"link"}">decoded</span></p></a></div>
+  return `<main class="${"svelte-1l0fqb3"}"><div class="${"left-container svelte-1l0fqb3"}"><div class="${"brand-section svelte-1l0fqb3"}"><a href="${"https://decoded-labs.com"}" target="${"_blank"}" rel="${"noreferrer"}"><p class="${"light-40 semibold"}">ⓒ <span class="${"link"}">decoded</span></p></a></div>
 
-		<div class="${"sitemap-section svelte-15pn8wb"}">${each(pages, (page2) => {
+		<div class="${"sitemap-section svelte-1l0fqb3"}">${each(pages, (page2) => {
     return `<a${add_attribute("href", page2.path, 0)}><p class="${"light-40 link"}">${escape(page2.name)}</p></a>
 				<div style="${"width:8px"}"></div>`;
   })}</div>
-		<div class="${"social-section svelte-15pn8wb"}"><img${add_attribute("src", `${assets}/icons/github.svg`, 0)} alt="${"Github"}" class="${"svelte-15pn8wb"}">
+		<div class="${"social-section svelte-1l0fqb3"}"><a href="${"https://github.com/honestworkdao"}" target="${"_blank"}" rel="${"noreferrer"}"><img${add_attribute("src", `${assets}/icons/github.svg`, 0)} alt="${"Github"}" class="${"svelte-1l0fqb3"}"></a>
 			<div style="${"width:8px"}"></div>
-			<img${add_attribute("src", `${assets}/icons/twitter.svg`, 0)} alt="${"Twitter"}" class="${"svelte-15pn8wb"}">
+			<a href="${"https://twitter.com/honestworkdao"}" target="${"_blank"}" rel="${"noreferrer"}"><img${add_attribute("src", `${assets}/icons/twitter.svg`, 0)} alt="${"Twitter"}" class="${"svelte-1l0fqb3"}"></a>
 			<div style="${"width:8px"}"></div>
-			<img${add_attribute("src", `${assets}/icons/discord.svg`, 0)} alt="${"Discord"}" class="${"svelte-15pn8wb"}"></div></div>
-	<div class="${"right-container svelte-15pn8wb"}"><div class="${"network-section svelte-15pn8wb"}"><p class="${"light-40 semibold"}">NETWORK <span class="${"yellow"}">${escape($chainName != "" ? $chainName : "n/a")}</span></p></div>
-		<div class="${"network-section svelte-15pn8wb"}">${!$xmtpConnecting ? `<div style="${"width:4px"}"></div>
+			<a href="${"https://discord.gg/vP6R5unDBF"}" target="${"_blank"}" rel="${"noreferrer"}"><img${add_attribute("src", `${assets}/icons/discord.svg`, 0)} alt="${"Discord"}" class="${"svelte-1l0fqb3"}"></a></div></div>
+	<div class="${"right-container svelte-1l0fqb3"}"><div class="${"network-section svelte-1l0fqb3"}"><p class="${"light-40 semibold"}">NETWORK <span${add_attribute(
+    "style",
+    $chainName != "" ? "color:var(--color-primary);" : "color:var(--color-error);animation: blinking 2s linear infinite;",
+    0
+  )}>${escape($chainName != "" ? $chainName : "n/a")}</span></p></div>
+		<div class="${"network-section svelte-1l0fqb3"}">${!$xmtpConnecting ? `<div style="${"width:4px"}"></div>
 				<p class="${"light-40 "}">xmtp <span${add_attribute(
     "style",
-    $xmtpConnected ? "color:var(--color-success)" : "color:var(--color-primary)",
+    $xmtpConnected ? "color:var(--color-success)" : "color:var(--color-error); animation: blinking 2s linear infinite;",
     0
   )}>${escape($xmtpConnected ? "active" : "n/a")}</span></p>` : `<p class="${"light-40"}">xmtp</p>
 				<div style="${"width:4px"}"></div>
-				<img${add_attribute("src", `${assets}/icons/loader.svg`, 0)} alt="${"loading"}" class="${"rotating svelte-15pn8wb"}">`}</div>
-		<div class="${"network-section svelte-15pn8wb"}"><p class="${"light-40"}">account</p>
+				<img${add_attribute("src", `${assets}/icons/loader.svg`, 0)} alt="${"loading"}" class="${"rotating svelte-1l0fqb3"}">`}</div>
+
+		<div class="${"network-section svelte-1l0fqb3"}"><p class="${"light-40"}">membership</p>
 			<div style="${"width:4px"}"></div>
-			<p class="${"light-80"}">${escape($userAddress != "" ? $userAddress.substring(0, 6) + "..." + $userAddress.substring($userAddress.length - 4) : "n/a")}</p></div></div>
+			<p${add_attribute(
+    "style",
+    $userState > 0 ? "color:var(--color-primary);" : "color:var(--color-error);animation: blinking 2s linear infinite;",
+    0
+  )}>${escape($userState > 0 ? "tier " + $userState : "n/a")}</p></div>
+		<div class="${"network-section svelte-1l0fqb3"}"><p class="${"light-40"}">account</p>
+			<div style="${"width:4px"}"></div>
+			<p${add_attribute(
+    "style",
+    $userAddress != "" ? "color:var(--color-primary);" : "color:var(--color-error);animation: blinking 2s linear infinite;",
+    0
+  )}>${escape($userAddress != "" ? $userAddress.substring(0, 6) + "..." + $userAddress.substring($userAddress.length - 4) : "n/a")}</p></div></div>
 </main>`;
 });
 const Notification_svelte_svelte_type_style_lang = "";
 const css$1 = {
-  code: "main.svelte-5u22qm{width:100vw;display:flex;flex-direction:column;align-items:center}.underlined.svelte-5u22qm{text-decoration:underline}.bar.svelte-5u22qm{width:100%;border-width:0px 0px 1px 0px;border-style:solid;border-color:var(--color-light-10);padding:8px;display:flex;flex-direction:row;justify-content:center;align-items:center;box-sizing:border-box}.post-link.svelte-5u22qm{display:flex;flex-direction:row;align-items:center}",
+  code: "main.svelte-r2qbn7{width:100vw;display:flex;flex-direction:column;align-items:center}.underlined.svelte-r2qbn7{text-decoration:underline}.bar.svelte-r2qbn7{width:100%;border-width:0px 0px 1px 0px;border-style:solid;border-color:var(--color-light-20);padding:8px;display:flex;flex-direction:row;justify-content:center;align-items:center;box-sizing:border-box}.post-link.svelte-r2qbn7{display:flex;flex-direction:row;align-items:center}",
   map: null
 };
 const Notification = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { notification } = $$props;
+  let { cta_class = "yellow" } = $$props;
+  createEventDispatcher();
   if ($$props.notification === void 0 && $$bindings.notification && notification !== void 0)
     $$bindings.notification(notification);
+  if ($$props.cta_class === void 0 && $$bindings.cta_class && cta_class !== void 0)
+    $$bindings.cta_class(cta_class);
   $$result.css.add(css$1);
-  return `<main class="${"svelte-5u22qm"}"><div class="${"bar svelte-5u22qm"}"><p class="${"light-80"}">${escape(notification.bodytext)}</p>
+  return `<main class="${"svelte-r2qbn7"}"><div class="${"bar svelte-r2qbn7"}"><p class="${"light-80"}">${escape(notification.bodytext)}</p>
 		<div style="${"width:8px"}"></div>
-		<a href="${"/new_job"}" class="${"post-link svelte-5u22qm"}"><p class="${"yellow link underlined svelte-5u22qm"}">${escape(notification.cta)}</p>
+		<div class="${"post-link svelte-r2qbn7"}"><p class="${escape(null_to_empty(`${cta_class} link underlined`), true) + " svelte-r2qbn7"}">${escape(notification.cta)}</p>
 			<div style="${"width:8px"}"></div>
-			<img${add_attribute("src", notification.icon, 0)}${add_attribute("alt", notification.cta, 0)}></a></div>
+			<img${add_attribute("src", notification.icon, 0)}${add_attribute("alt", notification.cta, 0)}></div></div>
 </main>`;
+});
+const NotificationHandler = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let trimmedRoute;
+  let $page, $$unsubscribe_page;
+  $$unsubscribe_page = subscribe(page, (value) => $page = value);
+  trimmedRoute = $page.route.id?.split("/")[1];
+  $$unsubscribe_page();
+  return `${$page.route.id == "/" ? `<a href="${"https://twitter.com/HonestWorkDAO"}" target="${"_blank"}" rel="${"noreferrer"}">${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.launch }, {}, {})}</a>` : `${$page.route.id == "/skills" || $page.route.id == "/listings" ? `${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.mint }, {}, {})}` : `${$page.route.id == "/jobs" ? `<a${add_attribute("href", `${base}/new_job`, 0)}>${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.postjob }, {}, {})}</a>` : `${$page.route.id == "/new_job" || $page.route.id == "/messages" || $page.route.id == "/auth" || trimmedRoute == "job" || trimmedRoute == "creator" ? `<a${add_attribute("href", `${base}/mint`, 0)}>${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.mint }, {}, {})}</a>` : `${$page.route.id == "/profile" ? `<a${add_attribute("href", `${base}/mint`, 0)}>${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.upgrade }, {}, {})}</a>` : `${$page.route.id == "/mint" ? `<a href="${"https://forms.gle/T1ngCzLwtYHx1ZGt9"}" target="${"_blank"}" rel="${"noreferrer"}">${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.invitation }, {}, {})}</a>` : ``}`}`}`}`}`}`;
 });
 const _layout_svelte_svelte_type_style_lang = "";
 const css = {
-  code: "main.svelte-d4mzl4{width:100%;position:relative;display:flex;flex-direction:column;align-items:center;background-color:var(--color-dark)}",
+  code: "main.svelte-1s30vux{width:100%;position:relative;display:flex;flex-direction:column;align-items:center}",
   map: null
 };
 const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let trimmedRoute;
   let $userAddress, $$unsubscribe_userAddress;
   let $page, $$unsubscribe_page;
   $$unsubscribe_userAddress = subscribe(userAddress, (value) => $userAddress = value);
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
+  let { data } = $$props;
+  user_signed_in.set(data.signed);
   LogRocket.init("2wdgml/honestwork");
   const logrocketIdentify = async () => {
     const res = await fetch(`/api/user/${$userAddress}`);
@@ -286,8 +264,9 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     }
   };
   globalThis.Buffer = Buffer;
+  if ($$props.data === void 0 && $$bindings.data && data !== void 0)
+    $$bindings.data(data);
   $$result.css.add(css);
-  trimmedRoute = $page.route.id?.split("/")[1];
   {
     if ($userAddress && $userAddress != "") {
       logrocketIdentify();
@@ -295,7 +274,7 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   }
   $$unsubscribe_userAddress();
   $$unsubscribe_page();
-  return `${$$result.head += `<!-- HEAD_svelte-1679s8d_START --><script async src="${"https://www.googletagmanager.com/gtag/js?id=G-3X3Y5X23HN"}"></script><script>if (typeof window !== 'undefined' && window) {
+  return `${$$result.head += `<!-- HEAD_svelte-ifrfxs_START --><script async src="${"https://www.googletagmanager.com/gtag/js?id=G-3X3Y5X23HN"}"></script><script>if (typeof window !== 'undefined' && window) {
 			window.dataLayer = window.dataLayer || [];
 			function gtag() {
 				window.dataLayer.push(arguments);
@@ -304,25 +283,20 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 
 			gtag('config', 'G-3X3Y5X23HN');
 		}
-	</script><script src="${"https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"}"></script><!-- HEAD_svelte-1679s8d_END -->`, ""}
+	</script><!-- HEAD_svelte-ifrfxs_END -->`, ""}
 
-<main class="${"svelte-d4mzl4"}"><div class="${"toast-container"}">${validate_component(SvelteToast, "SvelteToast").$$render(
+<main class="${"svelte-1s30vux"}"><div class="${"toast-container"}">${validate_component(SvelteToast, "SvelteToast").$$render(
     $$result,
     {
-      options: { duration: 8e3, intro: { y: -20 } }
+      options: { duration: 5e3, intro: { y: -20 } }
     },
     {},
     {}
   )}</div>
-	${$page.route.id !== "/" ? `${validate_component(Navigation, "Navigation").$$render($$result, {}, {}, {})}
-		<div style="${"height:32px;"}"></div>` : ``}
-	${$page.route.id == "/jobs" || $page.route.id == "/skills" || $page.route.id == "/listings" ? `${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.postjob }, {}, {})}
-		<div style="${"height:16px;"}"></div>` : `${$page.route.id == "/new_job" ? `${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.mint }, {}, {})}` : `${$page.route.id == "/profile" ? `${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.upgrade }, {}, {})}
-		<div style="${"height:16px;"}"></div>` : ``}`}`}
-	${trimmedRoute == "job" ? `${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.mint }, {}, {})}
-		<div style="${"height:16px;"}"></div>` : `${trimmedRoute == "creator" ? `${validate_component(Notification, "Notification").$$render($$result, { notification: notifications.mint }, {}, {})}
-		<div style="${"height:16px;"}"></div>` : ``}`}
-
+	${$page.route.id !== "/" && $page.route.id !== "/mint" ? `${validate_component(Navigation, "Navigation").$$render($$result, {}, {}, {})}
+		<div style="${"height:32px;"}"></div>
+		` : ``}
+	${validate_component(NotificationHandler, "NotificationHandler").$$render($$result, {}, {}, {})}
 	${slots.default ? slots.default({}) : ``}
 	${$page.route.id !== "/" ? `${validate_component(Footer, "Footer").$$render($$result, {}, {}, {})}` : ``}
 </main>`;

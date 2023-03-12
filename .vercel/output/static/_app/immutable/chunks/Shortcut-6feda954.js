@@ -1,0 +1,1 @@
+function d(r){r.click()}const a=(r,e)=>{function o(t){!!e.alt==t.altKey&&!!e.shift==t.shiftKey&&!!e.control==(t.ctrlKey||t.metaKey)&&e.code==t.code&&(t.preventDefault(),(e.callback||d)(r))}return window.addEventListener("keydown",o),{update(t){e=t},destroy(){window.removeEventListener("keydown",o)}}};export{a as s};

@@ -1,9 +1,9 @@
-import * as server from '../entries/pages/(subpages)/auth/_page.server.ts.js';
+import * as server from '../entries/pages/auth/_page.server.ts.js';
 
 export const index = 3;
-export const component = async () => (await import('../entries/pages/(subpages)/auth/_page.svelte.js')).default;
-export const file = '_app/immutable/components/pages/(subpages)/auth/_page.svelte-187c1e70.js';
+export const component = async () => (await import('../entries/pages/auth/_page.svelte.js')).default;
+export const file = '_app/immutable/components/pages/auth/_page.svelte-4c54bac5.js';
 export { server };
-export const imports = ["_app/immutable/components/pages/(subpages)/auth/_page.svelte-187c1e70.js","_app/immutable/chunks/paths-98cf1ec3.js","_app/immutable/chunks/Network-469907e8.js","_app/immutable/chunks/env-public-f7741390.js"];
-export const stylesheets = ["_app/immutable/assets/_page-26129807.css","_app/immutable/assets/Network-42b1db04.css"];
+export const imports = ["_app/immutable/components/pages/auth/_page.svelte-4c54bac5.js","_app/immutable/chunks/paths-5beb49a4.js","_app/immutable/chunks/Network-160a1d39.js","_app/immutable/chunks/State-2b27296f.js"];
+export const stylesheets = ["_app/immutable/assets/_page-3eab1fbb.css","_app/immutable/assets/State-42b1db04.css"];
 export const fonts = [];

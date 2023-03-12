@@ -1,31 +1,31 @@
-import { j as json } from "../../../../../chunks/index2.js";
-import { e as env } from "../../../../../chunks/env-private.js";
+import { j as json } from "../../../../../chunks/index.js";
+import { d as private_env } from "../../../../../chunks/shared.js";
 import { S3, ListObjectsCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 const GET = async ({ params, cookies }) => {
   const userAddress = cookies.get("honestwork_address");
   const s3Client = new S3({
     forcePathStyle: false,
-    endpoint: env.PRIVATE_SPACES_URL,
+    endpoint: private_env.PRIVATE_SPACES_URL,
     region: "us-east-1",
     credentials: {
-      accessKeyId: env.PRIVATE_SPACES_KEY,
-      secretAccessKey: env.PRIVATE_SPACES_SECRET
+      accessKeyId: private_env.PRIVATE_SPACES_KEY,
+      secretAccessKey: private_env.PRIVATE_SPACES_SECRET
     }
   });
   try {
     const s3Client2 = new S3({
       forcePathStyle: false,
-      endpoint: env.PRIVATE_SPACES_REGION_URL,
+      endpoint: private_env.PRIVATE_SPACES_REGION_URL,
       region: "us-east-1",
       credentials: {
-        accessKeyId: env.PRIVATE_SPACES_KEY,
-        secretAccessKey: env.PRIVATE_SPACES_SECRET
+        accessKeyId: private_env.PRIVATE_SPACES_KEY,
+        secretAccessKey: private_env.PRIVATE_SPACES_SECRET
       }
     });
     const data = await s3Client2.send(
       new ListObjectsCommand({
-        Bucket: `${env.PRIVATE_SPACES_BUCKETNAME}`
+        Bucket: `${private_env.PRIVATE_SPACES_BUCKETNAME}`
       })
     );
     if (data.Contents) {
@@ -35,7 +35,7 @@ const GET = async ({ params, cookies }) => {
           try {
             const deleted_file = await s3Client2.send(
               new DeleteObjectCommand({
-                Bucket: `${env.PRIVATE_SPACES_BUCKETNAME}`,
+                Bucket: `${private_env.PRIVATE_SPACES_BUCKETNAME}`,
                 Key: data.Contents[i].Key
               })
             );
@@ -50,10 +50,10 @@ const GET = async ({ params, cookies }) => {
   }
   try {
     const url = await createPresignedPost(s3Client, {
-      Bucket: env.PRIVATE_SPACES_BUCKETNAME,
+      Bucket: private_env.PRIVATE_SPACES_BUCKETNAME,
       Key: `${userAddress}/profile/${params.filename}`,
       Conditions: [
-        ["content-length-range", 0, 1048576]
+        ["content-length-range", 0, 10485760]
       ],
       Fields: {
         acl: "public-read",

@@ -1,9 +1,9 @@
-import { j as json } from "../../../../../../chunks/index2.js";
+import { j as json } from "../../../../../../chunks/index.js";
 import { Network, Alchemy } from "alchemy-sdk";
-import { e as env } from "../../../../../../chunks/env-private.js";
+import { d as private_env } from "../../../../../../chunks/shared.js";
 const GET = async ({ params }) => {
   const settings = {
-    apiKey: env.PRIVATE_ALCHEMY_APIKEY,
+    apiKey: private_env.PRIVATE_ALCHEMY_APIKEY,
     network: Network.ETH_MAINNET
   };
   const alchemy = new Alchemy(settings);
