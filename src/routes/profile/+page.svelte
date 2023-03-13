@@ -318,7 +318,7 @@
 		const input: SkillInput = {
 			user_address: $userAddress,
 			title: new_skill.title,
-			description: new_skill.description,
+			description: parseContent(new_skill.description),
 			tags: new_skill.tags,
 			links: new_skill.links,
 			minimum_price: new_skill.minimum_price,

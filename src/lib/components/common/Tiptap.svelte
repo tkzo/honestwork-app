@@ -18,7 +18,12 @@
 		editor = createEditor({
 			extensions: [StarterKit],
 			content: content,
-			editable: editable
+			editable: editable,
+      onTransaction: () => {
+          dispatch('content',{
+            content: $editor.getJSON()
+          });
+        },
 		});
 		$editor.on('update', () => {
 			dispatch('content', {

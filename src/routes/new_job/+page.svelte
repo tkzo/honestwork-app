@@ -136,7 +136,6 @@
 		formObj.tags = tags;
 		formObj.sticky_duration = sticky_duration.toString();
 		formObj.timezone = timezone >= 0 ? `UTC+${timezone}` : `UTC${timezone}`;
-		formObj.description = content;
 
 		uploadImage(e);
 		formObj.image_url = parsed_filename;
@@ -265,6 +264,28 @@
 	};
 	const pay = async () => {
 		// todo: add decimal prop to tokens
+		const input: JobInput = {
+			username: username_element.value,
+			user_address: $userAddress,
+			title: title_element.value,
+			token_paid: chosen_payment_token.address,
+			description: parseContent(content),
+			tags: tags,
+			links: links,
+			budget: jobForm.budget.value,
+			sticky_duration: sticky_duration,
+			timezone: 'UTC+3',
+			tokens_accepted: network_selection_array
+		};
+		let parsed = JobInput.safeParse(input);
+		if (!parsed.success) {
+			for (let i = 0; i < parsed.error.errors.length; i++) {
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>${parsed.error.errors[i].path}: </span>${parsed.error.errors[i].message}</p>`
+				);
+			}
+			return;
+		}
 		if ($userConnected) {
 			userPaying = true;
 			let amount_to_pay = sticky_item.price + service_fee;
@@ -305,6 +326,7 @@
 		}
 	};
 	const handleContentInput = (e: any) => {
+    console.log("Parsing...")
 		content = JSON.stringify(e.detail.content);
 		total_chars = parseContent(content).length;
 	};
@@ -328,6 +350,7 @@
 					<input hidden type="text" name="tx_hash" bind:value={tx_hash} />
 					<input hidden type="text" name="token_paid" bind:value={chosen_payment_token.address} />
 					<input hidden type="text" name="file_url" bind:value={file_url} />
+		      <input hidden type="text" name="description" bind:value={content} />
 					<div class="image-section">
 						<div
 							class="image-card"
