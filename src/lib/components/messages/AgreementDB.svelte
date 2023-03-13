@@ -7,12 +7,27 @@
 	import { userAddress, networkSigner, networkProvider, userToken } from '$lib/stores/Network';
 	import { findTokenName } from '$lib/stores/Constants';
 	import { toast } from '@zerodevx/svelte-toast';
+	import { onMount } from 'svelte';
 
 	export let slot: number;
 	export let conversation: any;
 	export let role: string;
 	export let deal: DealDB;
 
+  let decimals: number;
+
+  onMount(() => {
+    fetchDecimals();
+  })
+
+  const fetchDecimals = async () => {
+		try {
+			const Token = new ethers.Contract(deal.token_address, erc20_abi, $networkProvider);
+			decimals = await Token.decimals();
+		} catch (err) {
+      console.log(err)
+    }
+  }
 	const approve = async (amount: ethers.BigNumberish) => {
 		try {
 			const Token = new ethers.Contract(deal.token_address, erc20_abi, $networkProvider);
@@ -164,7 +179,7 @@
 								<img src={assets + '/icons/external.svg'} alt="Token address" /></a
 							>
 						{:else if key === 'total_amount' || key === 'downpayment'}
-							<p>${parseFloat(ethers.utils.formatEther(value)).toLocaleString()}</p>
+							<p>${parseFloat(ethers.utils.formatUnits(value, decimals)).toLocaleString()}</p>
 						{:else if key === 'job_id'}
 							<a
 								class="info-value"
@@ -209,7 +224,7 @@
 								<img src={assets + '/icons/external.svg'} alt="Token address" /></a
 							>
 						{:else if key === 'total_amount' || key === 'downpayment'}
-							<p>${parseFloat(ethers.utils.formatEther(value)).toLocaleString()}</p>
+							<p>${parseFloat(ethers.utils.formatUnits(value, decimals)).toLocaleString()}</p>
 						{:else if key === 'job_id'}
 							<a
 								class="info-value"

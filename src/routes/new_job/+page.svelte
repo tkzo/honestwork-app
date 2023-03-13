@@ -89,7 +89,8 @@
 	const getAllowance = async () => {
 		let ERC20 = new ethers.Contract(chosen_payment_token.address, erc20_abi, $networkProvider);
 		let allowance = await ERC20.allowance($userAddress, env.PUBLIC_LISTING_ADDRESS!);
-		user_allowance = ethers.utils.formatEther(allowance);
+    let decimals = await ERC20.decimals();
+		user_allowance = ethers.utils.formatUnits(allowance, decimals);
 	};
 	// todo: refactor with a single form reference
 	const handleSubmit = async (e: any) => {

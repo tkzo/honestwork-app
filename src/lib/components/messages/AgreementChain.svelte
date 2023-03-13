@@ -12,26 +12,26 @@
 	export let deal: Deal;
 	export let id: string;
 
+  let decimals: number;
 	let rating: number;
 	let amount: number;
 
 	$: progress =
-		((parseFloat(ethers.utils.formatEther(deal.claimableAmount)) +
-			parseFloat(ethers.utils.formatEther(deal.claimedAmount))) /
-			parseFloat(ethers.utils.formatEther(deal.totalPayment))) *
+		((parseFloat(ethers.utils.formatUnits(deal.claimableAmount, decimals)) +
+			parseFloat(ethers.utils.formatUnits(deal.claimedAmount, decimals))) /
+			parseFloat(ethers.utils.formatUnits(deal.totalPayment, decimals))) *
 		100;
 
   const fetchDecimals = async () => {
 		try {
 			const Token = new ethers.Contract(deal.paymentToken, erc20_abi, $networkProvider);
-			const decimals = await Token.decimals();
-      return decimals
+			decimals = await Token.decimals();
 		} catch (err) {
       console.log(err)
     }
   }
 	const claimable = () => {
-		return parseFloat(ethers.utils.formatEther(deal.claimableAmount).toString());
+		return parseFloat(ethers.utils.formatUnits(deal.claimableAmount, decimals).toString());
 	};
 	const average = (array: any) => {
 		return array.length > 0
@@ -61,7 +61,7 @@
 		}
 	};
 	const handleInstallment = async () => {
-    const decimals = await fetchDecimals();
+    await fetchDecimals();
 		await approve(ethers.utils.parseUnits(amount.toString(), decimals));
 		try {
 			const Payment = new ethers.Contract(env.PUBLIC_ESCROW_ADDRESS!, escrow_abi, $networkSigner);
@@ -216,11 +216,11 @@
 		</div>
 		<div class="info">
 			<p class="light-60">total amount</p>
-			<p>${parseFloat(ethers.utils.formatEther(deal.totalPayment)).toLocaleString()}</p>
+			<p>${parseFloat(ethers.utils.formatUnits(deal.totalPayment, decimals)).toLocaleString()}</p>
 		</div>
 		<div class="info">
 			<p class="light-60">claimable amount</p>
-			<p>${parseFloat(ethers.utils.formatEther(deal.claimableAmount)).toLocaleString()}</p>
+			<p>${parseFloat(ethers.utils.formatUnits(deal.claimableAmount, decimals)).toLocaleString()}</p>
 		</div>
 		<div class="outstanding-container">
 			<div style="height:8px" />
@@ -229,9 +229,9 @@
 			<div class="outstanding-row">
 				<p class="light-60">outstanding payment</p>
 				<p class="red">
-					${parseFloat(ethers.utils.formatEther(deal.totalPayment)) -
-						parseFloat(ethers.utils.formatEther(deal.claimableAmount)) -
-						parseFloat(ethers.utils.formatEther(deal.claimedAmount))}
+					${parseFloat(ethers.utils.formatUnits(deal.totalPayment, decimals)) -
+						parseFloat(ethers.utils.formatUnits(deal.claimableAmount, decimals)) -
+						parseFloat(ethers.utils.formatUnits(deal.claimedAmount, decimals))}
 				</p>
 			</div>
 		</div>
