@@ -17,7 +17,7 @@
 	let description_chars = 2000;
 	let description_text = skill.description;
 	let title: string = skill.title;
-	let minimum: string = skill.minimum_price;
+	let minimum: string = skill.minimum_price.toString();
 	let link_0: string = skill.links[0];
 	let link_1: string = skill.links[1];
 	let link_2: string = skill.links[2];
