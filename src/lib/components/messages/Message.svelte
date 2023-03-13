@@ -2,9 +2,10 @@
 
 <script lang="ts">
 	import { assets, base } from '$app/paths';
-	import { userAddress } from '$lib/stores/Network';
+	import { userAddress, networkProvider } from '$lib/stores/Network';
 	import { slide } from 'svelte/transition';
 	import { ethers } from 'ethers';
+  import { erc20_abi } from '$lib/stores/ABI';
 
 	export let message: any;
 	export let index: number;
@@ -14,11 +15,21 @@
 	let parsed = false;
 	let ismeta = message.content.startsWith('Meta:');
 	let show_meta_dropdown = false;
+  let decimals: number;
 
 	$: if (ismeta) {
 		parseMeta(message.content);
+    fetchDecimals();
 	}
 
+  const fetchDecimals = async () => {
+		try {
+			const Token = new ethers.Contract(meta_message.token, erc20_abi, $networkProvider);
+			decimals = await Token.decimals();
+		} catch (err) {
+      console.log(err)
+    }
+  }
 	const parseDate = (d: string) => {
 		let date = new Date(d);
 		return date.toLocaleString();
@@ -84,11 +95,11 @@
 						</div>
 						<div class="dropdown-item">
 							<p class="light-60">total amount:</p>
-							<p>${ethers.utils.formatEther(meta_message.total_amount)}</p>
+							<p>${ethers.utils.formatUnits(meta_message.total_amount, decimals)}</p>
 						</div>
 						<div class="dropdown-item">
 							<p class="light-60">downpayment:</p>
-							<p>${ethers.utils.formatEther(meta_message.downpayment)}</p>
+							<p>${ethers.utils.formatUnits(meta_message.downpayment, decimals)}</p>
 						</div>
 					</div>
 				{:else if meta_message.type == 'job acceptance'}
@@ -120,11 +131,11 @@
 						</div>
 						<div class="dropdown-item">
 							<p class="light-60">total amount:</p>
-							<p>${ethers.utils.formatEther(meta_message.total_amount)}</p>
+							<p>${ethers.utils.formatUnits(meta_message.total_amount, decimals)}</p>
 						</div>
 						<div class="dropdown-item">
 							<p class="light-60">downpayment:</p>
-							<p>${ethers.utils.formatEther(meta_message.downpayment)}</p>
+							<p>${ethers.utils.formatUnits(meta_message.downpayment, decimals)}</p>
 						</div>
 					</div>
 				{:else if meta_message.type == 'job execution'}
@@ -156,11 +167,11 @@
 						</div>
 						<div class="dropdown-item">
 							<p class="light-60">total amount:</p>
-							<p>${ethers.utils.formatEther(meta_message.total_amount)}</p>
+							<p>${ethers.utils.formatUnits(meta_message.total_amount, decimals)}</p>
 						</div>
 						<div class="dropdown-item">
 							<p class="light-60">downpayment:</p>
-							<p>${ethers.utils.formatEther(meta_message.downpayment)}</p>
+							<p>${ethers.utils.formatUnits(meta_message.downpayment, decimals)}</p>
 						</div>
 					</div>
 				{:else if meta_message.type == 'new payment'}
@@ -192,11 +203,11 @@
 						</div>
 						<div class="dropdown-item">
 							<p class="light-60">total amount:</p>
-							<p>${ethers.utils.formatEther(meta_message.total_amount)}</p>
+							<p>${ethers.utils.formatUnits(meta_message.total_amount, decimals)}</p>
 						</div>
 						<div class="dropdown-item">
 							<p class="light-60">installment:</p>
-							<p>${ethers.utils.formatEther(meta_message.installment)}</p>
+							<p>${ethers.utils.formatUnits(meta_message.installment, decimals)}</p>
 						</div>
 					</div>
 				{:else if meta_message.type == 'payment claimed'}
@@ -228,11 +239,11 @@
 						</div>
 						<div class="dropdown-item">
 							<p class="light-60">total amount:</p>
-							<p>${ethers.utils.formatEther(meta_message.total_amount)}</p>
+							<p>${ethers.utils.formatUnits(meta_message.total_amount, decimals)}</p>
 						</div>
 						<div class="dropdown-item">
 							<p class="light-60">installment:</p>
-							<p>${meta_message.installment}</p>
+							<p>${ethers.utils.formatUnits(meta_message.installment, decimals)}</p>
 						</div>
 					</div>
 				{:else if meta_message.type == 'job cancelled'}
@@ -264,7 +275,7 @@
 						</div>
 						<div class="dropdown-item">
 							<p class="light-60">total amount:</p>
-							<p>${ethers.utils.formatEther(meta_message.total_amount)}</p>
+							<p>${ethers.utils.formatUnits(meta_message.total_amount, decimals)}</p>
 						</div>
 						<div class="dropdown-item">
 							<p class="light-60">withdrawn amount:</p>
