@@ -378,6 +378,7 @@
 	let new_skill: any;
 	const handleSkillUpdate = (e: any) => {
 		new_skill = e.detail.skill;
+    console.log("New skill:", new_skill)
 	};
 	const handleContentInput = (e: any) => {
 		content = JSON.stringify(e.detail.content);

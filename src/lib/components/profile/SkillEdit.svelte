@@ -87,7 +87,7 @@
 		dispatch('skill_update', {
 			skill: {
 				title: title,
-				description: description_text,
+				description: content,
 				links: [link_0, link_1, link_2],
 				image_urls: [
 					image_url_0,
@@ -104,6 +104,7 @@
 				tags: tags
 			}
 		});
+    console.log("Dispatched!")
 	};
 	const uploadPhoto = async (e: any) => {
 		const file = e.target.files[0]!;
@@ -155,6 +156,7 @@
 	const handleContentInput = (e: any) => {
 		content = JSON.stringify(e.detail.content);
 		total_chars = parseContent(content).length;
+    console.log("Dispatcing skill with description:", parseContent(content))
     dispatchSkill();
 	};
 </script>
