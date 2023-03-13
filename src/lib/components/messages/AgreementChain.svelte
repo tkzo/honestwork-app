@@ -2,7 +2,7 @@
 	import { ethers } from 'ethers';
 	import { env } from '$env/dynamic/public';
 	import { escrow_abi, erc20_abi } from '$lib/stores/ABI';
-	import { userAddress, networkSigner, chainID, userToken } from '$lib/stores/Network';
+	import { userAddress, networkSigner, networkProvider, chainID, userToken } from '$lib/stores/Network';
 	import { findTokenName, findChainName } from '$lib/stores/Constants';
 	import type { Deal } from '$lib/stores/Types';
 	import { toast } from '@zerodevx/svelte-toast';
@@ -21,6 +21,15 @@
 			parseFloat(ethers.utils.formatEther(deal.totalPayment))) *
 		100;
 
+  const fetchDecimals = async () => {
+		try {
+			const Token = new ethers.Contract(deal.paymentToken, erc20_abi, $networkProvider);
+			const decimals = await Token.decimals();
+      return decimals
+		} catch (err) {
+      console.log(err)
+    }
+  }
 	const claimable = () => {
 		return parseFloat(ethers.utils.formatEther(deal.claimableAmount).toString());
 	};
@@ -52,12 +61,13 @@
 		}
 	};
 	const handleInstallment = async () => {
-		await approve(ethers.utils.parseEther(amount.toString()));
+    const decimals = await fetchDecimals();
+		await approve(ethers.utils.parseUnits(amount.toString(), decimals));
 		try {
 			const Payment = new ethers.Contract(env.PUBLIC_ESCROW_ADDRESS!, escrow_abi, $networkSigner);
 			const tx = await Payment.unlockPayment(
 				id,
-				ethers.utils.parseEther(amount.toString()),
+				ethers.utils.parseUnits(amount.toString(), decimals),
 				rating,
 				$userToken
 			);
@@ -71,7 +81,7 @@
 						token: findTokenName(findChainName($chainID), deal.paymentToken),
 						token_address: deal.paymentToken,
 						total_amount: deal.totalPayment,
-						installment: ethers.utils.parseEther(amount.toString()),
+						installment: ethers.utils.parseUnits(amount.toString(), decimals),
 						job_id: deal.jobId,
 						recruiter: deal.recruiter
 					})}`
@@ -126,6 +136,7 @@
 	};
 	const handleWithdraw = async () => {
 		try {
+      const decimals = await fetchDecimals();
 			const Payment = new ethers.Contract(env.PUBLIC_ESCROW_ADDRESS, escrow_abi, $networkSigner);
 			const tx = await Payment.withdrawPayment(id);
 			const receipt = await tx.wait();
@@ -140,9 +151,9 @@
 						token_address: deal.paymentToken,
 						total_amount: deal.totalPayment,
 						withdrawn_amount:
-							parseFloat(ethers.utils.formatEther(deal.totalPayment)) -
-							parseFloat(ethers.utils.formatEther(deal.claimableAmount)) -
-							parseFloat(ethers.utils.formatEther(deal.claimedAmount))
+							parseFloat(ethers.utils.formatUnits(deal.totalPayment, decimals)) -
+							parseFloat(ethers.utils.formatUnits(deal.claimableAmount, decimals)) -
+							parseFloat(ethers.utils.formatUnits(deal.claimedAmount, decimals))
 					})}`
 				);
 				toast.push(

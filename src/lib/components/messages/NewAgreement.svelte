@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { userAddress, networkSigner } from '$lib/stores/Network';
+	import { userAddress, networkSigner, networkProvider} from '$lib/stores/Network';
 	import { assets, base } from '$app/paths';
 	import { env } from '$env/dynamic/public';
 	import { toast } from '@zerodevx/svelte-toast';
 	import type { DealDB } from '$lib/stores/Types';
 	import { ethers } from 'ethers';
 	import { chains } from '$lib/stores/Constants';
+  import { erc20_abi } from '$lib/stores/ABI';
 
 	export let conversation: any;
 
@@ -34,9 +35,20 @@
 		}
 	};
 
+  const fetchDecimals = async () => {
+		try {
+			const Token = new ethers.Contract(chosen_token_address, erc20_abi, $networkProvider);
+			const decimals = await Token.decimals();
+      return decimals
+		} catch (err) {
+      console.log(err)
+    }
+  }
+
 	const handleCreateAgreementOffer = async () => {
 		if (chosen_recruitor === $userAddress) {
 			try {
+        const decimals = await fetchDecimals();
 				const res = await fetch(`/api/auth/login/${$userAddress}`, {
 					method: 'POST'
 				});
@@ -47,8 +59,8 @@
 					status: '',
 					network: chosen_network,
 					token_address: chosen_token_address,
-					total_amount: ethers.utils.parseEther(total_amount.toString()).toString(),
-					downpayment: ethers.utils.parseEther(downpayment.toString()).toString(),
+					total_amount: ethers.utils.parseUnits(total_amount.toString(), decimals).toString(),
+					downpayment: ethers.utils.parseUnits(downpayment.toString(), decimals).toString(),
 					job_id: chosen_job_slot,
 					signature: ''
 				};
@@ -66,8 +78,8 @@
 							network: chosen_network,
 							token: chosen_token,
 							token_address: chosen_token_address,
-							total_amount: ethers.utils.parseEther(total_amount.toString()).toString(),
-							downpayment: ethers.utils.parseEther(downpayment.toString()).toString(),
+					    total_amount: ethers.utils.parseUnits(total_amount.toString(), decimals).toString(),
+					    downpayment: ethers.utils.parseUnits(downpayment.toString(), decimals).toString(),
 							job_id: chosen_job_slot,
 							recruiter: $userAddress
 						})}`

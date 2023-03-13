@@ -268,7 +268,6 @@
 			userPaying = true;
 			let amount_to_pay = sticky_item.price + service_fee;
 			let price = ethers.utils.parseUnits(amount_to_pay.toString(), 6);
-      console.log("Price to pay:", price);
 			try {
 				if (parseFloat(user_allowance) < amount_to_pay) {
 					const erc20 = new ethers.Contract(

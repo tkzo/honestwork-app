@@ -139,6 +139,7 @@ export const chains = [
 			{
 				name: 'USDC',
 				symbol: 'USDC',
+        decimals: 6,
 				address: env.PUBLIC_ARBITRUM_USDC_ADDRESS!,
 				max_allowed: '100000000000000000000000'
 			}

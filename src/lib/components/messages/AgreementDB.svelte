@@ -4,7 +4,7 @@
 	import { ethers } from 'ethers';
 	import { env } from '$env/dynamic/public';
 	import { escrow_abi, erc20_abi } from '$lib/stores/ABI';
-	import { userAddress, networkSigner, userToken } from '$lib/stores/Network';
+	import { userAddress, networkSigner, networkProvider, userToken } from '$lib/stores/Network';
 	import { findTokenName } from '$lib/stores/Constants';
 	import { toast } from '@zerodevx/svelte-toast';
 
@@ -15,7 +15,7 @@
 
 	const approve = async (amount: ethers.BigNumberish) => {
 		try {
-			const Token = new ethers.Contract(deal.token_address, erc20_abi, $networkSigner);
+			const Token = new ethers.Contract(deal.token_address, erc20_abi, $networkProvider);
 			const tx = await Token.approve(env.PUBLIC_ESCROW_ADDRESS, amount);
 			let receipt = await tx.wait();
 			if (receipt && receipt.status == 1) {
@@ -34,7 +34,7 @@
 	};
 	const handleExecute = async () => {
 		const recruiter_address = role == 'recruiter' ? $userAddress : conversation.peerAddress;
-		await approve(ethers.utils.parseEther(deal.total_amount));
+		await approve(deal.total_amount);
 		try {
 			const Payment = new ethers.Contract(env.PUBLIC_ESCROW_ADDRESS!, escrow_abi, $networkSigner);
 			const tx = await Payment.createDealSignature(
