@@ -130,7 +130,9 @@ export const SkillInput = z.object({
 	description: z.string().min(200).max(2000),
 	tags: z.string().min(2).max(20).array().min(1).max(3),
 	links: z.string().url().array().min(1).max(3),
-	minimum_price: z.number().min(500),
+	minimum_price: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
+			message: 'Expected number, received a string'
+		}),
 	publish: z.boolean()
 });
 export type SkillInput = z.infer<typeof SkillInput>;
