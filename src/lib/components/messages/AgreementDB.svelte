@@ -64,7 +64,6 @@
 			);
 			let receipt = await tx.wait();
 			if (receipt && receipt.status == 1) {
-				//todo: move to event watcher / indexer
 				const res = await fetch(`/api/auth/login/${$userAddress}`, {
 					method: 'POST'
 				});
