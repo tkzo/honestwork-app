@@ -19,11 +19,6 @@
 			extensions: [StarterKit],
 			content: content,
 			editable: editable,
-      onTransaction: () => {
-          dispatch('content',{
-            content: $editor.getJSON()
-          });
-        },
 		});
 		$editor.on('update', () => {
 			dispatch('content', {

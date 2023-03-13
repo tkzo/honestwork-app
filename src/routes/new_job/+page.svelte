@@ -326,7 +326,6 @@
 		}
 	};
 	const handleContentInput = (e: any) => {
-    console.log("Parsing...")
 		content = JSON.stringify(e.detail.content);
 		total_chars = parseContent(content).length;
 	};

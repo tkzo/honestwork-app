@@ -153,7 +153,6 @@
 		tags = tags;
 	};
 	const handleContentInput = (e: any) => {
-    console.log("Parsing string description.")
 		content = JSON.stringify(e.detail.content);
 		total_chars = parseContent(content).length;
     dispatchSkill();
