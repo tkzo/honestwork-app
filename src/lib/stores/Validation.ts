@@ -150,6 +150,8 @@ export const CoverLetterInput = z.object({
 				message: 'Invalid job address or id'
 			}
 		),
-	cover_letter: z.string().min(200).max(2000)
+	cover_letter: z.union([z.string().min(200, {
+    message: "Cover letter must be empty or at least 200 chars"
+  }).max(2000), z.literal('')])
 });
 export type CoverLetterInput = z.infer<typeof CoverLetterInput>;

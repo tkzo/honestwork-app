@@ -19,7 +19,6 @@
 			job_id: `job:${data.job.user_address}:${data.job.slot}`,
 			cover_letter: parseContent(content)
 		};
-		console.log(input);
 		let parsed = CoverLetterInput.safeParse(input);
 		if (!parsed.success) {
 			for (let i = 0; i < parsed.error.errors.length; i++) {
