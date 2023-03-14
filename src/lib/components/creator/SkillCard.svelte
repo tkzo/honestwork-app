@@ -6,6 +6,7 @@
 	export let skill: SkillType;
 
 	let chosen_image: number = 0;
+	let loading_gallery_image = false;
 
 	$: if (skill && browser) {
 		resetState();
@@ -13,11 +14,13 @@
 	$: trimmed_images = skill.image_urls.filter((url: string) => url !== '');
 
 	const nextImage = () => {
+		loading_gallery_image = true;
 		if (chosen_image < trimmed_images.length - 1) {
 			chosen_image++;
 		}
 	};
 	const previousImage = () => {
+		loading_gallery_image = true;
 		if (chosen_image > 0) {
 			chosen_image--;
 		}
@@ -29,7 +32,7 @@
 
 <main>
 	<div class="gallery">
-		<img class="gallery-images" src={trimmed_images[chosen_image] + "?tr=h-776,w-1036"} alt="Gallery" />
+		<img class="gallery-images" src={trimmed_images[chosen_image] + "?tr=h-776,w-1036"} alt="Gallery" on:load={() => loading_gallery_image = false }/>
 		<div class="gallery-buttons">
 			<div class="left-gallery-button" on:click={previousImage} on:keydown>
 				<p class="light-40">PREVIOUS</p>
