@@ -440,6 +440,11 @@
 							</div>
 						</section>
 						<div class="save-changes">
+              <a href={`${base}/creator/${$userAddress}`} class='external-page'>
+                <p class='yellow'>view creator page</p>
+                <div style='width:4px'/>
+                <img src={`${assets}/icons/external.svg`} alt="Creator Page">
+              </a>
 							{#if $submitting}
 								<img
 									src={`${assets}/icons/loader.svg`}
@@ -1074,7 +1079,7 @@
 	.save-changes {
 		display: flex;
 		flex-direction: row;
-		justify-content: flex-end;
+		justify-content: space-between;
 		align-items: center;
 		padding: 8px;
 		border-width: 0px 1px 1px 1px;
@@ -1124,4 +1129,13 @@
 		flex-direction: column;
 		align-items: center;
 	}
+  .external-page {
+    display:flex;
+    flex-direction:row;
+    align-items: center;
+  }
+  .external-page img {
+    height: 16px;
+    width: 16px;
+  }
 </style>
