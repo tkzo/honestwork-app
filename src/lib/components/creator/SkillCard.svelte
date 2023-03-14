@@ -29,7 +29,7 @@
 
 <main>
 	<div class="gallery">
-		<img class="gallery-images" src={trimmed_images[chosen_image] + "?tr=h-636,w-1036"} alt="Gallery" />
+		<img class="gallery-images" src={trimmed_images[chosen_image] + "?tr=h-776,w-1036"} alt="Gallery" />
 		<div class="gallery-buttons">
 			<div class="left-gallery-button" on:click={previousImage} on:keydown>
 				<p class="light-40">PREVIOUS</p>
