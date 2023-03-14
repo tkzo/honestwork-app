@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Skeleton from '$lib/components/common/Skeleton.svelte';
 	import type { SkillType } from '$lib/stores/Types';
 	import { browser } from '$app/environment';
 	import { parseContent } from '$lib/stores/Parser';
@@ -32,7 +33,14 @@
 
 <main>
 	<div class="gallery">
-		<img class="gallery-images" src={trimmed_images[chosen_image] + "?tr=h-776,w-1036"} alt="Gallery" on:load={() => loading_gallery_image = false }/>
+    {#key trimmed_images[chosen_image]}
+		  <img class="gallery-images" src={trimmed_images[chosen_image] + "?tr=h-776,w-1036"} alt="Gallery" on:load={() => loading_gallery_image = false }/>
+    {/key}
+					{#if loading_gallery_image}
+						<div class="skeleton-container">
+							<Skeleton width="518px" height="389px" />
+						</div>
+					{/if}
 		<div class="gallery-buttons">
 			<div class="left-gallery-button" on:click={previousImage} on:keydown>
 				<p class="light-40">PREVIOUS</p>
