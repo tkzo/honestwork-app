@@ -7,10 +7,12 @@
 	import { base, assets } from '$app/paths';
 	import { placeholder_image } from '$lib/stores/Constants';
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
+  import { onMount } from 'svelte';
 
 	export let skill: SkillType;
 
-	let loading_gallery_image = false;
+  let image_component: HTMLImageElement;
+	let loading_gallery_image = true;
 	let viewport: Element;
 	let contents: Element;
 	let user: UserType;
@@ -18,6 +20,10 @@
 	let nft_image: any;
 	let ens_name: string;
 	let feedHeight = 0;
+
+  onMount(() => {
+    loading_gallery_image = false;
+  })
 
 	$: if (browser) feedHeight = window.innerHeight - 154;
 	$: if (skill && browser) {
@@ -109,6 +115,7 @@
 							class="gallery-images"
 							src={trimmed_images[chosen_image] + "?tr=h-776,w-1036"}
 							alt="Gallery"
+              bind:this={image_component}
 							on:load={() => {
 								loading_gallery_image = false;
 							}}

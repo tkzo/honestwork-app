@@ -7,7 +7,7 @@
 	export let skill: SkillType;
 
 	let chosen_image: number = 0;
-	let loading_gallery_image = false;
+	let loading_gallery_image = true;
 
 	$: if (skill && browser) {
 		resetState();
