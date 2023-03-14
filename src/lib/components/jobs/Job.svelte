@@ -66,7 +66,7 @@
 			{#if job.deal_id == -1}
 				<p style="color:var(--color-success)">active</p>
 				<div style="width: 4px" />
-				<img src={`${assets}/icons/calendar-check.svg`} alt="arrow" />
+				<img src={`${assets}/icons/check.svg`} alt="arrow" />
 				<div style="width: 8px" />
 			{:else}
 				<p style="color:var(--color-error)">taken</p>

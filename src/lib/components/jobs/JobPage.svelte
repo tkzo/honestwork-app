@@ -26,7 +26,7 @@
 			chosen_network = job.tokens_accepted[0].id;
 		}
 	}
-
+  $: user_applied = job.application != null ? job.application.findIndex(n=>n.user_address == $userAddress) != -1 : false;
 	const getChainName = (chain_id: number) => {
 		const name = chains.find((chain) => chain.id == chain_id)?.name;
 		return name;
@@ -114,9 +114,17 @@
 		</div>
 		<div class="right-section">
 			{#if $page.route.id == '/jobs' && job.deal_id == -1}
+        {#if !user_applied}
 				<a class="button" href={`/job/${job.user_address}/${job.slot}`}>
 					<p class="yellow">apply to this job</p>
 				</a>
+        {:else}
+          <div class='already-applied'>
+            <p class='light-80'>already applied</p>
+            <div style='width: 4px;'/>
+            <img src={`${assets}/icons/check.svg`} alt="Already applied" />
+          </div>
+        {/if}
 			{/if}
 			<div style="height:8px" />
 			<div class="button link" on:click={handleWatch} on:keydown>
@@ -255,7 +263,6 @@
 		border-width: 1px 1px 1px 1px;
 		border-style: solid;
 		border-color: var(--color-light-20);
-		cursor: pointer;
 		padding: 12px;
 	}
 	.left-section {
@@ -322,6 +329,7 @@
 		display: none;
 	}
 	.button {
+    width: 172px;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -408,4 +416,15 @@
 		border-style: solid;
 		border-color: var(--color-light-20);
 	}
+  .already-applied{
+    width: 172px;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--color-light-10);
+		padding: 4px 8px;
+    box-sizing: border-box;
+  }
 </style>
