@@ -34,20 +34,24 @@
 		await getNft();
 	};
 	const nextImage = () => {
-		loading_gallery_image = true;
-		if (chosen_image < trimmed_images.length - 1) {
-			chosen_image++;
-		} else {
-			chosen_image = 0;
-		}
+    if (trimmed_images.length > 1) {
+		  loading_gallery_image = true;
+		  if (chosen_image < trimmed_images.length - 1) {
+			  chosen_image++;
+		  } else {
+			  chosen_image = 0;
+		  }
+    }
 	};
 	const previousImage = () => {
-		loading_gallery_image = true;
-		if (chosen_image > 0) {
-			chosen_image--;
-		} else {
-			chosen_image = trimmed_images.length - 1;
-		}
+    if (trimmed_images.length > 1) {
+		  loading_gallery_image = true;
+		  if (chosen_image > 0) {
+			  chosen_image--;
+		  } else {
+			  chosen_image = trimmed_images.length - 1;
+		  }
+    }
 	};
 	const resetState = () => {
 		chosen_image = 0;

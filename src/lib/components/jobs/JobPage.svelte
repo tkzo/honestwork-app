@@ -421,6 +421,7 @@
     display:flex;
     flex-direction: row;
     align-items: center;
+    justify-content:center;
 		border-width: 1px;
 		border-style: solid;
 		border-color: var(--color-light-10);

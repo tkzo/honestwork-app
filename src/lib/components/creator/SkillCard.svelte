@@ -15,16 +15,22 @@
 	$: trimmed_images = skill.image_urls.filter((url: string) => url !== '');
 
 	const nextImage = () => {
-		loading_gallery_image = true;
 		if (chosen_image < trimmed_images.length - 1) {
+		  loading_gallery_image = true;
 			chosen_image++;
-		}
+		} else {
+		  loading_gallery_image = true;
+      chosen_image = 0;
+    }
 	};
 	const previousImage = () => {
-		loading_gallery_image = true;
 		if (chosen_image > 0) {
+		  loading_gallery_image = true;
 			chosen_image--;
-		}
+		} else {
+		  loading_gallery_image = true;
+      chosen_image = trimmed_images.length - 1;
+    }
 	};
 	const resetState = () => {
 		chosen_image = 0;
@@ -34,13 +40,18 @@
 <main>
 	<div class="gallery">
     {#key trimmed_images[chosen_image]}
-		  <img class="gallery-images" src={trimmed_images[chosen_image] + "?tr=h-776,w-1036"} alt="Gallery" on:load={() => loading_gallery_image = false }/>
+		  <img 
+        class="gallery-images" 
+        src={trimmed_images[chosen_image] + "?tr=h-776,w-1036"} 
+        alt="Gallery" 
+        on:load={() => { loading_gallery_image = false }}
+      />
     {/key}
-					{#if loading_gallery_image}
-						<div class="skeleton-container">
-							<Skeleton width="518px" height="389px" />
-						</div>
-					{/if}
+		{#if loading_gallery_image}
+			<div class="skeleton-container">
+				<Skeleton width="518px" height="389px" />
+			</div>
+		{/if}
 		<div class="gallery-buttons">
 			<div class="left-gallery-button" on:click={previousImage} on:keydown>
 				<p class="light-40">PREVIOUS</p>
@@ -89,6 +100,7 @@
 		flex-direction: column;
 	}
 	.gallery {
+    position: relative;
 		width: 100%;
 		border-width: 0px 0px 1px 0px;
 		border-style: solid;
