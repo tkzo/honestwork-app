@@ -12,6 +12,8 @@
 	import { onMount } from 'svelte';
 	import { connectIfCached } from '$lib/stores/Network';
 
+
+  // comment
 	onMount(() => {
 		if ($page.route.id !== '/') connectIfCached();
 	});
