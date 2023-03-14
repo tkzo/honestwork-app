@@ -15,21 +15,23 @@
 	$: trimmed_images = skill.image_urls.filter((url: string) => url !== '');
 
 	const nextImage = () => {
-		if (chosen_image < trimmed_images.length - 1) {
+    if (trimmed_images.length > 1) {
 		  loading_gallery_image = true;
-			chosen_image++;
-		} else {
-		  loading_gallery_image = true;
-      chosen_image = 0;
+		  if (chosen_image < trimmed_images.length - 1) {
+			  chosen_image++;
+		  } else {
+			  chosen_image = 0;
+		  }
     }
 	};
 	const previousImage = () => {
-		if (chosen_image > 0) {
+    if (trimmed_images.length > 1) {
 		  loading_gallery_image = true;
-			chosen_image--;
-		} else {
-		  loading_gallery_image = true;
-      chosen_image = trimmed_images.length - 1;
+		  if (chosen_image > 0) {
+			  chosen_image--;
+		  } else {
+			  chosen_image = trimmed_images.length - 1;
+		  }
     }
 	};
 	const resetState = () => {
