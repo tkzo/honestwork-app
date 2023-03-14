@@ -7,7 +7,6 @@
 	import { base, assets } from '$app/paths';
 	import { placeholder_image } from '$lib/stores/Constants';
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
-  import { onMount } from 'svelte';
 
 	export let skill: SkillType;
 
@@ -21,10 +20,6 @@
 	let ens_name: string;
 	let feedHeight = 0;
 
-  onMount(() => {
-    loading_gallery_image = false;
-  })
-
 	$: if (browser) feedHeight = window.innerHeight - 154;
 	$: if (skill && browser) {
 		nft_image = '';
@@ -32,6 +27,7 @@
 		fetchUser();
 	}
 	$: trimmed_images = skill.image_urls.filter((url: string) => url !== '');
+  $: if (image_component?.complete) loading_gallery_image = false;
 
 	const fetchUser = async () => {
 		const res = await fetch(`${base}/api/user/${skill.user_address}`);
