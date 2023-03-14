@@ -4,7 +4,8 @@
 	import { chosen_skill_slot, skill_add } from '$lib/stores/State';
 
 	export let data: any;
-
+  $:console.log("Data:",data)
+  $:console.log("Chosen skill slot:", $chosen_skill_slot)
 	let total_skills = 3;
 
 	type SkillType = {
@@ -34,6 +35,7 @@
 	};
 	const handleSkillEdit = (slot: number) => {
 		chosen_skill_slot.set(slot);
+    skill_add.set(false)
 	};
 </script>
 

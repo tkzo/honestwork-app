@@ -297,11 +297,11 @@
 				//todo: stop exec if not ok
 				if (upload.ok) {
 					toast.push(
-						`<p class="light-60"><span style='color:var(--color-success)'>Uploaded file</p>`
+						`<p class="light-60"><span style='color:var(--color-success)'>success:</span>Uploaded file</p>`
 					);
 				} else {
 					toast.push(
-						`<p class="light-60"><span style='color:var(--color-error)'>Upload failed</p>`
+						`<p class="light-60"><span style='color:var(--color-error)'>error:</span>Upload failed</p>`
 					);
 					return;
 				}
