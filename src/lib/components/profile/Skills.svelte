@@ -2,11 +2,19 @@
 	import Skill from '$lib/components/profile/Skill.svelte';
 	import SkillEdit from '$lib/components/profile/SkillEdit.svelte';
 	import { chosen_skill_slot, skill_add } from '$lib/stores/State';
+  import { userState } from '$lib/stores/Network';
 
 	export let data: any;
-  $:console.log("Data:",data)
-  $:console.log("Chosen skill slot:", $chosen_skill_slot)
-	let total_skills = 3;
+  let allowed_skills = 0;
+  $: switch ($userState) {
+    case 1:
+      allowed_skills = 3;
+    case 2:
+      allowed_skills = 5;
+    case 3:
+      allowed_skills = 8;
+      
+  }
 
 	type SkillType = {
 		slot: number;
@@ -40,9 +48,9 @@
 </script>
 
 {#if $chosen_skill_slot == -1}
-	{#if data.skills.json == undefined || data.skills.json?.length < total_skills}
+	{#if data.skills.json == undefined || data.skills.json?.length < allowed_skills}
 		<div class="empty">
-			<p class="light-60">you can add {total_skills - data.skills.json?.length} more skill(s)</p>
+			<p class="light-60">you can add {allowed_skills - data.skills.json?.length} more skill(s)</p>
 			<div style="height:12px" />
 			<section class="add-button" on:click={handleSkillAdd} on:keydown>
 				<p class="yellow">+add new skill</p>
