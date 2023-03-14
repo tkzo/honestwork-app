@@ -7,7 +7,7 @@
 <div style="height: 12px" />
 <div class="container">
 	<div class="left">
-		<img src={favorite.image_url} alt={favorite.username} class="job-image" />
+		<img src={favorite.image_url + "?tr=h-120,w-120"} alt={favorite.username} class="job-image" />
 		<a class="content" href={`${base}/creator/${favorite.input.address}/`}>
 			<div class="username">
 				<p class="link">{favorite.username}</p>

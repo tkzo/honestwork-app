@@ -295,7 +295,7 @@
 								<div class="image-section">
 									<div
 										class="image-card"
-										style={`background-image:url(${image_url ?? placeholder_image})`}
+										style={`background-image:url(${image_url ? image_url + "?tr=h-248,w-248" : placeholder_image})`}
 									>
 										<div class="image-tint" />
 										<div class="upload-button">

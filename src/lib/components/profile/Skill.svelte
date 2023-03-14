@@ -15,7 +15,7 @@
 	</div>
 	<div class="gallery">
 		{#each skill.image_urls.slice(0, 4) as url}
-			<img src={url == '' ? placeholder_image : url} alt="gallery" class="preview-image" />
+			<img src={url == '' ? placeholder_image : url + "?tr=h-180,w-240"} alt="gallery" class="preview-image" />
 		{/each}
 	</div>
 	<div class="description">

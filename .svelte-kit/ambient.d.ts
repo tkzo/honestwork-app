@@ -33,6 +33,9 @@ declare module '$env/static/private' {
 	export const PRIVATE_SPACES_URL: string;
 	export const PRIVATE_SPACES_BUCKETNAME: string;
 	export const PRIVATE_SPACES_REGION_URL: string;
+	export const PRIVATE_IMAGEKIT_URL: string;
+	export const PRIVATE_IMAGEKIT_PUBLIC_KEY: string;
+	export const PRIVATE_IMAGEKIT_PRIVATE_KEY: string;
 	export const PRIVATE_HONESTWORK_API: string;
 	export const PRIVATE_LOCAL_HONESTWORK_API: string;
 	export const PRIVATE_ETHEREUM_RPC: string;
@@ -156,6 +159,9 @@ declare module '$env/dynamic/private' {
 		PRIVATE_SPACES_URL: string;
 		PRIVATE_SPACES_BUCKETNAME: string;
 		PRIVATE_SPACES_REGION_URL: string;
+		PRIVATE_IMAGEKIT_URL: string;
+		PRIVATE_IMAGEKIT_PUBLIC_KEY: string;
+		PRIVATE_IMAGEKIT_PRIVATE_KEY: string;
 		PRIVATE_HONESTWORK_API: string;
 		PRIVATE_LOCAL_HONESTWORK_API: string;
 		PRIVATE_ETHEREUM_RPC: string;

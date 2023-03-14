@@ -91,7 +91,7 @@
 <main>
 	<div class="profile-bar">
 		<div class="left-section">
-			<img class="pfp" src={job.image_url ?? placeholder_image} alt="" />
+			<img class="pfp" src={job.image_url ? job.image_url + "?tr=h-188,w-188" : placeholder_image} alt="" />
 			<div style="width:8px;" />
 			<div class="info">
 				<div class="info-username">

@@ -64,7 +64,7 @@
 		</div>
 	</div>
 	<div class="contents">
-		<img src={job.image_url ?? placeholder_image} alt="gallery" class="preview-image" />
+		<img src={job.image_url ? job.image_url + "?tr=h-240,w-240" : placeholder_image} alt="gallery" class="preview-image" />
 		<div style="width:12px;" />
 		<div class="content">
 			<div class="body-text light-60">

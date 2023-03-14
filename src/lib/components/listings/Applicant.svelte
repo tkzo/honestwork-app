@@ -99,7 +99,7 @@
 						src={user.show_nft && nft_image != null
 							? nft_image
 							: user.image_url != ''
-							? user.image_url
+							? user.image_url + "?tr=h-120,w-120"
 							: placeholder_image}
 						alt="Profile"
 						placeholder={placeholder_image}

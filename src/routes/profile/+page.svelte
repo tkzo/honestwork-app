@@ -475,7 +475,7 @@
 							<div class="left-section">
 								<section>
 									<img
-										src={show_nft ? nft_image : image_url ?? placeholder_image}
+										src={show_nft ? nft_image : image_url ? image_url + "?tr=h-188,w-188" : placeholder_image}
 										alt="Profile"
 										placeholder={placeholder_image}
 									/>

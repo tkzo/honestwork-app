@@ -39,7 +39,7 @@
 						on:click={() => goto(`${base}/job/${job.user_address}/${job.slot}`)}
 						on:keydown
 					>
-						<img class="job-image" src={job.image_url} alt="sdf" />
+						<img class="job-image" src={job.image_url + "?tr=h-120,w-120"} alt="sdf" />
 						<div class="content">
 							<p>{job.title}</p>
 							<p class="yellow">{job.username}</p>

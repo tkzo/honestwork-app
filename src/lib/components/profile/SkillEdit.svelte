@@ -31,14 +31,14 @@
 	let file_url_6: string;
 	let file_url_7: string;
 	let image_url: string;
-	let image_url_0: string = skill.image_urls[0];
-	let image_url_1: string = skill.image_urls[1];
-	let image_url_2: string = skill.image_urls[2];
-	let image_url_3: string = skill.image_urls[3];
-	let image_url_4: string = skill.image_urls[4];
-	let image_url_5: string = skill.image_urls[5];
-	let image_url_6: string = skill.image_urls[6];
-	let image_url_7: string = skill.image_urls[7];
+	let image_url_0: string = skill.image_urls[0] + "?tr=h-180,w-240";
+	let image_url_1: string = skill.image_urls[1] + "?tr=h-180,w-240";
+	let image_url_2: string = skill.image_urls[2] + "?tr=h-180,w-240";
+	let image_url_3: string = skill.image_urls[3] + "?tr=h-180,w-240";
+	let image_url_4: string = skill.image_urls[4] + "?tr=h-180,w-240";
+	let image_url_5: string = skill.image_urls[5] + "?tr=h-180,w-240";
+	let image_url_6: string = skill.image_urls[6] + "?tr=h-180,w-240";
+	let image_url_7: string = skill.image_urls[7] + "?tr=h-180,w-240";
 	let comp_0: HTMLInputElement;
 	let comp_1: HTMLInputElement;
 	let comp_2: HTMLInputElement;
@@ -63,14 +63,14 @@
 		link_1 != (skill.links ? skill.links[1] : '') ||
 		link_2 != (skill.links ? skill.links[2] : '') ||
 		description_text != skill.description ||
-		image_url_0 != (skill.image_urls ? skill.image_urls[0] : '') ||
-		image_url_1 != (skill.image_urls ? skill.image_urls[1] : '') ||
-		image_url_2 != (skill.image_urls ? skill.image_urls[2] : '') ||
-		image_url_3 != (skill.image_urls ? skill.image_urls[3] : '') ||
-		image_url_4 != (skill.image_urls ? skill.image_urls[4] : '') ||
-		image_url_5 != (skill.image_urls ? skill.image_urls[5] : '') ||
-		image_url_6 != (skill.image_urls ? skill.image_urls[6] : '') ||
-		image_url_7 != (skill.image_urls ? skill.image_urls[7] : '') ||
+		image_url_0 != (skill.image_urls ? skill.image_urls[0] + "?tr=h-180,w-240" : '') ||
+		image_url_1 != (skill.image_urls ? skill.image_urls[1] + "?tr=h-180,w-240" : '') ||
+		image_url_2 != (skill.image_urls ? skill.image_urls[2] + "?tr=h-180,w-240" : '') ||
+		image_url_3 != (skill.image_urls ? skill.image_urls[3] + "?tr=h-180,w-240" : '') ||
+		image_url_4 != (skill.image_urls ? skill.image_urls[4] + "?tr=h-180,w-240" : '') ||
+		image_url_5 != (skill.image_urls ? skill.image_urls[5] + "?tr=h-180,w-240" : '') ||
+		image_url_6 != (skill.image_urls ? skill.image_urls[6] + "?tr=h-180,w-240" : '') ||
+		image_url_7 != (skill.image_urls ? skill.image_urls[7] + "?tr=h-180,w-240" : '') ||
 		minimum != skill.minimum_price ||
 		publish != skill.publish ||
 		tags != skill.tags

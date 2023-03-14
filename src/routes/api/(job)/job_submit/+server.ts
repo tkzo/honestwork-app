@@ -21,7 +21,7 @@ export const POST: RequestHandler = async ({ request }) => {
 	let cloud_url;
 	if (data.image_url != '') {
 		cloud_url =
-			env.PRIVATE_SPACES_URL + '/' + data.user_address + '/job/' + index + '/' + data.image_url;
+			env.PRIVATE_IMAGEKIT_URL+ '/' + data.user_address + '/job/' + index + '/' + data.image_url;
 	}
 
 	const body = {

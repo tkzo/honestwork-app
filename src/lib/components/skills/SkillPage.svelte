@@ -78,7 +78,7 @@
 						? nft_image
 						: placeholder_image
 					: user?.image_url && user.image_url != ''
-					? user.image_url
+					? user.image_url + "?tr=h-80,w-80"
 					: placeholder_image}
 				alt=""
 			/>
@@ -102,7 +102,7 @@
 					{#key trimmed_images[chosen_image]}
 						<img
 							class="gallery-images"
-							src={trimmed_images[chosen_image]}
+							src={trimmed_images[chosen_image] + "?tr=h-776,w-1036"}
 							alt="Gallery"
 							on:load={() => {
 								loading_gallery_image = false;

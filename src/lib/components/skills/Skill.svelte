@@ -105,7 +105,7 @@
 <section class={chosen ? 'chosen' : ''}>
 	<div class="contents">
 		<div class="thumbnail">
-			<img src={skill.image_urls[0] ?? placeholder_image} alt="gallery" class="preview-image" />
+			<img src={skill.image_urls[0] ? skill.image_urls[0] + "?tr=h-360,w-480" : placeholder_image} alt="gallery" class="preview-image" />
 		</div>
 		<div class="content">
 			<div>

@@ -44,7 +44,7 @@
 	{#each $user_watchlist as item, index}
 		<div class="container" in:fly={{ duration: 100 + 50 * index, x: 50 }}>
 			<div class="left">
-				<img src={item.image_url} alt={item.username} class="job-image" />
+				<img src={item.image_url + "?tr=h-120,w-120"} alt={item.username} class="job-image" />
 				<a class="content" href={`${base}/job/${item.input.address}/${item.input.slot}`}>
 					<div class="username">
 						<p class="link">{item.username}</p>

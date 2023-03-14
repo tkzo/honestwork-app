@@ -48,7 +48,7 @@
 	{#each $user_favorites as item}
 		<div class="container">
 			<div class="left">
-				<img src={item.image_url} alt={item.username} class="job-image" />
+				<img src={item.image_url + "?tr=h-120,w-120"} alt={item.username} class="job-image" />
 				<a class="content" href={`${base}/creator/${item.input.address}/`}>
 					<div class="username">
 						<p class="link">{item.username}</p>
