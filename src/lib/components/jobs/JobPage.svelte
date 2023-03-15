@@ -95,11 +95,11 @@
 			<div style="width:8px;" />
 			<div class="info">
 				<div class="info-username">
-					<p>{job.username}</p>
+					<p class='yellow'>{job.username}</p>
 				</div>
 				<div style="height:4px;" />
-				<p class="light-60">{job.title}</p>
-				<div style="height:4px;" />
+				<p>{job.title}</p>
+				<div style="height:12px;" />
 				{#await getRating()}
 					<img
 						src={`${assets}/icons/loader.svg`}
@@ -110,6 +110,10 @@
 				{:then rating}
 					<p><span class="light-60">rating:</span>{rating}/10</p>
 				{/await}
+        {#if show_tags}
+				  <div style="height:4px;" />
+          <p><span class="light-60">budget:</span>${job.budget}</p>
+        {/if}
 			</div>
 		</div>
 		<div class="right-section">
