@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { parseContent } from '$lib/stores/Parser';
 import { ethers } from 'ethers';
 import { chains } from '$lib/stores/Constants';
 
@@ -11,6 +10,7 @@ export const JobInput = z.object({
 	user_address: z.string().refine((val) => ethers.utils.isAddress(val), {
 		message: 'Invalid address'
 	}),
+  email: z.string().email(),
 	token_paid: z.string().refine((val) => tokens.find((t) => t.address == val) != undefined),
 	title: z.string().min(5).max(50),
 	description: z.string().min(200).max(2000),
@@ -23,7 +23,7 @@ export const JobInput = z.object({
 		})
 		.refine(
 			(val) =>
-				!Number.isNaN(parseInt(val, 10)) && parseInt(val, 10) > 200 && parseInt(val, 10) < 1000000,
+				!Number.isNaN(parseInt(val, 10)) && parseInt(val, 10) > 500 && parseInt(val, 10) < 1000000,
 			{
 				message: 'Wrong amount'
 			}
