@@ -12,7 +12,6 @@
 	//todo: move images to img elements instead of div backgrounds (won't show ones with empty letter in its name)
 
 	export let skill: any;
-	$: console.log('Skill in component: ', skill);
 
 	let description_chars = 2000;
 	let description_text = skill.description;
@@ -410,7 +409,7 @@
 	<div style="height:8px;" />
 	<div class="input-field">
 		<div class="placeholder">
-			<p class="light-40">minimum budget ($)</p>
+			<p class="light-40">hourly price ($)</p>
 		</div>
 		<input
 			name="minimum_price"

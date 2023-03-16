@@ -36,7 +36,7 @@
 		</div>
 		<div class="tag border-all">
 			<p class="light-40">
-				MIN <span class="light">${skill.minimum_price}</span>
+				<span class="light">${skill.minimum_price}</span>/h
 			</p>
 		</div>
 	</div>

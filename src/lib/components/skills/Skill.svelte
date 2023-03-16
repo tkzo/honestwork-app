@@ -142,6 +142,9 @@
 			{/each}
 		</div>
 		<div class="actions">
+			<div class="action">
+        <p class='light-40'><span class='light'>${skill.minimum_price}</span>/h</p>
+			</div>
 			<div class="action" on:click={handleNewConversation} on:keydown>
 				<img src={`${assets}/icons/message.svg`} alt="message" />
 			</div>
