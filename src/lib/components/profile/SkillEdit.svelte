@@ -304,12 +304,12 @@
 	};
 </script>
 
-<div class="save-changes">
-	<a href={`${base}/creator/${$userAddress}`} class="external-page">
-		<p class="yellow">view creator page</p>
+<div class="save-changes" on:click={() => chosen_skill_slot.set(-1)} on:keydown>
+	<div class="external-page">
+		<img src={`${assets}/icons/arrow-left-box.svg`} alt="Skills Tab" />
 		<div style="width:4px" />
-		<img src={`${assets}/icons/external.svg`} alt="Creator Page" />
-	</a>
+		<p class="yellow link">back to skills</p>
+	</div>
 	<div class="external-page">
 		{#if $submitting}
 			<img
