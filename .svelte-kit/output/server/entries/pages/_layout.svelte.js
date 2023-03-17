@@ -256,11 +256,7 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     const res = await fetch(`/api/user/${$userAddress}`);
     const user = await res.json();
     if (user.username != "") {
-      LogRocket.identify($userAddress, {
-        name: user.username,
-        email: user.email,
-        tier: 3
-      });
+      LogRocket.identify($userAddress, { name: user.username, email: user.email });
     }
   };
   globalThis.Buffer = Buffer;

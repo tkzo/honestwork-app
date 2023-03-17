@@ -172,9 +172,13 @@
 			});
 			//todo: stop exec if not ok
 			if (upload.ok) {
-				console.log('Uploaded successfully!');
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>image uploaded</p>`
+				);
 			} else {
-				console.error('Upload failed.');
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>image upload failed</p>`
+				);
 			}
 		}
 	};
@@ -295,7 +299,9 @@
 								<div class="image-section">
 									<div
 										class="image-card"
-										style={`background-image:url(${image_url ? image_url + "?tr=h-248,w-248" : placeholder_image})`}
+										style={`background-image:url(${
+											image_url ? image_url + '?tr=h-248,w-248' : placeholder_image
+										})`}
 									>
 										<div class="image-tint" />
 										<div class="upload-button">

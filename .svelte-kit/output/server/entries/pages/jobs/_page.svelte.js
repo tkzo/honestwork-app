@@ -46,12 +46,16 @@ const Job = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 			<div class="${"tag svelte-1y7g9ar"}"><p>${escape(job.title)}</p></div></div>
 		<div class="${"status-tag svelte-1y7g9ar"}">${job.deal_id == -1 ? `<p style="${"color:var(--color-success)"}">active</p>
 				<div style="${"width: 4px"}"></div>
-				<img${add_attribute("src", `${assets}/icons/calendar-check.svg`, 0)} alt="${"arrow"}">
+				<img${add_attribute("src", `${assets}/icons/check.svg`, 0)} alt="${"arrow"}">
 				<div style="${"width: 8px"}"></div>` : `<p style="${"color:var(--color-error)"}">taken</p>
 				<div style="${"width: 4px"}"></div>
 				<img${add_attribute("src", `${assets}/icons/calendar-remove.svg`, 0)} alt="${"arrow"}">
 				<div style="${"width: 8px"}"></div>`}</div></div>
-	<div class="${"contents svelte-1y7g9ar"}"><img${add_attribute("src", job.image_url ?? placeholder_image, 0)} alt="${"gallery"}" class="${"preview-image svelte-1y7g9ar"}">
+	<div class="${"contents svelte-1y7g9ar"}"><img${add_attribute(
+    "src",
+    job.image_url ? job.image_url + "?tr=h-240,w-240" : placeholder_image,
+    0
+  )} alt="${"gallery"}" class="${"preview-image svelte-1y7g9ar"}">
 		<div style="${"width:12px;"}"></div>
 		<div class="${"content svelte-1y7g9ar"}"><div class="${"body-text light-60"}">${escape(parseContent(job.description))}</div>
 			<div style="${"height: 16px"}"></div>

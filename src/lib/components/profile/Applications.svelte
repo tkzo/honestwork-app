@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { assets, base } from '$app/paths';
-	import type { JobType, UserType, ApplicationType } from '$lib/stores/Types';
+	import type { JobType, UserType } from '$lib/stores/Types';
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
+	import { fly } from 'svelte/transition';
 
 	export let user: UserType;
 
@@ -32,14 +33,14 @@
 		{#await fetchJobs()}
 			loading jobs
 		{:then}
-			{#each jobs as job}
-				<div class="container">
+			{#each jobs as job, index}
+				<div class="container" in:fly={{ duration: 100 + 50 * index, x: 50 }}>
 					<div
 						class="header"
 						on:click={() => goto(`${base}/job/${job.user_address}/${job.slot}`)}
 						on:keydown
 					>
-						<img class="job-image" src={job.image_url + "?tr=h-120,w-120"} alt="sdf" />
+						<img class="job-image" src={job.image_url + '?tr=h-120,w-120'} alt="sdf" />
 						<div class="content">
 							<p>{job.title}</p>
 							<p class="yellow">{job.username}</p>

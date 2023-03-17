@@ -32,7 +32,11 @@ const Skill = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 
 
 
-<section class="${escape(null_to_empty(chosen ? "chosen" : ""), true) + " svelte-1oe7e9m"}"><div class="${"contents svelte-1oe7e9m"}"><div class="${"thumbnail svelte-1oe7e9m"}"><img${add_attribute("src", skill.image_urls[0] ?? placeholder_image, 0)} alt="${"gallery"}" class="${"preview-image svelte-1oe7e9m"}"></div>
+<section class="${escape(null_to_empty(chosen ? "chosen" : ""), true) + " svelte-1oe7e9m"}"><div class="${"contents svelte-1oe7e9m"}"><div class="${"thumbnail svelte-1oe7e9m"}"><img${add_attribute(
+    "src",
+    skill.image_urls[0] ? skill.image_urls[0] + "?tr=h-360,w-480" : placeholder_image,
+    0
+  )} alt="${"gallery"}" class="${"preview-image svelte-1oe7e9m"}"></div>
 		<div class="${"content svelte-1oe7e9m"}"><div><p>${escape(skill.title)}</p>
 				<div style="${"height:12px"}"></div>
 				<div class="${"body-text light-60"}">${escape(parseContent(skill.description).slice(0, 140) + "...")}</div></div>
@@ -54,7 +58,8 @@ const Skill = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     return `<div class="${"tag svelte-1oe7e9m"}"><p class="${"link svelte-1oe7e9m"}">#${escape(tag)}</p></div>
 				${tag != skill.tags[skill.tags.length - 1] ? `<div style="${"width: 4px"}"></div>` : ``}`;
   })}</div>
-		<div class="${"actions svelte-1oe7e9m"}"><div class="${"action svelte-1oe7e9m"}"><img${add_attribute("src", `${assets}/icons/message.svg`, 0)} alt="${"message"}"></div>
+		<div class="${"actions svelte-1oe7e9m"}"><div class="${"action svelte-1oe7e9m"}"><p class="${"light-40"}"><span class="${"light"}">$${escape(skill.minimum_price)}</span>/h</p></div>
+			<div class="${"action svelte-1oe7e9m"}"><img${add_attribute("src", `${assets}/icons/message.svg`, 0)} alt="${"message"}"></div>
 			<div class="${"action svelte-1oe7e9m"}">${`<img${add_attribute("src", `${assets}/icons/heart.svg`, 0)} alt="${"heart"}">`}</div></div></div></section>
 <div style="${"height: 12px"}"></div>`;
 });
@@ -68,6 +73,8 @@ const SkillPage = create_ssr_component(($$result, $$props, $$bindings, slots) =>
   let $nodeProvider, $$unsubscribe_nodeProvider;
   $$unsubscribe_nodeProvider = subscribe(nodeProvider, (value) => $nodeProvider = value);
   let { skill } = $$props;
+  let image_component;
+  let loading_gallery_image = true;
   let viewport;
   let contents;
   let user;
@@ -110,10 +117,14 @@ const SkillPage = create_ssr_component(($$result, $$props, $$bindings, slots) =>
     }
   }
   trimmed_images = skill.image_urls.filter((url) => url !== "");
+  {
+    if (image_component?.complete)
+      loading_gallery_image = false;
+  }
   $$unsubscribe_nodeProvider();
   return `<main class="${"svelte-1h5qr5r"}"><a class="${"profile-bar svelte-1h5qr5r"}"${add_attribute("href", `${base}/creator/${skill.user_address}`, 0)}><div class="${"left-section svelte-1h5qr5r"}"><img class="${"pfp svelte-1h5qr5r"}"${add_attribute(
     "src",
-    user?.show_nft ? nft_image && nft_image != "" ? nft_image : placeholder_image : user?.image_url && user.image_url != "" ? user.image_url : placeholder_image,
+    user?.show_nft ? nft_image && nft_image != "" ? nft_image : placeholder_image : user?.image_url && user.image_url != "" ? user.image_url + "?tr=h-80,w-80" : placeholder_image,
     0
   )} alt="${""}">
 			<div style="${"width:8px;"}"></div>
@@ -121,8 +132,8 @@ const SkillPage = create_ssr_component(($$result, $$props, $$bindings, slots) =>
 			<div style="${"width:8px;"}"></div>
 			<p class="${"light-60"}">${escape(user?.title)}</p></div>
 		<img${add_attribute("src", `${assets}/icons/external.svg`, 0)} alt="${"External Link"}" style="${"margin-right:8px;"}"></a>
-	<div class="${"wrapper svelte-1h5qr5r"}"><div class="${"viewport svelte-1h5qr5r"}"${add_attribute("style", `height:${feedHeight.toString() + "px"}`, 0)}${add_attribute("this", viewport, 0)}><div class="${"contents"}"${add_attribute("this", contents, 0)}><div class="${"gallery svelte-1h5qr5r"}"><img class="${"gallery-images svelte-1h5qr5r"}"${add_attribute("src", trimmed_images[chosen_image], 0)} alt="${"Gallery"}">
-					${``}
+	<div class="${"wrapper svelte-1h5qr5r"}"><div class="${"viewport svelte-1h5qr5r"}"${add_attribute("style", `height:${feedHeight.toString() + "px"}`, 0)}${add_attribute("this", viewport, 0)}><div class="${"contents"}"${add_attribute("this", contents, 0)}><div class="${"gallery svelte-1h5qr5r"}"><img class="${"gallery-images svelte-1h5qr5r"}"${add_attribute("src", trimmed_images[chosen_image] + "?tr=h-776,w-1036", 0)} alt="${"Gallery"}"${add_attribute("this", image_component, 0)}>
+					${loading_gallery_image ? `<div class="${"skeleton-container svelte-1h5qr5r"}">${validate_component(Skeleton, "Skeleton").$$render($$result, { width: "518px", height: "389px" }, {}, {})}</div>` : ``}
 					<div class="${"gallery-buttons svelte-1h5qr5r"}"><div class="${"left-gallery-button link svelte-1h5qr5r"}"><p class="${"light-60 svelte-1h5qr5r"}">PREVIOUS</p></div>
 						<p class="${"light-60"}"><span class="${"yellow"}">${escape(chosen_image + 1)}</span>/${escape(trimmed_images.length)}</p>
 						<div class="${"right-gallery-button link svelte-1h5qr5r"}"><p class="${"light-60 svelte-1h5qr5r"}">NEXT</p></div></div></div>

@@ -46,18 +46,15 @@ declare module '$env/static/private' {
 	export const TERM_PROGRAM: string;
 	export const NODE: string;
 	export const INIT_CWD: string;
-	export const LUNARVIM_RUNTIME_DIR: string;
 	export const TERM: string;
 	export const SHELL: string;
 	export const npm_config_metrics_registry: string;
 	export const HOMEBREW_REPOSITORY: string;
 	export const TMPDIR: string;
-	export const LUNARVIM_BASE_DIR: string;
 	export const npm_config_global_prefix: string;
 	export const CONDA_SHLVL: string;
-	export const TERM_PROGRAM_VERSION: string;
 	export const CONDA_PROMPT_MODIFIER: string;
-	export const LUNARVIM_CACHE_DIR: string;
+	export const TERM_PROGRAM_VERSION: string;
 	export const COLOR: string;
 	export const npm_config_noproxy: string;
 	export const npm_config_local_prefix: string;
@@ -73,8 +70,8 @@ declare module '$env/static/private' {
 	export const npm_execpath: string;
 	export const PAGER: string;
 	export const WARP_USE_SSH_WRAPPER: string;
-	export const LSCOLORS: string;
 	export const _CE_CONDA: string;
+	export const LSCOLORS: string;
 	export const PATH: string;
 	export const npm_package_json: string;
 	export const npm_config_engine_strict: string;
@@ -89,13 +86,9 @@ declare module '$env/static/private' {
 	export const npm_lifecycle_event: string;
 	export const EDITOR: string;
 	export const npm_package_name: string;
-	export const LANG: string;
-	export const NVIM_LOG_FILE: string;
 	export const XPC_FLAGS: string;
 	export const NIX_SSL_CERT_FILE: string;
-	export const LUNARVIM_CONFIG_DIR: string;
 	export const npm_config_node_gyp: string;
-	export const NVIM: string;
 	export const npm_package_version: string;
 	export const _CE_M: string;
 	export const XPC_SERVICE_NAME: string;
@@ -104,13 +97,12 @@ declare module '$env/static/private' {
 	export const HOMEBREW_PREFIX: string;
 	export const npm_config_cache: string;
 	export const CONDA_PYTHON_EXE: string;
-	export const LOGNAME: string;
 	export const LESS: string;
+	export const LOGNAME: string;
 	export const npm_lifecycle_script: string;
 	export const LC_CTYPE: string;
 	export const CONDA_DEFAULT_ENV: string;
 	export const npm_config_user_agent: string;
-	export const VIMRUNTIME: string;
 	export const INFOPATH: string;
 	export const HOMEBREW_CELLAR: string;
 	export const CONDA_CHANGEPS1: string;
@@ -136,6 +128,7 @@ declare module '$env/static/public' {
 	export const PUBLIC_REGISTRY_ADDRESS: string;
 	export const PUBLIC_MAINNET_DAI_ADDRESS: string;
 	export const PUBLIC_ARBITRUM_USDC_ADDRESS: string;
+	export const PUBLIC_IMAGEKIT_URL: string;
 }
 
 /**
@@ -172,18 +165,15 @@ declare module '$env/dynamic/private' {
 		TERM_PROGRAM: string;
 		NODE: string;
 		INIT_CWD: string;
-		LUNARVIM_RUNTIME_DIR: string;
 		TERM: string;
 		SHELL: string;
 		npm_config_metrics_registry: string;
 		HOMEBREW_REPOSITORY: string;
 		TMPDIR: string;
-		LUNARVIM_BASE_DIR: string;
 		npm_config_global_prefix: string;
 		CONDA_SHLVL: string;
-		TERM_PROGRAM_VERSION: string;
 		CONDA_PROMPT_MODIFIER: string;
-		LUNARVIM_CACHE_DIR: string;
+		TERM_PROGRAM_VERSION: string;
 		COLOR: string;
 		npm_config_noproxy: string;
 		npm_config_local_prefix: string;
@@ -199,8 +189,8 @@ declare module '$env/dynamic/private' {
 		npm_execpath: string;
 		PAGER: string;
 		WARP_USE_SSH_WRAPPER: string;
-		LSCOLORS: string;
 		_CE_CONDA: string;
+		LSCOLORS: string;
 		PATH: string;
 		npm_package_json: string;
 		npm_config_engine_strict: string;
@@ -215,13 +205,9 @@ declare module '$env/dynamic/private' {
 		npm_lifecycle_event: string;
 		EDITOR: string;
 		npm_package_name: string;
-		LANG: string;
-		NVIM_LOG_FILE: string;
 		XPC_FLAGS: string;
 		NIX_SSL_CERT_FILE: string;
-		LUNARVIM_CONFIG_DIR: string;
 		npm_config_node_gyp: string;
-		NVIM: string;
 		npm_package_version: string;
 		_CE_M: string;
 		XPC_SERVICE_NAME: string;
@@ -230,13 +216,12 @@ declare module '$env/dynamic/private' {
 		HOMEBREW_PREFIX: string;
 		npm_config_cache: string;
 		CONDA_PYTHON_EXE: string;
-		LOGNAME: string;
 		LESS: string;
+		LOGNAME: string;
 		npm_lifecycle_script: string;
 		LC_CTYPE: string;
 		CONDA_DEFAULT_ENV: string;
 		npm_config_user_agent: string;
-		VIMRUNTIME: string;
 		INFOPATH: string;
 		HOMEBREW_CELLAR: string;
 		CONDA_CHANGEPS1: string;
@@ -267,6 +252,7 @@ declare module '$env/dynamic/public' {
 		PUBLIC_REGISTRY_ADDRESS: string;
 		PUBLIC_MAINNET_DAI_ADDRESS: string;
 		PUBLIC_ARBITRUM_USDC_ADDRESS: string;
+		PUBLIC_IMAGEKIT_URL: string;
 		[key: `PUBLIC_${string}`]: string | undefined;
 	}
 }

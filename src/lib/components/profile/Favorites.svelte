@@ -4,6 +4,7 @@
 	import { userConnected, getFavorites } from '$lib/stores/Network';
 	import { toast } from '@zerodevx/svelte-toast';
 	import type { FavoriteType } from '$lib/stores/Types';
+	import { fly } from 'svelte/transition';
 
 	const handleRemove = async (item: FavoriteType) => {
 		if ($userConnected) {
@@ -45,10 +46,10 @@
 			<p class="light-60">You didn't favorite any skill yet.</p>
 		</div>
 	{/if}
-	{#each $user_favorites as item}
-		<div class="container">
+	{#each $user_favorites as item, index}
+		<div class="container" in:fly={{ duration: 100 + 50 * index, x: 50 }}>
 			<div class="left">
-				<img src={item.image_url + "?tr=h-120,w-120"} alt={item.username} class="job-image" />
+				<img src={item.image_url + '?tr=h-120,w-120'} alt={item.username} class="job-image" />
 				<a class="content" href={`${base}/creator/${item.input.address}/`}>
 					<div class="username">
 						<p class="link">{item.username}</p>

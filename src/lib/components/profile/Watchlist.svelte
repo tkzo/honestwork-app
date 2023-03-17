@@ -41,10 +41,15 @@
 </script>
 
 <main>
+	{#if $user_watchlist.length == 0}
+		<div class="message-container">
+			<p class="light-60">You didn't favorite any skill yet.</p>
+		</div>
+	{/if}
 	{#each $user_watchlist as item, index}
 		<div class="container" in:fly={{ duration: 100 + 50 * index, x: 50 }}>
 			<div class="left">
-				<img src={item.image_url + "?tr=h-120,w-120"} alt={item.username} class="job-image" />
+				<img src={item.image_url + '?tr=h-120,w-120'} alt={item.username} class="job-image" />
 				<a class="content" href={`${base}/job/${item.input.address}/${item.input.slot}`}>
 					<div class="username">
 						<p class="link">{item.username}</p>
@@ -96,5 +101,12 @@
 	.left {
 		display: flex;
 		flex-direction: row;
+	}
+	.message-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
 	}
 </style>

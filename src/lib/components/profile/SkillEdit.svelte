@@ -1,43 +1,44 @@
 <script lang="ts">
+	import { submitting } from '$lib/stores/State';
 	import { onMount } from 'svelte';
+	import { base, assets } from '$app/paths';
 	import { skill_upload_urls, chosen_skill_slot, changes_made } from '$lib/stores/State';
 	import { userAddress } from '$lib/stores/Network';
 	import { shortcut } from '$lib/stores/Shortcut';
-	import { createEventDispatcher } from 'svelte';
 	import { placeholder_image } from '$lib/stores/Constants';
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	import { parseContent } from '$lib/stores/Parser';
+	import { SkillInput } from '$lib/stores/Validation';
+	import { toast } from '@zerodevx/svelte-toast';
+	import { env } from '$env/dynamic/public';
 
-	const dispatch = createEventDispatcher();
 	//todo: move images to img elements instead of div backgrounds (won't show ones with empty letter in its name)
 
-	export let skill: any;
+	export let skill: SkillInput;
 
 	let description_chars = 2000;
 	let description_text = skill.description;
 	let title: string = skill.title;
-	let minimum: string = skill.minimum_price.toString();
-	let link_0: string = skill.links[0];
-	let link_1: string = skill.links[1];
-	let link_2: string = skill.links[2];
-	let text_length = 0;
-	let file_url_0: string;
-	let file_url_1: string;
-	let file_url_2: string;
-	let file_url_3: string;
-	let file_url_4: string;
-	let file_url_5: string;
-	let file_url_6: string;
-	let file_url_7: string;
-	let image_url: string;
-	let image_url_0: string = skill.image_urls[0] + "?tr=h-180,w-240";
-	let image_url_1: string = skill.image_urls[1] + "?tr=h-180,w-240";
-	let image_url_2: string = skill.image_urls[2] + "?tr=h-180,w-240";
-	let image_url_3: string = skill.image_urls[3] + "?tr=h-180,w-240";
-	let image_url_4: string = skill.image_urls[4] + "?tr=h-180,w-240";
-	let image_url_5: string = skill.image_urls[5] + "?tr=h-180,w-240";
-	let image_url_6: string = skill.image_urls[6] + "?tr=h-180,w-240";
-	let image_url_7: string = skill.image_urls[7] + "?tr=h-180,w-240";
+	let minimum: number = skill.minimum_price;
+	let link_0: string = skill.links[0] || '';
+	let link_1: string = skill.links[1] || '';
+	let link_2: string = skill.links[2] || '';
+	let file_url_0: string = skill.image_urls[0];
+	let file_url_1: string = skill.image_urls[1];
+	let file_url_2: string = skill.image_urls[2];
+	let file_url_3: string = skill.image_urls[3];
+	let file_url_4: string = skill.image_urls[4];
+	let file_url_5: string = skill.image_urls[5];
+	let file_url_6: string = skill.image_urls[6];
+	let file_url_7: string = skill.image_urls[7];
+	let image_url_0: string = skill.image_urls[0];
+	let image_url_1: string = skill.image_urls[1];
+	let image_url_2: string = skill.image_urls[2];
+	let image_url_3: string = skill.image_urls[3];
+	let image_url_4: string = skill.image_urls[4];
+	let image_url_5: string = skill.image_urls[5];
+	let image_url_6: string = skill.image_urls[6];
+	let image_url_7: string = skill.image_urls[7];
 	let comp_0: HTMLInputElement;
 	let comp_1: HTMLInputElement;
 	let comp_2: HTMLInputElement;
@@ -56,55 +57,33 @@
 	let content: string;
 	let total_chars = 0;
 
+	$: file_components = [comp_0, comp_1, comp_2, comp_3, comp_4, comp_5, comp_6, comp_7];
 	$: if (
 		title != skill.title ||
 		link_0 != (skill.links ? skill.links[0] : '') ||
 		link_1 != (skill.links ? skill.links[1] : '') ||
 		link_2 != (skill.links ? skill.links[2] : '') ||
 		description_text != skill.description ||
-		image_url_0 != (skill.image_urls ? skill.image_urls[0] + "?tr=h-180,w-240" : '') ||
-		image_url_1 != (skill.image_urls ? skill.image_urls[1] + "?tr=h-180,w-240" : '') ||
-		image_url_2 != (skill.image_urls ? skill.image_urls[2] + "?tr=h-180,w-240" : '') ||
-		image_url_3 != (skill.image_urls ? skill.image_urls[3] + "?tr=h-180,w-240" : '') ||
-		image_url_4 != (skill.image_urls ? skill.image_urls[4] + "?tr=h-180,w-240" : '') ||
-		image_url_5 != (skill.image_urls ? skill.image_urls[5] + "?tr=h-180,w-240" : '') ||
-		image_url_6 != (skill.image_urls ? skill.image_urls[6] + "?tr=h-180,w-240" : '') ||
-		image_url_7 != (skill.image_urls ? skill.image_urls[7] + "?tr=h-180,w-240" : '') ||
+		image_url_0 != (skill.image_urls ? skill.image_urls[0] : '') ||
+		image_url_1 != (skill.image_urls ? skill.image_urls[1] : '') ||
+		image_url_2 != (skill.image_urls ? skill.image_urls[2] : '') ||
+		image_url_3 != (skill.image_urls ? skill.image_urls[3] : '') ||
+		image_url_4 != (skill.image_urls ? skill.image_urls[4] : '') ||
+		image_url_5 != (skill.image_urls ? skill.image_urls[5] : '') ||
+		image_url_6 != (skill.image_urls ? skill.image_urls[6] : '') ||
+		image_url_7 != (skill.image_urls ? skill.image_urls[7] : '') ||
 		minimum != skill.minimum_price ||
 		publish != skill.publish ||
 		tags != skill.tags
 	) {
 		changes_made.set(true);
-		dispatchSkill();
 	} else {
 		changes_made.set(false);
 	}
 	onMount(() => {
 		updateInputLengths();
 	});
-	const dispatchSkill = () => {
-		dispatch('skill_update', {
-			skill: {
-				title: title,
-				description: content,
-				links: [link_0, link_1, link_2],
-				image_urls: [
-					image_url_0,
-					image_url_1,
-					image_url_2,
-					image_url_3,
-					image_url_4,
-					image_url_5,
-					image_url_6,
-					image_url_7
-				],
-				minimum_price: minimum,
-				publish: publish,
-				tags: tags
-			}
-		});
-    console.log("Dispatched!")
-	};
+
 	const uploadPhoto = async (e: any) => {
 		const file = e.target.files[0]!;
 		if (file == null) return;
@@ -139,13 +118,181 @@
 		skill_upload_urls.set(urls);
 	};
 
+	const submitSkills = async () => {
+		submitting.set(true);
+		let cloud_url_0 =
+			comp_0.files && comp_0.files[0]
+				? env.PUBLIC_IMAGEKIT_URL +
+				  '/' +
+				  $userAddress +
+				  '/skill/' +
+				  '/' +
+				  $chosen_skill_slot +
+				  '/0/' +
+				  comp_0.files[0].name
+				: '';
+		let cloud_url_1 =
+			comp_1.files && comp_1.files[0]
+				? env.PUBLIC_IMAGEKIT_URL +
+				  '/' +
+				  $userAddress +
+				  '/skill/' +
+				  '/' +
+				  $chosen_skill_slot +
+				  '/1/' +
+				  comp_1.files[0].name
+				: '';
+		let cloud_url_2 =
+			comp_2.files && comp_2.files[0]
+				? env.PUBLIC_IMAGEKIT_URL +
+				  '/' +
+				  $userAddress +
+				  '/skill/' +
+				  '/' +
+				  $chosen_skill_slot +
+				  '/2/' +
+				  comp_2.files[0].name
+				: '';
+		let cloud_url_3 =
+			comp_3.files && comp_3.files[0]
+				? env.PUBLIC_IMAGEKIT_URL +
+				  '/' +
+				  $userAddress +
+				  '/skill/' +
+				  '/' +
+				  $chosen_skill_slot +
+				  '/3/' +
+				  comp_3.files[0].name
+				: '';
+		let cloud_url_4 =
+			comp_4.files && comp_4.files[0]
+				? env.PUBLIC_IMAGEKIT_URL +
+				  '/' +
+				  $userAddress +
+				  '/skill/' +
+				  '/' +
+				  $chosen_skill_slot +
+				  '/4/' +
+				  comp_4.files[0].name
+				: '';
+		let cloud_url_5 =
+			comp_5.files && comp_5.files[0]
+				? env.PUBLIC_IMAGEKIT_URL +
+				  '/' +
+				  $userAddress +
+				  '/skill/' +
+				  '/' +
+				  $chosen_skill_slot +
+				  '/5/' +
+				  comp_5.files[0].name
+				: '';
+		let cloud_url_6 =
+			comp_6.files && comp_6.files[0]
+				? env.PUBLIC_IMAGEKIT_URL +
+				  '/' +
+				  $userAddress +
+				  '/skill/' +
+				  '/' +
+				  $chosen_skill_slot +
+				  '/6/' +
+				  comp_6.files[0].name
+				: '';
+		let cloud_url_7 =
+			comp_7.files && comp_7.files[0]
+				? env.PUBLIC_IMAGEKIT_URL +
+				  '/' +
+				  $userAddress +
+				  '/skill/' +
+				  '/' +
+				  $chosen_skill_slot +
+				  '/7/' +
+				  comp_7.files[0].name
+				: '';
+		const input: SkillInput = {
+			user_address: $userAddress,
+			title: title,
+			description: content,
+			tags: tags,
+			links: [link_0, link_1, link_2],
+			image_urls: [
+				cloud_url_0,
+				cloud_url_1,
+				cloud_url_2,
+				cloud_url_3,
+				cloud_url_4,
+				cloud_url_5,
+				cloud_url_6,
+				cloud_url_7
+			],
+			minimum_price: minimum,
+			publish: publish
+		};
+		let parsed = SkillInput.safeParse(input);
+		if (!parsed.success) {
+			for (let i = 0; i < parsed.error.errors.length; i++) {
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>${parsed.error.errors[i].path}: </span>${parsed.error.errors[i].message}</p>`
+				);
+			}
+			return;
+		}
+
+		let counter = 0;
+		for await (let t of file_components) {
+			if (t.files != null && t.files.length > 0) {
+				const file = t.files[0];
+				//@ts-expect-error
+				let clone_response = $skill_upload_urls[$chosen_skill_slot][counter].clone();
+				const { url, fields } = await clone_response.json();
+				const formData = new FormData();
+				Object.entries({ ...fields, file }).forEach(([key, value]) => {
+					formData.append(key, value as string);
+				});
+				const upload = await fetch(url, {
+					method: 'POST',
+					body: formData
+				});
+				if (upload.ok) {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Uploaded file #${
+							counter + 1
+						}</p>`
+					);
+				} else {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>Upload failed</p>`
+					);
+					return;
+				}
+			}
+			counter++;
+		}
+		const url = `${base}/api/skill_update/${$chosen_skill_slot}`;
+		let response = await fetch(url, {
+			method: 'POST',
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			}),
+			body: JSON.stringify(input)
+		});
+		if (response.ok) {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Skill updated</p>`
+			);
+		} else {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${response.status}</p>`
+			);
+		}
+		submitting.set(false);
+	};
+
 	const updateInputLengths = () => {
 		title_input_length = title_input_element?.value.length ?? skill.title.length;
 	};
 	const handleTagEntry = (e: any) => {
 		if (e.target?.value !== '' && e.pointerType != 'mouse') tags.push(e.target?.value);
 		tags = tags;
-		dispatchSkill();
 		tag_input.value = '';
 	};
 	const handleRemoveTag = (index: number) => {
@@ -155,11 +302,35 @@
 	const handleContentInput = (e: any) => {
 		content = JSON.stringify(e.detail.content);
 		total_chars = parseContent(content).length;
-    console.log("Dispatcing skill with description:", parseContent(content))
-    dispatchSkill();
 	};
 </script>
 
+<div class="save-changes">
+	<a href={`${base}/creator/${$userAddress}`} class="external-page">
+		<p class="yellow">view creator page</p>
+		<div style="width:4px" />
+		<img src={`${assets}/icons/external.svg`} alt="Creator Page" />
+	</a>
+	<div class="external-page">
+		{#if $submitting}
+			<img
+				src={`${assets}/icons/loader.svg`}
+				alt="loading"
+				class="rotating"
+				style="height:16px;width:16px;"
+			/>
+			<div style="width:4px;" />
+		{/if}
+		<p
+			class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
+			on:click={submitSkills}
+			on:keydown
+		>
+			save changes
+		</p>
+	</div>
+</div>
+<div style="height:16px;" />
 <section>
 	<div class="publish-bar">
 		<input hidden type="number" name="skill_slot" value={$chosen_skill_slot} />
@@ -190,7 +361,6 @@
 	}}
 	on:blur
 >
-	<!-- <TextEditor /> -->
 	{#if show_infobox}
 		<section class="infobox">
 			<p class="light-60">
@@ -204,7 +374,11 @@
 	<div
 		class="image-card"
 		style={`background-image:url(${
-			image_url_0 && image_url_0 != '' ? image_url_0 : placeholder_image
+			file_url_0 == skill.image_urls[0]
+				? file_url_0 + '?tr=h-180,w-240'
+				: image_url_0 != ''
+				? image_url_0
+				: placeholder_image
 		})`}
 	>
 		<div class="image-tint" />
@@ -227,7 +401,11 @@
 	<div
 		class="image-card"
 		style={`background-image:url('${
-			image_url_1 && image_url_1 != '' ? image_url_1 : placeholder_image
+			file_url_1 == skill.image_urls[1]
+				? file_url_1 + '?tr=h-180,w-240'
+				: image_url_1 != ''
+				? image_url_1
+				: placeholder_image
 		}')`}
 	>
 		<div class="image-tint" />
@@ -250,7 +428,11 @@
 	<div
 		class="image-card"
 		style={`background-image:url('${
-			image_url_2 && image_url_2 != '' ? image_url_2 : placeholder_image
+			file_url_2 == skill.image_urls[2]
+				? file_url_2 + '?tr=h-180,w-240'
+				: image_url_2 != ''
+				? image_url_2
+				: placeholder_image
 		}')`}
 	>
 		<div class="image-tint" />
@@ -273,7 +455,11 @@
 	<div
 		class="image-card"
 		style={`background-image:url('${
-			image_url_3 && image_url_3 != '' ? image_url_3 : placeholder_image
+			file_url_3 == skill.image_urls[3]
+				? file_url_3 + '?tr=h-180,w-240'
+				: image_url_3 != ''
+				? image_url_3
+				: placeholder_image
 		}')`}
 	>
 		<div class="image-tint" />
@@ -296,7 +482,11 @@
 	<div
 		class="image-card"
 		style={`background-image:url('${
-			image_url_4 && image_url_4 != '' ? image_url_4 : placeholder_image
+			file_url_4 == skill.image_urls[4]
+				? file_url_4 + '?tr=h-180,w-240'
+				: image_url_4 != ''
+				? image_url_4
+				: placeholder_image
 		}')`}
 	>
 		<div class="image-tint" />
@@ -319,7 +509,11 @@
 	<div
 		class="image-card"
 		style={`background-image:url('${
-			image_url_5 && image_url_5 != '' ? image_url_5 : placeholder_image
+			file_url_5 == skill.image_urls[5]
+				? file_url_5 + '?tr=h-180,w-240'
+				: image_url_5 != ''
+				? image_url_5
+				: placeholder_image
 		}')`}
 	>
 		<div class="image-tint" />
@@ -342,7 +536,11 @@
 	<div
 		class="image-card"
 		style={`background-image:url('${
-			image_url_6 && image_url_6 != '' ? image_url_6 : placeholder_image
+			file_url_6 == skill.image_urls[6]
+				? file_url_6 + '?tr=h-180,w-240'
+				: image_url_6 != ''
+				? image_url_6
+				: placeholder_image
 		}')`}
 	>
 		<div class="image-tint" />
@@ -365,7 +563,11 @@
 	<div
 		class="image-card"
 		style={`background-image:url('${
-			image_url_7 && image_url_7 != '' ? image_url_7 : placeholder_image
+			file_url_7 == skill.image_urls[7]
+				? file_url_7 + '?tr=h-180,w-240'
+				: image_url_7 != ''
+				? image_url_7
+				: placeholder_image
 		}')`}
 	>
 		<div class="image-tint" />
@@ -414,8 +616,8 @@
 		<input
 			name="minimum_price"
 			class="flex-input"
-			type="text"
-			placeholder={minimum}
+			type="number"
+			placeholder={minimum.toString()}
 			bind:value={minimum}
 		/>
 	</div>
@@ -629,5 +831,24 @@
 	}
 	.tag:hover .close-icon {
 		background: url('icons/close.svg');
+	}
+	.save-changes {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding: 8px;
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--color-light-20);
+	}
+	.external-page {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+	.external-page img {
+		height: 16px;
+		width: 16px;
 	}
 </style>

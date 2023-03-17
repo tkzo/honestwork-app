@@ -3,6 +3,7 @@ import { d as private_env } from "../../../../../chunks/shared.js";
 import { S3, ListObjectsCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 const GET = async ({ params, cookies }) => {
+  console.log("Hit upload-url");
   const userAddress = cookies.get("honestwork_address");
   const s3Client = new S3({
     forcePathStyle: false,
@@ -48,6 +49,7 @@ const GET = async ({ params, cookies }) => {
   } catch (err) {
     console.log("Error", err);
   }
+  console.log("Filename:", params.filename);
   try {
     const url = await createPresignedPost(s3Client, {
       Bucket: private_env.PRIVATE_SPACES_BUCKETNAME,

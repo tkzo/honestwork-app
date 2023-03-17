@@ -2,19 +2,18 @@
 	import Skill from '$lib/components/profile/Skill.svelte';
 	import SkillEdit from '$lib/components/profile/SkillEdit.svelte';
 	import { chosen_skill_slot, skill_add } from '$lib/stores/State';
-  import { userState } from '$lib/stores/Network';
+	import { userState } from '$lib/stores/Network';
 
 	export let data: any;
-  let allowed_skills = 0;
-  $: switch ($userState) {
-    case 1:
-      allowed_skills = 3;
-    case 2:
-      allowed_skills = 5;
-    case 3:
-      allowed_skills = 8;
-      
-  }
+	let allowed_skills = 0;
+	$: switch ($userState) {
+		case 1:
+			allowed_skills = 3;
+		case 2:
+			allowed_skills = 5;
+		case 3:
+			allowed_skills = 8;
+	}
 
 	type SkillType = {
 		slot: number;
@@ -43,7 +42,7 @@
 	};
 	const handleSkillEdit = (slot: number) => {
 		chosen_skill_slot.set(slot);
-    skill_add.set(false)
+		skill_add.set(false);
 	};
 </script>
 
@@ -71,7 +70,6 @@
 {:else}
 	<SkillEdit
 		skill={data.skills.json ? data.skills.json[$chosen_skill_slot] ?? empty_skill : empty_skill}
-		on:skill_update
 	/>
 {/if}
 

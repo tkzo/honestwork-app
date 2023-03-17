@@ -75,11 +75,20 @@
 	"/api/nft/whitelist": [
 		"src/routes/api/nft/whitelist/+server.ts"
 	],
+	"/api/(profile)/profile_update": [
+		"src/routes/api/(profile)/profile_update/+server.ts"
+	],
 	"/api/rating/[address]": [
 		"src/routes/api/rating/[address]/+server.ts"
 	],
 	"/api/search": [
 		"src/routes/api/search/+server.ts"
+	],
+	"/api/(profile)/skill_add": [
+		"src/routes/api/(profile)/skill_add/+server.ts"
+	],
+	"/api/(profile)/skill_update/[slot]": [
+		"src/routes/api/(profile)/skill_update/[slot]/+server.ts"
 	],
 	"/api/skill/[sort]/[order]": [
 		"src/routes/api/skill/[sort]/[order]/+server.ts"

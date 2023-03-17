@@ -1,10 +1,10 @@
 export const manifest = {
 	appDir: "_app",
 	appPath: "_app",
-	assets: new Set([".DS_Store","assets/bg.webp","assets/consensys.png","assets/groovepaper.png","assets/landing/deer.png","assets/landing/employer_1.webp","assets/landing/employer_2.webp","assets/landing/employer_3.webp","assets/landing/freelancer_1.webp","assets/landing/freelancer_2.webp","assets/landing/freelancer_3.webp","assets/landing/hw.webp","assets/laser-grid.png","assets/sample.png","assets/xcopy.gif","favicon.png","fonts/protomono-light-webfont.woff","fonts/protomono-light-webfont.woff2","fonts/protomono-medium-webfont.woff","fonts/protomono-medium-webfont.woff2","fonts/protomono-regular-webfont.woff","fonts/protomono-regular-webfont.woff2","fonts/protomono-semibold-webfont.woff","fonts/protomono-semibold-webfont.woff2","fonts/specimen_files/grid_12-825-55-15.css","fonts/specimen_files/specimen_stylesheet.css","fonts/stylesheet.css","icons/calendar-check.svg","icons/calendar-remove.svg","icons/checked.svg","icons/chevron_active.svg","icons/chevron_left_active.svg","icons/chevron_left_passive.svg","icons/chevron_passive.svg","icons/clipboard.svg","icons/close.svg","icons/close_passive.svg","icons/copy.svg","icons/corner-left-down_active.svg","icons/corner-right-up_active.svg","icons/corner-right-up_passive.svg","icons/discord.svg","icons/external.svg","icons/fullheart.svg","icons/github.svg","icons/halfheart.svg","icons/heart.svg","icons/human-handsup.svg","icons/human-run.svg","icons/landing/airdrop-big.svg","icons/landing/airdrop.svg","icons/landing/avatar.svg","icons/landing/bitcoin.svg","icons/landing/briefcase-check.svg","icons/landing/bullseye-arrow.svg","icons/landing/check.svg","icons/landing/chevron.svg","icons/landing/cv.svg","icons/landing/discord.svg","icons/landing/drop-full.svg","icons/landing/github.svg","icons/landing/linkedin.svg","icons/landing/list-box.svg","icons/landing/lock.svg","icons/landing/logo.svg","icons/landing/mail-multiple.svg","icons/landing/message.svg","icons/landing/sale.svg","icons/landing/script-text.svg","icons/landing/trophy.svg","icons/landing/twitter.svg","icons/landing/wallet.svg","icons/loader.svg","icons/message.svg","icons/message_right.svg","icons/moon-star.svg","icons/notes-plus.svg","icons/post.svg","icons/search_active.svg","icons/search_passive.svg","icons/trending.svg","icons/twitter.svg","icons/unchecked.svg","icons/unchecked_passive.svg","icons/upload.svg","icons/user-x.svg","icons/zap.svg","robots.txt","styles.css"]),
+	assets: new Set([".DS_Store","assets/bg.webp","assets/consensys.png","assets/groovepaper.png","assets/landing/deer.png","assets/landing/employer_1.webp","assets/landing/employer_2.webp","assets/landing/employer_3.webp","assets/landing/freelancer_1.webp","assets/landing/freelancer_2.webp","assets/landing/freelancer_3.webp","assets/landing/hw.webp","assets/laser-grid.png","assets/sample.png","assets/xcopy.gif","favicon.png","fonts/protomono-light-webfont.woff","fonts/protomono-light-webfont.woff2","fonts/protomono-medium-webfont.woff","fonts/protomono-medium-webfont.woff2","fonts/protomono-regular-webfont.woff","fonts/protomono-regular-webfont.woff2","fonts/protomono-semibold-webfont.woff","fonts/protomono-semibold-webfont.woff2","fonts/specimen_files/grid_12-825-55-15.css","fonts/specimen_files/specimen_stylesheet.css","fonts/stylesheet.css","icons/.DS_Store","icons/calendar-check.svg","icons/calendar-remove.svg","icons/check.svg","icons/checked.svg","icons/chevron_active.svg","icons/chevron_left_active.svg","icons/chevron_left_passive.svg","icons/chevron_passive.svg","icons/clipboard.svg","icons/close.svg","icons/close_passive.svg","icons/copy.svg","icons/corner-left-down_active.svg","icons/corner-right-up_active.svg","icons/corner-right-up_passive.svg","icons/discord.svg","icons/external.svg","icons/fullheart.svg","icons/github.svg","icons/halfheart.svg","icons/heart.svg","icons/human-handsup.svg","icons/human-run.svg","icons/landing/airdrop-big.svg","icons/landing/airdrop.svg","icons/landing/avatar.svg","icons/landing/bitcoin.svg","icons/landing/briefcase-check.svg","icons/landing/bullseye-arrow.svg","icons/landing/check.svg","icons/landing/chevron.svg","icons/landing/cv.svg","icons/landing/discord.svg","icons/landing/drop-full.svg","icons/landing/github.svg","icons/landing/linkedin.svg","icons/landing/list-box.svg","icons/landing/lock.svg","icons/landing/logo.svg","icons/landing/mail-multiple.svg","icons/landing/message.svg","icons/landing/sale.svg","icons/landing/script-text.svg","icons/landing/trophy.svg","icons/landing/twitter.svg","icons/landing/wallet.svg","icons/loader.svg","icons/message.svg","icons/message_right.svg","icons/moon-star.svg","icons/notes-plus.svg","icons/post.svg","icons/search_active.svg","icons/search_passive.svg","icons/trending.svg","icons/twitter.svg","icons/unchecked.svg","icons/unchecked_passive.svg","icons/upload.svg","icons/user-x.svg","icons/zap.svg","robots.txt","styles.css"]),
 	mimeTypes: {".webp":"image/webp",".png":"image/png",".gif":"image/gif",".woff":"font/woff",".woff2":"font/woff2",".css":"text/css",".svg":"image/svg+xml",".txt":"text/plain"},
 	_: {
-		entry: {"file":"_app/immutable/start-1a6844de.js","imports":["_app/immutable/start-1a6844de.js","_app/immutable/chunks/paths-5beb49a4.js","_app/immutable/chunks/singletons-1cd5b978.js","_app/immutable/chunks/shared-52caabc7.js"],"stylesheets":[],"fonts":[]},
+		entry: {"file":"_app/immutable/start-79b680ed.js","imports":["_app/immutable/start-79b680ed.js","_app/immutable/chunks/paths-5beb49a4.js","_app/immutable/chunks/singletons-1cd5b978.js","_app/immutable/chunks/shared-52caabc7.js"],"stylesheets":[],"fonts":[]},
 		nodes: [
 			() => import('./nodes/0.js'),
 			() => import('./nodes/1.js'),
@@ -198,6 +198,13 @@ export const manifest = {
 				endpoint: () => import('./entries/endpoints/api/nft/whitelist/_server.ts.js')
 			},
 			{
+				id: "/api/(profile)/profile_update",
+				pattern: /^\/api\/profile_update\/?$/,
+				params: [],
+				page: null,
+				endpoint: () => import('./entries/endpoints/api/(profile)/profile_update/_server.ts.js')
+			},
+			{
 				id: "/api/rating/[address]",
 				pattern: /^\/api\/rating\/([^/]+?)\/?$/,
 				params: [{"name":"address","optional":false,"rest":false,"chained":false}],
@@ -210,6 +217,13 @@ export const manifest = {
 				params: [],
 				page: null,
 				endpoint: () => import('./entries/endpoints/api/search/_server.ts.js')
+			},
+			{
+				id: "/api/(profile)/skill_add",
+				pattern: /^\/api\/skill_add\/?$/,
+				params: [],
+				page: null,
+				endpoint: () => import('./entries/endpoints/api/(profile)/skill_add/_server.ts.js')
 			},
 			{
 				id: "/api/skill/[sort]/[order]",

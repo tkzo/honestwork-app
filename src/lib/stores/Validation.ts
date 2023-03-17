@@ -10,7 +10,7 @@ export const JobInput = z.object({
 	user_address: z.string().refine((val) => ethers.utils.isAddress(val), {
 		message: 'Invalid address'
 	}),
-  email: z.string().email(),
+	email: z.string().email(),
 	token_paid: z.string().refine((val) => tokens.find((t) => t.address == val) != undefined),
 	title: z.string().min(5).max(50),
 	description: z.string().min(200).max(2000),
@@ -76,7 +76,8 @@ export const ProfileInput = z.object({
 	show_ens: z.boolean(),
 	ens_name: z.optional(z.string().min(5).max(50)),
 	title: z.string().min(5).max(50),
-	image_url: z.string().url(),
+	image_url: z.optional(z.string()),
+	file_url: z.optional(z.string()),
 	show_nft: z.boolean(),
 	dms_open: z.boolean(),
 	timezone: z.enum([
@@ -130,9 +131,8 @@ export const SkillInput = z.object({
 	description: z.string().min(200).max(2000),
 	tags: z.string().min(2).max(20).array().min(1).max(3),
 	links: z.string().url().optional().array().min(1).max(3),
-	minimum_price: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
-			message: 'Expected number, received a string'
-		}),
+	minimum_price: z.number().min(10).max(1000),
+	image_urls: z.string().array().min(1).max(8),
 	publish: z.boolean()
 });
 export type SkillInput = z.infer<typeof SkillInput>;
@@ -150,8 +150,14 @@ export const CoverLetterInput = z.object({
 				message: 'Invalid job address or id'
 			}
 		),
-	cover_letter: z.union([z.string().min(200, {
-    message: "Cover letter must be empty or at least 200 chars"
-  }).max(2000), z.literal('')])
+	cover_letter: z.union([
+		z
+			.string()
+			.min(200, {
+				message: 'Cover letter must be empty or at least 200 chars'
+			})
+			.max(2000),
+		z.literal('')
+	])
 });
 export type CoverLetterInput = z.infer<typeof CoverLetterInput>;

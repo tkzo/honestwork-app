@@ -89,7 +89,7 @@
 	const getAllowance = async () => {
 		let ERC20 = new ethers.Contract(chosen_payment_token.address, erc20_abi, $networkProvider);
 		let allowance = await ERC20.allowance($userAddress, env.PUBLIC_LISTING_ADDRESS!);
-    let decimals = await ERC20.decimals();
+		let decimals = await ERC20.decimals();
 		user_allowance = ethers.utils.formatUnits(allowance, decimals);
 	};
 	// todo: refactor with a single form reference
@@ -102,6 +102,7 @@
 			username: username_element.value,
 			user_address: $userAddress,
 			title: title_element.value,
+			email: jobForm.email.value,
 			token_paid: chosen_payment_token.address,
 			description: parseContent(content),
 			tags: tags,
@@ -268,6 +269,7 @@
 			username: username_element.value,
 			user_address: $userAddress,
 			title: title_element.value,
+			email: jobForm.email.value,
 			token_paid: chosen_payment_token.address,
 			description: parseContent(content),
 			tags: tags,
@@ -349,7 +351,7 @@
 					<input hidden type="text" name="tx_hash" bind:value={tx_hash} />
 					<input hidden type="text" name="token_paid" bind:value={chosen_payment_token.address} />
 					<input hidden type="text" name="file_url" bind:value={file_url} />
-		      <input hidden type="text" name="description" bind:value={content} />
+					<input hidden type="text" name="description" bind:value={content} />
 					<div class="image-section">
 						<div
 							class="image-card"

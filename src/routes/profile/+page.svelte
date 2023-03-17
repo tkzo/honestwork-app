@@ -10,13 +10,7 @@
 	} from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 	import { tweened } from 'svelte/motion';
-	import {
-		chosen_skill_slot,
-		skill_add,
-		skill_upload_urls,
-		changes_made,
-		submitting
-	} from '$lib/stores/State';
+	import { changes_made, submitting } from '$lib/stores/State';
 	import { Svrollbar } from 'svrollbar';
 	import { browser } from '$app/environment';
 	import { assets } from '$app/paths';
@@ -29,7 +23,8 @@
 	import Applications from '$lib/components/profile/Applications.svelte';
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import { ProfileInput, SkillInput } from '$lib/stores/Validation';
+	import { ProfileInput } from '$lib/stores/Validation';
+	import { env } from '$env/dynamic/public';
 
 	//todo: add non-gateway image resolver for alchemy fetch
 	//todo: type declaration of data
@@ -53,8 +48,7 @@
 	let link_1: string = data.user.links != null ? data.user.links[1] : '';
 	let link_2: string = data.user.links != null ? data.user.links[2] : '';
 	let image_url: string = data.user.image_url;
-	let profileForm: HTMLFormElement;
-	let skillsForm: HTMLFormElement;
+	let file_component: HTMLInputElement;
 	let chosenTab = 'profile';
 	let nft_image: string = placeholder_image;
 	let is_owner: boolean;
@@ -73,21 +67,19 @@
 	let ens_name: string;
 	let show_ens: boolean = data.user.show_ens;
 	let ens_loading: boolean = false;
-	let file_url: string;
+	let file_url: string = data.user.image_url;
+	let local_file_url: string = data.user.image_url;
 	let username_input_element: HTMLInputElement;
 	let username_input_length: number = 0;
 	let username_input_limit = 50;
 	let title_input_element: HTMLInputElement;
 	let title_input_length: number = 0;
 	let title_input_limit = 50;
-	let bio_element: HTMLTextAreaElement;
 	let bio_limit = 2000;
 	let infobox_marginleft = '532px';
 	let feedHeight = 0;
-	let ens_component: HTMLInputElement;
 	let content: string;
 	let total_chars = 0;
-	let tags: string[] = [];
 
 	onMount(async () => {
 		changes_made.set(false);
@@ -174,6 +166,7 @@
 			await getNft();
 		}
 	};
+	// todo: get distance values dynamically
 	const focusInput = (input: string) => {
 		infobox_show = true;
 		switch (input) {
@@ -233,27 +226,29 @@
 		if (file == null) return;
 		const reader = new FileReader();
 		reader.onload = function () {
-			if (typeof reader.result == 'string') image_url = reader.result;
+			if (reader.result && typeof reader.result == 'string') image_url = reader.result;
 		};
 		reader.readAsDataURL(file);
 
 		const res = await fetch(`/api/upload-url/${e.target.files[0].name}`);
+		file_url = e.target.files[0].name;
 		upload_url = res;
 	};
-	const submitProfile = async (e: any) => {
-		if (e.submitter?.id != 'profile_post') {
-			return;
-		}
+	const submitProfile = async () => {
 		submitting.set(true);
-
+		let cloud_url =
+			file_component.files && file_component.files[0]
+				? env.PUBLIC_IMAGEKIT_URL + '/' + $userAddress + '/profile/' + file_component.files[0].name
+				: '';
 		const input: ProfileInput = {
 			username: username,
 			show_ens: show_ens,
 			ens_name: ens_name,
 			title: title,
 			email: email,
-			bio: parseContent(content),
-			image_url: image_url,
+			bio: content,
+			image_url: cloud_url,
+			file_url: file_url,
 			nft_address: nft_address,
 			nft_id: nft_id.toString(),
 			show_nft: show_nft,
@@ -270,103 +265,53 @@
 			}
 			return;
 		}
-
-		//todo: proper handling
 		if (show_nft && !is_owner) {
 			toast.push(
 				`<p class="light-60"><span style='color:var(--color-error)'>Error: </span>You're not the nft owner</p>`
 			);
-		} else {
-			let target_file;
-			for (let t of e.target) {
-				if (t.files) {
-					target_file = t;
-				}
-			}
-			if (target_file.files.length != 0) {
-				const file = target_file.files[0]!;
-				const { url, fields } = await upload_url.json();
-				const formData = new FormData();
-				Object.entries({ ...fields, file }).forEach(([key, value]) => {
-					formData.append(key, value as string);
-				});
-				const upload = await fetch(url, {
-					method: 'POST',
-					body: formData
-				});
-				//todo: stop exec if not ok
-				if (upload.ok) {
-					toast.push(
-						`<p class="light-60"><span style='color:var(--color-success)'>success:</span>Uploaded file</p>`
-					);
-				} else {
-					toast.push(
-						`<p class="light-60"><span style='color:var(--color-error)'>error:</span>Upload failed</p>`
-					);
-					return;
-				}
-			}
-			profileForm.submit();
-		}
-	};
-	const submitSkills = async (e: any) => {
-		if (e.submitter?.id == 'profile_post') {
 			return;
 		}
-		submitting.set(true);
 
-		const input: SkillInput = {
-			user_address: $userAddress,
-			title: new_skill.title,
-			description: parseContent(new_skill.description),
-			tags: new_skill.tags,
-			links: new_skill.links,
-			minimum_price: new_skill.minimum_price,
-			publish: new_skill.publish
-		};
-		let parsed = SkillInput.safeParse(input);
-		if (!parsed.success) {
-			for (let i = 0; i < parsed.error.errors.length; i++) {
+		if (file_component.files && file_component.files.length > 0) {
+			const file = file_component.files[0];
+			const { url, fields } = await upload_url.json();
+			const formData = new FormData();
+			Object.entries({ ...fields, file }).forEach(([key, value]) => {
+				formData.append(key, value as string);
+			});
+			const upload = await fetch(url, {
+				method: 'POST',
+				body: formData
+			});
+			if (upload.ok) {
 				toast.push(
-					`<p class="light-60"><span style='color:var(--color-error)'>${parsed.error.errors[i].path}: </span>${parsed.error.errors[i].message}</p>`
+					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Uploaded file</p>`
 				);
-			}
-			return;
-		}
-
-		let counter = 0;
-		for await (let t of e.target) {
-			if (t.files != null) {
-				if (t.files != null && t.files.length > 0) {
-					const file = t.files[0]!;
-					//@ts-expect-error
-					let clone_response = $skill_upload_urls[$chosen_skill_slot][counter].clone();
-					const { url, fields } = await clone_response.json();
-					const formData = new FormData();
-					Object.entries({ ...fields, file }).forEach(([key, value]) => {
-						formData.append(key, value as string);
-					});
-					const upload = await fetch(url, {
-						method: 'POST',
-						body: formData
-					});
-					//todo: stop exec if not ok
-					if (upload.ok) {
-						toast.push(
-							`<p class="light-60"><span style='color:var(--color-success)'>success:</span>Uploaded file</p>`
-						);
-					} else {
-						toast.push(
-							`<p class="light-60"><span style='color:var(--color-error)'>error:</span>Upload failed</p>`
-						);
-						return;
-					}
-				}
-				counter++;
+			} else {
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>Upload failed</p>`
+				);
+				return;
 			}
 		}
-		skillsForm.tags.value = new_skill.tags;
-		skillsForm.submit();
+		const url = `${base}/api/profile_update`;
+		let response = await fetch(url, {
+			method: 'POST',
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			}),
+			body: JSON.stringify(input)
+		});
+		if (response.ok) {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Profile updated</p>`
+			);
+		} else {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${response.status}</p>`
+			);
+		}
+		submitting.set(false);
 	};
 	const updateInputLengths = () => {
 		username_input_length = !show_ens
@@ -374,11 +319,6 @@
 			: data.user.username.length;
 
 		title_input_length = title_input_element?.value.length ?? data.user.title.length;
-	};
-	let new_skill: any;
-	const handleSkillUpdate = (e: any) => {
-		new_skill = e.detail.skill;
-    console.log("New skill:", new_skill)
 	};
 	const handleContentInput = (e: any) => {
 		content = JSON.stringify(e.detail.content);
@@ -400,51 +340,54 @@
 		<div bind:this={contents} class="contents">
 			<div style="height:16px" />
 			{#if $userAddress.toLowerCase() == data.user.address.toLowerCase() && $userState > 0}
+				<section class="bar">
+					<div class="tabs">
+						<p
+							class={`tab link semibold ${chosenTab == 'profile' ? 'yellow' : 'light-60'}`}
+							on:click={() => toggle('profile')}
+							on:keydown
+						>
+							profile
+						</p>
+						<p
+							class={`tab link semibold ${chosenTab == 'skills' ? 'yellow' : 'light-60'}`}
+							on:click={() => toggle('skills')}
+							on:keydown
+						>
+							skills
+						</p>
+						<p
+							class={`tab link semibold ${chosenTab == 'watchlist' ? 'yellow' : 'light-60'}`}
+							on:click={() => toggle('watchlist')}
+							on:keydown
+						>
+							watchlist
+						</p>
+						<p
+							class={`tab link semibold ${chosenTab == 'favorites' ? 'yellow' : 'light-60'}`}
+							on:click={() => toggle('favorites')}
+							on:keydown
+						>
+							favorites
+						</p>
+						<p
+							class={`tab link semibold ${chosenTab == 'applications' ? 'yellow' : 'light-60'}`}
+							on:click={() => toggle('applications')}
+							on:keydown
+						>
+							applications
+						</p>
+					</div>
+				</section>
+				<div style="height: 16px" />
 				{#if chosenTab == 'profile'}
-					<form
-						method="POST"
-						bind:this={profileForm}
-						on:submit|preventDefault={submitProfile}
-						action="?/profile"
-					>
-						<input hidden name="ens_name" bind:value={ens_name} bind:this={ens_component} />
-						<input hidden name="bio" bind:value={content} />
-
-						<section class="bar">
-							<div class="tabs">
-								<p class="tab link semibold yellow">profile</p>
-								<p class="tab link semibold light-60" on:click={() => toggle('skills')} on:keydown>
-									skills
-								</p>
-								<p
-									class="tab link semibold light-60"
-									on:click={() => toggle('watchlist')}
-									on:keydown
-								>
-									watchlist
-								</p>
-								<p
-									class="tab link semibold light-60"
-									on:click={() => toggle('favorites')}
-									on:keydown
-								>
-									favorites
-								</p>
-								<p
-									class="tab link semibold light-60"
-									on:click={() => toggle('applications')}
-									on:keydown
-								>
-									applications
-								</p>
-							</div>
-						</section>
-						<div class="save-changes">
-              <a href={`${base}/creator/${$userAddress}`} class='external-page'>
-                <p class='yellow'>view creator page</p>
-                <div style='width:4px'/>
-                <img src={`${assets}/icons/external.svg`} alt="Creator Page">
-              </a>
+					<div class="save-changes">
+						<a href={`${base}/creator/${$userAddress}`} class="external-page">
+							<p class="yellow">view creator page</p>
+							<div style="width:4px" />
+							<img src={`${assets}/icons/external.svg`} alt="Creator Page" />
+						</a>
+						<div class="external-page">
 							{#if $submitting}
 								<img
 									src={`${assets}/icons/loader.svg`}
@@ -454,12 +397,20 @@
 								/>
 								<div style="width:4px;" />
 							{/if}
-							<button
-								id="profile_post"
+							<div style="width:4px" />
+							<p
+								on:click={submitProfile}
+								on:keydown
 								class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
-								>save changes</button
 							>
+								save changes
+							</p>
 						</div>
+					</div>
+					<form method="POST" on:submit|preventDefault={submitProfile} action="?/profile">
+						<input hidden name="ens_name" bind:value={ens_name} />
+						<input hidden name="bio" bind:value={content} />
+
 						<div style="height: 16px" />
 						<section
 							class="infobox"
@@ -480,7 +431,11 @@
 							<div class="left-section">
 								<section>
 									<img
-										src={show_nft ? nft_image : image_url ? image_url + "?tr=h-188,w-188" : placeholder_image}
+										src={show_nft
+											? nft_image
+											: file_url == data.user.image_url
+											? file_url + '?tr=h-188,w-188'
+											: image_url}
 										alt="Profile"
 										placeholder={placeholder_image}
 									/>
@@ -492,7 +447,8 @@
 										type="file"
 										accept="image/png, image/jpeg"
 										on:change={uploadProfileImage}
-										bind:value={file_url}
+										bind:value={local_file_url}
+										bind:this={file_component}
 										on:mouseover={() => {
 											focusInput('image');
 											infobox_marginleft = '-252px';
@@ -739,151 +695,12 @@
 						</div>
 					</form>
 				{:else if chosenTab == 'skills'}
-					<form
-						method="POST"
-						bind:this={skillsForm}
-						on:submit|preventDefault={submitSkills}
-						action="?/skills"
-					>
-						<input hidden name="tags" value={tags} />
-
-						<input hidden name="skill_method" value={$skill_add ? 'add' : 'edit'} />
-						{#if $chosen_skill_slot == -1}
-							<section class="bar">
-								<div class="tabs">
-									<p
-										class="tab link semibold light-60"
-										on:click={() => toggle('profile')}
-										on:keydown
-									>
-										profile
-									</p>
-									<p class="tab link semibold yellow">skills</p>
-									<p
-										class="tab link semibold light-60"
-										on:click={() => toggle('watchlist')}
-										on:keydown
-									>
-										watchlist
-									</p>
-									<p
-										class="tab link semibold light-60"
-										on:click={() => toggle('favorites')}
-										on:keydown
-									>
-										favorites
-									</p>
-									<p
-										class="tab link semibold light-60"
-										on:click={() => toggle('applications')}
-										on:keydown
-									>
-										applications
-									</p>
-								</div>
-							</section>
-						{:else}
-							<section class="bar">
-								<div class="tabs">
-									<p
-										class="tab link semibold light-60"
-										on:click={() => {
-											toggle('skills');
-											chosen_skill_slot.set(-1);
-										}}
-										on:keydown
-									>
-										back to skills
-									</p>
-								</div>
-							</section>
-							<div class="save-changes">
-								{#if $submitting}
-									<img
-										src={`${assets}/icons/loader.svg`}
-										alt="loading"
-										class="rotating"
-										style="height:16px;width:16px;"
-									/>
-									<div style="width:4px;" />
-								{/if}
-								<button
-									id="skills_post"
-									class={`semibold link ${$changes_made ? 'yellow' : 'light-60'}`}
-									>save changes</button
-								>
-							</div>
-						{/if}
-						<div style="height: 16px" />
-						<Skills {data} on:skill_update={handleSkillUpdate} />
-					</form>
+					<Skills {data} />
 				{:else if chosenTab == 'watchlist'}
-					<section class="bar">
-						<div class="tabs">
-							<p class="tab link semibold light-60" on:click={() => toggle('profile')} on:keydown>
-								profile
-							</p>
-							<p class="tab link semibold light-60" on:click={() => toggle('skills')} on:keydown>
-								skills
-							</p>
-							<p class="tab link semibold yellow">watchlist</p>
-							<p class="tab link semibold light-60" on:click={() => toggle('favorites')} on:keydown>
-								favorites
-							</p>
-							<p
-								class="tab link semibold light-60"
-								on:click={() => toggle('applications')}
-								on:keydown
-							>
-								applications
-							</p>
-						</div>
-					</section>
-					<div style="height: 16px" />
 					<Watchlist />
 				{:else if chosenTab == 'favorites'}
-					<section class="bar">
-						<div class="tabs">
-							<p class="tab link semibold light-60" on:click={() => toggle('profile')} on:keydown>
-								profile
-							</p>
-							<p class="tab link semibold light-60" on:click={() => toggle('skills')} on:keydown>
-								skills
-							</p>
-							<p class="tab link semibold light-60" on:click={() => toggle('watchlist')} on:keydown>
-								watchlist
-							</p>
-							<p class="tab link semibold yellow">favorites</p>
-							<p
-								class="tab link semibold light-60"
-								on:click={() => toggle('applications')}
-								on:keydown
-							>
-								applications
-							</p>
-						</div>
-					</section>
-					<div style="height: 16px" />
 					<Favorites />
 				{:else if chosenTab == 'applications'}
-					<section class="bar">
-						<div class="tabs">
-							<p class="tab link semibold light-60" on:click={() => toggle('profile')} on:keydown>
-								profile
-							</p>
-							<p class="tab link semibold light-60" on:click={() => toggle('skills')} on:keydown>
-								skills
-							</p>
-							<p class="tab link semibold light-60" on:click={() => toggle('watchlist')} on:keydown>
-								watchlist
-							</p>
-							<p class="tab link semibold light-60" on:click={() => toggle('favorites')} on:keydown>
-								favorites
-							</p>
-							<p class="tab link semibold yellow">applications</p>
-						</div>
-					</section>
-					<div style="height: 16px" />
 					<Applications user={data.user} />
 				{/if}
 			{:else if $userConnected && $userAddress.toLowerCase() != data.user.address.toLowerCase()}
@@ -1082,7 +899,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 8px;
-		border-width: 0px 1px 1px 1px;
+		border-width: 1px;
 		border-style: solid;
 		border-color: var(--color-light-20);
 	}
@@ -1129,13 +946,13 @@
 		flex-direction: column;
 		align-items: center;
 	}
-  .external-page {
-    display:flex;
-    flex-direction:row;
-    align-items: center;
-  }
-  .external-page img {
-    height: 16px;
-    width: 16px;
-  }
+	.external-page {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+	.external-page img {
+		height: 16px;
+		width: 16px;
+	}
 </style>
