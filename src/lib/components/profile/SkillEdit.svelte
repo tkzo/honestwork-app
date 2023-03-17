@@ -13,7 +13,6 @@
 	import { env } from '$env/dynamic/public';
 
 	//todo: move images to img elements instead of div backgrounds (won't show ones with empty letter in its name)
-
 	export let skill: SkillInput;
 
 	let description_chars = 2000;
