@@ -12,8 +12,7 @@
 	import { onMount } from 'svelte';
 	import { connectIfCached } from '$lib/stores/Network';
 
-
-  // comment
+	// comment
 	onMount(() => {
 		if ($page.route.id !== '/') connectIfCached();
 	});
@@ -32,7 +31,7 @@
 		if (user.username != '') {
 			LogRocket.identify($userAddress, {
 				name: user.username,
-				email: user.email,
+				email: user.email
 			});
 		}
 	};
@@ -58,7 +57,7 @@
 	<div class="toast-container">
 		<SvelteToast options={{ duration: 5000, intro: { y: -20 } }} />
 	</div>
-	{#if $page.route.id !== '/' && $page.route.id !== '/mint'}
+	{#if $page.route.id !== '/'}
 		<Navigation />
 		<div style="height:32px;" />
 		<!-- {:else}

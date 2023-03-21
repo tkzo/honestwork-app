@@ -5,7 +5,7 @@
 	import { Svrollbar } from 'svrollbar';
 	import { onMount } from 'svelte';
 	import { ethers } from 'ethers';
-	import { networkSigner } from '$lib/stores/Network';
+	import { networkSigner, connectWallet } from '$lib/stores/Network';
 	import { nft_abi, erc20_abi } from '$lib/stores/ABI';
 	import { env } from '$env/dynamic/public';
 	import { toast } from '@zerodevx/svelte-toast';
@@ -373,6 +373,8 @@
 		</div>
 		<Svrollbar {viewport} {contents} />
 	</div>
+{:else}
+	<p on:click={connectWallet} on:keydown>please connect</p>
 {/if}
 
 <style>
