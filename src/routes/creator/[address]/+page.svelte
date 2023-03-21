@@ -33,7 +33,6 @@
 	const fetchDeals = async () => {
 		const Escrow = new ethers.Contract(env.PUBLIC_ESCROW_ADDRESS!, escrow_abi, $networkSigner);
 		const deals = await Escrow.getDealsOf($userAddress);
-		console.log('Deals: ', deals, '');
 		return deals;
 	};
 	const fetchJob = async (deal: Deal) => {

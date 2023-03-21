@@ -1,10 +1,14 @@
 <script lang="ts">
-	import { user_favorites } from '$lib/stores/State';
 	import { assets, base } from '$app/paths';
-	import { userConnected, getFavorites } from '$lib/stores/Network';
+	import { userConnected } from '$lib/stores/Network';
 	import { toast } from '@zerodevx/svelte-toast';
 	import type { FavoriteType } from '$lib/stores/Types';
 	import { fly } from 'svelte/transition';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
+
+	export let favorites: Array<FavoriteType> = [];
 
 	const handleRemove = async (item: FavoriteType) => {
 		if ($userConnected) {
@@ -25,7 +29,7 @@
 					toast.push(
 						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Removed from favorites.</p>`
 					);
-					getFavorites();
+					dispatch('remove');
 				} else {
 					toast.push(
 						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>Failed to remove from favorites.</p>`
@@ -41,32 +45,33 @@
 </script>
 
 <main>
-	{#if $user_favorites.length == 0}
+	{#if favorites == null || favorites.length == 0}
 		<div class="message-container">
 			<p class="light-60">You didn't favorite any skill yet.</p>
 		</div>
+	{:else}
+		{#each favorites as item, index (index)}
+			<div class="container" transition:fly={{ duration: 100 + 50 * index, x: 50 }}>
+				<div class="left">
+					<img src={item.image_url + '?tr=h-120,w-120'} alt={item.username} class="job-image" />
+					<a class="content" href={`${base}/creator/${item.input.address}/`}>
+						<div class="username">
+							<p class="link">{item.username}</p>
+							<div style="width:4px" />
+							<img src={`${assets}/icons/external.svg`} alt="external" style="margin-top:-2px" />
+						</div>
+						<p class="light-60">{item.title}</p>
+					</a>
+				</div>
+				<div class="button link" on:click={() => handleRemove(item)} on:keydown>
+					<p class="light-60">remove from favorites</p>
+				</div>
+			</div>
+			{#if item !== favorites[favorites.length - 1]}
+				<div style="height:8px" />
+			{/if}
+		{/each}
 	{/if}
-	{#each $user_favorites as item, index}
-		<div class="container" in:fly={{ duration: 100 + 50 * index, x: 50 }}>
-			<div class="left">
-				<img src={item.image_url + '?tr=h-120,w-120'} alt={item.username} class="job-image" />
-				<a class="content" href={`${base}/creator/${item.input.address}/`}>
-					<div class="username">
-						<p class="link">{item.username}</p>
-						<div style="width:4px" />
-						<img src={`${assets}/icons/external.svg`} alt="external" style="margin-top:-2px" />
-					</div>
-					<p class="light-60">{item.title}</p>
-				</a>
-			</div>
-			<div class="button link" on:click={() => handleRemove(item)} on:keydown>
-				<p class="light-60">remove from favorites</p>
-			</div>
-		</div>
-		{#if item !== $user_favorites[$user_favorites.length - 1]}
-			<div style="height:8px" />
-		{/if}
-	{/each}
 </main>
 
 <style>

@@ -1,10 +1,14 @@
 <script lang="ts">
-	import { user_watchlist } from '$lib/stores/State';
 	import { assets, base } from '$app/paths';
-	import { userConnected, getWatchlist } from '$lib/stores/Network';
+	import { userConnected } from '$lib/stores/Network';
 	import { toast } from '@zerodevx/svelte-toast';
 	import type { WatchlistType } from '$lib/stores/Types';
 	import { fly } from 'svelte/transition';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
+
+	export let watchlist: Array<WatchlistType>;
 
 	const handleRemove = async (item: WatchlistType) => {
 		if ($userConnected) {
@@ -25,7 +29,7 @@
 					toast.push(
 						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Removed from watchlist.</p>`
 					);
-					getWatchlist();
+					dispatch('remove');
 				} else {
 					toast.push(
 						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>Failed to remove from watchlist.</p>`
@@ -41,32 +45,33 @@
 </script>
 
 <main>
-	{#if $user_watchlist.length == 0}
+	{#if watchlist == null || watchlist.length == 0}
 		<div class="message-container">
-			<p class="light-60">You didn't favorite any skill yet.</p>
+			<p class="light-60">You didn't add any jobs to watchlist yet.</p>
 		</div>
+	{:else}
+		{#each watchlist as item, index (index)}
+			<div class="container" transition:fly={{ duration: 100 + 50 * index, x: 50 }}>
+				<div class="left">
+					<img src={item.image_url + '?tr=h-120,w-120'} alt={item.username} class="job-image" />
+					<a class="content" href={`${base}/job/${item.input.address}/${item.input.slot}`}>
+						<div class="username">
+							<p class="link">{item.username}</p>
+							<div style="width:4px" />
+							<img src={`${assets}/icons/external.svg`} alt="external" style="margin-top:-2px" />
+						</div>
+						<p class="light-60">{item.title}</p>
+					</a>
+				</div>
+				<div class="button link" on:click={() => handleRemove(item)} on:keydown>
+					<p class="light-60">remove from favorites</p>
+				</div>
+			</div>
+			{#if item !== watchlist[watchlist.length - 1]}
+				<div style="height:8px" />
+			{/if}
+		{/each}
 	{/if}
-	{#each $user_watchlist as item, index}
-		<div class="container" in:fly={{ duration: 100 + 50 * index, x: 50 }}>
-			<div class="left">
-				<img src={item.image_url + '?tr=h-120,w-120'} alt={item.username} class="job-image" />
-				<a class="content" href={`${base}/job/${item.input.address}/${item.input.slot}`}>
-					<div class="username">
-						<p class="link">{item.username}</p>
-						<div style="width:4px" />
-						<img src={`${assets}/icons/external.svg`} alt="external" style="margin-top:-2px" />
-					</div>
-					<p class="light-60">{item.title}</p>
-				</a>
-			</div>
-			<div class="button link" on:click={() => handleRemove(item)} on:keydown>
-				<p class="light-60">remove from favorites</p>
-			</div>
-		</div>
-		{#if item !== $user_watchlist[$user_watchlist.length - 1]}
-			<div style="height:8px" />
-		{/if}
-	{/each}
 </main>
 
 <style>

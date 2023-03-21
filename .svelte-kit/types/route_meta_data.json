@@ -111,8 +111,8 @@
 	"/api/watchlist/add": [
 		"src/routes/api/watchlist/add/+server.ts"
 	],
-	"/api/watchlist/get": [
-		"src/routes/api/watchlist/get/+server.ts"
+	"/api/watchlist/get/[address]": [
+		"src/routes/api/watchlist/get/[address]/+server.ts"
 	],
 	"/api/watchlist/remove": [
 		"src/routes/api/watchlist/remove/+server.ts"
@@ -152,7 +152,26 @@
 		"src/routes/+layout.server.ts"
 	],
 	"/profile": [
-		"src/routes/profile/+page.server.ts",
+		"src/routes/profile/+layout.server.ts",
+		"src/routes/+layout.server.ts",
+		"src/routes/profile/+layout.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/profile/applications": [
+		"src/routes/profile/+layout.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/profile/favorites": [
+		"src/routes/profile/+layout.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/profile/skills": [
+		"src/routes/profile/skills/+page.server.ts",
+		"src/routes/profile/+layout.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/profile/watchlist": [
+		"src/routes/profile/+layout.server.ts",
 		"src/routes/+layout.server.ts"
 	],
 	"/skills": [

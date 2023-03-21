@@ -20,7 +20,7 @@
 	<a href={`${base}/mint`}>
 		<Notification notification={notifications.mint} />
 	</a>
-{:else if $page.route.id == '/profile'}
+{:else if $page.route.id?.startsWith('/profile')}
 	<a href={`${base}/mint`}>
 		<Notification notification={notifications.upgrade} />
 	</a>

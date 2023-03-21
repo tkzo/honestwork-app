@@ -1,11 +1,11 @@
 import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { LayoutServerLoad } from './$types';
 import { env } from '$env/dynamic/private';
 
 const apiUrl =
 	parseInt(env.PRODUCTION_ENV) == 1 ? env.PRIVATE_HONESTWORK_API : env.PRIVATE_LOCAL_HONESTWORK_API;
 
-export const load: PageServerLoad = async ({ cookies }) => {
+export const load: LayoutServerLoad = async ({ cookies }) => {
 	const userAddress = cookies.get('honestwork_address');
 	const userSignature = cookies.get('honestwork_signature');
 
