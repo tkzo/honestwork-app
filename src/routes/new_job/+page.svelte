@@ -26,9 +26,6 @@
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	import { parseContent } from '$lib/stores/Parser';
 
-	// todo: upgrade tags when api is rdy
-	// add autosuggest from redis
-
 	type TokenSelection = {
 		address: string;
 	};

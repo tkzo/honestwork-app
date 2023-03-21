@@ -9,9 +9,7 @@
 </script>
 
 {#if $page.route.id == '/'}
-	<a href="https://twitter.com/HonestWorkDAO" target="_blank" rel="noreferrer"
-		><Notification notification={notifications.launch} /></a
-	>
+	<a href={`${base}/mint`}><Notification notification={notifications.mint} /></a>
 {:else if $page.route.id == '/skills' || $page.route.id == '/listings'}
 	<Notification notification={notifications.mint} on:click={() => goto('/mint')} />
 {:else if $page.route.id == '/jobs'}

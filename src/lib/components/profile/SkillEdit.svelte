@@ -278,6 +278,7 @@
 			toast.push(
 				`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Skill updated</p>`
 			);
+			changes_made.set(false);
 		} else {
 			toast.push(
 				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${response.status}</p>`
@@ -304,8 +305,8 @@
 	};
 </script>
 
-<div class="save-changes" on:click={() => chosen_skill_slot.set(-1)} on:keydown>
-	<div class="external-page">
+<div class="save-changes">
+	<div class="external-page" on:click={() => chosen_skill_slot.set(-1)} on:keydown>
 		<img src={`${assets}/icons/arrow-left-box.svg`} alt="Skills Tab" />
 		<div style="width:4px" />
 		<p class="yellow link">back to skills</p>

@@ -123,7 +123,7 @@
 		overflow-x: hidden;
 	}
 	.img-container {
-		width: 50%;
+		width: 420px;
 	}
 	.button:hover,
 	.selected {
