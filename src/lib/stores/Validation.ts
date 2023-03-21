@@ -14,7 +14,7 @@ export const JobInput = z.object({
   token_paid: z.string().refine((val) => tokens.find((t) => t.address == val) != undefined),
   title: z.string().min(5).max(50),
   description: z.string().min(200).max(2000),
-  tags: z.string().array().min(1).max(3),
+  tags: z.string().min(2).max(20).array().min(1).max(3),
   links: z.union([z.string().url(), z.literal('')]).array().min(1).max(3),
   budget: z
     .string()

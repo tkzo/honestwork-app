@@ -2,8 +2,8 @@ import { writable } from 'svelte/store';
 import type { WatchlistType, FavoriteType } from '$lib/stores/Types';
 
 type Metadata = {
-	address: string;
-	title: string;
+  address: string;
+  title: string;
 };
 let metadata: Metadata = { title: '', address: '' };
 
@@ -19,3 +19,4 @@ export let job_updated = writable(false);
 export let user_watchlist = writable(Array<WatchlistType>());
 export let user_favorites = writable(Array<FavoriteType>());
 export let user_signed_in = writable(false);
+export let chosen_profile_tab = writable('profile');

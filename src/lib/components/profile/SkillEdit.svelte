@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { submitting } from '$lib/stores/State';
+	import { chosen_profile_tab, submitting } from '$lib/stores/State';
 	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 	import { base, assets } from '$app/paths';
 	import { skill_upload_urls, chosen_skill_slot, changes_made } from '$lib/stores/State';
 	import { userAddress } from '$lib/stores/Network';
@@ -285,6 +286,8 @@
 			);
 		}
 		submitting.set(false);
+		chosen_profile_tab.set('skills');
+		if (browser) window.location.reload();
 	};
 
 	const updateInputLengths = () => {

@@ -10,7 +10,7 @@
 	} from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 	import { tweened } from 'svelte/motion';
-	import { changes_made, submitting } from '$lib/stores/State';
+	import { changes_made, submitting, chosen_profile_tab } from '$lib/stores/State';
 	import { Svrollbar } from 'svrollbar';
 	import { browser } from '$app/environment';
 	import { assets } from '$app/paths';
@@ -49,7 +49,7 @@
 	let link_2: string = data.user.links != null ? data.user.links[2] : '';
 	let image_url: string = data.user.image_url;
 	let file_component: HTMLInputElement;
-	let chosenTab = 'profile';
+	let chosenTab = $chosen_profile_tab;
 	let nft_image: string = placeholder_image;
 	let is_owner: boolean;
 	let username: string = data.user.username;
@@ -312,6 +312,7 @@
 			);
 		}
 		submitting.set(false);
+		if (browser) window.location.reload();
 	};
 	const updateInputLengths = () => {
 		username_input_length = !show_ens
