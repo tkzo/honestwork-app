@@ -4,6 +4,7 @@
 	import type { JobType, UserType } from '$lib/stores/Types';
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	import { fly } from 'svelte/transition';
+	import { Jumper } from 'svelte-loading-spinners';
 
 	export let user: UserType;
 
@@ -31,7 +32,7 @@
 <main>
 	{#if user.application?.length > 0}
 		{#await fetchJobs()}
-			loading jobs
+			<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
 		{:then}
 			{#each jobs as job, index}
 				<div class="container" in:fly={{ duration: 100 + 50 * index, x: 50 }}>
@@ -75,6 +76,11 @@
 </main>
 
 <style>
+	main {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
 	.message-container {
 		display: flex;
 		flex-direction: column;
@@ -83,13 +89,13 @@
 		height: 100%;
 	}
 	.container {
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
 		border-color: var(--color-light-20);
 		align-items: flex-start;
-		padding: 8px;
 		box-sizing: border-box;
 	}
 	.job-image {
@@ -116,6 +122,8 @@
 		background-color: var(--color-light-2);
 	}
 	.drawer {
+		width: 100%;
+		box-sizing: border-box;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
