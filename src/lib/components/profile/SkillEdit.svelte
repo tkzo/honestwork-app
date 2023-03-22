@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { chosen_profile_tab, submitting } from '$lib/stores/State';
+	import { chosen_profile_tab, submitting, skill_add } from '$lib/stores/State';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import { base, assets } from '$app/paths';
@@ -15,6 +15,9 @@
 
 	//todo: move images to img elements instead of div backgrounds (won't show ones with empty letter in its name)
 	export let skill: SkillInput;
+
+	$: console.log('Chosen skill slot:', $chosen_skill_slot);
+	$: console.log('Skill add:', $skill_add);
 
 	let description_chars = 2000;
 	let description_text = skill.description;
@@ -267,7 +270,12 @@
 			}
 			counter++;
 		}
-		const url = `${base}/api/skill_update/${$chosen_skill_slot}`;
+		let url: string;
+		if ($skill_add) {
+			url = `${base}/api/skill_add`;
+		} else {
+			url = `${base}/api/skill_update/${$chosen_skill_slot}`;
+		}
 		let response = await fetch(url, {
 			method: 'POST',
 			headers: new Headers({
@@ -386,7 +394,7 @@
 	>
 		<div class="image-tint" />
 		<div class="upload-button">
-			<img src="icons/upload.svg" alt="Upload" />
+			<img src={`${assets}/icons/upload.svg`} alt="Upload" />
 			<div style="height:4px;" />
 			<p class="yellow">UPLOAD IMAGE</p>
 		</div>
@@ -413,7 +421,7 @@
 	>
 		<div class="image-tint" />
 		<div class="upload-button">
-			<img src="icons/upload.svg" alt="Upload" />
+			<img src={`${assets}/icons/upload.svg`} alt="Upload" />
 			<div style="height:4px;" />
 			<p class="yellow">UPLOAD IMAGE</p>
 		</div>
@@ -440,7 +448,7 @@
 	>
 		<div class="image-tint" />
 		<div class="upload-button">
-			<img src="icons/upload.svg" alt="Upload" />
+			<img src={`${assets}/icons/upload.svg`} alt="Upload" />
 			<div style="height:4px;" />
 			<p class="yellow">UPLOAD IMAGE</p>
 		</div>
@@ -467,7 +475,7 @@
 	>
 		<div class="image-tint" />
 		<div class="upload-button">
-			<img src="icons/upload.svg" alt="Upload" />
+			<img src={`${assets}/icons/upload.svg`} alt="Upload" />
 			<div style="height:4px;" />
 			<p class="yellow">UPLOAD IMAGE</p>
 		</div>
@@ -494,7 +502,7 @@
 	>
 		<div class="image-tint" />
 		<div class="upload-button">
-			<img src="icons/upload.svg" alt="Upload" />
+			<img src={`${assets}/icons/upload.svg`} alt="Upload" />
 			<div style="height:4px;" />
 			<p class="yellow">UPLOAD IMAGE</p>
 		</div>
@@ -521,7 +529,7 @@
 	>
 		<div class="image-tint" />
 		<div class="upload-button">
-			<img src="icons/upload.svg" alt="Upload" />
+			<img src={`${assets}/icons/upload.svg`} alt="Upload" />
 			<div style="height:4px;" />
 			<p class="yellow">UPLOAD IMAGE</p>
 		</div>
@@ -548,7 +556,7 @@
 	>
 		<div class="image-tint" />
 		<div class="upload-button">
-			<img src="icons/upload.svg" alt="Upload" />
+			<img src={`${assets}/icons/upload.svg`} alt="Upload" />
 			<div style="height:4px;" />
 			<p class="yellow">UPLOAD IMAGE</p>
 		</div>
@@ -575,7 +583,7 @@
 	>
 		<div class="image-tint" />
 		<div class="upload-button">
-			<img src="icons/upload.svg" alt="Upload" />
+			<img src={`${assets}/icons/upload.svg`} alt="Upload" />
 			<div style="height:4px;" />
 			<p class="yellow">UPLOAD IMAGE</p>
 		</div>
@@ -620,7 +628,7 @@
 			name="minimum_price"
 			class="flex-input"
 			type="number"
-			placeholder={minimum.toString()}
+			placeholder={minimum?.toString()}
 			bind:value={minimum}
 		/>
 	</div>
