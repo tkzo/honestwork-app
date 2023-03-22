@@ -348,18 +348,43 @@
 		<input hidden type="text" name="user_address" value={$userAddress} />
 		<input hidden type="checkbox" name="publish" bind:checked={publish} />
 		<input hidden type="text" name="description" bind:value={content} />
-
-		{#if publish}
-			<p class="light-60">status: <span class="light">published</span></p>
-			<p class="yellow" on:click={() => (publish = !publish)} on:keydown style="cursor:pointer;">
-				unpublish
-			</p>
-		{:else}
-			<p class="light-60">status: <span class="light">unpublished</span></p>
-			<p class="yellow" on:click={() => (publish = !publish)} on:keydown style="cursor:pointer;">
-				publish
-			</p>
-		{/if}
+		<!-- {#if publish} -->
+		<!-- 	<p class="light-60">status: <span class="light">published</span></p> -->
+		<!-- 	<p class="yellow" on:click={() => (publish = !publish)} on:keydown style="cursor:pointer;"> -->
+		<!-- 		unpublish -->
+		<!-- 	</p> -->
+		<!-- {:else} -->
+		<!-- 	<p class="light-60">status: <span class="light">unpublished</span></p> -->
+		<!-- 	<p class="yellow" on:click={() => (publish = !publish)} on:keydown style="cursor:pointer;"> -->
+		<!-- 		publish -->
+		<!-- 	</p> -->
+		<!-- {/if} -->
+		<div
+			class="input-field"
+			on:click={() => (publish = !publish)}
+			on:keydown
+			style="cursor:pointer; height:100%;"
+		>
+			<div style="display:flex;flex-direction:row;">
+				{#if publish}
+					<img src={`${assets}/icons/checked.svg`} alt="Checked" style="height:16px;width:16px;" />
+					<div style="width:8px" />
+					<p class="yellow">
+						published <span class="light-60">other people can see your skill</span>
+					</p>
+				{:else}
+					<img
+						src={`${assets}/icons/unchecked.svg`}
+						alt="Checked"
+						style="height:16px;width:16px;"
+					/>
+					<div style="width:8px" />
+					<p class="yellow">
+						not published <span class="light-60">other people can't see your skill</span>
+					</p>
+				{/if}
+			</div>
+		</div>
 	</div>
 </section>
 <div style="height:8px;" />

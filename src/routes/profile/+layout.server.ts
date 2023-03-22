@@ -23,7 +23,7 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
       let skills = await getSkills(userAddress, userSignature);
       let jobs = await getJobs(userAddress);
       user.address = userAddress;
-      return { user: user, skills: skills, jobs: jobs };
+      return { user: user, jobs: jobs };
     } else {
       throw redirect(301, '/auth');
     }
