@@ -17,7 +17,7 @@ export const load: PageServerLoad = (async ({ params }) => {
 	});
 	if (response.status == 200) {
 		let user: UserType = await response.json();
-		url = `${apiUrl}/skills/${params.address}`;
+		url = `${apiUrl}/skills_published/${params.address}`;
 		response = await fetch(url, {
 			headers: {
 				Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
