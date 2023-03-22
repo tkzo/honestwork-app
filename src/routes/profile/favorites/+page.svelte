@@ -4,6 +4,7 @@
 	import { chosen_profile_tab } from '$lib/stores/State';
 	import { userAddress, userConnected } from '$lib/stores/Network';
 	import { toast } from '@zerodevx/svelte-toast';
+	import { Jumper } from 'svelte-loading-spinners';
 
 	onMount(() => {
 		chosen_profile_tab.set('favorites');
@@ -25,8 +26,20 @@
 	};
 </script>
 
-{#key action_counter}
-	{#await getFavorites() then favorites}
-		<Favorites {favorites} on:remove={() => action_counter++} />
-	{/await}
-{/key}
+<main>
+	{#key action_counter}
+		{#await getFavorites()}
+			<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
+		{:then favorites}
+			<Favorites {favorites} on:remove={() => action_counter++} />
+		{/await}
+	{/key}
+</main>
+
+<style>
+	main {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+</style>

@@ -44,38 +44,37 @@
 	};
 </script>
 
-<main>
-	{#if favorites == null || favorites.length == 0}
-		<div class="message-container">
-			<p class="light-60">You didn't favorite any skill yet.</p>
-		</div>
-	{:else}
-		{#each favorites as item, index (index)}
-			<div class="container" in:fly={{ duration: 100 + 50 * index, x: 50 }}>
-				<div class="left">
-					<img src={item.image_url + '?tr=h-120,w-120'} alt={item.username} class="job-image" />
-					<a class="content" href={`${base}/creator/${item.input.address}/`}>
-						<div class="username">
-							<p class="link">{item.username}</p>
-							<div style="width:4px" />
-							<img src={`${assets}/icons/external.svg`} alt="external" style="margin-top:-2px" />
-						</div>
-						<p class="light-60">{item.title}</p>
-					</a>
-				</div>
-				<div class="button link" on:click={() => handleRemove(item)} on:keydown>
-					<p class="light-60">remove from favorites</p>
-				</div>
+{#if favorites == null || favorites.length == 0}
+	<div class="message-container">
+		<p class="light-60">You didn't favorite any skill yet.</p>
+	</div>
+{:else}
+	{#each favorites as item, index (index)}
+		<div class="container" in:fly={{ duration: 100 + 50 * index, x: 50 }}>
+			<div class="left">
+				<img src={item.image_url + '?tr=h-120,w-120'} alt={item.username} class="job-image" />
+				<a class="content" href={`${base}/creator/${item.input.address}/`}>
+					<div class="username">
+						<p class="link">{item.username}</p>
+						<div style="width:4px" />
+						<img src={`${assets}/icons/external.svg`} alt="external" style="margin-top:-2px" />
+					</div>
+					<p class="light-60">{item.title}</p>
+				</a>
 			</div>
-			{#if item !== favorites[favorites.length - 1]}
-				<div style="height:8px" />
-			{/if}
-		{/each}
-	{/if}
-</main>
+			<div class="button link" on:click={() => handleRemove(item)} on:keydown>
+				<p class="light-60">remove from favorites</p>
+			</div>
+		</div>
+		{#if item !== favorites[favorites.length - 1]}
+			<div style="height:8px" />
+		{/if}
+	{/each}
+{/if}
 
 <style>
 	.container {
+		width: 100%;
 		display: flex;
 		flex-direction: row;
 		border-width: 1px;
