@@ -51,7 +51,7 @@
 		</div>
 	{:else}
 		{#each watchlist as item, index (index)}
-			<div class="container" transition:fly={{ duration: 100 + 50 * index, x: 50 }}>
+			<div class="container" in:fly={{ duration: 100 + 50 * index, x: 50 }}>
 				<div class="left">
 					<img src={item.image_url + '?tr=h-120,w-120'} alt={item.username} class="job-image" />
 					<a class="content" href={`${base}/job/${item.input.address}/${item.input.slot}`}>
@@ -64,7 +64,7 @@
 					</a>
 				</div>
 				<div class="button link" on:click={() => handleRemove(item)} on:keydown>
-					<p class="light-60">remove from favorites</p>
+					<p class="light-60">remove from watchlist</p>
 				</div>
 			</div>
 			{#if item !== watchlist[watchlist.length - 1]}

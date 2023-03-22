@@ -3,26 +3,30 @@
 	import { onMount } from 'svelte';
 	import { chosen_profile_tab } from '$lib/stores/State';
 	import { userAddress, userConnected } from '$lib/stores/Network';
-	import type { FavoriteType } from '$lib/stores/Types';
 	import { toast } from '@zerodevx/svelte-toast';
 
 	onMount(() => {
 		chosen_profile_tab.set('favorites');
 		getFavorites();
 	});
-	let favorites: Array<FavoriteType> = [];
+	let action_counter = 0;
 
 	const getFavorites = async () => {
 		if ($userConnected) {
 			try {
 				const response = await fetch(`/api/favorites/get/${$userAddress}`);
-				const data = await response.json();
-				favorites = data;
+				return await response.json();
 			} catch (error) {
-				toast.push('Error fetching favorites');
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>Failed to fetch favorites</p>`
+				);
 			}
 		}
 	};
 </script>
 
-<Favorites {favorites} on:remove={getFavorites} />
+{#key action_counter}
+	{#await getFavorites() then favorites}
+		<Favorites {favorites} on:remove={() => action_counter++} />
+	{/await}
+{/key}

@@ -3,21 +3,18 @@
 	import { onMount } from 'svelte';
 	import { chosen_profile_tab } from '$lib/stores/State';
 	import { userAddress, userConnected } from '$lib/stores/Network';
-	import type { WatchlistType } from '$lib/stores/Types';
 	import { toast } from '@zerodevx/svelte-toast';
 
 	onMount(() => {
 		chosen_profile_tab.set('watchlist');
-		getWatchlist();
 	});
-	let watchlist: Array<WatchlistType> = [];
 
+	let action_counter = 0;
 	const getWatchlist = async () => {
 		if ($userConnected) {
 			try {
 				const response = await fetch(`/api/watchlist/get/${$userAddress}`);
-				const data = await response.json();
-				watchlist = data;
+				return await response.json();
 			} catch (error) {
 				toast.push('Error fetching watchlist');
 			}
@@ -25,4 +22,8 @@
 	};
 </script>
 
-<Watchlist {watchlist} on:remove={getWatchlist} />
+{#key action_counter}
+	{#await getWatchlist() then watchlist}
+		<Watchlist {watchlist} on:remove={() => action_counter++} />
+	{/await}
+{/key}

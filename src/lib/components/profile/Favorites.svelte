@@ -51,7 +51,7 @@
 		</div>
 	{:else}
 		{#each favorites as item, index (index)}
-			<div class="container" transition:fly={{ duration: 100 + 50 * index, x: 50 }}>
+			<div class="container" in:fly={{ duration: 100 + 50 * index, x: 50 }}>
 				<div class="left">
 					<img src={item.image_url + '?tr=h-120,w-120'} alt={item.username} class="job-image" />
 					<a class="content" href={`${base}/creator/${item.input.address}/`}>

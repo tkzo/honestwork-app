@@ -139,11 +139,11 @@
 				let data = await res.json();
 				if (data == 'success') {
 					toast.push(
-						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>job listing updated.</p>`
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>job listing updated</p>`
 					);
 				} else {
 					toast.push(
-						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>job listing could not be updated.</p>`
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>job listing could not be updated</p>`
 					);
 				}
 			}

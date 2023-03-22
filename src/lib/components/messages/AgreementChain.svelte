@@ -2,7 +2,13 @@
 	import { ethers } from 'ethers';
 	import { env } from '$env/dynamic/public';
 	import { escrow_abi, erc20_abi } from '$lib/stores/ABI';
-	import { userAddress, networkSigner, networkProvider, chainID, userToken } from '$lib/stores/Network';
+	import {
+		userAddress,
+		networkSigner,
+		networkProvider,
+		chainID,
+		userToken
+	} from '$lib/stores/Network';
 	import { findTokenName, findChainName } from '$lib/stores/Constants';
 	import type { Deal } from '$lib/stores/Types';
 	import { toast } from '@zerodevx/svelte-toast';
@@ -12,7 +18,7 @@
 	export let deal: Deal;
 	export let id: string;
 
-  let decimals: number;
+	let decimals: number;
 	let rating: number;
 	let amount: number;
 
@@ -22,14 +28,14 @@
 			parseFloat(ethers.utils.formatUnits(deal.totalPayment, decimals))) *
 		100;
 
-  const fetchDecimals = async () => {
+	const fetchDecimals = async () => {
 		try {
 			const Token = new ethers.Contract(deal.paymentToken, erc20_abi, $networkProvider);
 			decimals = await Token.decimals();
 		} catch (err) {
-      console.log(err)
-    }
-  }
+			console.log(err);
+		}
+	};
 	const claimable = () => {
 		return parseFloat(ethers.utils.formatUnits(deal.claimableAmount, decimals).toString());
 	};
@@ -51,7 +57,7 @@
 					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>approved ${findTokenName(
 						findChainName($chainID),
 						deal.paymentToken
-					)}.</p>`
+					)}</p>`
 				);
 			}
 		} catch (error: any) {
@@ -61,7 +67,7 @@
 		}
 	};
 	const handleInstallment = async () => {
-    await fetchDecimals();
+		await fetchDecimals();
 		await approve(ethers.utils.parseUnits(amount.toString(), decimals));
 		try {
 			const Payment = new ethers.Contract(env.PUBLIC_ESCROW_ADDRESS!, escrow_abi, $networkSigner);
@@ -136,7 +142,7 @@
 	};
 	const handleWithdraw = async () => {
 		try {
-      const decimals = await fetchDecimals();
+			await fetchDecimals();
 			const Payment = new ethers.Contract(env.PUBLIC_ESCROW_ADDRESS, escrow_abi, $networkSigner);
 			const tx = await Payment.withdrawPayment(id);
 			const receipt = await tx.wait();
@@ -220,7 +226,9 @@
 		</div>
 		<div class="info">
 			<p class="light-60">claimable amount</p>
-			<p>${parseFloat(ethers.utils.formatUnits(deal.claimableAmount, decimals)).toLocaleString()}</p>
+			<p>
+				${parseFloat(ethers.utils.formatUnits(deal.claimableAmount, decimals)).toLocaleString()}
+			</p>
 		</div>
 		<div class="outstanding-container">
 			<div style="height:8px" />
