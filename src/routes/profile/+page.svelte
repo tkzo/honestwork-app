@@ -37,7 +37,7 @@
 	let nft_image: string = placeholder_image;
 	let is_owner: boolean;
 	let username: string = data.user.username;
-	let show_nft: boolean = data.user.show_nft;
+	let show_nft: boolean = data.user.show_nft ?? true;
 	let title: string = data.user.title;
 	let email: string = data.user.email;
 	let nft_id: number = data.user.nft_id;
@@ -48,7 +48,7 @@
 	let infobox_show: boolean = false;
 	let infobox_previous_content: string;
 	let upload_url: Response;
-	let ens_name: string;
+	let ens_name: string = '';
 	let show_ens: boolean = data.user.show_ens;
 	let ens_loading: boolean = false;
 	let file_url: string = data.user.image_url;
