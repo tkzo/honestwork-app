@@ -43,7 +43,7 @@
 	let nft_id: number = data.user.nft_id;
 	let nft_address: string = data.user.nft_address;
 	let bio: string = data.user.bio;
-	let dms_open: boolean = data.user.dms_open;
+	let dms_open: boolean = data.user.dms_open ?? false;
 	let fetching_image = true;
 	let infobox_show: boolean = false;
 	let infobox_previous_content: string;
