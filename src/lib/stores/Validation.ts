@@ -6,7 +6,7 @@ import { chains } from '$lib/stores/Constants';
 const tokens = chains[0].tokens;
 
 export const JobInput = z.object({
-  job_slot: z.number(),
+  job_slot: z.optional(z.number()),
   username: z.string().min(5).max(50),
   user_address: z.string().refine((val) => ethers.utils.isAddress(val), {
     message: 'Invalid address'

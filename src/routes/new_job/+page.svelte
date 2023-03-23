@@ -40,22 +40,23 @@
 
 	let feedHeight = 0;
 	let file_url: string;
+	let budget: number;
 	let service_fee = 10; // in $
-	let jobForm: HTMLFormElement;
 	let image_url: string | undefined = undefined;
 	let upload_url: Response;
 	let show_ens: boolean = false;
 	let show_sticky_menu: boolean = false;
 	let show_token_menu: boolean = false;
+	let email: string;
+	let title: string;
+	let username: string;
 	let sticky_duration: number = 7;
 	let links: string[] = [];
 	let tags: string[] = [];
 	let chosen_network: Network = chains[0]!;
 	let arbitrumTokens = chains.find((chain) => chain.id == 42161)?.tokens!;
 	let chosen_payment_token = arbitrumTokens[0];
-	let paymentTokenBalance = 0;
 	let userPaying = false;
-	let userSigned = false;
 	let tag_input: HTMLInputElement;
 	let userPaid: boolean = false;
 	let username_length = 0;
@@ -91,74 +92,67 @@
 	};
 	// todo: refactor with a single form reference
 	const handleSubmit = async (e: any) => {
-		if (e.submitter?.id != 'job_post') {
-			return;
-		}
+		if ($userConnected) {
+			const salt_res = await fetch(`/api/auth/login/${$userAddress}`, {
+				method: 'POST'
+			});
+			salt = await salt_res.json();
 
-		const input: JobInput = {
-			username: username_element.value,
-			user_address: $userAddress,
-			title: title_element.value,
-			email: jobForm.email.value,
-			token_paid: chosen_payment_token.address,
-			description: parseContent(content),
-			tags: tags,
-			links: links,
-			budget: jobForm.budget.value,
-			sticky_duration: sticky_duration,
-			timezone: 'UTC+3',
-			tokens_accepted: network_selection_array
-		};
-		let parsed = JobInput.safeParse(input);
-		if (!parsed.success) {
-			for (let i = 0; i < parsed.error.errors.length; i++) {
-				toast.push(
-					`<p class="light-60"><span style='color:var(--color-error)'>${parsed.error.errors[i].path}: </span>${parsed.error.errors[i].message}</p>`
-				);
+			let signature = await $networkSigner.signMessage(salt);
+			const input: JobInput = {
+				username: username,
+				user_address: $userAddress,
+				title: title,
+				email: email,
+				token_paid: chosen_payment_token.address,
+				description: parseContent(content),
+				tags: tags,
+				links: links,
+				budget: budget,
+				sticky_duration: sticky_duration,
+				timezone: timezone,
+				tokens_accepted: network_selection_array,
+				image_url: image_url ?? '',
+				signature: signature
+			};
+			let parsed = JobInput.safeParse(input);
+			if (!parsed.success) {
+				for (let i = 0; i < parsed.error.errors.length; i++) {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-error)'>${parsed.error.errors[i].path}: </span>${parsed.error.errors[i].message}</p>`
+					);
+				}
+				return;
+			} else {
+				userPublishing = true;
+				if (upload_url) {
+					uploadImage(e);
+					input.image_url = parsed_filename;
+				}
+				let stringified = JSON.stringify(input);
+				const url = '/api/job_submit';
+				const options = {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: stringified
+				};
+				let res = await fetch(url, options);
+				let data = await res.json();
+				if (data == 'success') {
+					userPublished = true;
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Job listing posted</p>`
+					);
+					userPublishing = false;
+					goto(`/job/${$userAddress}`);
+				} else {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
+					);
+				}
 			}
-			return;
-		}
-
-		userPublishing = true;
-		const salt_res = await fetch(`/api/auth/login/${$userAddress}`, {
-			method: 'POST'
-		});
-		salt = await salt_res.json();
-		jobForm.signature.value = await $networkSigner.signMessage(salt);
-
-		const formData = new FormData(e.target! as HTMLFormElement);
-		let formObj: JobType = {} as JobType;
-		formObj = Object.fromEntries(formData.entries()) as unknown as JobType;
-		formObj.tokens_accepted = network_selection_array;
-		formObj.links = links;
-		formObj.tags = tags;
-		formObj.sticky_duration = sticky_duration.toString();
-		formObj.timezone = timezone >= 0 ? `UTC+${timezone}` : `UTC${timezone}`;
-
-		uploadImage(e);
-		formObj.image_url = parsed_filename;
-		let stringified = JSON.stringify(formObj);
-		const url = '/api/job_submit';
-		const options = {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: stringified
-		};
-		let res = await fetch(url, options);
-		let data = await res.json();
-		if (data == 'success') {
-			userPublished = true;
-			toast.push(
-				`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Job listing posted</p>`
-			);
-			userPublishing = false;
-			goto(`/job/${$userAddress}`);
-		} else {
-			toast.push(
-				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
-			);
 		}
 	};
 	const uploadImage = async (e: any) => {
@@ -263,18 +257,19 @@
 	const pay = async () => {
 		// todo: add decimal prop to tokens
 		const input: JobInput = {
-			username: username_element.value,
+			username: username,
 			user_address: $userAddress,
-			title: title_element.value,
-			email: jobForm.email.value,
+			title: title,
+			email: email,
 			token_paid: chosen_payment_token.address,
 			description: parseContent(content),
 			tags: tags,
 			links: links,
-			budget: jobForm.budget.value,
+			budget: budget,
 			sticky_duration: sticky_duration,
-			timezone: 'UTC+3',
-			tokens_accepted: network_selection_array
+			timezone: timezone,
+			tokens_accepted: network_selection_array,
+			image_url: image_url ?? ''
 		};
 		let parsed = JobInput.safeParse(input);
 		if (!parsed.success) {
@@ -335,12 +330,7 @@
 		<div class="contents" bind:this={contents}>
 			<div style="height:16px" />
 			{#if $userConnected}
-				<form
-					method="POST"
-					on:submit|preventDefault={handleSubmit}
-					bind:this={jobForm}
-					autocomplete="off"
-				>
+				<form method="POST" on:submit|preventDefault={handleSubmit} autocomplete="off">
 					<input hidden type="number" name="job_slot" bind:value={$chosen_job_slot} />
 					<input hidden type="text" name="user_address" bind:value={$userAddress} />
 					<input hidden type="text" name="signature" bind:value={signature} />
@@ -382,6 +372,7 @@
 									type="text"
 									on:keyup={() => (username_length = username_element.value.length)}
 									bind:this={username_element}
+									bind:value={username}
 									minlength={form_limitations.job.username.min}
 									maxlength={form_limitations.job.username.max}
 									placeholder="Enter company/username"
@@ -421,6 +412,7 @@
 									type="text"
 									on:keyup={() => (title_length = title_element.value.length)}
 									bind:this={title_element}
+									bind:value={title}
 									minlength={form_limitations.job.title.min}
 									maxlength={form_limitations.job.title.max}
 									placeholder="Enter a title for you job listing"
@@ -443,6 +435,7 @@
 							class="flex-input"
 							type="text"
 							placeholder="Enter email for notifications"
+							bind:value={email}
 						/>
 					</div>
 					<div style="height:8px" />
@@ -471,6 +464,7 @@
 							min={form_limitations.job.budget.min}
 							max={form_limitations.job.budget.max}
 							placeholder="Between $1000 and $1,000,000"
+							bind:value={budget}
 						/>
 					</div>
 					<div style="height:8px" />
@@ -935,6 +929,7 @@
 		border-width: 1px;
 		border-style: solid;
 		border-color: var(--color-light-20);
+		background-color: var(--color-dark);
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: row;

@@ -24,7 +24,6 @@
 	let file_url: string;
 	let upload_url: Response;
 	let show_ens: boolean = false;
-	let show_sticky_menu: boolean = false;
 	let chosen_network: Network = chains[0];
 	let arbitrumTokens = chains.find((chain) => chain.id == 42161)?.tokens!;
 	let chosen_payment_token = arbitrumTokens[0];
@@ -53,7 +52,6 @@
 			return { chain_id: n.id, token_address: n.tokens[0].address };
 		}) ?? [];
 	let image_url = job.image_url;
-	$: console.log('Image url:', image_url);
 	onMount(() => {
 		changes_made.set(false);
 	});
@@ -78,10 +76,6 @@
 	// todo: refactor with a single form reference
 	const handleSubmit = async (e: any) => {
 		if ($userConnected) {
-			if (e.submitter?.id != 'job_post') {
-				return;
-			}
-
 			const res = await fetch(`/api/auth/login/${$userAddress}`, {
 				method: 'POST'
 			});
@@ -108,7 +102,7 @@
 				title: title,
 				user_address: $userAddress,
 				email: email,
-				description: description,
+				description: content,
 				image_url: image_url,
 				budget: budget,
 				tags: tags,
@@ -119,7 +113,6 @@
 				signature: signature
 			};
 
-			//todo: consume errors and show them to the user
 			let parsed = JobInput.safeParse(input);
 			if (!parsed.success) {
 				console.log(parsed.error);
