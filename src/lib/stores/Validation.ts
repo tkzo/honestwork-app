@@ -6,12 +6,14 @@ import { chains } from '$lib/stores/Constants';
 const tokens = chains[0].tokens;
 
 export const JobInput = z.object({
+  job_slot: z.number(),
   username: z.string().min(5).max(50),
   user_address: z.string().refine((val) => ethers.utils.isAddress(val), {
     message: 'Invalid address'
   }),
   email: z.string().email(),
-  token_paid: z.string().refine((val) => tokens.find((t) => t.address == val) != undefined),
+  image_url: z.string().url(),
+  token_paid: z.optional(z.string().refine((val) => tokens.find((t) => t.address == val) != undefined)),
   title: z.string().min(5).max(50),
   description: z.string().min(200).max(2000),
   tags: z.string().min(2).max(20).array().min(1).max(3),
@@ -20,58 +22,25 @@ export const JobInput = z.object({
     .array()
     .min(1)
     .max(3),
-  budget: z
-    .string()
-    .refine((val) => !Number.isNaN(parseInt(val, 10)), {
-      message: 'Expected number, received a string'
-    })
-    .refine(
-      (val) =>
-        !Number.isNaN(parseInt(val, 10)) && parseInt(val, 10) >= 10 && parseInt(val, 10) < 1000,
-      {
-        message: 'Wrong amount'
-      }
-    ), // todo: bigInt
-  timezone: z.enum([
-    'UTC+0',
-    'UTC+1',
-    'UTC+2',
-    'UTC+3',
-    'UTC+4',
-    'UTC+5',
-    'UTC+6',
-    'UTC+7',
-    'UTC+8',
-    'UTC+9',
-    'UTC+10',
-    'UTC+11',
-    'UTC+12',
-    'UTC-1',
-    'UTC-2',
-    'UTC-3',
-    'UTC-4',
-    'UTC-5',
-    'UTC-6',
-    'UTC-7',
-    'UTC-8',
-    'UTC-9',
-    'UTC-10',
-    'UTC-11',
-    'UTC-12'
-  ]),
+  budget: z.number().min(200).max(100000),
+  timezone: z.number().min(-14).max(14),
   tokens_accepted: z
     .object({
       id: z.number(),
       tokens: z
         .object({
-          address: z.string().refine((val) => tokens.find((t) => t.address == val) != undefined)
+          address: z.string().refine((val) => tokens.find((t) => t.address == val != undefined), {
+            message: "Not a token"
+          })
         })
         .array()
         .min(1)
     })
     .array()
     .min(1),
-  sticky_duration: z.number().refine((val) => val == 0 || val == 7 || val == 14 || val == 30)
+  sticky_duration: z.number().refine((val: number) => val == 0 || val == 7 || val == 14 || val == 30),
+  signature: z.optional(z.string()),
+  tx_hash: z.optional(z.string())
 });
 export type JobInput = z.infer<typeof JobInput>;
 

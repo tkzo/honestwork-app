@@ -1,8 +1,9 @@
 <script lang="ts">
 	/// <reference types="aws-sdk" />
-	import { userAddress, userState, userConnected } from '$lib/stores/Network';
+	import { userAddress, userConnected } from '$lib/stores/Network';
 	import { onMount } from 'svelte';
 	import { changes_made, submitting, chosen_profile_tab } from '$lib/stores/State';
+	import { placeholder_image } from '$lib/stores/Constants';
 	import { browser } from '$app/environment';
 	import { assets } from '$app/paths';
 	import { toast } from '@zerodevx/svelte-toast';
@@ -27,7 +28,6 @@
 		infobox_distance: 0,
 		infobox_content: 'your username will be used to identify you on the platform.'
 	};
-	let placeholder_image = 'assets/xcopy.gif';
 	let link_0: string = data.user.links != null ? data.user.links[0] : '';
 	let link_1: string = data.user.links != null ? data.user.links[1] : '';
 	let link_2: string = data.user.links != null ? data.user.links[2] : '';

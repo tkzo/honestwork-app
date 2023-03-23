@@ -22,7 +22,6 @@
 	let contents: Element;
 	let chosen_tab: string = 'applicants' || 'edit mode';
 	let file_url: string;
-	let jobForm: HTMLFormElement;
 	let upload_url: Response;
 	let show_ens: boolean = false;
 	let show_sticky_menu: boolean = false;
@@ -40,22 +39,21 @@
 	let total_chars = 0;
 	let signature: string;
 
-	let username = job.username;
+	let username: string = job.username;
 	let title = job.title;
 	let email = job.email;
 	let description = job.description;
 	let budget = job.budget;
-	let installments = job.installments;
-	let sticky_duration = parseInt(job.sticky_duration);
+	let sticky_duration = job.sticky_duration;
 	let links = job.links;
 	let tags = job.tags;
-	let timezone = job.timezone ? parseInt(job.timezone.replace('UTC', '')) : 0;
+	let timezone = job.timezone ?? 0;
 	let tokens_selected =
 		job.tokens_accepted?.map((n) => {
 			return { chain_id: n.id, token_address: n.tokens[0].address };
 		}) ?? [];
 	let image_url = job.image_url;
-
+	$: console.log('Image url:', image_url);
 	onMount(() => {
 		changes_made.set(false);
 	});
@@ -67,17 +65,15 @@
 		description != job.description ||
 		image_url != job.image_url ||
 		links != job.links ||
-		installments != job.installments ||
 		budget != job.budget ||
 		tags != job.tags ||
-		sticky_duration != parseInt(job.sticky_duration) ||
-		`UTC${timezone > 0 ? '+' : '-'}${timezone}` != job.timezone
+		sticky_duration != job.sticky_duration ||
+		timezone != job.timezone
 	) {
 		changes_made.set(true);
 	} else {
 		changes_made.set(false);
 	}
-	$: sticky_item = sticky_data.find((n) => n.duration == sticky_duration) ?? sticky_data[0];
 
 	// todo: refactor with a single form reference
 	const handleSubmit = async (e: any) => {
@@ -90,43 +86,50 @@
 				method: 'POST'
 			});
 			let salt = await res.json();
-			jobForm.signature.value = await $networkSigner.signMessage(salt);
 
-			const formData = new FormData(e.target! as HTMLFormElement);
-			let formObj: JobType = {} as JobType;
-			formObj = Object.fromEntries(formData.entries()) as unknown as JobType;
-			formObj.tokens_accepted = [] as Network[];
+			let tokens_accepted = [] as Network[];
 			for (let i = 0; i < tokens_selected.length; i++) {
 				let chain_id = tokens_selected[i].chain_id;
-				let existing = formObj.tokens_accepted?.find((n) => n.id == chain_id);
+				let existing = tokens_accepted?.find((n) => n.id == chain_id);
 				if (existing) {
 					existing.tokens.push({ address: tokens_selected[i].token_address });
 				} else {
-					formObj.tokens_accepted.push({
+					tokens_accepted.push({
 						id: chain_id,
 						tokens: [{ address: tokens_selected[i].token_address }]
 					});
 				}
 			}
-			formObj.links = links;
-			formObj.tags = tags;
-			formObj.sticky_duration = sticky_duration.toString();
-			formObj.timezone = timezone >= 0 ? `UTC+${timezone}` : `UTC-${timezone}`;
-			formObj.description = content;
+
+			let signature = await $networkSigner.signMessage(salt);
+			const input: JobInput = {
+				job_slot: $chosen_job_slot,
+				username: username,
+				title: title,
+				user_address: $userAddress,
+				email: email,
+				description: description,
+				image_url: image_url,
+				budget: budget,
+				tags: tags,
+				links: links,
+				sticky_duration: sticky_duration,
+				tokens_accepted: tokens_accepted,
+				timezone: timezone,
+				signature: signature
+			};
 
 			//todo: consume errors and show them to the user
-			let parsed = JobInput.safeParse(formObj);
+			let parsed = JobInput.safeParse(input);
 			if (!parsed.success) {
 				console.log(parsed.error);
 				return;
 			} else {
 				if (upload_url) {
 					uploadImage(e);
-					formObj.image_url = parsed_filename;
+					input.image_url = parsed_filename;
 				}
-
-				jobForm.tokens_accepted = JSON.stringify(formObj.tokens_accepted);
-				let stringified = JSON.stringify(formObj);
+				let stringified = JSON.stringify(input);
 				const url = '/api/job_update';
 				const options = {
 					method: 'POST',
@@ -143,7 +146,7 @@
 					);
 				} else {
 					toast.push(
-						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>job listing could not be updated</p>`
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
 					);
 				}
 			}
@@ -196,10 +199,6 @@
 		);
 		upload_url = res;
 	};
-	const setSticky = (duration: number) => {
-		show_sticky_menu = !show_sticky_menu;
-		sticky_duration = duration;
-	};
 	const handleLinkUpdate = (e: any, index: number) => {
 		links[index] = e.target.value;
 	};
@@ -243,7 +242,7 @@
 </script>
 
 <main>
-	<form method="PATCH" on:submit|preventDefault={handleSubmit} bind:this={jobForm}>
+	<form method="PATCH" on:submit|preventDefault={handleSubmit}>
 		<div class="bar">
 			<div class="bar-left">
 				<div class="bar-item" on:click={() => (chosen_tab = 'applicants')} on:keydown>
@@ -290,7 +289,6 @@
 					{:else}
 						<div class="edit">
 							{#if $userConnected}
-								<input hidden type="number" name="job_slot" value={$chosen_job_slot} />
 								<input hidden type="text" name="user_address" value={$userAddress} />
 								<input hidden type="text" name="tx_hash" value={tx_hash} />
 								<input hidden type="text" name="token_paid" value={chosen_payment_token.address} />
@@ -299,9 +297,8 @@
 								<div class="image-section">
 									<div
 										class="image-card"
-										style={`background-image:url(${
-											image_url ? image_url + '?tr=h-248,w-248' : placeholder_image
-										})`}
+										style={`background-image:url(${image_url ?? placeholder_image}
+										)`}
 									>
 										<div class="image-tint" />
 										<div class="upload-button">
@@ -421,66 +418,9 @@
 										type="number"
 										min={form_limitations.job.budget.min}
 										max={form_limitations.job.budget.max}
-										placeholder="Between $1000 and $1,000,000"
+										placeholder="Between $200 and $100,000"
 										bind:value={budget}
 									/>
-								</div>
-								<div style="height:8px" />
-								<div class="input-field">
-									<div class="placeholder">
-										<p class="light-40">installments</p>
-									</div>
-									<input
-										name="installments"
-										class="flex-input"
-										type="number"
-										min={form_limitations.job.installments.min}
-										max={form_limitations.job.installments.max}
-										placeholder="Between 2 and 5"
-										bind:value={installments}
-									/>
-								</div>
-								<div style="height:8px" />
-								<div class="input-field">
-									<div class="placeholder">
-										<p class="yellow">stay sticky!</p>
-									</div>
-									<div class="sticky">
-										<div
-											class="sticky-chosen"
-											on:click={() => (show_sticky_menu = !show_sticky_menu)}
-											on:keydown
-										>
-											<p>
-												{sticky_item?.duration} days<span class="light-60"
-													>(${sticky_item?.price})</span
-												>
-											</p>
-											<img
-												src={show_sticky_menu
-													? 'icons/chevron_active.svg'
-													: 'icons/chevron_passive.svg'}
-												alt="Dropdown"
-												style="width:10px;"
-											/>
-										</div>
-										{#if show_sticky_menu}
-											<div class="sticky-menu">
-												<div class="sticky-item" on:click={() => setSticky(7)} on:keydown>
-													<p>7 days<span class="light-60">($49)</span></p>
-												</div>
-												<div class="sticky-item" on:click={() => setSticky(14)} on:keydown>
-													<p>14 days<span class="light-60">($69)</span></p>
-												</div>
-												<div class="sticky-item" on:click={() => setSticky(30)} on:keydown>
-													<p>30 days<span class="light-60">($99)</span></p>
-												</div>
-												<div class="sticky-item" on:click={() => setSticky(0)} on:keydown>
-													<p>no sticky<span class="light-60">(ngmi)</span></p>
-												</div>
-											</div>
-										{/if}
-									</div>
 								</div>
 								<div style="height:24px" />
 								<div class="description-bar">
@@ -815,57 +755,6 @@
 		align-items: center;
 		position: relative;
 	}
-	.sticky {
-		flex: 1;
-		width: 100%;
-		height: 32px;
-		display: flex;
-		flex-direction: row;
-		align-items: flex-start;
-		position: relative;
-	}
-	.sticky-chosen {
-		flex: 1;
-		height: 32px;
-		padding: 8px;
-		border-width: 1px;
-		border-style: solid;
-		border-color: var(--color-light-20);
-		box-sizing: border-box;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		cursor: pointer;
-	}
-	.sticky-chosen:hover {
-		background-color: var(--color-light-2);
-	}
-	.sticky-menu {
-		position: absolute;
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		margin-top: 32px;
-		background-color: var(--color-dark);
-		border-width: 0px 1px 1px 1px;
-		border-style: solid;
-		border-color: var(--color-light-20);
-		box-sizing: border-box;
-		flex: 1;
-		width: 100%;
-	}
-	.sticky-item {
-		padding: 8px;
-		width: 100%;
-		cursor: pointer;
-		box-sizing: border-box;
-	}
-	.sticky:hover .sticky-menu {
-		display: flex;
-	}
-	.sticky-item:hover {
-		background-color: var(--color-light-2);
-	}
 	.description-bar {
 		width: 100%;
 		display: flex;
@@ -986,9 +875,6 @@
 		border-style: solid;
 		border-color: var(--color-light-20);
 		padding: 0px 0px 8px 0px;
-	}
-	.sticky {
-		width: 100%;
 	}
 	.limit {
 		position: absolute;

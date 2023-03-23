@@ -72,10 +72,9 @@ export type JobType = {
   budget: number;
   links: Array<string>;
   tags: Array<string>;
-  installments: number;
   tokens_accepted: Array<Network>;
-  sticky_duration: string;
-  timezone: string;
+  sticky_duration: number;
+  timezone: number;
   application: Array<ApplicantType>;
   deal_network_id: number;
   deal_id: number;

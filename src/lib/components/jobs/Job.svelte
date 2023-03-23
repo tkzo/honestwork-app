@@ -77,11 +77,15 @@
 		</div>
 	</div>
 	<div class="contents">
-		<img src={job.image_url ? job.image_url + "?tr=h-240,w-240" : placeholder_image} alt="gallery" class="preview-image" />
+		<img
+			src={job.image_url ? job.image_url + '?tr=h-240,w-240' : placeholder_image}
+			alt="gallery"
+			class="preview-image"
+		/>
 		<div style="width:12px;" />
 		<div class="content">
 			<div class="body-text light-60">
-				{parseContent(job.description)}
+				{parseContent(job.description).slice(140) + '...'}
 			</div>
 			<div style="height: 16px" />
 			<div class="hashtags">

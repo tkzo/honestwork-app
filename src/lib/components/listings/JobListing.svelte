@@ -14,10 +14,6 @@
 	// todo: inline this
 	$: infos = [
 		{
-			key: 'installments',
-			value: job.installments
-		},
-		{
 			key: 'budget',
 			value: '$' + job.budget.toString().slice(0, 6)
 		},
@@ -33,11 +29,11 @@
 <section class={chosen ? 'chosen' : ''}>
 	<div class="title-bar">
 		<div class="tags">
-			{#if parseInt(job.sticky_duration) >= 7}
+			{#if job.sticky_duration >= 7}
 				<div class="tag">
 					<p class="yellow">
 						sticky post <span class="light-60">{job.sticky_duration} days </span><span class="light"
-							>${sticky_data.find((n) => n.duration == parseInt(job.sticky_duration))?.price}</span
+							>${sticky_data.find((n) => n.duration == job.sticky_duration)?.price}</span
 						>
 					</p>
 				</div>
@@ -64,7 +60,11 @@
 		</div>
 	</div>
 	<div class="contents">
-		<img src={job.image_url ? job.image_url + "?tr=h-240,w-240" : placeholder_image} alt="gallery" class="preview-image" />
+		<img
+			src={job.image_url ? job.image_url + '?tr=h-240,w-240' : placeholder_image}
+			alt="gallery"
+			class="preview-image"
+		/>
 		<div style="width:12px;" />
 		<div class="content">
 			<div class="body-text light-60">

@@ -16,9 +16,6 @@
 	//todo: move images to img elements instead of div backgrounds (won't show ones with empty letter in its name)
 	export let skill: SkillInput;
 
-	$: console.log('Chosen skill slot:', $chosen_skill_slot);
-	$: console.log('Skill add:', $skill_add);
-
 	let description_chars = 2000;
 	let description_text = skill.description;
 	let title: string = skill.title;
