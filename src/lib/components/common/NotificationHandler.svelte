@@ -9,7 +9,7 @@
 </script>
 
 {#if $page.route.id == '/'}
-	<a href={`${base}/mint`}><Notification notification={notifications.mint} /></a>
+	<!-- <a href={`${base}/mint`}><Notification notification={notifications.mint} /></a> -->
 {:else if $page.route.id == '/skills' || $page.route.id == '/listings'}
 	<Notification notification={notifications.mint} on:click={() => goto('/mint')} />
 {:else if $page.route.id == '/jobs'}
