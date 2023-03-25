@@ -35,8 +35,8 @@
 				<div class="header">
 					<h1>A platform for all your web3 freelancing needs</h1>
 					<p class="about">
-						HonestWork connects clients with top-rated blockchain experts, including copywriters,
-						developers, and designers.
+						HonestWork helps you find the best Web3 freelance job offers and hire quality talents for your Web3 projects. 
+						<span class="yellow">Launching soon.</span>
 					</p>
 					<a
 						class="explore"
