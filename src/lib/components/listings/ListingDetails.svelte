@@ -244,6 +244,9 @@
 				<div class="bar-item" on:click={() => (chosen_tab = 'edit mode')} on:keydown>
 					<p class={chosen_tab == 'edit mode' ? 'yellow' : 'light-60 link'}>edit mode</p>
 				</div>
+				<div class="bar-item" style="cursor:wait;">
+					<p class={'light-40'}>ai assistance</p>
+				</div>
 			</div>
 			<div class="save-changes" style="margin-left:auto">
 				{#if $submitting}

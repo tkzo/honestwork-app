@@ -271,6 +271,7 @@
 				return;
 			}
 		}
+		console.log('Form data:', input);
 		const url = `${base}/api/profile_update`;
 		let response = await fetch(url, {
 			method: 'POST',

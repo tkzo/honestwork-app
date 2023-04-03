@@ -3,7 +3,7 @@
 	import { xmtpConnected, xmtpConnecting, userAddress, userState } from '$lib/stores/Network';
 	import { assets } from '$app/paths';
 	let pages = [
-		{ name: 'faq', path: '/' },
+		{ name: 'docs', path: 'https://docs.honestwork.app' },
 		{ name: 'terms', path: '/' },
 		{ name: 'privacy', path: '/' }
 	];

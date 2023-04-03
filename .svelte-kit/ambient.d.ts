@@ -41,6 +41,7 @@ declare module '$env/static/private' {
 	export const PRIVATE_ETHEREUM_RPC: string;
 	export const PRIVATE_CLIENT_KEY: string;
 	export const PRIVATE_CLIENT_PASSWORD: string;
+	export const PRIVATE_OPENAI_KEY: string;
 	export const MANPATH: string;
 	export const NIX_PROFILES: string;
 	export const TERM_PROGRAM: string;
@@ -108,6 +109,7 @@ declare module '$env/static/private' {
 	export const LESS: string;
 	export const npm_lifecycle_script: string;
 	export const LC_CTYPE: string;
+	export const SSH_SOCKET_DIR: string;
 	export const CONDA_DEFAULT_ENV: string;
 	export const npm_config_user_agent: string;
 	export const VIMRUNTIME: string;
@@ -168,6 +170,7 @@ declare module '$env/dynamic/private' {
 		PRIVATE_ETHEREUM_RPC: string;
 		PRIVATE_CLIENT_KEY: string;
 		PRIVATE_CLIENT_PASSWORD: string;
+		PRIVATE_OPENAI_KEY: string;
 		MANPATH: string;
 		NIX_PROFILES: string;
 		TERM_PROGRAM: string;
@@ -235,6 +238,7 @@ declare module '$env/dynamic/private' {
 		LESS: string;
 		npm_lifecycle_script: string;
 		LC_CTYPE: string;
+		SSH_SOCKET_DIR: string;
 		CONDA_DEFAULT_ENV: string;
 		npm_config_user_agent: string;
 		VIMRUNTIME: string;

@@ -105,7 +105,7 @@
 				title: title,
 				email: email,
 				token_paid: chosen_payment_token.address,
-				description: parseContent(content),
+				description: content,
 				tags: tags,
 				links: links,
 				budget: budget,
@@ -113,7 +113,8 @@
 				timezone: timezone,
 				tokens_accepted: network_selection_array,
 				image_url: image_url ?? '',
-				signature: signature
+				signature: signature,
+				tx_hash: tx_hash
 			};
 			let parsed = JobInput.safeParse(input);
 			if (!parsed.success) {
@@ -149,7 +150,7 @@
 					goto(`/job/${$userAddress}`);
 				} else {
 					toast.push(
-						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${await data.json()}</p>`
 					);
 				}
 			}
