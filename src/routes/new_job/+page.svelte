@@ -105,7 +105,7 @@
 				title: title,
 				email: email,
 				token_paid: chosen_payment_token.address,
-				description: content,
+				description: parseContent(content),
 				tags: tags,
 				links: links,
 				budget: budget,
@@ -130,6 +130,7 @@
 					uploadImage(e);
 					input.image_url = parsed_filename;
 				}
+				input.description = content;
 				let stringified = JSON.stringify(input);
 				const url = '/api/job_submit';
 				const options = {
@@ -301,7 +302,7 @@
 					userApproved = true;
 				}
 				const joblistingContract = new ethers.Contract(
-					env.PUBLIC_LISTING_ADDRESS,
+					env.PUBLIC_LISTING_ADDRESS!,
 					listing_abi,
 					$networkSigner
 				);
