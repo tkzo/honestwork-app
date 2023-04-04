@@ -47,7 +47,7 @@ export let FAQCards: FAQCard[] = [
 
 export let featureCards: FeatureCard[] = [
   {
-    type: 'employer',
+    type: 'clients',
     title: 'Post a job without a hassle',
     icon1: 'icons/landing/cv.svg',
     icon1alt: 'Job listing',
@@ -60,7 +60,7 @@ export let featureCards: FeatureCard[] = [
     imgalt: 'Profile'
   },
   {
-    type: 'employer',
+    type: 'clients',
 
     title: 'Find the best talents',
     icon1: 'icons/landing/bullseye-arrow.svg',
@@ -74,7 +74,7 @@ export let featureCards: FeatureCard[] = [
     imgalt: 'Profile'
   },
   {
-    type: 'employer',
+    type: 'clients',
 
     title: 'Safe on-chain payments',
     icon1: 'icons/landing/bitcoin.svg',
@@ -88,7 +88,7 @@ export let featureCards: FeatureCard[] = [
     imgalt: 'Profile'
   },
   {
-    type: 'freelancer',
+    type: 'freelancers',
     title: 'On-chain perks',
     icon1: 'icons/landing/avatar.svg',
     icon1alt: 'Avatar icon',
@@ -101,7 +101,7 @@ export let featureCards: FeatureCard[] = [
     imgalt: 'Profile'
   },
   {
-    type: 'freelancer',
+    type: 'freelancers',
     title: 'Get paid in crypto',
     icon1: 'icons/landing/briefcase-check.svg',
     icon1alt: 'Briefcase icon',
@@ -114,7 +114,7 @@ export let featureCards: FeatureCard[] = [
     imgalt: 'Profile'
   },
   {
-    type: 'freelancer',
+    type: 'freelancers',
     title: 'Find premium web3 freelance jobs',
     icon1: 'icons/landing/list-box.svg',
     icon1alt: 'List box icon',

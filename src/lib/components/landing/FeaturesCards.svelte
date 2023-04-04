@@ -1,18 +1,18 @@
 <script lang="ts">
 	import { featureCards } from '$lib/stores/Constants';
 	import FeatureCard from './FeatureCard.svelte';
-	let chosen_tab: 'employer' | 'freelancer' = 'employer';
+	let chosen_tab: 'clients' | 'freelancers' = 'clients';
 </script>
 
 <div class="buttons-container">
 	<div class="line" />
 	<button
-		on:click={() => (chosen_tab = 'employer')}
-		class={chosen_tab == 'employer' ? 'selected button' : 'button'}>Employers</button
+		on:click={() => (chosen_tab = 'clients')}
+		class={chosen_tab == 'clients' ? 'selected button' : 'button'}>Employers</button
 	>
 	<button
-		on:click={() => (chosen_tab = 'freelancer')}
-		class={chosen_tab != 'employer' ? 'selected button' : 'button'}>Freelancers</button
+		on:click={() => (chosen_tab = 'freelancers')}
+		class={chosen_tab != 'clients' ? 'selected button' : 'button'}>Freelancers</button
 	>
 	<div class="line" />
 </div>
@@ -49,7 +49,9 @@
 		width: 80vw;
 		max-width: 960px;
 		padding-bottom: 120px;
-		border-bottom: 1px solid var(--color-light-20);
+		background-image: url('./assets/gridlock.webp');
+		background-size: cover;
+		background-repeat: none;
 	}
 
 	.button {
