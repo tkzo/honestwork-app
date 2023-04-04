@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { featureCards } from '$lib/stores/Constants';
+	import { base } from '$app/paths';
 	import FeatureCard from './FeatureCard.svelte';
 	let chosen_tab: 'clients' | 'freelancers' = 'clients';
 </script>
@@ -17,7 +18,7 @@
 	<div class="line" />
 </div>
 <div style="height: 100px;" />
-<div class="container">
+<div class="container" style={`background-image:url(${base}/assets/gridlock.webp)`}>
 	{#each featureCards as card, index}
 		{#if chosen_tab == card.type}
 			<FeatureCard {card} {index} />
@@ -49,7 +50,6 @@
 		width: 80vw;
 		max-width: 960px;
 		padding-bottom: 120px;
-		background-image: url('./assets/gridlock.webp');
 		background-size: cover;
 		background-repeat: none;
 	}
