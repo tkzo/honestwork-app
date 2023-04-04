@@ -85,7 +85,7 @@
 		<div style="width:12px;" />
 		<div class="content">
 			<div class="body-text light-60">
-				{parseContent(job.description).slice(140) + '...'}
+				{parseContent(job.description).slice(0, 140) + '...'}
 			</div>
 			<div style="height: 16px" />
 			<div class="hashtags">
