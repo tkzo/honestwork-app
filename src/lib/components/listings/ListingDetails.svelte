@@ -102,7 +102,7 @@
 				title: title,
 				user_address: $userAddress,
 				email: email,
-				description: content,
+				description: parseContent(content),
 				image_url: image_url,
 				budget: budget,
 				tags: tags,
@@ -122,6 +122,7 @@
 					uploadImage(e);
 					input.image_url = parsed_filename;
 				}
+				input.description = content;
 				let stringified = JSON.stringify(input);
 				const url = '/api/job_update';
 				const options = {
