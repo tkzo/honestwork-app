@@ -24,25 +24,22 @@
 	<div class="viewport" bind:this={viewport}>
 		<div class="contents" bind:this={contents}>
 			<div class="hero">
-				<!-- <div class="nav"> -->
-				<!-- 	<div class="logo"> -->
-				<!-- 		<img src={`${assets}/icons/landing/logo.svg`} alt="HonestWork Logo" /> -->
-				<!-- 		<div class="text">H0NESTW0RK</div> -->
-				<!-- 	</div> -->
-				<!-- 	<div class="login link" on:click={handleConnect} on:keydown>LOGIN TO APP</div> -->
-				<!-- </div> -->
+				<div class="nav">
+					<div class="logo">
+						<img src={`${assets}/icons/landing/logo.svg`} alt="HonestWork Logo" />
+						<div class="text">H0NESTW0RK</div>
+					</div>
+					<div class="login link" on:click={handleConnect} on:keydown>LOGIN TO APP</div>
+				</div>
 				<div style="height: 100px;" />
 				<div class="header">
 					<h1>A platform for all your web3 freelancing needs</h1>
 					<p class="about">
-						HonestWork helps you find the best Web3 freelance job offers and hire quality talents for your Web3 projects. 
+						HonestWork helps you find the best Web3 freelance job offers and hire quality talents
+						for your Web3 projects.
 						<span class="yellow">Launching soon.</span>
 					</p>
-					<a
-						class="explore"
-						href={`https://docs.google.com/forms/d/e/1FAIpQLSfcaBQtSa8s36fF3q69KoXT-uFYG4ebZNId5HbpJggGByUbmQ/viewform`}
-						>join the waitlist</a
-					>
+					<a class="explore" href={`${base}/jobs`}>explore now</a>
 					<div class="socials">
 						<a href="https://twitter.com/HonestWorkDAO" target="_blank" rel="noopener noreferrer">
 							<img src={`${assets}/icons/landing/twitter.svg`} alt="Twitter" class="icon" />
