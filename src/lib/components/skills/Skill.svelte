@@ -105,7 +105,11 @@
 <section class={chosen ? 'chosen' : ''}>
 	<div class="contents">
 		<div class="thumbnail">
-			<img src={skill.image_urls[0] ? skill.image_urls[0] + "?tr=h-360,w-480" : placeholder_image} alt="gallery" class="preview-image" />
+			<img
+				src={skill.image_urls[0] ? skill.image_urls[0] + '?tr=h-360,w-480' : placeholder_image}
+				alt="gallery"
+				class="preview-image"
+			/>
 		</div>
 		<div class="content">
 			<div>
@@ -143,7 +147,7 @@
 		</div>
 		<div class="actions">
 			<div class="action">
-        <p class='light-40'><span class='light'>${skill.minimum_price}</span>/h</p>
+				<p class="light-40"><span class="light">${skill.minimum_price}</span>/h</p>
 			</div>
 			<div class="action" on:click={handleNewConversation} on:keydown>
 				<img src={`${assets}/icons/message.svg`} alt="message" />
@@ -158,9 +162,9 @@
 				on:keydown
 			>
 				{#if hovering_heart}
-					<img src={`${assets}/icons/halfheart.svg`} alt="heart" />
+					<img class="icon-svg" src={`${assets}/icons/halfheart.svg`} alt="heart" />
 				{:else}
-					<img src={`${assets}/icons/heart.svg`} alt="heart" />
+					<img class="icon-svg" src={`${assets}/icons/heart.svg`} alt="heart" />
 				{/if}
 			</div>
 		</div>
