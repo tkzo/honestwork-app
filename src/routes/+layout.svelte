@@ -11,10 +11,25 @@
 	import { user_signed_in } from '$lib/stores/State';
 	import { onMount } from 'svelte';
 	import { connectIfCached } from '$lib/stores/Network';
+	import nProgress from 'nprogress';
+	import { navigating } from '$app/stores';
+	import 'nprogress/nprogress.css';
 
 	onMount(() => {
 		if ($page.route.id !== '/') connectIfCached();
+		nProgress.configure({ showSpinner: false });
 	});
+
+	$: {
+		if ($navigating) {
+			nProgress.start();
+			console.log('Started');
+		}
+		if (!$navigating) {
+			nProgress.done();
+			console.log('Ended');
+		}
+	}
 
 	export let data: LayoutServerData;
 	user_signed_in.set(data.signed!);
@@ -50,6 +65,10 @@
 			gtag('config', 'G-3X3Y5X23HN');
 		}
 	</script>
+	<script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+	<!-- <script -->
+	<!-- 	src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js" -->
+	<!-- ></script> -->
 </svelte:head>
 
 <main>

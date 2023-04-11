@@ -1,29 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
 
-		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-		<link
-			rel="stylesheet"
-			href="%sveltekit.assets%/fonts/stylesheet.css"
-			type="text/css"
-			charset="utf-8"
-		/>
-		<link rel="stylesheet" href="%sveltekit.assets%/styles.css" charset="utf-8" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=DM+Mono&display=swap" rel="stylesheet" />
-		<script
-			src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"
-			data-pace-options='{"eventLag:false"}'
-		></script>
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%sveltekit.assets%/favicon.png" />
+  <link rel="stylesheet" href="%sveltekit.assets%/fonts/stylesheet.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="%sveltekit.assets%/styles.css" charset="utf-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width" />
+  %sveltekit.head%
+</head>
 
-		<meta name="viewport" content="width=device-width" />
-		%sveltekit.head%
-	</head>
+<body>
+  <div style="display: contents">%sveltekit.body%</div>
+</body>
 
-	<body>
-		<div style="display: contents">%sveltekit.body%</div>
-	</body>
 </html>
