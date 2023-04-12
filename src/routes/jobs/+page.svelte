@@ -10,7 +10,7 @@
 	export let data: any;
 	export let viewport: Element;
 	export let contents: Element;
-
+	// temp
 	let ghost_component: any;
 	let scroll_state = false;
 	let search_input = '';
