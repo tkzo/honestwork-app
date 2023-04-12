@@ -29,6 +29,7 @@
 }
 
 .toast-container {
+  font-family: 'Proto Mono', monospace;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 12px;
@@ -143,6 +144,9 @@ a:visited {
 	color: var(--color-error);
 }
 
+.light-20 {
+	color: var(--color-light-20);
+}
 .light-40 {
 	color: var(--color-light-40);
 }

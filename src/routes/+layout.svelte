@@ -92,4 +92,7 @@
 		flex-direction: column;
 		align-items: center;
 	}
+	.toast-container {
+		font-family: 'Proto Mono', monospace;
+	}
 </style>

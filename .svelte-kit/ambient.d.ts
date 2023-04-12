@@ -139,6 +139,7 @@ declare module '$env/static/public' {
 	export const PUBLIC_MAINNET_DAI_ADDRESS: string;
 	export const PUBLIC_ARBITRUM_USDC_ADDRESS: string;
 	export const PUBLIC_IMAGEKIT_URL: string;
+	export const PUBLIC_MARKPROMPT_PRODUCTION_KEY: string;
 }
 
 /**
@@ -273,6 +274,7 @@ declare module '$env/dynamic/public' {
 		PUBLIC_MAINNET_DAI_ADDRESS: string;
 		PUBLIC_ARBITRUM_USDC_ADDRESS: string;
 		PUBLIC_IMAGEKIT_URL: string;
+		PUBLIC_MARKPROMPT_PRODUCTION_KEY: string;
 		[key: `PUBLIC_${string}`]: string | undefined;
 	}
 }
