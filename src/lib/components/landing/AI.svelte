@@ -55,12 +55,10 @@
 		Have questions about HonestWork? Ask HNST-4 anything.
 	</p>
 	<div style="height:24px" />
-	<form>
-		<input bind:value type="text" placeholder="Type your question here and press enter" />
-		<button use:shortcut={{ code: '13' }} hidden type="button" class="yellow" on:click={ask}
-			>Submit</button
-		>
-	</form>
+	<input bind:value type="text" placeholder="Type your question here and press enter" />
+	<button use:shortcut={{ code: '13' }} hidden type="button" class="yellow" on:click={ask}
+		>Submit</button
+	>
 	<div style="height:24px" />
 	<div class="answer">
 		{#if thinking}
