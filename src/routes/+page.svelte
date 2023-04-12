@@ -184,7 +184,7 @@
 		border-bottom: 0.5px solid var(--color-light-10);
 		width: 80vw;
 		max-width: 960px;
-		padding: 12px;
+		padding: 16px;
 	}
 	.socials {
 		display: flex;
