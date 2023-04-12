@@ -56,7 +56,7 @@
 	</p>
 	<div style="height:24px" />
 	<input bind:value type="text" placeholder="Type your question here and press enter" />
-	<button use:shortcut={{ code: 'Enter' }} hidden type="submit" class="yellow" on:click={ask}
+	<button use:shortcut={{ code: 'Enter' }} hidden type="button" class="yellow" on:click={ask}
 		>Submit</button
 	>
 	<div style="height:24px" />
