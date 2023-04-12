@@ -7,6 +7,7 @@
 	import FeaturesCards from '$lib/components/landing/FeaturesCards.svelte';
 	import BenefitsCards from '$lib/components/landing/BenefitsCards.svelte';
 	import Faq from '$lib/components/landing/Faq.svelte';
+	import AI from '$lib/components/landing/AI.svelte';
 	let viewport: Element;
 	let contents: Element;
 	const handleConnect = async () => {
@@ -80,9 +81,11 @@
 			<BenefitsCards />
 			<div style="height: 120px;" />
 			<div class="faq">
-				<Faq />
+				<AI />
+				<!-- <div style="height: 120px;" /> -->
+				<!-- <Faq /> -->
 			</div>
-			<div style="height: 120px;" />
+			<div style="height: 420px;" />
 			<img src="{`${assets}/assets/laser-grid.png`} " alt="HonestWork" class="bg" />
 		</div>
 	</div>
@@ -95,7 +98,10 @@
 		width: 90%;
 	}
 	.faq {
-		z-index: 10;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		z-index: 42;
 	}
 	.bg {
 		position: absolute;
@@ -103,6 +109,7 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
+		/* z-index: -1; */
 	}
 	.wrapper {
 		position: relative;
