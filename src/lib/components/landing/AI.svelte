@@ -2,6 +2,7 @@
 	import { env } from '$env/dynamic/public';
 	import { shortcut } from '$lib/stores/Shortcut';
 	import SvelteMarkdown from 'svelte-markdown';
+	import { Jumper } from 'svelte-loading-spinners';
 
 	let value: string = '';
 	let thinking: boolean = false;
@@ -32,6 +33,7 @@
 			const decoder = new TextDecoder();
 			let response = '';
 
+			thinking = false;
 			while (true) {
 				const { value, done } = await reader.read();
 				const chunk = decoder.decode(value);
@@ -42,7 +44,6 @@
 					break;
 				}
 			}
-			thinking = false;
 		}
 	};
 </script>
@@ -55,8 +56,13 @@
 	>
 	<div style="height:24px" />
 	<div class="answer">
-		<SvelteMarkdown {source} />
-		<p />
+		{#if thinking}
+			<div class="jumper-centered">
+				<Jumper size="60" color="var(--color-primary)" unit="px" duration="1s" />
+			</div>
+		{:else}
+			<SvelteMarkdown {source} />
+		{/if}
 	</div>
 </main>
 
@@ -70,12 +76,17 @@
 		justify-content: center;
 		height: 100%;
 	}
+	.jumper-centered {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 
 	input {
 		width: 720px;
 		border: 0.5px solid var(--color-primary);
 		font-size: 16px;
-		color: var(--color-primary);
+		color: var(--color-light);
 		height: 48px;
 		padding: 20px;
 	}
@@ -86,8 +97,18 @@
 		font-family: 'DM Mono', monospace;
 		font-size: 14px;
 		line-height: 24px;
+		color: var(--color-light-80);
+	}
+	:global(.answer p, h1, h2, h3, h4, h5) {
+		padding: 4px;
+	}
+	:global(.answer img) {
+		display: none;
 	}
 	:global(.answer li::marker) {
+		color: var(--color-primary);
+	}
+	:global(.answer a:link, a:visited, a:hover, a:active) {
 		color: var(--color-primary);
 	}
 	:global(.answer th, td) {
@@ -104,5 +125,13 @@
 		border-style: solid;
 		border-color: var(--color-light-20);
 		margin: 12px;
+	}
+	@media (max-width: 720px) {
+		input {
+			width: 80vw;
+		}
+		.answer {
+			width: 80vw;
+		}
 	}
 </style>
