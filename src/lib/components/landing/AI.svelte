@@ -51,7 +51,7 @@
 <main>
 	<h2 class="yellow">ask hnst-4</h2>
 	<div style="height:12px" />
-	<p class="body-text">Have questions about HonestWork? Ask HNST-4 anything.</p>
+	<p class="body-text light-80">Have questions about HonestWork? Ask HNST-4 anything.</p>
 	<div style="height:24px" />
 	<input bind:value type="text" placeholder="Type your question here and press enter" />
 	<button use:shortcut={{ code: 'Enter' }} hidden type="submit" class="yellow" on:click={ask}
@@ -95,6 +95,9 @@
 		color: var(--color-light);
 		height: 48px;
 		padding: 20px;
+	}
+	input::placeholder {
+		color: var(--color-light-80);
 	}
 	.answer {
 		width: 720px;

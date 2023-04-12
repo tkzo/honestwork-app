@@ -6,7 +6,7 @@
 	import { assets } from '$app/paths';
 	import FeaturesCards from '$lib/components/landing/FeaturesCards.svelte';
 	import BenefitsCards from '$lib/components/landing/BenefitsCards.svelte';
-	import Faq from '$lib/components/landing/Faq.svelte';
+	// import Faq from '$lib/components/landing/Faq.svelte';
 	import AI from '$lib/components/landing/AI.svelte';
 	let viewport: Element;
 	let contents: Element;
@@ -24,23 +24,33 @@
 <div class="wrapper">
 	<div class="viewport" bind:this={viewport}>
 		<div class="contents" bind:this={contents}>
-			<div class="hero">
+			<div class="hero" style={`background-image: url(${assets}/assets/landing/radial_grid.png)`}>
 				<div class="nav">
 					<div class="logo">
-						<img src={`${assets}/icons/landing/logo.svg`} alt="HonestWork Logo" />
-						<div class="text">H0NESTW0RK</div>
+						<!-- <img src={`${assets}/icons/landing/logo.svg`} alt="HonestWork Logo" /> -->
+						<div class="text yellow"><p class="yellow">H0NESTW0RK</p></div>
 					</div>
-					<div class="login link" on:click={handleConnect} on:keydown>LOGIN TO APP</div>
+					<div class="login" on:click={handleConnect} on:keydown>
+						<div style="width: 12px;" />
+						<p class="light-60 link">DOCS</p>
+						<div style="width: 12px;" />
+						<p>LOGIN</p>
+					</div>
 				</div>
-				<div style="height: 100px;" />
+				<div style="height: 120px;" />
 				<div class="header">
 					<h1>A platform for all your web3 freelancing needs</h1>
+					<!-- <div style="height: 12px;" /> -->
 					<p class="about">
 						HonestWork helps you find the best Web3 freelance job offers and hire quality talents
 						for your Web3 projects.
-						<span class="yellow">Launching soon.</span>
 					</p>
-					<a class="explore" href={`${base}/jobs`}>explore now</a>
+					<div style="height: 12px;" />
+					<div class="button-container">
+						<a class="explore" href={`${base}/jobs`}>explore now</a>
+						<a class="mint-nft-button" href={`${base}/mint`}>mint genesis nft</a>
+					</div>
+					<div style="height: 4px;" />
 					<div class="socials">
 						<a href="https://twitter.com/HonestWorkDAO" target="_blank" rel="noopener noreferrer">
 							<img src={`${assets}/icons/landing/twitter.svg`} alt="Twitter" class="icon" />
@@ -59,7 +69,7 @@
 							<img src={`${assets}/icons/landing/linkedin.svg`} alt="LinkedIn" class="icon" />
 						</a>
 					</div>
-					<div style="height: 64px;" />
+					<div style="height: 120px;" />
 				</div>
 				<div class="iframe-wrapper">
 					<div class="desktop-iframe">
@@ -96,6 +106,7 @@
 	.iframe-wrapper {
 		max-width: 960px;
 		width: 90%;
+		filter: drop-shadow(0px 0px 30px rgba(255, 211, 105, 0.1));
 	}
 	.faq {
 		display: flex;
@@ -151,7 +162,15 @@
 		position: relative;
 	}
 	.hero {
-		background: linear-gradient(180deg, #16181c 0%, var(--color-dark) 100%);
+		/* background: radial-gradient( */
+		/* 	50.86% 53.19% at 100% 0%, */
+		/* 	rgba(255, 211, 105, 0.1) 0%, */
+		/* 	rgba(255, 211, 105, 0) 100% */
+		/* ); */
+		/* background-image: url('assets/landing/radial_grid.png'); */
+		background-size: initial;
+		background-position: right 0px top 0px;
+		background-repeat: no-repeat;
 		width: 100%;
 		display: flex;
 		flex-direction: column;
@@ -162,7 +181,7 @@
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
-		border-bottom: 1px solid var(--color-light-20);
+		border-bottom: 0.5px solid var(--color-light-10);
 		width: 80vw;
 		max-width: 960px;
 		padding: 12px;
@@ -172,6 +191,11 @@
 		flex-direction: row;
 		align-items: center;
 		gap: 8px;
+	}
+	.socials a {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
 	}
 	.logo {
 		display: flex;
@@ -197,6 +221,9 @@
 		text-align: center;
 		color: var(--color-primary);
 		cursor: pointer;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
 	}
 	.link:hover {
 		color: var(--color-dark);
@@ -215,11 +242,12 @@
 		font-family: 'Proto Mono';
 		font-style: normal;
 		font-weight: 600;
-		font-size: 48px;
-		line-height: 60px;
+		font-size: 40px;
+		line-height: 52px;
 		color: var(--color-primary);
-		text-shadow: 0px 0px 50px rgba(255, 211, 105, 0.2);
-		margin: 0 0 36px;
+		margin: 0px;
+
+		/* text-shadow: 0px 0px 50px rgba(255, 211, 105, 0.2); */
 	}
 	.about {
 		font-family: 'DM Mono';
@@ -227,18 +255,32 @@
 		line-height: 24px;
 		margin: 0 0 20px;
 		max-width: 560px;
+		color: var(--color-light-80);
 	}
 	.explore {
 		padding: 8px 12px;
+		background: var(--color-primary);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		/* box-shadow: 0px 0px 50px rgba(255, 211, 105, 0.2); */
+		cursor: pointer;
+		font-weight: 600;
+		color: var(--color-dark);
+		transition: border 0.2s ease-in 0s;
+	}
+	.explore:hover {
+		border: 1px solid var(--color-primary);
+	}
+	.mint-nft-button {
+		padding: 8px 12px;
 		background: #101112;
 		border: 1px solid rgba(255, 255, 255, 0.2);
-		box-shadow: 0px 0px 50px rgba(255, 211, 105, 0.2);
+		/* box-shadow: 0px 0px 50px rgba(255, 211, 105, 0.2); */
 		cursor: pointer;
 		font-weight: 600;
 		color: var(--color-primary);
 		transition: border 0.2s ease-in 0s;
 	}
-	.explore:hover {
+	.mint-nft-button:hover {
 		border: 1px solid var(--color-primary);
 	}
 	.icon {

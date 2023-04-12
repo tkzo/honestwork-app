@@ -143,6 +143,9 @@ a:visited {
 	color: var(--color-error);
 }
 
+.light-20 {
+	color: var(--color-light-20);
+}
 .light-40 {
 	color: var(--color-light-40);
 }
