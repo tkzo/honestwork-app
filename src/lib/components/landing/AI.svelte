@@ -56,8 +56,8 @@
 	</p>
 	<div style="height:24px" />
 	<input bind:value type="text" placeholder="Type your question here and press enter" />
-	<div use:shortcut={{ code: '13' }} class="yellow" on:click={ask} on:keydown />
-	<div use:shortcut={{ code: 'Enter' }} class="yellow" on:click={ask} on:keydown />
+	<div use:shortcut={{ code: '13', callback: ask }} class="yellow" on:keydown />
+	<div use:shortcut={{ code: 'Enter', callback: ask }} class="yellow" on:keydown />
 	<div style="height:24px" />
 	<div class="answer">
 		{#if thinking}
