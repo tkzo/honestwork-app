@@ -91,13 +91,11 @@
 			<FeaturesCards />
 			<div style="height: 120px;" />
 			<BenefitsCards />
-			<div style="height: 120px;" />
+			<div style="height: 160px;" />
 			<div class="faq">
 				<AI />
-				<!-- <div style="height: 120px;" /> -->
-				<!-- <Faq /> -->
 			</div>
-			<div style="height: 420px;" />
+			<div style="height: 480px;" />
 			<img src="{`${assets}/assets/laser-grid.png`} " alt="HonestWork" class="bg" />
 		</div>
 	</div>
