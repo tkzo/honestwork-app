@@ -251,7 +251,7 @@
 		line-height: 24px;
 		margin: 0 0 20px;
 		max-width: 560px;
-		color: var(--color-light-80);
+		color: var(--color-light);
 	}
 	.button-container {
 		display: flex;
