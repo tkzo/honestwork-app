@@ -253,6 +253,16 @@
 		max-width: 560px;
 		color: var(--color-light-80);
 	}
+	.button-container {
+		display: flex;
+		flex-direction: row;
+		gap: 12px;
+	}
+	@media (max-width: 720px) {
+		.button-container {
+			flex-direction: column;
+		}
+	}
 	.explore {
 		padding: 8px 12px;
 		background: var(--color-primary);
