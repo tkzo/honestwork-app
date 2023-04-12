@@ -3,6 +3,7 @@
 	import { shortcut } from '$lib/stores/Shortcut';
 	import SvelteMarkdown from 'svelte-markdown';
 	import { Jumper } from 'svelte-loading-spinners';
+	import { assets } from '$app/paths';
 
 	let value: string = '';
 	let thinking: boolean = false;
@@ -55,8 +56,16 @@
 		Have questions about HonestWork? Ask HNST-4 anything.
 	</p>
 	<div style="height:24px" />
-	<input bind:value type="text" placeholder="Type your question here and press enter" />
-	<div use:shortcut={{ code: '13', callback: ask }} class="yellow" on:keydown />
+	<div class="input-container">
+		<input bind:value type="text" placeholder="Type your question here" />
+		<img
+			on:click={ask}
+			on:keydown
+			src={`${assets}/icons/arrow-right-box.svg`}
+			class="submit-mobile"
+			alt="submit"
+		/>
+	</div>
 	<div use:shortcut={{ code: 'Enter', callback: ask }} class="yellow" on:keydown />
 	<div style="height:24px" />
 	<div class="answer">
@@ -79,6 +88,9 @@
 		align-items: center;
 		justify-content: center;
 		height: 100%;
+	}
+	.input-container {
+		position: relative;
 	}
 	.jumper-centered {
 		display: flex;
@@ -139,10 +151,22 @@
 	}
 	@media (max-width: 720px) {
 		input {
-			width: 80vw;
+			width: 90vw;
 		}
 		.answer {
-			width: 80vw;
+			width: 90vw;
+		}
+	}
+	.submit-mobile {
+		display: none;
+	}
+	@media (max-width: 720px) {
+		.submit-mobile {
+			position: absolute;
+			display: block;
+			right: 12px;
+			scale: 2;
+			top: 16px;
 		}
 	}
 </style>
