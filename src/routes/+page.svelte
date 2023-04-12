@@ -30,11 +30,13 @@
 						<!-- <img src={`${assets}/icons/landing/logo.svg`} alt="HonestWork Logo" /> -->
 						<div class="text yellow"><p class="yellow">H0NESTW0RK</p></div>
 					</div>
-					<div class="login" on:click={handleConnect} on:keydown>
+					<div class="login">
 						<div style="width: 12px;" />
-						<p class="light-60 link">DOCS</p>
+						<a href="https://docs.honestwork.app" target="_blank" rel="noopener noreferrer">
+							<p class="light-60 link">DOCS</p>
+						</a>
 						<div style="width: 12px;" />
-						<p>LOGIN</p>
+						<p class="link" on:click={handleConnect} on:keydown>LOGIN</p>
 					</div>
 				</div>
 				<div style="height: 120px;" />
@@ -162,12 +164,6 @@
 		position: relative;
 	}
 	.hero {
-		/* background: radial-gradient( */
-		/* 	50.86% 53.19% at 100% 0%, */
-		/* 	rgba(255, 211, 105, 0.1) 0%, */
-		/* 	rgba(255, 211, 105, 0) 100% */
-		/* ); */
-		/* background-image: url('assets/landing/radial_grid.png'); */
 		background-size: initial;
 		background-position: right 0px top 0px;
 		background-repeat: no-repeat;

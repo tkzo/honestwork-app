@@ -51,7 +51,9 @@
 <main>
 	<h2 class="yellow">ask hnst-4</h2>
 	<div style="height:12px" />
-	<p class="light-80">Have questions about HonestWork? Ask HNST-4 anything.</p>
+	<p class="body-text light-80" style="font-size:14px">
+		Have questions about HonestWork? Ask HNST-4 anything.
+	</p>
 	<div style="height:24px" />
 	<input bind:value type="text" placeholder="Type your question here and press enter" />
 	<button use:shortcut={{ code: 'Enter' }} hidden type="submit" class="yellow" on:click={ask}
@@ -97,19 +99,19 @@
 		padding: 20px;
 	}
 	input::placeholder {
-		color: var(--color-light-80);
+		color: var(--color-light-40);
 	}
 	.answer {
 		width: 720px;
 	}
-	:global(.answer p, li, table, th, td) {
+	:global(.answer p, .answer li, .answer table, .answer th, .answer td) {
 		font-family: 'DM Mono', monospace;
 		font-size: 14px;
 		line-height: 24px;
 		color: var(--color-light-80);
 		background-color: #111111;
 	}
-	:global(.answer p, h1, h2, h3, h4, h5) {
+	:global(.answer p, .answer h1, .answer h2, .answer h3, .answer h4, .answer h5) {
 		padding: 8px;
 	}
 	:global(.answer img) {
