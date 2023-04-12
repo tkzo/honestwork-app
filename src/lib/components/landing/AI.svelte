@@ -49,7 +49,10 @@
 </script>
 
 <main>
-	<h2 class="yellow">ask hnst-4 anything</h2>
+	<h2 class="yellow">ask hnst-4</h2>
+	<div style="height:12px" />
+	<p class="body-text">Have questions about HonestWork? Ask HNST-4 anything.</p>
+	<div style="height:24px" />
 	<input bind:value type="text" placeholder="Type your question here and press enter" />
 	<button use:shortcut={{ code: 'Enter' }} hidden type="submit" class="yellow" on:click={ask}
 		>Submit</button
@@ -81,6 +84,9 @@
 		justify-content: center;
 		align-items: center;
 	}
+	h2 {
+		margin: 0px;
+	}
 
 	input {
 		width: 720px;
@@ -98,9 +104,10 @@
 		font-size: 14px;
 		line-height: 24px;
 		color: var(--color-light-80);
+		background-color: #111111;
 	}
 	:global(.answer p, h1, h2, h3, h4, h5) {
-		padding: 4px;
+		padding: 8px;
 	}
 	:global(.answer img) {
 		display: none;
