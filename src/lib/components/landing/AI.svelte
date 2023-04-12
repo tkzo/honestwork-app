@@ -165,8 +165,8 @@
 			position: absolute;
 			display: block;
 			right: 12px;
-			scale: 2;
-			top: 16px;
+			scale: 1.5;
+			top: 12px;
 		}
 	}
 </style>
