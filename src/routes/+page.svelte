@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
-	import { connectWallet } from '$lib/stores/Network';
+	import { connectWallet, connecting } from '$lib/stores/Network';
 	import { Svrollbar } from 'svrollbar';
 	import { assets } from '$app/paths';
 	import FeaturesCards from '$lib/components/landing/FeaturesCards.svelte';
 	import BenefitsCards from '$lib/components/landing/BenefitsCards.svelte';
-	// import Faq from '$lib/components/landing/Faq.svelte';
 	import AI from '$lib/components/landing/AI.svelte';
+
 	let viewport: Element;
 	let contents: Element;
 	const handleConnect = async () => {
@@ -37,12 +37,15 @@
 						</a>
 						<div style="width: 12px;" />
 						<p class="link" on:click={handleConnect} on:keydown>LOGIN</p>
+						<div style="width: 4px;" />
+						{#if $connecting}
+							<img src={`${assets}/icons/loader.svg`} alt="loading" class="rotating" />
+						{/if}
 					</div>
 				</div>
 				<div style="height: 120px;" />
 				<div class="header">
 					<h1>A platform for all your web3 freelancing needs</h1>
-					<!-- <div style="height: 12px;" /> -->
 					<p class="about">
 						HonestWork helps you find the best Web3 freelance job offers and hire quality talents
 						for your Web3 projects.

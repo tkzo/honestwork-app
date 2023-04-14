@@ -22,11 +22,9 @@
 	$: {
 		if ($navigating) {
 			nProgress.start();
-			console.log('Started');
 		}
 		if (!$navigating) {
 			nProgress.done();
-			console.log('Ended');
 		}
 	}
 
