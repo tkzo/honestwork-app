@@ -223,7 +223,7 @@
 	<div class="wrapper">
 		<div bind:this={viewport} class="viewport">
 			<div bind:this={contents} class="contents">
-				{#if !whitelisted}
+				{#if !whitelisted || (whitelisted && $userState != 0)}
 					<main>
 						{#each tiers as tier, i}
 							<section class="border-all">
