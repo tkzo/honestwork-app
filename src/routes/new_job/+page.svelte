@@ -465,7 +465,7 @@
 							type="number"
 							min={form_limitations.job.budget.min}
 							max={form_limitations.job.budget.max}
-							placeholder="Between $1000 and $1,000,000"
+							placeholder="Between $200 and $100,000"
 							bind:value={budget}
 						/>
 					</div>
