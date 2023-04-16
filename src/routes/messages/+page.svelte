@@ -415,11 +415,11 @@
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 		overflow-y: scroll;
-		--svrollbar-track-width: 1px;
-		--svrollbar-track-opacity: 1;
-		--svrollbar-thumb-width: 10px;
-		--svrollbar-thumb-background: #d9ab55;
-		--svrollbar-thumb-opacity: 1;
+		/* --svrollbar-track-width: 1px; */
+		/* --svrollbar-track-opacity: 1; */
+		/* --svrollbar-thumb-width: 10px; */
+		/* --svrollbar-thumb-background: #d9ab55; */
+		/* --svrollbar-thumb-opacity: 1; */
 	}
 	.create-conversation {
 		width: 100%;
