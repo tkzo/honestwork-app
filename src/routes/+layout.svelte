@@ -31,7 +31,7 @@
 	export let data: LayoutServerData;
 	user_signed_in.set(data.signed!);
 
-	// trackers
+	// trackoOrs
 	LogRocket.init('2wdgml/honestwork');
 	$: if ($userAddress && $userAddress != '') {
 		logrocketIdentify();
