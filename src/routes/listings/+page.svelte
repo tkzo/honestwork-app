@@ -44,7 +44,7 @@
 			<div
 				bind:this={viewport}
 				class="viewport"
-				style={`width:520px; height:${feedHeight.toString() + 'px'}`}
+				style={`width:518px; height:${feedHeight.toString() + 'px'}`}
 			>
 				<div bind:this={contents} class="contents">
 					<div style="height:8px" />

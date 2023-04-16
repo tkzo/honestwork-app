@@ -59,9 +59,7 @@ body {
 	scrollbar-width: none; /* for Firefox */
 	overflow-y: hidden;
 	--svrollbar-track-width: 1px;
-	/* --svrollbar-track-background: #85b4b9; */
 	--svrollbar-track-opacity: 1;
-
 	--svrollbar-thumb-width: 1px;
 	--svrollbar-thumb-background: #d9ab55;
 	--svrollbar-thumb-opacity: 1;

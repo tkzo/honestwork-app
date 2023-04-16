@@ -147,7 +147,7 @@
 			<div
 				bind:this={viewport}
 				class="viewport"
-				style={`width:520px; height:${feedHeight.toString() + 'px'}`}
+				style={`width:518px; height:${feedHeight.toString() + 'px'}`}
 			>
 				<div bind:this={contents} class="contents">
 					<div style="height:8px" />
@@ -255,17 +255,11 @@
 		-ms-overflow-style: none; /* for Internet Explorer, Edge */
 		scrollbar-width: none; /* for Firefox */
 		overflow-y: scroll;
-		--svrollbar-track-width: 1px;
-		/* --svrollbar-track-background: #85b4b9; */
-		--svrollbar-track-opacity: 1;
-
-		--svrollbar-thumb-width: 10px;
-		--svrollbar-thumb-background: #d9ab55;
-		--svrollbar-thumb-opacity: 1;
 	}
 	.viewport {
 		position: relative;
-		overflow: scroll;
+		overflow-y: scroll;
+		overflow-x: hidden;
 		box-sizing: border-box;
 		-ms-overflow-style: none;
 		scrollbar-width: none;

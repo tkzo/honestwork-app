@@ -174,7 +174,7 @@
 
 <style>
 	section {
-		width: 520px;
+		width: 518px;
 		flex-direction: column;
 		cursor: pointer;
 		border-width: 1px 0px 1px 0px;
