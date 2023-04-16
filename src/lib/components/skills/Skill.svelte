@@ -2,11 +2,11 @@
 
 <script lang="ts">
 	import { new_conversation_metadata } from '$lib/stores/State';
-	import type { SkillType, UserType } from '$lib/stores/Types';
+	import type { FavoriteType, SkillType, UserType } from '$lib/stores/Types';
 	import { onMount } from 'svelte';
 	import { assets, base } from '$app/paths';
 	import { placeholder_image } from '$lib/stores/Constants';
-	import { userConnected } from '$lib/stores/Network';
+	import { userConnected, userAddress } from '$lib/stores/Network';
 	import { toast } from '@zerodevx/svelte-toast';
 	import { parseContent } from '$lib/stores/Parser';
 	import { goto } from '$app/navigation';
@@ -17,9 +17,11 @@
 
 	let user: UserType;
 	let hovering_heart: boolean = false;
+	let favorited: boolean = false;
 
 	onMount(() => {
 		fetchUser();
+		getFavorites();
 	});
 
 	const handleAddToFavorites = async () => {
@@ -38,6 +40,7 @@
 				});
 				const data = await response.json();
 				if (data == 'success') {
+					favorited = true;
 					toast.push(
 						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Added to favorites!</p>`
 					);
@@ -51,9 +54,58 @@
 			}
 		}
 	};
+
+	const handleRemoveFromFavorites = async () => {
+		if ($userConnected) {
+			try {
+				const url = `${base}/api/favorites/remove`;
+				const response = await fetch(url, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						address: skill.user_address,
+						slot: skill.slot
+					})
+				});
+				const data = await response.json();
+				if (data == 'success') {
+					favorited = false;
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Removed from favorites.</p>`
+					);
+				} else {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>Failed to remove from favorites.</p>`
+					);
+				}
+			} catch (error) {
+				toast.push(
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>Failed to remove from favorites.</p>`
+				);
+			}
+		}
+	};
 	const fetchUser = async () => {
 		const res = await fetch(`/api/user/${skill.user_address}`);
 		user = await res.json();
+	};
+	const getFavorites = async () => {
+		try {
+			const url = `${base}/api/favorites/get/${$userAddress}`;
+			const response = await fetch(url);
+			const data = await response.json();
+			data.forEach((f: FavoriteType) => {
+				if (f.input.address == skill.user_address && f.input.slot == skill.slot) {
+					favorited = true;
+				}
+			});
+		} catch (e) {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${e}</p>`
+			);
+		}
 	};
 	const handleNewConversation = async () => {
 		try {
@@ -158,10 +210,10 @@
 				on:focus
 				on:mouseout={() => (hovering_heart = false)}
 				on:blur
-				on:click={handleAddToFavorites}
+				on:click={favorited ? handleRemoveFromFavorites : handleAddToFavorites}
 				on:keydown
 			>
-				{#if hovering_heart}
+				{#if hovering_heart || favorited}
 					<img class="icon-svg" src={`${assets}/icons/halfheart.svg`} alt="heart" />
 				{:else}
 					<img class="icon-svg" src={`${assets}/icons/heart.svg`} alt="heart" />

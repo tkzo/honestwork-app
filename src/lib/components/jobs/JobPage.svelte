@@ -30,6 +30,19 @@
 		job.application != null
 			? job.application.findIndex((n) => n.user_address == $userAddress) != -1
 			: false;
+
+	// const getWatchlist = async () => {
+	// 	if ($userConnected) {
+	// 		try {
+	// 			const response = await fetch(`${base}/api/watchlist/get/${$userAddress}`);
+	// 			return await response.json();
+	// 		} catch (error) {
+	// 				toast.push(
+	// 					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error}</p>`
+	// 				);
+	// 		}
+	// 	}
+	// };
 	const getChainName = (chain_id: number) => {
 		const name = chains.find((chain) => chain.id == chain_id)?.name;
 		return name;

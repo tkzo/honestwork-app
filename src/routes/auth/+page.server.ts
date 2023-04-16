@@ -28,6 +28,7 @@ export const actions: Actions = {
       }
     });
     let calldata = await callResponse.json();
+    console.log("Calldata:", calldata);
     if (calldata == 'success') {
       let options = {
         domain: parseInt(env.PRODUCTION_ENV) == 1 ? 'honestwork.app' : '127.0.0.1',
@@ -39,7 +40,6 @@ export const actions: Actions = {
       };
       cookies.set('honestwork_address', data.get('address')!.toString(), options);
       cookies.set('honestwork_signature', data.get('signature')!.toString(), options);
-
       throw redirect(301, '/profile');
     }
     throw redirect(301, '/mint');
