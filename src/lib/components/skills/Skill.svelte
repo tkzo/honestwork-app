@@ -96,6 +96,9 @@
 			const url = `${base}/api/favorites/get/${$userAddress}`;
 			const response = await fetch(url);
 			const data = await response.json();
+			if (data.length == 0) {
+				return;
+			}
 			data.forEach((f: FavoriteType) => {
 				if (f.input.address == skill.user_address && f.input.slot == skill.slot) {
 					favorited = true;
