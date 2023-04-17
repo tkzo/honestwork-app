@@ -19,12 +19,11 @@
 				},
 				body: JSON.stringify({
 					prompt: value,
-					iDontKnowMessage: "I don't know",
+					iDontKnowMessage: "Not sure if that's about HonestWork.",
 					projectKey: env.PUBLIC_MARKPROMPT_PRODUCTION_KEY,
 					model: 'gpt-4'
 				})
 			});
-			console.log('result:', res);
 			if (!res.ok || !res.body) {
 				console.error('Error:', await res.text());
 				return;

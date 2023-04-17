@@ -8,6 +8,7 @@
 	} from '$lib/stores/Network';
 	import { user_signed_in } from '$lib/stores/State';
 	import type { PageData } from './$types';
+	import { base } from '$app/paths';
 
 	export let data: PageData;
 
@@ -16,11 +17,13 @@
 	let salt: string;
 
 	const getSalt = async () => {
-		const res = await fetch(`/api/auth/login/${$userAddress}`, {
+		const salt_res = await fetch(`${base}/api/auth/login/${$userAddress}`, {
 			method: 'POST'
 		});
-		salt = await res.json();
-		myform.signature.value = await $networkSigner.signMessage(salt);
+		salt = await salt_res.json();
+		let message =
+			'HonestWork: Login\n' + `${salt}\n` + '\n' + 'For more info: https://docs.honestwork.app';
+		myform.signature.value = await $networkSigner.signMessage(message);
 		myform.submit();
 	};
 </script>

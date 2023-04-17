@@ -22,7 +22,7 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
-	import { assets } from '$app/paths';
+	import { assets, base } from '$app/paths';
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	import { parseContent } from '$lib/stores/Parser';
 
@@ -90,15 +90,21 @@
 		let decimals = await ERC20.decimals();
 		user_allowance = ethers.utils.formatUnits(allowance, decimals);
 	};
+
 	// todo: refactor with a single form reference
 	const handleSubmit = async (e: any) => {
 		if ($userConnected) {
-			const salt_res = await fetch(`/api/auth/login/${$userAddress}`, {
+			const salt_res = await fetch(`${base}/api/auth/login/${$userAddress}`, {
 				method: 'POST'
 			});
 			salt = await salt_res.json();
+			let message =
+				'HonestWork: New Job Post\n' +
+				`${salt}\n` +
+				'\n' +
+				'For more info: https://docs.honestwork.app';
+			let signature = await $networkSigner.signMessage(message);
 
-			let signature = await $networkSigner.signMessage(salt);
 			const input: JobInput = {
 				username: username,
 				user_address: $userAddress,

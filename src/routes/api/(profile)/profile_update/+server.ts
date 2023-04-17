@@ -8,9 +8,6 @@ export const POST: RequestHandler = async ({ request, cookies, fetch }) => {
   const userAddress = cookies.get('honestwork_address');
   const userSignature = cookies.get('honestwork_signature');
   const data = await request.json();
-
-  console.log("Server.ts data:", data);
-
   const url = `${apiUrl}/users/${userAddress}/${userSignature}`;
   const response = await fetch(url, {
     method: 'PATCH',

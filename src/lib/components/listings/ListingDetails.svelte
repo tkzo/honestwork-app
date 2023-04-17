@@ -14,6 +14,7 @@
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	import { parseContent } from '$lib/stores/Parser';
 	import { browser } from '$app/environment';
+	import { base } from '$app/paths';
 
 	export let job: JobType;
 	export let feedHeight: number;
@@ -76,10 +77,16 @@
 	// todo: refactor with a single form reference
 	const handleSubmit = async (e: any) => {
 		if ($userConnected) {
-			const res = await fetch(`/api/auth/login/${$userAddress}`, {
+			const salt_res = await fetch(`${base}/api/auth/login/${$userAddress}`, {
 				method: 'POST'
 			});
-			let salt = await res.json();
+			let salt = await salt_res.json();
+			let message =
+				'HonestWork: Update Job Post\n' +
+				`${salt}\n` +
+				'\n' +
+				'For more info: https://docs.honestwork.app';
+			let signature = await $networkSigner.signMessage(message);
 
 			let tokens_accepted = [] as Network[];
 			for (let i = 0; i < tokens_selected.length; i++) {
@@ -95,7 +102,6 @@
 				}
 			}
 
-			let signature = await $networkSigner.signMessage(salt);
 			const input: JobInput = {
 				job_slot: $chosen_job_slot,
 				username: username,

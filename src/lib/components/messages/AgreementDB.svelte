@@ -14,20 +14,20 @@
 	export let role: string;
 	export let deal: DealDB;
 
-  let decimals: number;
+	let decimals: number;
 
-  onMount(() => {
-    fetchDecimals();
-  })
+	onMount(() => {
+		fetchDecimals();
+	});
 
-  const fetchDecimals = async () => {
+	const fetchDecimals = async () => {
 		try {
 			const Token = new ethers.Contract(deal.token_address, erc20_abi, $networkProvider);
 			decimals = await Token.decimals();
 		} catch (err) {
-      console.log(err)
-    }
-  }
+			console.log(err);
+		}
+	};
 	const approve = async (amount: ethers.BigNumberish) => {
 		try {
 			const Token = new ethers.Contract(deal.token_address, erc20_abi, $networkProvider);
@@ -64,11 +64,16 @@
 			);
 			let receipt = await tx.wait();
 			if (receipt && receipt.status == 1) {
-				const res = await fetch(`/api/auth/login/${$userAddress}`, {
+				const salt_res = await fetch(`${base}/api/auth/login/${$userAddress}`, {
 					method: 'POST'
 				});
-				const salt = await res.json();
-				const signature = await $networkSigner.signMessage(salt);
+				let salt = await salt_res.json();
+				let message =
+					'HonestWork: Execute Agreement\n' +
+					`${salt}\n` +
+					'\n' +
+					'For more info: https://docs.honestwork.app';
+				let signature = await $networkSigner.signMessage(message);
 				const url = `${base}/api/execute_deal/${$userAddress}/${conversation.peerAddress}/${signature}`;
 				const body = {
 					slot: slot

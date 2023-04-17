@@ -37,7 +37,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     image_url: cloud_url
   };
 
-  console.log("Calling api...")
   const url = `${apiUrl}/jobs/${userAddress}/${data.signature}`;
   const options = {
     method: 'PATCH',

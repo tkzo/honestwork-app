@@ -29,9 +29,7 @@ export const load = (async ({ cookies, fetch }) => {
         'Content-Type': 'application/json'
       })
     });
-    console.log("CallResponse:", callResponse);
     let calldata = await callResponse.json();
-    console.log("Calldata:", calldata);
     if (calldata == 'success') {
       return {
         signed: true

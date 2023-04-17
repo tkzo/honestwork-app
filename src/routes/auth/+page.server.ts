@@ -28,7 +28,6 @@ export const actions: Actions = {
       }
     });
     let calldata = await callResponse.json();
-    console.log("Calldata:", calldata);
     if (calldata == 'success') {
       let options = {
         domain: parseInt(env.PRODUCTION_ENV) == 1 ? 'honestwork.app' : '127.0.0.1',

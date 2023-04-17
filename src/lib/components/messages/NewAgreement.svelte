@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { userAddress, networkSigner, networkProvider} from '$lib/stores/Network';
+	import { userAddress, networkSigner, networkProvider } from '$lib/stores/Network';
 	import { assets, base } from '$app/paths';
 	import { env } from '$env/dynamic/public';
 	import { toast } from '@zerodevx/svelte-toast';
 	import type { DealDB } from '$lib/stores/Types';
 	import { ethers } from 'ethers';
 	import { chains } from '$lib/stores/Constants';
-  import { erc20_abi } from '$lib/stores/ABI';
+	import { erc20_abi } from '$lib/stores/ABI';
 
 	export let conversation: any;
 
@@ -35,25 +35,30 @@
 		}
 	};
 
-  const fetchDecimals = async () => {
+	const fetchDecimals = async () => {
 		try {
 			const Token = new ethers.Contract(chosen_token_address, erc20_abi, $networkProvider);
 			const decimals = await Token.decimals();
-      return decimals
+			return decimals;
 		} catch (err) {
-      console.log(err)
-    }
-  }
+			console.log(err);
+		}
+	};
 
 	const handleCreateAgreementOffer = async () => {
 		if (chosen_recruitor === $userAddress) {
 			try {
-        const decimals = await fetchDecimals();
-				const res = await fetch(`/api/auth/login/${$userAddress}`, {
+				const decimals = await fetchDecimals();
+				const salt_res = await fetch(`${base}/api/auth/login/${$userAddress}`, {
 					method: 'POST'
 				});
-				const salt = await res.json();
-				const signature = await $networkSigner.signMessage(salt);
+				let salt = await salt_res.json();
+				let message =
+					'HonestWork: New Agreement\n' +
+					`${salt}\n` +
+					'\n' +
+					'For more info: https://docs.honestwork.app';
+				let signature = await $networkSigner.signMessage(message);
 				const url = `${base}/api/add_deal/${$userAddress}/${conversation.peerAddress}/${signature}`;
 				const body: DealDB = {
 					status: '',
@@ -78,8 +83,8 @@
 							network: chosen_network,
 							token: chosen_token,
 							token_address: chosen_token_address,
-					    total_amount: ethers.utils.parseUnits(total_amount.toString(), decimals).toString(),
-					    downpayment: ethers.utils.parseUnits(downpayment.toString(), decimals).toString(),
+							total_amount: ethers.utils.parseUnits(total_amount.toString(), decimals).toString(),
+							downpayment: ethers.utils.parseUnits(downpayment.toString(), decimals).toString(),
 							job_id: chosen_job_slot,
 							recruiter: $userAddress
 						})}`

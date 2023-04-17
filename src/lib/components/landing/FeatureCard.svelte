@@ -15,9 +15,6 @@
 	let isInView;
 
 	$: _index = card.type === 'employers' ? index : index - 3;
-	$: console.log('Card type:', card.type);
-	$: console.log('_Index: ', _index);
-	$: console.log('Index: ', index);
 
 	const handleChange = ({ detail }: CustomEvent<ObserverEventDetails>) =>
 		(isInView = detail.inView);
