@@ -1,15 +1,24 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { base } from '$app/paths';
+	import { base, assets } from '$app/paths';
 	import { connectWallet, connecting } from '$lib/stores/Network';
 	import { Svrollbar } from 'svrollbar';
-	import { assets } from '$app/paths';
 	import FeaturesCards from '$lib/components/landing/FeaturesCards.svelte';
 	import BenefitsCards from '$lib/components/landing/BenefitsCards.svelte';
 	import AI from '$lib/components/landing/AI.svelte';
 
 	let viewport: Element;
 	let contents: Element;
+
+	let preload_images = [
+		`${assets}/assets/landing/employer_1.webp`,
+		`${assets}/assets/landing/employer_2.webp`,
+		`${assets}/assets/landing/employer_3.webp`,
+		`${assets}/assets/landing/freelancer_1.webp`,
+		`${assets}/assets/landing/freelancer_2.webp`,
+		`${assets}/assets/landing/freelancer_3.webp`
+	];
+
 	const handleConnect = async () => {
 		await connectWallet();
 		goto('/jobs');
@@ -19,6 +28,9 @@
 <svelte:head>
 	<title>HonestWorkDAO</title>
 	<meta name="description" content="HonestWork" />
+	{#each preload_images as image}
+		<link rel="preload" as="image" href={image} />
+	{/each}
 </svelte:head>
 
 <div class="wrapper">

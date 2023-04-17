@@ -14,7 +14,10 @@
 	let iteration = 0;
 	let isInView;
 
-	$: _index = card.type === 'employer' ? index : index - 3;
+	$: _index = card.type === 'employers' ? index : index - 3;
+	$: console.log('Card type:', card.type);
+	$: console.log('_Index: ', _index);
+	$: console.log('Index: ', index);
 
 	const handleChange = ({ detail }: CustomEvent<ObserverEventDetails>) =>
 		(isInView = detail.inView);
@@ -45,7 +48,7 @@
 
 <main
 	class={`${index % 2 == 0 ? 'img-right' : 'img-left'}`}
-	in:fly={{ y: 80, delay: 50 + _index * 150, duration: 1000, easing: quintOut }}
+	in:fly={{ y: 80, delay: 50 + _index * 50, duration: 500, easing: quintOut }}
 	out:fade={{ duration: 50 }}
 >
 	<div class="info">
@@ -62,7 +65,7 @@
 				runx(event);
 			}}
 		>
-			{card.title}
+			{card.title}{_index}
 		</h3>
 		<div class="description-container">
 			<div class="description">

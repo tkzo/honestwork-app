@@ -2,18 +2,18 @@
 	import { featureCards } from '$lib/stores/Constants';
 	import { base } from '$app/paths';
 	import FeatureCard from './FeatureCard.svelte';
-	let chosen_tab: 'clients' | 'freelancers' = 'clients';
+	let chosen_tab: 'employers' | 'freelancers' = 'employers';
 </script>
 
 <div class="buttons-container">
 	<div class="line" />
 	<button
-		on:click={() => (chosen_tab = 'clients')}
-		class={chosen_tab == 'clients' ? 'selected button' : 'button'}>Employers</button
+		on:click={() => (chosen_tab = 'employers')}
+		class={chosen_tab == 'employers' ? 'selected button' : 'button'}>Employers</button
 	>
 	<button
 		on:click={() => (chosen_tab = 'freelancers')}
-		class={chosen_tab != 'clients' ? 'selected button' : 'button'}>Freelancers</button
+		class={chosen_tab != 'employers' ? 'selected button' : 'button'}>Freelancers</button
 	>
 	<div class="line" />
 </div>
