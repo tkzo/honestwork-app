@@ -1,7 +1,7 @@
 <svelte:options immutable={true} />
 
 <script lang="ts">
-	import { new_conversation_metadata } from '$lib/stores/State';
+	import { new_conversation_metadata, user_signed_in } from '$lib/stores/State';
 	import type { FavoriteType, SkillType, UserType } from '$lib/stores/Types';
 	import { onMount } from 'svelte';
 	import { assets, base } from '$app/paths';
@@ -92,6 +92,9 @@
 		user = await res.json();
 	};
 	const getFavorites = async () => {
+		if (!$user_signed_in) {
+			return;
+		}
 		try {
 			const url = `${base}/api/favorites/get/${$userAddress}`;
 			const response = await fetch(url);
