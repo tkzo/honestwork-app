@@ -92,7 +92,7 @@
 		user = await res.json();
 	};
 	const getFavorites = async () => {
-		if (!$user_signed_in) {
+		if (!$user_signed_in || !$userConnected) {
 			return;
 		}
 		try {
