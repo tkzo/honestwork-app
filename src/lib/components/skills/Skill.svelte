@@ -19,6 +19,7 @@
 	let hovering_heart: boolean = false;
 	let favorited: boolean = false;
 
+	let preload_images = [`${assets}/icons/halfheart.svg`, `${assets}/icons/heart.svg`];
 	onMount(() => {
 		fetchUser();
 		getFavorites();
@@ -162,6 +163,12 @@
 		}
 	};
 </script>
+
+<svelte:head>
+	{#each preload_images as image}
+		<link rel="preload" as="image" href={image} />
+	{/each}
+</svelte:head>
 
 <section class={chosen ? 'chosen' : ''}>
 	<div class="contents">
