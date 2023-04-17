@@ -24,6 +24,10 @@
 		getFavorites();
 	});
 
+	$: if ($userConnected) {
+		getFavorites();
+	}
+
 	const handleAddToFavorites = async () => {
 		if ($userConnected) {
 			try {
@@ -99,14 +103,13 @@
 			const url = `${base}/api/favorites/get/${$userAddress}`;
 			const response = await fetch(url);
 			const data = await response.json();
-			if (data.length == 0) {
-				return;
+			if (data.length != 0) {
+				data.forEach((f: FavoriteType) => {
+					if (f.input.address == skill.user_address && f.input.slot == skill.slot) {
+						favorited = true;
+					}
+				});
 			}
-			data.forEach((f: FavoriteType) => {
-				if (f.input.address == skill.user_address && f.input.slot == skill.slot) {
-					favorited = true;
-				}
-			});
 		} catch (e) {
 			toast.push(
 				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${e}</p>`
