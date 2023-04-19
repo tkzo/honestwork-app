@@ -10,7 +10,7 @@
 
 	export let skill: SkillType;
 
-  let image_component: HTMLImageElement;
+	let image_component: HTMLImageElement;
 	let loading_gallery_image = true;
 	let viewport: Element;
 	let contents: Element;
@@ -27,7 +27,7 @@
 		fetchUser();
 	}
 	$: trimmed_images = skill.image_urls.filter((url: string) => url !== '');
-  $: if (image_component?.complete) loading_gallery_image = false;
+	$: if (image_component?.complete) loading_gallery_image = false;
 
 	const fetchUser = async () => {
 		const res = await fetch(`${base}/api/user/${skill.user_address}`);
@@ -36,24 +36,24 @@
 		await getNft();
 	};
 	const nextImage = () => {
-    if (trimmed_images.length > 1) {
-		  loading_gallery_image = true;
-		  if (chosen_image < trimmed_images.length - 1) {
-			  chosen_image++;
-		  } else {
-			  chosen_image = 0;
-		  }
-    }
+		if (trimmed_images.length > 1) {
+			loading_gallery_image = true;
+			if (chosen_image < trimmed_images.length - 1) {
+				chosen_image++;
+			} else {
+				chosen_image = 0;
+			}
+		}
 	};
 	const previousImage = () => {
-    if (trimmed_images.length > 1) {
-		  loading_gallery_image = true;
-		  if (chosen_image > 0) {
-			  chosen_image--;
-		  } else {
-			  chosen_image = trimmed_images.length - 1;
-		  }
-    }
+		if (trimmed_images.length > 1) {
+			loading_gallery_image = true;
+			if (chosen_image > 0) {
+				chosen_image--;
+			} else {
+				chosen_image = trimmed_images.length - 1;
+			}
+		}
 	};
 	const resetState = () => {
 		chosen_image = 0;
@@ -85,7 +85,7 @@
 						? nft_image
 						: placeholder_image
 					: user?.image_url && user.image_url != ''
-					? user.image_url + "?tr=h-80,w-80"
+					? user.image_url + '?tr=h-80,w-80'
 					: placeholder_image}
 				alt=""
 			/>
@@ -109,9 +109,9 @@
 					{#key trimmed_images[chosen_image]}
 						<img
 							class="gallery-images"
-							src={trimmed_images[chosen_image] + "?tr=h-776,w-1036"}
+							src={trimmed_images[chosen_image] + '?tr=h-776,w-1036'}
 							alt="Gallery"
-              bind:this={image_component}
+							bind:this={image_component}
 							on:load={() => {
 								loading_gallery_image = false;
 							}}
@@ -247,13 +247,6 @@
 		-ms-overflow-style: none; /* for Internet Explorer, Edge */
 		scrollbar-width: none; /* for Firefox */
 		overflow-y: scroll;
-		--svrollbar-track-width: 1px;
-		/* --svrollbar-track-background: #85b4b9; */
-		--svrollbar-track-opacity: 1;
-
-		--svrollbar-thumb-width: 10px;
-		--svrollbar-thumb-background: #d9ab55;
-		--svrollbar-thumb-opacity: 1;
 	}
 
 	.viewport {
