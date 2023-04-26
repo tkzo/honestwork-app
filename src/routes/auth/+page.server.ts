@@ -6,7 +6,6 @@ import { redirect } from '@sveltejs/kit';
 export const load: PageServerLoad = async ({ cookies }) => {
   const userAddress = cookies.get('honestwork_address');
   const userSignature = cookies.get('honestwork_signature');
-
   if (userAddress && userSignature) {
     return { address: userAddress, signature: userSignature };
   }

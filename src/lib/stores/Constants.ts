@@ -139,6 +139,11 @@ export const findChainName = (chain_id: number) => {
 };
 
 export const notifications = {
+  gitcoin: {
+    bodytext: '📢 HonestWork is in the Gitcoin Beta Round!',
+    cta: 'contribute here',
+    icon: '/icons/zap.svg'
+  },
   postjob: {
     bodytext: 'looking for awesome people for your project?',
     cta: 'post a job',

@@ -9,7 +9,10 @@
 </script>
 
 {#if $page.route.id == '/'}
-	<!-- <a href={`${base}/mint`}><Notification notification={notifications.mint} /></a> -->
+	<a
+		href="https://explorer.gitcoin.co/#/round/1/0x12bb5bbbfe596dbc489d209299b8302c3300fa40/0x12bb5bbbfe596dbc489d209299b8302c3300fa40-128"
+		target="_blank"><Notification notification={notifications.gitcoin} /></a
+	>
 {:else if $page.route.id == '/skills' || $page.route.id == '/listings'}
 	<Notification notification={notifications.mint} on:click={() => goto('/mint')} />
 {:else if $page.route.id == '/jobs'}
