@@ -12,8 +12,11 @@
 	import { onMount } from 'svelte';
 	import { connectIfCached } from '$lib/stores/Network';
 	import nProgress from 'nprogress';
+	import { dev } from '$app/environment';
+	import { inject } from '@vercel/analytics';
 	import { navigating } from '$app/stores';
 
+	inject({ mode: dev ? 'development' : 'production' });
 	onMount(() => {
 		if ($page.route.id !== '/') connectIfCached();
 		nProgress.configure({ showSpinner: false });
