@@ -11,6 +11,7 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import { MerkleTree } from 'merkletreejs';
 	import { keccak256 } from 'ethers/lib/utils';
+	// todo: add autoconnect
 
 	type Membership = {
 		skills: number;
@@ -60,6 +61,7 @@
 		getUserBalance();
 	}
 	onMount(() => {
+		connectWallet();
 		setInterval(() => {
 			fetchNextToken();
 			getUserBalance();
@@ -134,27 +136,28 @@
 		if (index > 0) {
 			upgrade(index);
 		} else if ($userState == 0 && $chainID == 1) {
-			if (dai_balance > 100) {
-				try {
-					await approve(ethers.utils.parseEther('100'));
-					const contract = new ethers.Contract(env.PUBLIC_NFT_ADDRESS, nft_abi, $networkSigner);
-					const tx = await contract.publicMint(env.PUBLIC_MAINNET_DAI_ADDRESS);
-					const receipt = await tx.wait();
-					if (receipt.status == 1) {
-						toast.push(
-							`<p class="light-60"><span style='color:var(--color-success)'>success: </span>you have been minted a token</p>`
-						);
-					}
-				} catch (error: any) {
+			// if (dai_balance > 100) {
+			try {
+				// await approve(ethers.utils.parseEther('100'));
+				const contract = new ethers.Contract(env.PUBLIC_NFT_ADDRESS, nft_abi, $networkSigner);
+				const tx = await contract.publicMint(env.PUBLIC_MAINNET_DAI_ADDRESS);
+				const receipt = await tx.wait();
+				if (receipt.status == 1) {
 					toast.push(
-						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error.reason}</p>`
+						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>you have been minted a token</p>`
 					);
 				}
-			} else {
+			} catch (error: any) {
 				toast.push(
-					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>you need at least 100 dai to mint</p>`
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error.reason}</p>`
 				);
 			}
+			// }
+			// else {
+			// toast.push(
+			// 	`<p class="light-60"><span style='color:var(--color-error)'>error: </span>you need at least 100 dai to mint</p>`
+			// );
+			// }
 		} else if ($userState == 0 && $chainID != 1) {
 			toast.push(
 				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>switch to ethereum mainnet to mint</p>`
@@ -245,11 +248,24 @@
 									<p class="light-60">referrals</p>
 									<p>{tier.referrals}</p>
 								</div>
-								<div style="height:8px" />
-								<div class="mint-feature">
-									<p class="light-60">price</p>
-									<p>{tier.price}</p>
-								</div>
+								{#if i != 0}
+									<div style="height:8px" />
+									<div class="mint-feature">
+										<p class="light-60">price</p>
+										<p>{tier.price}</p>
+									</div>
+								{:else}
+									<div style="height:8px" />
+									<div class="mint-feature">
+										<p class="light-60">price</p>
+										<p style="text-decoration:line-through;">{tier.price}</p>
+									</div>
+									<div style="height:8px" />
+									<div class="mint-feature">
+										<p class="light-60">gitcoin boost*</p>
+										<p class="green">free</p>
+									</div>
+								{/if}
 								<div style="height:8px" />
 								<div class="mint-feature">
 									<p class="light-60">applications/day</p>
@@ -352,15 +368,25 @@
 						</section>
 					</main>
 				{/if}
-
 				<div style="height:12px" />
 				<div class="buy-tokens">
-					<a href="https://app.uniswap.org/#/swap" target="_blank" rel="noreferrer"
-						><p>
-							we current accept payments with <span class="yellow">dai</span> only. you can
-							<span class=" yellow link" style="text-decoration:underline">buy some here</span>
-						</p></a
-					>
+					<p>
+						(*) Mint Tier I for free until the end of <span class="green">Gitcoin Beta Round</span> on
+						May 9th.
+					</p>
+				</div>
+				<div style="height:12px" />
+				<div class="buy-tokens">
+					<p>
+						we current accept payments with <span class="yellow">dai</span> only. you can
+						<a
+							href="https://app.uniswap.org/#/swap"
+							target="_blank"
+							rel="noreferrer"
+							class=" yellow link"
+							style="text-decoration:underline">buy some here</a
+						>
+					</p>
 				</div>
 				<div style="height: 24px" />
 				<div class="image-header">
@@ -383,7 +409,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		align-items: center;
+		align-items: flex-start;
 	}
 	section {
 		width: 240px;

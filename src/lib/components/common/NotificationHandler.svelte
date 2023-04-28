@@ -29,6 +29,6 @@
 	</a>
 {:else if $page.route.id == '/mint'}
 	<a href="https://forms.gle/T1ngCzLwtYHx1ZGt9" target="_blank" rel="noreferrer">
-		<Notification notification={notifications.invitation} />
+		<Notification notification={notifications.gitcoin} />
 	</a>
 {/if}
