@@ -28,7 +28,11 @@
 		<Notification notification={notifications.upgrade} />
 	</a>
 {:else if $page.route.id == '/mint'}
-	<a href="https://forms.gle/T1ngCzLwtYHx1ZGt9" target="_blank" rel="noreferrer">
+	<a
+		href="https://explorer.gitcoin.co/#/round/1/0x12bb5bbbfe596dbc489d209299b8302c3300fa40/0x12bb5bbbfe596dbc489d209299b8302c3300fa40-128"
+		target="_blank"
+		rel="noreferrer"
+	>
 		<Notification notification={notifications.gitcoin} />
 	</a>
 {/if}
