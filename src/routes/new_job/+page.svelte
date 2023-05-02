@@ -745,7 +745,7 @@
 		align-items: center;
 	}
 	section {
-		width: 256px;
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		background-color: var(--color-dark);

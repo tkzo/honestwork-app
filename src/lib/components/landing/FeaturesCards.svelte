@@ -24,9 +24,74 @@
 			<FeatureCard {card} {index} />
 		{/if}
 	{/each}
+	<div style="height:20px" />
+	<div class="calltoarms">
+		{#if chosen_tab == 'employers'}
+			<div class="tag">LIMITED TIME OFFER</div>
+			<h2 class="yellow">Hire experienced Web3 freelancers fast</h2>
+			<div style="height:16px" />
+			<div class="body-text">
+				Quickly find a talented, web3-savvy freelancer by posting a job or browsing our extensive
+				library of freelancers' skills.
+			</div>
+			<div style="height:36px" />
+			<a class="cta" href={`${base}/new_job`}>Post a Job for Free</a>
+		{:else}
+			<div class="tag">LIMITED TIME OFFER</div>
+			<h2 class="yellow">Monetize your Web3 skills and start earning now</h2>
+			<div style="height:16px" />
+			<div class="body-text">
+				Earn crypto and build your on-chain reputation by working on exclusive Web3 projects.
+			</div>
+			<div style="height:36px" />
+			<a class="cta" href={`${base}/mint`}>Mint a Free Membership NFT</a>
+		{/if}
+	</div>
 </div>
 
 <style>
+	.tag {
+		position: absolute;
+		top: -16px;
+		border: 1px solid var(--color-primary);
+		background-color: var(--color-dark);
+		color: var(--color-primary);
+		padding: 4px 8px;
+	}
+	.calltoarms .body-text,
+	h2 {
+		width: 480px;
+	}
+	.cta:hover {
+		border: 1px solid var(--color-primary);
+	}
+	.cta {
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		padding: 8px 20px;
+		gap: 10px;
+		border: 1px solid var(--color-light-20);
+		box-shadow: 0px 0px 50px rgba(255, 211, 105, 0.1);
+		cursor: pointer;
+		color: var(--color-primary);
+		transition: border 0.2s ease-in 0s;
+	}
+	.calltoarms {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		text-align: center;
+		max-width: 600px;
+		padding: 48px;
+		border: 1px solid var(--color-primary);
+		box-shadow: 0px 0px 250px rgba(255, 211, 105, 0.18);
+	}
 	.buttons-container {
 		display: flex;
 		flex-direction: row;
