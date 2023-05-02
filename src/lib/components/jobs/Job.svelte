@@ -33,12 +33,11 @@
 		return `${month}/${day}/${year}`;
 	};
 
-	// todo: inline this
 	$: infos = [
-		{
-			key: 'listed on:',
-			value: parseDate(new Date(job.created_at))
-		},
+		// {
+		// 	key: 'listed on:',
+		// 	value: parseDate(new Date(job.created_at))
+		// },
 		{
 			key: 'member tier:',
 			value: tier
