@@ -48,7 +48,6 @@
 			</div>
 			<form method="POST" bind:this={myform} on:submit|preventDefault={getSalt}>
 				<input type="hidden" name="address" bind:value={$userAddress} />
-				<input type="hidden" name="salt" bind:value={salt} />
 				<input type="hidden" name="signature" bind:value={signature} />
 				<button>
 					<div class="gm yellow link-frame">

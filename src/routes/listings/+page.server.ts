@@ -16,10 +16,14 @@ export const load: PageServerLoad = async ({ cookies }) => {
       'Content-Type': 'application/json'
     })
   });
-  let calldata = await callResponse.json();
-  if (calldata == 'success') {
-    let jobs = await getJobs(userAddress);
-    return { jobs: jobs };
+  if (callResponse.ok) {
+    let calldata = await callResponse.json();
+    if (calldata == 'success') {
+      let jobs = await getJobs(userAddress);
+      return { jobs: jobs };
+    } else {
+      throw redirect(301, '/auth');
+    }
   } else {
     throw redirect(301, '/auth');
   }

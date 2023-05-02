@@ -8,7 +8,6 @@ const apiUrl =
 export const load: LayoutServerLoad = async ({ cookies }) => {
   const userAddress = cookies.get('honestwork_address');
   const userSignature = cookies.get('honestwork_signature');
-
   if (userAddress && userSignature) {
     const callUrl = `${apiUrl}/verify/${userAddress}/${userSignature}`;
     let callResponse = await fetch(callUrl, {
@@ -17,13 +16,17 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
         'Content-Type': 'application/json'
       })
     });
-    let calldata = await callResponse.json();
-    if (calldata == 'success') {
-      let user = await getUser(userAddress);
-      let skills = await getSkills(userAddress, userSignature);
-      let jobs = await getJobs(userAddress);
-      user.address = userAddress;
-      return { user: user, jobs: jobs };
+    if (callResponse.ok) {
+      let calldata = await callResponse.json();
+      if (calldata == 'success') {
+        let user = await getUser(userAddress);
+        let skills = await getSkills(userAddress, userSignature);
+        let jobs = await getJobs(userAddress);
+        user.address = userAddress;
+        return { user: user, jobs: jobs };
+      } else {
+        throw redirect(301, '/auth');
+      }
     } else {
       throw redirect(301, '/auth');
     }

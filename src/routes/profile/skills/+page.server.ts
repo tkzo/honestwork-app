@@ -17,11 +17,15 @@ export const load: PageServerLoad = async (event) => {
         'Content-Type': 'application/json'
       })
     });
-    let calldata = await callResponse.json();
-    if (calldata == 'success') {
-      let skills = await getSkills(userAddress, userSignature);
+    if (callResponse.ok) {
+      let calldata = await callResponse.json();
+      if (calldata == 'success') {
+        let skills = await getSkills(userAddress, userSignature);
 
-      return { skills: skills };
+        return { skills: skills };
+      } else {
+        throw redirect(301, '/auth');
+      }
     } else {
       throw redirect(301, '/auth');
     }

@@ -142,7 +142,6 @@
 		"src/routes/+layout.server.ts"
 	],
 	"/messages": [
-		"src/routes/messages/+page.server.ts",
 		"src/routes/+layout.server.ts"
 	],
 	"/mint": [

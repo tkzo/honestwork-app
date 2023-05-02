@@ -613,7 +613,7 @@
 						<div class="receipt">
 							<div class="receipt-item">
 								<p class="light-40">service fee</p>
-								<p>+$10</p>
+								<p>+${service_fee}</p>
 							</div>
 							<div style="height:8px" />
 
@@ -624,7 +624,7 @@
 							<div style="height:12px" />
 							<div class="receipt-item receipt-total">
 								<p class="light-60">total</p>
-								<p class="yellow">${sticky_item.price + 10}</p>
+								<p class="yellow">${sticky_item.price + service_fee}</p>
 							</div>
 						</div>
 						<div class="payment-module">

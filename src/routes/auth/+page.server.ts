@@ -26,20 +26,24 @@ export const actions: Actions = {
         'Content-Type': 'application/json'
       }
     });
-    let calldata = await callResponse.json();
-    if (calldata == 'success') {
-      let options = {
-        domain: parseInt(env.PRODUCTION_ENV) == 1 ? 'honestwork.app' : '127.0.0.1',
-        expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000),
-        httpOnly: true,
-        secure: true,
-        sameSite: true,
-        path: '/'
-      };
-      cookies.set('honestwork_address', data.get('address')!.toString(), options);
-      cookies.set('honestwork_signature', data.get('signature')!.toString(), options);
-      throw redirect(301, '/profile');
-    }
+    if (callResponse.ok) {
+      let calldata = await callResponse.json();
+      if (calldata == 'success') {
+        let options = {
+          domain: parseInt(env.PRODUCTION_ENV) == 1 ? 'honestwork.app' : 'localhost',
+          expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000),
+          httpOnly: true,
+          secure: true,
+          sameSite: true,
+          path: '/'
+        };
+        const address = data.get('address') as string;
+        const signature = data.get('signature') as string;
+        cookies.set('honestwork_address', address, options);
+        cookies.set('honestwork_signature', signature, options);
+        throw redirect(302, '/profile');
+      }
+    };
     throw redirect(301, '/mint');
   }
 };
