@@ -292,38 +292,44 @@
 			userPaying = true;
 			let amount_to_pay = sticky_item.price + service_fee;
 			let price = ethers.utils.parseUnits(amount_to_pay.toString(), 6);
-			try {
-				if (parseFloat(user_allowance) < amount_to_pay) {
-					const erc20 = new ethers.Contract(
-						chosen_payment_token.address,
-						erc20_abi,
+			if (price.toString() != '0') {
+				try {
+					if (parseFloat(user_allowance) < amount_to_pay) {
+						const erc20 = new ethers.Contract(
+							chosen_payment_token.address,
+							erc20_abi,
+							$networkSigner
+						);
+						let approveAmt = approveMax ? ethers.constants.MaxUint256 : price;
+						let approveTx = await erc20.approve(env.PUBLIC_LISTING_ADDRESS, approveAmt);
+						let receipt = await approveTx.wait();
+						if (receipt.status == 1) {
+							toast.push(`<p class="light-60">Approval successful!</p>`);
+						}
+						userApproved = true;
+					}
+					const joblistingContract = new ethers.Contract(
+						env.PUBLIC_LISTING_ADDRESS!,
+						listing_abi,
 						$networkSigner
 					);
-					let approveAmt = approveMax ? ethers.constants.MaxUint256 : price;
-					let approveTx = await erc20.approve(env.PUBLIC_LISTING_ADDRESS, approveAmt);
-					let receipt = await approveTx.wait();
+					let tx = await joblistingContract.payForListing(chosen_payment_token.address, price._hex);
+					tx_hash = tx.hash;
+					let receipt = await tx.wait();
 					if (receipt.status == 1) {
-						toast.push(`<p class="light-60">Approval successful!</p>`);
+						toast.push(`<p class="light-60">Payment successful!</p>`);
 					}
-					userApproved = true;
+					userPaid = true;
+				} catch (e: any) {
+					toast.push(
+						`<p class="light-60"><span style="color:var(--color-error)">error: </span>${e.reason}</p>`
+					);
 				}
-				const joblistingContract = new ethers.Contract(
-					env.PUBLIC_LISTING_ADDRESS!,
-					listing_abi,
-					$networkSigner
-				);
-				let tx = await joblistingContract.payForListing(chosen_payment_token.address, price._hex);
-				tx_hash = tx.hash;
-				let receipt = await tx.wait();
-				if (receipt.status == 1) {
-					toast.push(`<p class="light-60">Payment successful!</p>`);
-				}
+			} else {
 				userPaid = true;
-			} catch (e: any) {
-				toast.push(
-					`<p class="light-60"><span style="color:var(--color-error)">error: </span>${e.reason}</p>`
-				);
+				tx_hash = 'notx';
 			}
+
 			userPaying = false;
 		}
 	};
