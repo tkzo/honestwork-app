@@ -51,6 +51,7 @@ export const ProfileInput = z.object({
   title: z.string().min(5).max(50),
   image_url: z.optional(z.string()),
   file_url: z.optional(z.string()),
+  nft_url: z.optional(z.string()),
   show_nft: z.boolean(),
   dms_open: z.boolean(),
   timezone: z.enum([

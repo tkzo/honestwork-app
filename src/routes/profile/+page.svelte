@@ -228,6 +228,7 @@
 			file_url: file_url,
 			nft_address: nft_address,
 			nft_id: nft_id.toString(),
+			nft_url: nft_image,
 			show_nft: show_nft,
 			dms_open: dms_open,
 			timezone: 'UTC+3',
