@@ -7,11 +7,18 @@
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	import { parseContent } from '$lib/stores/Parser';
 	import { CoverLetterInput } from '$lib/stores/Validation';
+	import { browser } from '$app/environment';
+	import { Svrollbar } from 'svrollbar';
 
 	export let data: PageData;
-
+	export let viewport: Element;
+	export let contents: Element;
 	let content: string;
 	let total_chars = 0;
+	let feedHeight = 0;
+	$: if (browser) {
+		feedHeight = window.innerHeight - 156;
+	}
 
 	const handleApply = async () => {
 		const input: CoverLetterInput = {
@@ -28,7 +35,6 @@
 			}
 			return;
 		}
-
 		if ($userConnected) {
 			try {
 				const url = `${base}/api/job_apply/${data.job.user_address}/${data.job.slot}`;
@@ -44,13 +50,13 @@
 					})
 				});
 				const res = await response.json();
-				if (res == 'success') {
+				if (res.response == 'success') {
 					toast.push(
 						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Application received.</p>`
 					);
 				} else {
 					toast.push(
-						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${res}</p>`
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${res.response}</p>`
 					);
 				}
 			} catch (e) {
@@ -80,12 +86,18 @@
 				<div style="height:8px" />
 				<p class="light-60"><span class="yellow">&nbsp;{total_chars}</span>/1000)</p>
 			</div>
-
 			<p class="yellow link" on:click={handleApply} on:keydown>apply</p>
 		</div>
 		<div style="height:8px" />
-		<div class="description">
-			<Tiptap on:content={handleContentInput} editable={true} />
+		<div class="wrapper">
+			<div class="viewport" bind:this={viewport} style={`height:${feedHeight.toString() + 'px'}`}>
+				<div class="contents" bind:this={contents}>
+					<div class="description">
+						<Tiptap on:content={handleContentInput} editable={true} />
+					</div>
+				</div>
+			</div>
+			<Svrollbar alwaysVisible {viewport} {contents} />
 		</div>
 	</div>
 </main>
@@ -122,5 +134,41 @@
 	.description {
 		width: 100%;
 		box-sizing: border-box;
+	}
+	.wrapper {
+		position: relative;
+		-ms-overflow-style: none; /* for Internet Explorer, Edge */
+		scrollbar-width: none; /* for Firefox */
+		overflow-y: scroll;
+		--svrollbar-track-width: 1px;
+		/* --svrollbar-track-background: #85b4b9; */
+		--svrollbar-track-opacity: 1;
+
+		--svrollbar-thumb-width: 10px;
+		--svrollbar-thumb-background: #d9ab55;
+		--svrollbar-thumb-opacity: 1;
+		width: 100%;
+	}
+
+	.viewport {
+		position: relative;
+		overflow: scroll;
+		box-sizing: border-box;
+
+		/* hide scrollbar */
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.viewport::-webkit-scrollbar {
+		/* hide scrollbar */
+		display: none;
+	}
+	.contents {
+		width: 520px;
 	}
 </style>
