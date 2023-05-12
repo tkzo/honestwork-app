@@ -217,6 +217,9 @@
 			file_component.files && file_component.files[0]
 				? env.PUBLIC_IMAGEKIT_URL + '/' + $userAddress + '/profile/' + file_component.files[0].name
 				: '';
+		if (username == '') {
+			username = $userAddress;
+		}
 		const input: ProfileInput = {
 			username: username,
 			show_ens: show_ens,
