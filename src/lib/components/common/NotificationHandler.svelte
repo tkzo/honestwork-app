@@ -9,10 +9,7 @@
 </script>
 
 {#if $page.route.id == '/'}
-	<a
-		href="https://explorer.gitcoin.co/#/round/1/0x12bb5bbbfe596dbc489d209299b8302c3300fa40/0x12bb5bbbfe596dbc489d209299b8302c3300fa40-128"
-		target="_blank"><Notification notification={notifications.gitcoin} /></a
-	>
+	<a href={`${base}/new_job`}><Notification notification={notifications.postjob} /></a>
 {:else if $page.route.id == '/skills' || $page.route.id == '/listings'}
 	<Notification notification={notifications.mint} on:click={() => goto('/mint')} />
 {:else if $page.route.id == '/jobs'}
@@ -29,10 +26,8 @@
 	</a>
 {:else if $page.route.id == '/mint'}
 	<a
-		href="https://explorer.gitcoin.co/#/round/1/0x12bb5bbbfe596dbc489d209299b8302c3300fa40/0x12bb5bbbfe596dbc489d209299b8302c3300fa40-128"
-		target="_blank"
-		rel="noreferrer"
+		href="https://docs.google.com/forms/d/e/1FAIpQLSdAkkkZ-nwVfUErIdqh6ZLLLJCFoB0A9eR3bsUm_jxhqY4X_Q/viewform"
 	>
-		<Notification notification={notifications.gitcoin} />
+		<Notification notification={notifications.invitation} />
 	</a>
 {/if}

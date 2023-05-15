@@ -24,29 +24,29 @@
 			<FeatureCard {card} {index} />
 		{/if}
 	{/each}
-	<div style="height:20px" />
-	<div class="calltoarms">
-		{#if chosen_tab == 'employers'}
-			<div class="tag">LIMITED TIME OFFER</div>
-			<h2 class="yellow">Hire experienced Web3 freelancers fast</h2>
-			<div style="height:16px" />
-			<div class="body-text">
-				Quickly find a talented, web3-savvy freelancer by posting a job or browsing our extensive
-				library of freelancers' skills.
-			</div>
-			<div style="height:36px" />
-			<a class="cta" href={`${base}/new_job`}>Post a Job for Free</a>
-		{:else}
-			<div class="tag">LIMITED TIME OFFER</div>
-			<h2 class="yellow">Monetize your Web3 skills and start earning now</h2>
-			<div style="height:16px" />
-			<div class="body-text">
-				Earn crypto and build your on-chain reputation by working on exclusive Web3 projects.
-			</div>
-			<div style="height:36px" />
-			<a class="cta" href={`${base}/mint`}>Mint a Free Membership NFT</a>
-		{/if}
-	</div>
+	<!-- <div style="height:20px" /> -->
+	<!-- <div class="calltoarms"> -->
+	<!-- 	{#if chosen_tab == 'employers'} -->
+	<!-- 		<div class="tag">LIMITED TIME OFFER</div> -->
+	<!-- 		<h2 class="yellow">Hire experienced Web3 freelancers fast</h2> -->
+	<!-- 		<div style="height:16px" /> -->
+	<!-- 		<div class="body-text"> -->
+	<!-- 			Quickly find a talented, web3-savvy freelancer by posting a job or browsing our extensive -->
+	<!-- 			library of freelancers' skills. -->
+	<!-- 		</div> -->
+	<!-- 		<div style="height:36px" /> -->
+	<!-- 		<a class="cta" href={`${base}/new_job`}>Post a Job for Free</a> -->
+	<!-- 	{:else} -->
+	<!-- 		<div class="tag">LIMITED TIME OFFER</div> -->
+	<!-- 		<h2 class="yellow">Monetize your Web3 skills and start earning now</h2> -->
+	<!-- 		<div style="height:16px" /> -->
+	<!-- 		<div class="body-text"> -->
+	<!-- 			Earn crypto and build your on-chain reputation by working on exclusive Web3 projects. -->
+	<!-- 		</div> -->
+	<!-- 		<div style="height:36px" /> -->
+	<!-- 		<a class="cta" href={`${base}/mint`}>Mint a Free Membership NFT</a> -->
+	<!-- 	{/if} -->
+	<!-- </div> -->
 </div>
 
 <style>
