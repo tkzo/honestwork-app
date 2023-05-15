@@ -136,28 +136,27 @@
 		if (index > 0) {
 			upgrade(index);
 		} else if ($userState == 0 && $chainID == 1) {
-			// if (dai_balance > 100) {
-			try {
-				// await approve(ethers.utils.parseEther('100'));
-				const contract = new ethers.Contract(env.PUBLIC_NFT_ADDRESS, nft_abi, $networkSigner);
-				const tx = await contract.publicMint(env.PUBLIC_MAINNET_DAI_ADDRESS);
-				const receipt = await tx.wait();
-				if (receipt.status == 1) {
+			if (dai_balance > 100) {
+				try {
+					await approve(ethers.utils.parseEther('100'));
+					const contract = new ethers.Contract(env.PUBLIC_NFT_ADDRESS, nft_abi, $networkSigner);
+					const tx = await contract.publicMint(env.PUBLIC_MAINNET_DAI_ADDRESS);
+					const receipt = await tx.wait();
+					if (receipt.status == 1) {
+						toast.push(
+							`<p class="light-60"><span style='color:var(--color-success)'>success: </span>you have been minted a token</p>`
+						);
+					}
+				} catch (error: any) {
 					toast.push(
-						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>you have been minted a token</p>`
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error.reason}</p>`
 					);
 				}
-			} catch (error: any) {
+			} else {
 				toast.push(
-					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error.reason}</p>`
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>you need at least 100 dai to mint</p>`
 				);
 			}
-			// }
-			// else {
-			// toast.push(
-			// 	`<p class="light-60"><span style='color:var(--color-error)'>error: </span>you need at least 100 dai to mint</p>`
-			// );
-			// }
 		} else if ($userState == 0 && $chainID != 1) {
 			toast.push(
 				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>switch to ethereum mainnet to mint</p>`
@@ -171,9 +170,8 @@
 	};
 	const upgrade = async (index: number) => {
 		upgrading = true;
-		// todo: remove hardcoded values
 		const amount_to_upgrade = index == 1 ? 250 : 300;
-		if (dai_balance > 100) {
+		if (dai_balance > amount_to_upgrade) {
 			try {
 				await approve(ethers.utils.parseEther(amount_to_upgrade.toString()));
 				const contract = new ethers.Contract(env.PUBLIC_NFT_ADDRESS, nft_abi, $networkSigner);
@@ -258,12 +256,7 @@
 									<div style="height:8px" />
 									<div class="mint-feature">
 										<p class="light-60">price</p>
-										<p style="text-decoration:line-through;">{tier.price}</p>
-									</div>
-									<div style="height:8px" />
-									<div class="mint-feature">
-										<p class="light-60">gitcoin boost*</p>
-										<p class="green">free</p>
+										<p>{tier.price}</p>
 									</div>
 								{/if}
 								<div style="height:8px" />
@@ -368,13 +361,6 @@
 						</section>
 					</main>
 				{/if}
-				<div style="height:12px" />
-				<div class="buy-tokens">
-					<p>
-						(*) Mint Tier I for free until the end of <span class="green">Gitcoin Beta Round</span> on
-						May 9th.
-					</p>
-				</div>
 				<div style="height:12px" />
 				<div class="buy-tokens">
 					<p>

@@ -41,7 +41,7 @@
 	let feedHeight = 0;
 	let file_url: string;
 	let budget: number;
-	let service_fee = 0; // in $
+	let service_fee = 10; // in $
 	let image_url: string | undefined = undefined;
 	let upload_url: Response;
 	let show_ens: boolean = false;
