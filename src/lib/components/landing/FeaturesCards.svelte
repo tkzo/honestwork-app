@@ -3,6 +3,14 @@
 	import { base } from '$app/paths';
 	import FeatureCard from './FeatureCard.svelte';
 	let chosen_tab: 'employers' | 'freelancers' = 'employers';
+	const mint = async () => {
+		// mint
+		// 1) deploy
+		// 2) get abi
+		// 3) chain approve and pay
+		// 4) do states for the button
+		// 5) redirect after mint
+	};
 </script>
 
 <div class="buttons-container">
@@ -26,26 +34,15 @@
 	{/each}
 	<!-- <div style="height:20px" /> -->
 	<!-- <div class="calltoarms"> -->
-	<!-- 	{#if chosen_tab == 'employers'} -->
-	<!-- 		<div class="tag">LIMITED TIME OFFER</div> -->
-	<!-- 		<h2 class="yellow">Hire experienced Web3 freelancers fast</h2> -->
-	<!-- 		<div style="height:16px" /> -->
-	<!-- 		<div class="body-text"> -->
-	<!-- 			Quickly find a talented, web3-savvy freelancer by posting a job or browsing our extensive -->
-	<!-- 			library of freelancers' skills. -->
-	<!-- 		</div> -->
-	<!-- 		<div style="height:36px" /> -->
-	<!-- 		<a class="cta" href={`${base}/new_job`}>Post a Job for Free</a> -->
-	<!-- 	{:else} -->
-	<!-- 		<div class="tag">LIMITED TIME OFFER</div> -->
-	<!-- 		<h2 class="yellow">Monetize your Web3 skills and start earning now</h2> -->
-	<!-- 		<div style="height:16px" /> -->
-	<!-- 		<div class="body-text"> -->
-	<!-- 			Earn crypto and build your on-chain reputation by working on exclusive Web3 projects. -->
-	<!-- 		</div> -->
-	<!-- 		<div style="height:36px" /> -->
-	<!-- 		<a class="cta" href={`${base}/mint`}>Mint a Free Membership NFT</a> -->
-	<!-- 	{/if} -->
+	<!-- 	<div class="tag">LIMITED TIME OFFER</div> -->
+	<!-- 	<h2 class="yellow">try it out with starter nft</h2> -->
+	<!-- 	<div style="height:4px" /> -->
+	<!-- 	<div class="body-text"> -->
+	<!-- 		Post a skill for free and see if there's any demand for it. Once you validate for yourself, go -->
+	<!-- 		for the full membership. -->
+	<!-- 	</div> -->
+	<!-- 	<div style="height:36px" /> -->
+	<!-- 	<div class="cta" on:click={mint} on:keydown>Mint a Free Membership NFT</div> -->
 	<!-- </div> -->
 </div>
 
@@ -61,6 +58,7 @@
 	.calltoarms .body-text,
 	h2 {
 		width: 480px;
+		max-width: 90%;
 	}
 	.cta:hover {
 		border: 1px solid var(--color-primary);
@@ -85,9 +83,9 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		width: 100%;
-		text-align: center;
+		width: 90%;
 		max-width: 600px;
+		text-align: center;
 		padding: 48px;
 		border: 1px solid var(--color-primary);
 		box-shadow: 0px 0px 250px rgba(255, 211, 105, 0.18);

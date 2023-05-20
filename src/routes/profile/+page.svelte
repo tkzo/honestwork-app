@@ -234,7 +234,7 @@
 			nft_url: nft_image,
 			show_nft: show_nft,
 			dms_open: dms_open,
-			timezone: 'UTC+3',
+			timezone: 0,
 			links: [link_0, link_1, link_2]
 		};
 		let parsed = ProfileInput.safeParse(input);
