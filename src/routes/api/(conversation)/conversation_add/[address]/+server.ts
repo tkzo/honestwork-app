@@ -3,8 +3,6 @@ import { env } from '$env/dynamic/private';
 import { MongoClient, Db } from 'mongodb';
 import { error, json } from '@sveltejs/kit';
 
-// todo: delete this comment :)
-
 let cached_db: Db = "" as any;
 export const POST: RequestHandler = async ({ params, cookies }) => {
   const userAddress = cookies.get("honestwork_address");
