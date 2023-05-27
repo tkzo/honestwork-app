@@ -4,7 +4,7 @@ import { Client } from '@xmtp/xmtp-js';
 import { get } from 'svelte/store';
 import { base } from '$app/paths';
 import { toast } from '@zerodevx/svelte-toast';
-import { user_watchlist, user_favorites } from '$lib/stores/State';
+import { env } from '$env/dynamic/public';
 
 //todo: typescript
 export let userConnected = writable(false);
@@ -43,7 +43,7 @@ export const connectWallet = async () => {
     const signer = provider.getSigner();
     networkProvider.set(provider);
     networkSigner.set(signer);
-
+    nodeProvider.set(new ethers.providers.JsonRpcProvider(env.PUBLIC_ETHEREUM_RPC));
     let addr = await signer.getAddress();
     userAddress.set(addr);
     let chain_id = await signer.getChainId();

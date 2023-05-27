@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	import type { PageServerData } from './$types';
 	import JobPage from '$lib/components/jobs/JobPage.svelte';
 	import { base } from '$app/paths';
 	import { userConnected, userAddress } from '$lib/stores/Network';
@@ -10,7 +10,7 @@
 	import { browser } from '$app/environment';
 	import { Svrollbar } from 'svrollbar';
 
-	export let data: PageData;
+	export let data: PageServerData;
 	export let viewport: Element;
 	export let contents: Element;
 	let content: string;
@@ -22,9 +22,9 @@
 
 	const handleApply = async () => {
 		const input: CoverLetterInput = {
-			user_address: $userAddress,
-			job_id: `job:${data.job.user_address}:${data.job.slot}`,
-			cover_letter: parseContent(content)
+			useraddress: $userAddress,
+			jobid: `job:${data.job.useraddress}:${data.job.slot}`,
+			coverletter: parseContent(content)
 		};
 		let parsed = CoverLetterInput.safeParse(input);
 		if (!parsed.success) {
@@ -37,7 +37,7 @@
 		}
 		if ($userConnected) {
 			try {
-				const url = `${base}/api/job_apply/${data.job.user_address}/${data.job.slot}`;
+				const url = `${base}/api/job_apply/${data.job.useraddress}/${data.job.slot}`;
 				const response = await fetch(url, {
 					method: 'POST',
 					headers: {
@@ -45,18 +45,19 @@
 					},
 					body: JSON.stringify({
 						user_address: $userAddress,
-						job_id: `job:${data.job.user_address}:${data.job.slot}`,
+						job_id: `job:${data.job.useraddress}:${data.job.slot}`,
 						cover_letter: content
 					})
 				});
 				const res = await response.json();
-				if (res.response == 'success') {
+				if (res == 'success') {
 					toast.push(
 						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Application received.</p>`
 					);
 				} else {
+					console.log(res);
 					toast.push(
-						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${res.response}</p>`
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${res.body.message}</p>`
 					);
 				}
 			} catch (e) {

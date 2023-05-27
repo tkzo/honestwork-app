@@ -36,12 +36,10 @@ declare module '$env/static/private' {
 	export const PRIVATE_IMAGEKIT_URL: string;
 	export const PRIVATE_IMAGEKIT_PUBLIC_KEY: string;
 	export const PRIVATE_IMAGEKIT_PRIVATE_KEY: string;
-	export const PRIVATE_HONESTWORK_API: string;
-	export const PRIVATE_LOCAL_HONESTWORK_API: string;
 	export const PRIVATE_ETHEREUM_RPC: string;
-	export const PRIVATE_CLIENT_KEY: string;
-	export const PRIVATE_CLIENT_PASSWORD: string;
+	export const PRIVATE_ARBITRUM_RPC: string;
 	export const PRIVATE_OPENAI_KEY: string;
+	export const PRIVATE_MONGODB_URI: string;
 	export const MANPATH: string;
 	export const NIX_PROFILES: string;
 	export const TERM_PROGRAM: string;
@@ -124,6 +122,7 @@ declare module '$env/static/public' {
 	export const PUBLIC_ARBITRUM_USDC_ADDRESS: string;
 	export const PUBLIC_IMAGEKIT_URL: string;
 	export const PUBLIC_MARKPROMPT_PRODUCTION_KEY: string;
+	export const PUBLIC_ETHEREUM_RPC: string;
 }
 
 /**
@@ -150,12 +149,10 @@ declare module '$env/dynamic/private' {
 		PRIVATE_IMAGEKIT_URL: string;
 		PRIVATE_IMAGEKIT_PUBLIC_KEY: string;
 		PRIVATE_IMAGEKIT_PRIVATE_KEY: string;
-		PRIVATE_HONESTWORK_API: string;
-		PRIVATE_LOCAL_HONESTWORK_API: string;
 		PRIVATE_ETHEREUM_RPC: string;
-		PRIVATE_CLIENT_KEY: string;
-		PRIVATE_CLIENT_PASSWORD: string;
+		PRIVATE_ARBITRUM_RPC: string;
 		PRIVATE_OPENAI_KEY: string;
+		PRIVATE_MONGODB_URI: string;
 		MANPATH: string;
 		NIX_PROFILES: string;
 		TERM_PROGRAM: string;
@@ -243,6 +240,7 @@ declare module '$env/dynamic/public' {
 		PUBLIC_ARBITRUM_USDC_ADDRESS: string;
 		PUBLIC_IMAGEKIT_URL: string;
 		PUBLIC_MARKPROMPT_PRODUCTION_KEY: string;
+		PUBLIC_ETHEREUM_RPC: string;
 		[key: `PUBLIC_${string}`]: string | undefined;
 	}
 }

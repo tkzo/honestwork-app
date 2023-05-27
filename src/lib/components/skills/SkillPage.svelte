@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SkillType, UserType } from '$lib/stores/Types';
+	import type { SkillType, User } from '$lib/stores/Types';
 	import { Svrollbar } from 'svrollbar';
 	import Skeleton from '$lib/components/common/Skeleton.svelte';
 	import { nodeProvider } from '$lib/stores/Network';
@@ -14,7 +14,7 @@
 	let loading_gallery_image = true;
 	let viewport: Element;
 	let contents: Element;
-	let user: UserType;
+	let user: User;
 	let chosen_image: number = 0;
 	let nft_image: any;
 	let ens_name: string;
@@ -26,13 +26,15 @@
 		resetState();
 		fetchUser();
 	}
-	$: trimmed_images = skill.image_urls.filter((url: string) => url !== '');
+	$: trimmed_images = skill.imageurls.filter((url: string) => url !== '');
 	$: if (image_component?.complete) loading_gallery_image = false;
+	$: username_trimmed =
+		user?.username.length > 16 ? user?.username.slice(0, 16) + '...' : user?.username;
 
 	const fetchUser = async () => {
-		const res = await fetch(`${base}/api/user/${skill.user_address}`);
+		const res = await fetch(`${base}/api/user/${skill.useraddress}`);
 		user = await res.json();
-		ens_name = user.ens_name ?? (await $nodeProvider.lookupAddress(skill.user_address));
+		ens_name = user.ensname ?? (await $nodeProvider.lookupAddress(skill.useraddress));
 		await getNft();
 	};
 	const nextImage = () => {
@@ -61,9 +63,9 @@
 		nft_image = '';
 	};
 	const getNft = async () => {
-		if (user.nft_address && user.nft_id) {
+		if (user.nftaddress && user.nftid) {
 			try {
-				const response = await fetch(`${base}/api/alchemy/${user.nft_address}/${user.nft_id}`);
+				const response = await fetch(`${base}/api/alchemy/${user.nftaddress}/${user.nftid}`);
 				if (response.ok) {
 					const data = await response.json();
 					nft_image = data.image;
@@ -76,24 +78,24 @@
 </script>
 
 <main>
-	<a class="profile-bar" href={`${base}/creator/${skill.user_address}`}>
+	<a class="profile-bar" href={`${base}/creator/${skill.useraddress}`}>
 		<div class="left-section">
 			<img
 				class="pfp"
-				src={user?.show_nft
+				src={user?.shownft
 					? nft_image && nft_image != ''
 						? nft_image
 						: placeholder_image
-					: user?.image_url && user.image_url != ''
-					? user.image_url + '?tr=h-80,w-80'
+					: user?.imageurl && user.imageurl != ''
+					? user.imageurl + '?tr=h-80,w-80'
 					: placeholder_image}
 				alt=""
 			/>
 			<div style="width:8px;" />
-			{#if user?.show_ens && ens_name && ens_name != ''}
+			{#if user?.showens && ens_name && ens_name != ''}
 				<p class="yellow">{ens_name}</p>
 			{:else if user?.username && user.username != ''}
-				<p class="yellow">{user?.username}</p>
+				<p class="yellow">{username_trimmed}</p>
 			{:else}
 				<Skeleton width="100px" height="20px" />
 			{/if}

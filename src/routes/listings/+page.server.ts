@@ -1,47 +1,40 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { env } from '$env/dynamic/private';
+import { MongoClient, type Db } from 'mongodb';
 
-const apiUrl =
-  parseInt(env.PRODUCTION_ENV) == 1 ? env.PRIVATE_HONESTWORK_API : env.PRIVATE_LOCAL_HONESTWORK_API;
+let cached_db: Db = "" as any;
 
-export const load: PageServerLoad = async ({ cookies }) => {
+export const load: PageServerLoad = async ({ cookies, parent }) => {
+  const { signed } = await parent();
   const userAddress = cookies.get('honestwork_address')!;
-  const userSignature = cookies.get('honestwork_signature');
-
-  const callUrl = `${apiUrl}/verify/${userAddress}/${userSignature}`;
-  let callResponse = await fetch(callUrl, {
-    headers: new Headers({
-      Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
-      'Content-Type': 'application/json'
-    })
-  });
-  if (callResponse.ok) {
-    let calldata = await callResponse.json();
-    if (calldata == 'success') {
-      let jobs = await getJobs(userAddress);
-      return { jobs: jobs };
-    } else {
-      throw redirect(301, '/auth');
-    }
+  if (signed) {
+    let jobs = await getJobs(userAddress);
+    return { jobs: jobs };
   } else {
     throw redirect(301, '/auth');
   }
 };
 
 const getJobs = async (address: string) => {
-  const url = `${apiUrl}/jobs/${address}`;
-  let response = await fetch(url, {
-    headers: new Headers({
-      Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
-      'Content-Type': 'application/json'
-    })
-  });
-  if (response.ok) {
-    let json = await response.json();
-    return { json };
-  } else {
-    console.log('HTTP-Error: ' + response.status);
-    return response.status;
+  let jobs: any;
+  const uri =
+    parseInt(env.PRODUCTION_ENV) == 1
+      ? env.MONGODB_URI
+      : env.PRIVATE_MONGODB_URI;
+  try {
+    if (cached_db == "" as any) {
+      const client = new MongoClient(uri!);
+      await client.connect();
+      const database = client.db("honestwork-cluster");
+      cached_db = database;
+    }
+    jobs = await cached_db.collection('jobs').find({ useraddress: address }).sort("createdat", -1).toArray();
+    for (let i = 0; i < jobs.length; i++) {
+      jobs[i]._id = jobs[i]._id.toString();
+    }
+  } catch (err) {
+    console.log("Mongo fetch err:", err);
   }
+  return { json: jobs };
 };

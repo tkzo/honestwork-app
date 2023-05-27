@@ -19,6 +19,6 @@ export type PageServerData = null;
 export type PageData = Expand<PageParentData>;
 export type LayoutServerLoad<OutputData extends OutputDataShape<LayoutServerParentData> = OutputDataShape<LayoutServerParentData>> = Kit.ServerLoad<LayoutParams, LayoutServerParentData, OutputData, LayoutRouteId>;
 export type LayoutServerLoadEvent = Parameters<LayoutServerLoad>[0];
-export type LayoutServerData = Expand<OptionalUnion<EnsureDefined<Kit.AwaitedProperties<Awaited<ReturnType<typeof import('./proxy+layout.server.js').load>>>>>>;
+export type LayoutServerData = Expand<OptionalUnion<EnsureDefined<Kit.AwaitedProperties<Awaited<ReturnType<typeof import('../../../../../src/routes/profile/+layout.server.js').load>>>>>>;
 export type LayoutData = Expand<Omit<LayoutParentData, keyof LayoutServerData> & EnsureDefined<LayoutServerData>>;
 export type RequestEvent = Kit.RequestEvent<RouteParams, RouteId>;

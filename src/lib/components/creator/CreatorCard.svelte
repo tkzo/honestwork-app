@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { UserType } from '$lib/stores/Types';
+	import type { User } from '$lib/stores/Types';
 	import { placeholder_image } from '$lib/stores/Constants';
 	import { userAddress, xmtpConnected } from '$lib/stores/Network';
 	import { onMount } from 'svelte';
@@ -11,7 +11,7 @@
 	import { Svrollbar } from 'svrollbar';
 	import Tiptap from '../common/Tiptap.svelte';
 
-	export let user: UserType;
+	export let user: User;
 	export let addr: string;
 	let viewport: Element;
 	let contents: Element;
@@ -19,14 +19,16 @@
 	let nft_image: string;
 	let feedHeight = 0;
 	$: if (browser) feedHeight = window.innerHeight - 113;
+	$: username_trimmed =
+		user?.username.length > 16 ? user?.username.slice(0, 16) + '...' : user?.username;
 	onMount(() => {
-		if (user.show_nft) getNft();
+		if (user.shownft) getNft();
 	});
 
 	const getNft = async () => {
-		if (user.nft_address && user.nft_id) {
+		if (user.nftaddress && user.nftid) {
 			try {
-				const response = await fetch(`${base}/api/alchemy/${user.nft_address}/${user.nft_id}`);
+				const response = await fetch(`${base}/api/alchemy/${user.nftaddress}/${user.nftid}`);
 				if (response.ok) {
 					const data = await response.json();
 					nft_image = data.image;
@@ -103,10 +105,10 @@
 							<section>
 								<img
 									class="pfp"
-									src={user.show_nft && nft_image != null
+									src={user.shownft && nft_image != null
 										? nft_image
-										: user.image_url
-										? user.image_url + '?tr=h-120,w-120'
+										: user.imageurl
+										? user.imageurl + '?tr=h-120,w-120'
 										: placeholder_image}
 									alt="Profile"
 									placeholder={placeholder_image}
@@ -114,10 +116,10 @@
 							</section>
 							<div style="width:8px;" />
 							<div class="info">
-								{#if user.show_ens}
-									<p>{user.ens_name}</p>
+								{#if user.showens}
+									<p>{user.ensname}</p>
 								{:else}
-									<p>{user.username}</p>
+									<p>{username_trimmed}</p>
 								{/if}
 								<div style="height:4px;" />
 								<p class="yellow">{user.title}</p>
@@ -141,7 +143,10 @@
 						</div>
 					</div>
 					<div class="bio">
-						<Tiptap content={JSON.parse(user.bio)} editable={false} />
+						<Tiptap
+							content={user.bio ? JSON.parse(user.bio) : 'No bio available'}
+							editable={false}
+						/>
 					</div>
 					{#each user.links as link, i}
 						{#if link != ''}

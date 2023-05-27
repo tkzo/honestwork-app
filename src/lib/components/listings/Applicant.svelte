@@ -19,20 +19,20 @@
 
 	const setup = async () => {
 		await fetchUser();
-		if (user.show_nft) getNft();
+		if (user.shownft) getNft();
 	};
 
 	let nft_image: string | null = null;
 	let drawer_open = false;
 
 	const fetchUser = async () => {
-		const response = await fetch(`/api/user/${applicant.user_address}`);
+		const response = await fetch(`/api/user/${applicant.useraddress}`);
 		user = await response.json();
 	};
 	const getNft = async () => {
-		if (user.nft_address && user.nft_id) {
+		if (user.nftaddress && user.nftid) {
 			try {
-				const response = await fetch(`api/alchemy/${user.nft_address}/${user.nft_id}`);
+				const response = await fetch(`api/alchemy/${user.nftaddress}/${user.nftid}`);
 				if (response.ok) {
 					const data = await response.json();
 					nft_image = data.image;
@@ -45,7 +45,7 @@
 	const getRating = async () => {
 		if (browser) {
 			try {
-				const url = `${base}/api/rating/${applicant.user_address}`;
+				const url = `${base}/api/rating/${applicant.useraddress}`;
 				const response = await fetch(url);
 				const data = await response.json();
 				return data;
@@ -56,21 +56,21 @@
 	};
 	const handleNewConversation = async () => {
 		try {
-			const url = `${base}/api/conversation_add/${applicant.user_address}`;
+			const url = `${base}/api/conversation_add/${applicant.useraddress}`;
 			const response = await fetch(url, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					title: applicant.job_id
+					title: applicant.jobid
 				})
 			});
 			const data = await response.json();
 			if (data == 'success') {
 				new_conversation_metadata.set({
-					address: applicant.user_address,
-					title: applicant.job_id
+					address: applicant.useraddress,
+					title: applicant.jobid
 				});
 				toast.push(
 					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Created new conversation</p>`
@@ -96,10 +96,10 @@
 				<section>
 					<img
 						class="pfp"
-						src={user.show_nft && nft_image != null
+						src={user.shownft && nft_image != null
 							? nft_image
-							: user.image_url != ''
-							? user.image_url + "?tr=h-120,w-120"
+							: user.imageurl != ''
+							? user.imageurl + '?tr=h-120,w-120'
 							: placeholder_image}
 						alt="Profile"
 						placeholder={placeholder_image}
@@ -107,8 +107,8 @@
 				</section>
 				<div style="width:8px;" />
 				<div class="info">
-					{#if user.show_ens}
-						<p>{user.ens_name}</p>
+					{#if user.showens}
+						<p>{user.ensname}</p>
 					{:else}
 						<p>{user.username}</p>
 					{/if}
@@ -132,7 +132,7 @@
 					<p class="yellow">send message</p>
 				</div>
 				<div style="height:8px" />
-				<a class="button" href={`${base}/creator/${applicant.user_address}`}>
+				<a class="button" href={`${base}/creator/${applicant.useraddress}`}>
 					<p class="light-60">go to profile</p>
 				</a>
 			</div>
@@ -141,7 +141,7 @@
 			<div class="drawer_container">
 				<div class="bio">
 					<div class="body-text light-80">
-						<Tiptap content={JSON.parse(applicant.cover_letter)} editable={false} />
+						<Tiptap content={JSON.parse(applicant.coverletter)} editable={false} />
 					</div>
 				</div>
 				{#each user.links as link, i}

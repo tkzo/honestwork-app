@@ -6,7 +6,7 @@
 	onMount(() => {
 		chosen_profile_tab.set('skills');
 	});
-	export let data;
+	export let data: any = {};
 </script>
 
-<Skills {data} />
+<Skills skills={data.skills} />

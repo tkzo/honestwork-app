@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Svrollbar } from 'svrollbar';
-	import type { JobType } from '$lib/stores/Types';
+	import { user_signed_in } from '$lib/stores/State';
+	import type { JobType, WatchlistType } from '$lib/stores/Types';
 	import { chains } from '$lib/stores/Constants';
 	import { browser } from '$app/environment';
 	import { placeholder_image } from '$lib/stores/Constants';
@@ -18,31 +19,45 @@
 	let viewport: Element;
 	let contents: Element;
 	let chosen_network: number;
-
+	let watchlisted: boolean = false;
 	let feedHeight = 0;
 	$: if (browser) feedHeight = window.innerHeight - 233;
 	$: if (job && browser) {
-		if (job.tokens_accepted) {
-			chosen_network = job.tokens_accepted[0].id;
+		if (job.tokensaccepted) {
+			chosen_network = job.tokensaccepted[0].id;
 		}
 	}
-	$: user_applied =
-		job.application != null
-			? job.application.findIndex((n) => n.user_address == $userAddress) != -1
-			: false;
+	$: user_applied = job.applications
+		? job.applications.length != 0
+		: false
+		? job.applications.findIndex((n) => n.useraddress == $userAddress) != -1
+		: false;
+	$: if (job) {
+		getWatchlist();
+	}
 
-	// const getWatchlist = async () => {
-	// 	if ($userConnected) {
-	// 		try {
-	// 			const response = await fetch(`${base}/api/watchlist/get/${$userAddress}`);
-	// 			return await response.json();
-	// 		} catch (error) {
-	// 				toast.push(
-	// 					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${error}</p>`
-	// 				);
-	// 		}
-	// 	}
-	// };
+	const getWatchlist = async () => {
+		if (!$user_signed_in || !$userConnected) {
+			return;
+		}
+		try {
+			const url = `${base}/api/watchlist/get/${$userAddress}`;
+			const response = await fetch(url);
+			const data = await response.json();
+			if (data && data.length != 0) {
+				watchlisted = false;
+				data.forEach((f: WatchlistType) => {
+					if (f.input.address == job.useraddress && f.input.slot == job.slot) {
+						watchlisted = true;
+					}
+				});
+			}
+		} catch (e) {
+			toast.push(
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${e}</p>`
+			);
+		}
+	};
 	const getChainName = (chain_id: number) => {
 		const name = chains.find((chain) => chain.id == chain_id)?.name;
 		return name;
@@ -66,12 +81,13 @@
 						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify({
-						address: job.user_address,
+						address: job.useraddress,
 						slot: job.slot
 					})
 				});
 				const data = await response.json();
 				if (data == 'success') {
+					watchlisted = true;
 					toast.push(
 						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Added to watchlist</p>`
 					);
@@ -88,7 +104,7 @@
 	const getRating = async () => {
 		if (browser) {
 			try {
-				const url = `${base}/api/rating/${job.user_address}`;
+				const url = `${base}/api/rating/${job.useraddress}`;
 				const response = await fetch(url, {
 					method: 'GET',
 					headers: {
@@ -109,7 +125,7 @@
 		<div class="left-section">
 			<img
 				class="pfp"
-				src={job.image_url ? job.image_url + '?tr=h-188,w-188' : placeholder_image}
+				src={job.imageurl ? job.imageurl + '?tr=h-188,w-188' : placeholder_image}
 				alt=""
 			/>
 			<div style="width:8px;" />
@@ -137,9 +153,9 @@
 			</div>
 		</div>
 		<div class="right-section">
-			{#if $page.route.id == '/jobs' && job.deal_id == -1}
+			{#if $page.route.id == '/jobs' && job.dealid == -1}
 				{#if !user_applied}
-					<a class="button" href={`/job/${job.user_address}/${job.slot}`}>
+					<a class="button" href={`/job/${job.useraddress}/${job.slot}`}>
 						<p class="yellow">apply to this job</p>
 					</a>
 				{:else}
@@ -151,12 +167,20 @@
 				{/if}
 			{/if}
 			<div style="height:8px" />
-			<div class="button link" on:click={handleWatch} on:keydown>
-				<p class="light-60">add to watchlist</p>
-			</div>
+			{#if watchlisted == true}
+				<div class="already-applied">
+					<p class="light-80">already in list</p>
+					<div style="width: 4px;" />
+					<img src={`${assets}/icons/check.svg`} alt="Already applied" />
+				</div>
+			{:else}
+				<div class="button link" on:click={handleWatch} on:keydown>
+					<p class="light-60">add to watchlist</p>
+				</div>
+			{/if}
 			<div style="height:8px" />
 			<Clipboard
-				text={`https://honestwork.app/job/${job.user_address}/${job.slot}`}
+				text={`https://honestwork.app/job/${job.useraddress}/${job.slot}`}
 				let:copy
 				on:copy={() => {
 					toast.push(
@@ -192,9 +216,9 @@
 				{/key}
 				<div style="height:12px;" />
 				<div class="payment-container">
-					{#if job.tokens_accepted && job.tokens_accepted.length > 0}
+					{#if job.tokensaccepted && job.tokensaccepted.length > 0}
 						<div class="network-tabs">
-							{#each job.tokens_accepted as network}
+							{#each job.tokensaccepted as network}
 								<div class="network-tab" on:click={() => (chosen_network = network.id)} on:keydown>
 									<p class={chosen_network == network.id ? 'yellow' : 'light-60'}>
 										{getChainName(network.id)}
@@ -214,8 +238,8 @@
 						</div>
 						<div class="tokens">
 							<div style="height:8px;" />
-							{#if job.tokens_accepted}
-								{#each job.tokens_accepted as network}
+							{#if job.tokensaccepted}
+								{#each job.tokensaccepted as network}
 									{#if network.tokens && network.tokens.length > 0}
 										{#each network.tokens as token, i}
 											{#if network.id == chosen_network}
@@ -309,7 +333,6 @@
 		flex-direction: row;
 		align-items: center;
 	}
-
 	.link-container {
 		display: flex;
 		flex-direction: row;
@@ -330,7 +353,6 @@
 		scrollbar-width: none; /* for Firefox */
 		overflow-y: scroll;
 	}
-
 	.viewport {
 		position: relative;
 		overflow: scroll;
@@ -338,7 +360,6 @@
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}
-
 	.viewport::-webkit-scrollbar {
 		display: none;
 	}

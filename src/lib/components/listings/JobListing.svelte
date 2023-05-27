@@ -23,17 +23,17 @@
 		}
 	];
 
-	$: humandate = new Date(job.created_at).toLocaleDateString();
+	$: humandate = new Date(job.createdat).toLocaleDateString();
 </script>
 
 <section class={chosen ? 'chosen' : ''}>
 	<div class="title-bar">
 		<div class="tags">
-			{#if job.sticky_duration >= 7}
+			{#if job.stickyduration >= 7}
 				<div class="tag">
 					<p class="yellow">
-						sticky post <span class="light-60">{job.sticky_duration} days </span><span class="light"
-							>${sticky_data.find((n) => n.duration == job.sticky_duration)?.price}</span
+						sticky post <span class="light-60">{job.stickyduration} days </span><span class="light"
+							>${sticky_data.find((n) => n.duration == job.stickyduration)?.price}</span
 						>
 					</p>
 				</div>
@@ -42,11 +42,11 @@
 				<p>{job.title}</p>
 			</div>
 			<div class="tag">
-				<p><span class="yellow">24 </span>applicants</p>
+				<p><span class="yellow">{job.applications?.length ?? 0}</span> applicants</p>
 			</div>
 		</div>
 		<div class="status-tag">
-			{#if job.deal_id != null}
+			{#if job.dealid != null}
 				<p style="color:var(--color-success)">available</p>
 				<div style="width: 4px" />
 				<img src={`${assets}/icons/calendar-check.svg`} alt="arrow" />
@@ -61,7 +61,7 @@
 	</div>
 	<div class="contents">
 		<img
-			src={job.image_url ? job.image_url + '?tr=h-240,w-240' : placeholder_image}
+			src={job.imageurl ? job.imageurl + '?tr=h-240,w-240' : placeholder_image}
 			alt="gallery"
 			class="preview-image"
 		/>

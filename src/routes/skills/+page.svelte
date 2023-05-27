@@ -6,6 +6,7 @@
 	import fuzzy from 'fuzzy';
 	import { browser } from '$app/environment';
 	import { fly } from 'svelte/transition';
+	import { base } from '$app/paths';
 
 	export let data: any;
 	export let viewport: Element;
@@ -51,9 +52,7 @@
 		hovering_scrolltop = false;
 	};
 	const fetchSorting = async () => {
-		const result = await fetch(
-			`/api/skill/${sorting_options[chosen_sorting_option].v}/${sorting_options[chosen_sorting_option].a}`
-		);
+		const result = await fetch(`${base}/api/skill`);
 		data.json = await result.json();
 	};
 	const chooseSorting = (index: number) => {

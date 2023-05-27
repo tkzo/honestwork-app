@@ -22,7 +22,7 @@
 
 	const fetchDecimals = async () => {
 		try {
-			const Token = new ethers.Contract(deal.token_address, erc20_abi, $networkProvider);
+			const Token = new ethers.Contract(deal.tokenaddress, erc20_abi, $networkProvider);
 			decimals = await Token.decimals();
 		} catch (err) {
 			console.log(err);
@@ -30,14 +30,14 @@
 	};
 	const approve = async (amount: ethers.BigNumberish) => {
 		try {
-			const Token = new ethers.Contract(deal.token_address, erc20_abi, $networkProvider);
+			const Token = new ethers.Contract(deal.tokenaddress, erc20_abi, $networkProvider);
 			const tx = await Token.approve(env.PUBLIC_ESCROW_ADDRESS, amount);
 			let receipt = await tx.wait();
 			if (receipt && receipt.status == 1) {
 				toast.push(
 					`<p class="light-60"><span style='color:var(--color-success)'>success: </span>approved ${findTokenName(
 						deal.network,
-						deal.token_address
+						deal.tokenaddress
 					)}.</p>`
 				);
 			}
@@ -49,22 +49,22 @@
 	};
 	const handleExecute = async () => {
 		const recruiter_address = role == 'recruiter' ? $userAddress : conversation.peerAddress;
-		await approve(deal.total_amount);
+		await approve(deal.totalamount);
 		try {
 			const Payment = new ethers.Contract(env.PUBLIC_ESCROW_ADDRESS!, escrow_abi, $networkSigner);
 			const tx = await Payment.createDealSignature(
 				$userAddress,
 				conversation.peerAddress,
-				deal.token_address,
-				deal.total_amount,
+				deal.tokenaddress,
+				deal.totalamount,
 				deal.downpayment,
 				$userToken,
-				deal.job_id,
+				deal.jobid,
 				deal.signature
 			);
 			let receipt = await tx.wait();
 			if (receipt && receipt.status == 1) {
-				const salt_res = await fetch(`${base}/api/auth/login/${$userAddress}`, {
+				const salt_res = await fetch(`${base}/api/salt/${$userAddress}`, {
 					method: 'POST'
 				});
 				let salt = await salt_res.json();
@@ -79,7 +79,7 @@
 					slot: slot
 				};
 				const response = await fetch(url, {
-					method: 'DELETE',
+					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json'
 					},
@@ -89,12 +89,12 @@
 					`Meta:${JSON.stringify({
 						type: 'job execution',
 						network: deal.network,
-						token: findTokenName(deal.network, deal.token_address),
-						token_address: deal.token_address,
-						total_amount: deal.total_amount,
+						token: findTokenName(deal.network, deal.tokenaddress),
+						tokenaddress: deal.tokenaddress,
+						totalamount: deal.totalamount,
 						downpayment: deal.downpayment,
 						recruiter: recruiter_address,
-						job_id: deal.job_id
+						jobid: deal.jobid
 					})}`
 				);
 				toast.push(
@@ -115,17 +115,16 @@
 			const message_hash = await Escrow.getMessageHash(
 				recruiter_address,
 				creator_address,
-				deal.token_address,
-				deal.total_amount,
+				deal.tokenaddress,
+				deal.totalamount,
 				deal.downpayment,
-				deal.job_id
+				deal.jobid
 			);
-
 			let hash_array = ethers.utils.arrayify(message_hash);
 			let signature = await $networkSigner.signMessage(hash_array);
 			const url = `${base}/api/accept_deal/${recruiter_address}/${creator_address}`;
 			const response = await fetch(url, {
-				method: 'PATCH',
+				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
@@ -139,12 +138,12 @@
 					`Meta:${JSON.stringify({
 						type: 'job acceptance',
 						network: deal.network,
-						token: findTokenName(deal.network, deal.token_address),
-						token_address: deal.token_address,
-						total_amount: deal.total_amount,
+						token: findTokenName(deal.network, deal.tokenaddress),
+						tokenaddress: deal.tokenaddress,
+						totalamount: deal.totalamount,
 						downpayment: deal.downpayment,
 						recruiter: recruiter_address,
-						job_id: deal.job_id
+						jobid: deal.jobid
 					})}`
 				);
 				toast.push(

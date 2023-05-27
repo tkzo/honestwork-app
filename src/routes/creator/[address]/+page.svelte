@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import type { Deal, SkillType, UserType, JobType } from '$lib/stores/Types';
+	import type { Deal, SkillType, User, JobType } from '$lib/stores/Types';
 	import CreatorCard from '$lib/components/creator/CreatorCard.svelte';
 	import Skill from '$lib/components/profile/Skill.svelte';
 	import SkillCard from '$lib/components/creator/SkillCard.svelte';
@@ -17,17 +17,14 @@
 	import { base, assets } from '$app/paths';
 
 	export let data: PageData;
-
 	let viewport: Element;
 	let contents: Element;
 	let feedHeight = 0;
 	$: if (browser) feedHeight = window.innerHeight - 146;
-
 	let tabs: string[] = ['skills', 'favorites', 'watchlist', 'job history'];
 	let chosen_tab: string = 'skills';
 	let chosen_skill: SkillType | null = null;
-
-	let user: UserType = data.user;
+	let user: User = data.user;
 	let addr: string = $page.params['address'];
 
 	const fetchDeals = async () => {
@@ -106,7 +103,7 @@
 									{#await fetchJob(deal.jobId) then job}
 										<div class="container">
 											<div class="left">
-												<img src={job.image_url} alt={job.username} class="job-image" />
+												<img src={job.imageurl} alt={job.username} class="job-image" />
 												<a class="content" href={`${base}/job/${deal.recruiter}/${job.slot}`}>
 													<div class="username">
 														<p class="link">{job.username}</p>

@@ -19,7 +19,7 @@
 
 	const getUserTier = async () => {
 		try {
-			let res = await fetch(`${base}/api/membership/${job.user_address}`);
+			let res = await fetch(`${base}/api/membership/${job.useraddress}`);
 			tier = await res.json();
 		} catch (err) {
 			console.log(err);
@@ -62,7 +62,7 @@
 			</div>
 		</div>
 		<div class="status-tag">
-			{#if job.deal_id == -1}
+			{#if job.dealid == -1}
 				<p style="color:var(--color-success)">active</p>
 				<div style="width: 4px" />
 				<img src={`${assets}/icons/check.svg`} alt="arrow" />
@@ -77,7 +77,7 @@
 	</div>
 	<div class="contents">
 		<img
-			src={job.image_url ? job.image_url + '?tr=h-240,w-240' : placeholder_image}
+			src={job.imageurl ? job.imageurl + '?tr=h-240,w-240' : placeholder_image}
 			alt="gallery"
 			class="preview-image"
 		/>

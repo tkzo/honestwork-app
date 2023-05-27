@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import { new_conversation_metadata, user_signed_in } from '$lib/stores/State';
-	import type { FavoriteType, SkillType, UserType } from '$lib/stores/Types';
+	import type { FavoriteType, SkillType, User } from '$lib/stores/Types';
 	import { onMount } from 'svelte';
 	import { assets, base } from '$app/paths';
 	import { placeholder_image } from '$lib/stores/Constants';
@@ -15,7 +15,7 @@
 	export let chosen: boolean;
 	export let skill: SkillType;
 
-	let user: UserType;
+	let user: User;
 	let hovering_heart: boolean = false;
 	let favorited: boolean = false;
 
@@ -39,7 +39,7 @@
 						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify({
-						address: skill.user_address,
+						address: skill.useraddress,
 						slot: skill.slot
 					})
 				});
@@ -70,7 +70,7 @@
 						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify({
-						address: skill.user_address,
+						address: skill.useraddress,
 						slot: skill.slot
 					})
 				});
@@ -93,9 +93,10 @@
 		}
 	};
 	const fetchUser = async () => {
-		const res = await fetch(`/api/user/${skill.user_address}`);
+		const res = await fetch(`/api/user/${skill.useraddress}`);
 		user = await res.json();
 	};
+
 	const getFavorites = async () => {
 		if (!$user_signed_in || !$userConnected) {
 			return;
@@ -106,7 +107,7 @@
 			const data = await response.json();
 			if (data && data.length != 0) {
 				data.forEach((f: FavoriteType) => {
-					if (f.input.address == skill.user_address && f.input.slot == skill.slot) {
+					if (f.input.address == skill.useraddress && f.input.slot == skill.slot) {
 						favorited = true;
 					}
 				});
@@ -119,7 +120,7 @@
 	};
 	const handleNewConversation = async () => {
 		try {
-			const url = `${base}/api/conversation_add/${skill.user_address}`;
+			const url = `${base}/api/conversation_add/${skill.useraddress}`;
 			const response = await fetch(url, {
 				method: 'POST',
 				headers: {
@@ -132,7 +133,7 @@
 			const data = await response.json();
 			if (data == 'success') {
 				new_conversation_metadata.set({
-					address: skill.user_address,
+					address: skill.useraddress,
 					title: skill.title
 				});
 				toast.push(
@@ -153,7 +154,7 @@
 	const getRating = async () => {
 		if (browser) {
 			try {
-				const url = `${base}/api/rating/${skill.user_address}`;
+				const url = `${base}/api/rating/${skill.useraddress}`;
 				const response = await fetch(url);
 				const data = await response.json();
 				return data;
@@ -162,6 +163,8 @@
 			}
 		}
 	};
+	$: username_trimmed =
+		user?.username.length > 16 ? user?.username.slice(0, 16) + '...' : user?.username;
 </script>
 
 <svelte:head>
@@ -174,7 +177,7 @@
 	<div class="contents">
 		<div class="thumbnail">
 			<img
-				src={skill.image_urls[0] ? skill.image_urls[0] + '?tr=h-360,w-480' : placeholder_image}
+				src={skill.imageurls[0] ? skill.imageurls[0] + '?tr=h-360,w-480' : placeholder_image}
 				alt="gallery"
 				class="preview-image"
 			/>
@@ -188,7 +191,7 @@
 				</div>
 			</div>
 			<div class="sub">
-				<p class="yellow">{user?.username}</p>
+				<p class="yellow">{username_trimmed}</p>
 				{#await getRating()}
 					<img
 						src={`${assets}/icons/loader.svg`}
@@ -215,7 +218,7 @@
 		</div>
 		<div class="actions">
 			<div class="action">
-				<p class="light-40"><span class="light">${skill.minimum_price}</span>/h</p>
+				<p class="light-40"><span class="light">${skill.minimumprice}</span>/h</p>
 			</div>
 			<div class="action" on:click={handleNewConversation} on:keydown>
 				<img src={`${assets}/icons/message.svg`} alt="message" />

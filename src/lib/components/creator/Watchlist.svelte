@@ -7,7 +7,7 @@
 <div style="height: 12px" />
 <div class="container">
 	<div class="left">
-		<img src={watchlist.image_url + "?tr=h-120,w-120"} alt={watchlist.username} class="job-image" />
+		<img src={watchlist.imageurl + '?tr=h-120,w-120'} alt={watchlist.username} class="job-image" />
 		<a class="content" href={`${base}/job/${watchlist.input.address}/${watchlist.input.slot}`}>
 			<div class="username">
 				<p class="link">{watchlist.username}</p>

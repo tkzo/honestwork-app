@@ -4,9 +4,6 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import type { FavoriteType } from '$lib/stores/Types';
 	import { fly } from 'svelte/transition';
-	import { createEventDispatcher } from 'svelte';
-
-	const dispatch = createEventDispatcher();
 
 	export let favorites: Array<FavoriteType> = [];
 
@@ -26,10 +23,16 @@
 				});
 				const data = await response.json();
 				if (data == 'success') {
+					for (let i = 0; i < favorites.length; i++) {
+						if (item == favorites[i]) {
+							favorites.splice(i, 1);
+							favorites = [...favorites];
+							break;
+						}
+					}
 					toast.push(
 						`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Removed from favorites.</p>`
 					);
-					dispatch('remove');
 				} else {
 					toast.push(
 						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>Failed to remove from favorites.</p>`
@@ -52,10 +55,12 @@
 	{#each favorites as item, index (index)}
 		<div class="container" in:fly={{ duration: 100 + 50 * index, x: 50 }}>
 			<div class="left">
-				<img src={item.image_url + '?tr=h-120,w-120'} alt={item.username} class="job-image" />
+				<img src={item.imageurl + '?tr=h-120,w-120'} alt={item.username} class="job-image" />
 				<a class="content" href={`${base}/creator/${item.input.address}/`}>
 					<div class="username">
-						<p class="link">{item.username}</p>
+						<p class="link">
+							{item.username.length < 20 ? item.username : item.username.substring(0, 20) + '...'}
+						</p>
 						<div style="width:4px" />
 						<img src={`${assets}/icons/external.svg`} alt="external" style="margin-top:-2px" />
 					</div>

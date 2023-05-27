@@ -26,6 +26,8 @@
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	import { parseContent } from '$lib/stores/Parser';
 
+	// todo: test
+
 	type TokenSelection = {
 		address: string;
 	};
@@ -71,7 +73,7 @@
 	let user_allowance: string; // bignumber
 	let approveMax = false;
 	let userApproved = false;
-	let salt: string;
+	let salt: any;
 	let content: string;
 	let signature: string;
 	let total_chars = 0;
@@ -91,36 +93,35 @@
 		user_allowance = ethers.utils.formatUnits(allowance, decimals);
 	};
 
-	// todo: refactor with a single form reference
 	const handleSubmit = async (e: any) => {
 		if ($userConnected) {
-			const salt_res = await fetch(`${base}/api/auth/login/${$userAddress}`, {
+			const salt_res = await fetch(`${base}/api/salt/${$userAddress}`, {
 				method: 'POST'
 			});
 			salt = await salt_res.json();
+			console.log('Salt: ', salt.salt);
 			let message =
 				'HonestWork: New Job Post\n' +
-				`${salt}\n` +
+				`${salt.salt}\n` +
 				'\n' +
 				'For more info: https://docs.honestwork.app';
 			let signature = await $networkSigner.signMessage(message);
-
 			const input: JobInput = {
 				username: username,
-				user_address: $userAddress,
+				useraddress: $userAddress,
 				title: title,
 				email: email,
-				token_paid: chosen_payment_token.address,
+				tokenpaid: chosen_payment_token.address,
 				description: parseContent(content),
 				tags: tags,
 				links: links,
 				budget: budget,
-				sticky_duration: sticky_duration,
+				stickyduration: sticky_duration,
 				timezone: timezone,
-				tokens_accepted: network_selection_array,
-				image_url: image_url ?? '',
+				tokensaccepted: network_selection_array,
+				imageurl: image_url ?? '',
 				signature: signature,
-				tx_hash: tx_hash
+				txhash: tx_hash
 			};
 			let parsed = JobInput.safeParse(input);
 			if (!parsed.success) {
@@ -134,7 +135,7 @@
 				userPublishing = true;
 				if (upload_url) {
 					uploadImage(e);
-					input.image_url = parsed_filename;
+					input.imageurl = parsed_filename;
 				}
 				input.description = content;
 				let stringified = JSON.stringify(input);
@@ -157,7 +158,7 @@
 					goto(`/job/${$userAddress}`);
 				} else {
 					toast.push(
-						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${await data.json()}</p>`
+						`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
 					);
 				}
 			}
@@ -266,18 +267,18 @@
 		// todo: add decimal prop to tokens
 		const input: JobInput = {
 			username: username,
-			user_address: $userAddress,
+			useraddress: $userAddress,
 			title: title,
 			email: email,
-			token_paid: chosen_payment_token.address,
+			tokenpaid: chosen_payment_token.address,
 			description: parseContent(content),
 			tags: tags,
 			links: links,
 			budget: budget,
-			sticky_duration: sticky_duration,
+			stickyduration: sticky_duration,
 			timezone: timezone,
-			tokens_accepted: network_selection_array,
-			image_url: image_url ?? ''
+			tokensaccepted: network_selection_array,
+			imageurl: image_url ?? ''
 		};
 		let parsed = JobInput.safeParse(input);
 		if (!parsed.success) {

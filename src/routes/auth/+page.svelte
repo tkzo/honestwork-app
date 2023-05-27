@@ -17,10 +17,10 @@
 	let salt: string;
 
 	const getSalt = async () => {
-		const salt_res = await fetch(`${base}/api/auth/login/${$userAddress}`, {
+		const salt_res = await fetch(`${base}/api/salt/${$userAddress}`, {
 			method: 'POST'
 		});
-		salt = await salt_res.json();
+		salt = (await salt_res.json()).salt;
 		let message =
 			'HonestWork: Login\n' + `${salt}\n` + '\n' + 'For more info: https://docs.honestwork.app';
 		myform.signature.value = await $networkSigner.signMessage(message);
@@ -39,7 +39,7 @@
 		<section>
 			<div class="gm">
 				<div class="gm-inner">
-					<p>sign to login (<span class="yellow">2/2</span>)</p>
+					<p>sign to login</p>
 				</div>
 			</div>
 			<div class="gm body-text light-80">

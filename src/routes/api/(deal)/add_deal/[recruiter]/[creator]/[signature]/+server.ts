@@ -1,28 +1,43 @@
-import type { RequestHandler } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
 import { env } from '$env/dynamic/private';
+import { MongoClient, Db } from 'mongodb';
+import { error, json } from '@sveltejs/kit';
 
+// todo: test
+
+let cached_db: Db = "" as any;
 export const POST: RequestHandler = async ({ request, params }) => {
-	let data = await request.json();
-	const apiUrl =
-		parseInt(env.PRODUCTION_ENV) == 1
-			? env.PRIVATE_HONESTWORK_API
-			: env.PRIVATE_LOCAL_HONESTWORK_API;
-	const body = {
-		network: data.network,
-		token_address: data.token_address,
-		total_amount: data.total_amount,
-		downpayment: data.downpayment,
-		job_id: data.job_id
-	};
-	const url = `${apiUrl}/deals/${params.recruiter}/${params.creator}/${params.signature}`;
-	const options = {
-		method: 'POST',
-		body: JSON.stringify(body),
-		headers: new Headers({
-			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
-			'Content-Type': 'application/json'
-		})
-	};
-	let response = await fetch(url, options);
-	return response;
-};
+  let data = await request.json();
+  const uri =
+    parseInt(env.PRODUCTION_ENV) == 1
+      ? env.MONGODB_URI
+      : env.PRIVATE_MONGODB_URI;
+  try {
+    if (cached_db == "" as any) {
+      const client = new MongoClient(uri!);
+      await client.connect();
+      const database = client.db("honestwork-cluster");
+      cached_db = database;
+    }
+    let options = { upsert: true };
+    let update_doc = {
+      $push: {
+        deals: {
+          status: "offered",
+          signature: "",
+          network: data.network,
+          tokenaddress: data.tokenaddress,
+          totalamount: data.totalamount,
+          downpayment: data.downpayment,
+          jobid: data.jobid,
+          createdat: new Date(),
+        }
+      }
+    }
+    let result = await cached_db.collection('deals').updateOne({ recruiter: params.recruiter, creator: params.creator }, update_doc, options);
+    console.log("Result: ", result)
+  } catch (err: any) {
+    throw error(500, err)
+  }
+  return json("success")
+}

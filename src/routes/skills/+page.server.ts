@@ -1,24 +1,33 @@
 import type { PageServerLoad } from './$types';
 import { env } from '$env/dynamic/private';
+import { MongoClient, Db } from 'mongodb';
 
-export const load: PageServerLoad = async ({}) => {
-	// default sorting: created_at, descending
-	const apiUrl =
-		parseInt(env.PRODUCTION_ENV) == 1
-			? env.PRIVATE_HONESTWORK_API
-			: env.PRIVATE_LOCAL_HONESTWORK_API;
-	const url = `${apiUrl}/skills/created_at/false`;
-	let response = await fetch(url, {
-		headers: new Headers({
-			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
-			'Content-Type': 'application/json'
-		})
-	});
-	if (response.ok) {
-		let json = await response.json();
-		return { json: json };
-	} else {
-		console.log('HTTP-Error: ' + response.status);
-		return response.status;
-	}
+let cached_db: Db = "" as any;
+
+export const load: PageServerLoad = async ({ }) => {
+  let skills: any;
+  const uri =
+    parseInt(env.PRODUCTION_ENV) == 1
+      ? env.MONGODB_URI
+      : env.PRIVATE_MONGODB_URI;
+  try {
+    if (cached_db) {
+      skills = await cached_db.collection('skills').find({ "publish": true }).sort("createdat", -1).limit(10).toArray();
+      for (let i = 0; i < skills.length; i++) {
+        skills[i]._id = skills[i]._id.toString();
+      }
+      return { json: skills };
+    }
+    const client = new MongoClient(uri!);
+    await client.connect();
+    const database = client.db("honestwork-cluster");
+    cached_db = database;
+    skills = await cached_db.collection('skills').find({ "publish": true }).sort("createdat", -1).toArray();
+    for (let i = 0; i < skills.length; i++) {
+      skills[i]._id = skills[i]._id.toString();
+    }
+  } catch (err) {
+    console.log("Mongo fetch err:", err);
+  }
+  return { json: skills };
 };

@@ -18,8 +18,8 @@
 	let input_active = false;
 	let active_job: JobType | null = null;
 	let sorting_options = [
-		{ k: 'publish date', v: 'created_at', a: 'false' },
-		{ k: 'min. budget', v: 'budget', a: 'false' }
+		{ k: 'publish date', v: 'createdat', a: -1 },
+		{ k: 'min. budget', v: 'budget', a: -1 }
 	];
 	let show_sorting_options = false;
 	let chosen_sorting_option = 0;

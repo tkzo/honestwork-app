@@ -14,8 +14,12 @@
 		<p class="yellow">></p>
 	</div>
 	<div class="gallery">
-		{#each skill.image_urls.slice(0, 4) as url}
-			<img src={url == '' ? placeholder_image : url + "?tr=h-180,w-240"} alt="gallery" class="preview-image" />
+		{#each skill.imageurls.slice(0, 4) as url}
+			<img
+				src={url == '' ? placeholder_image : url + '?tr=h-180,w-240'}
+				alt="gallery"
+				class="preview-image"
+			/>
 		{/each}
 	</div>
 	<div class="description">
@@ -36,7 +40,7 @@
 		</div>
 		<div class="tag border-all">
 			<p class="light-40">
-				<span class="light">${skill.minimum_price}</span>/h
+				<span class="light">${skill.minimumprice}</span>/h
 			</p>
 		</div>
 	</div>

@@ -1,5 +1,11 @@
 import type { ethers } from 'ethers';
 
+export type Conversation = {
+  matcheduser: string;
+  createdat: number;
+  lastmessageat: number;
+  muted: boolean;
+}
 export type FAQCard = {
   id: number;
   question: string;
@@ -22,68 +28,71 @@ export type FeatureCard = {
 
 export type SkillType = {
   slot: number;
-  user_address: string;
-  created_at: number;
+  useraddress: string;
+  createdat: number;
   title: string;
   description: string;
-  image_urls: Array<string>;
-  minimum_price: number;
+  imageurls: Array<string>;
+  minimumprice: number;
   links: Array<string>;
   publish: boolean;
   tags: Array<string>;
 };
 
-export type UserType = {
+export type User = {
+  conversations: Conversation[],
+  address: string;
+  salt: string;
   username: string;
-  show_ens: boolean;
-  ens_name: string;
+  showens: boolean;
+  ensname: string;
   title: string;
-  image_url: string;
-  file_url: string;
-  show_nft: boolean;
-  nft_address: string;
-  nft_id: number;
+  imageurl: string;
+  fileurl: string;
+  shownft: boolean;
+  nftaddress: string;
+  nftid: number;
   email: string;
   timezone: string;
   bio: string;
   links: Array<string>;
-  dms_open: boolean;
+  dmsopen: boolean;
   application: Array<ApplicationType>;
   favorites: Array<FavoriteType>;
   watchlist: Array<WatchlistType>;
 };
 
 export type ApplicationType = {
-  user_address: string;
-  job_id: string;
-  cover_letter: string;
+  useraddress: string;
+  jobid: string;
+  coverletter: string;
   date: number;
 };
 
 export type JobType = {
   slot: number;
-  user_address: string;
+  useraddress: string;
   email: string;
   username: string;
-  created_at: number;
+  createdat: number;
   title: string;
   description: string;
-  image_url: string;
+  imageurl: string;
   budget: number;
   links: Array<string>;
   tags: Array<string>;
-  tokens_accepted: Array<Network>;
-  sticky_duration: number;
+  tokensaccepted: Array<Network>;
+  stickyduration: number;
   timezone: number;
-  application: Array<ApplicantType>;
-  deal_network_id: number;
-  deal_id: number;
+  applications: Array<ApplicantType>;
+  dealnetworkid: number;
+  dealid: number;
 };
 
 export type ApplicantType = {
-  user_address: string;
-  job_id: string;
-  cover_letter: string;
+  useraddress: string;
+  jobid: string;
+  coverletter: string;
   date: number;
 };
 export type Network = {
@@ -101,7 +110,7 @@ export type WatchlistType = {
   };
   username: string;
   title: string;
-  image_url: string;
+  imageurl: string;
 };
 
 export type FavoriteType = {
@@ -111,17 +120,17 @@ export type FavoriteType = {
   };
   username: string;
   title: string;
-  image_url: string;
+  imageurl: string;
 };
 
 export type DealDB = {
   status: string;
   network: string;
-  token_address: string;
-  total_amount: string;
+  tokenaddress: string;
+  totalamount: string;
   downpayment: string;
   signature: string;
-  job_id: number;
+  jobid: number;
 };
 
 export type Deal = {

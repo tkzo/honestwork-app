@@ -1,19 +1,19 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { assets, base } from '$app/paths';
-	import type { JobType, UserType } from '$lib/stores/Types';
+	import type { JobType, User } from '$lib/stores/Types';
 	import Tiptap from '$lib/components/common/Tiptap.svelte';
 	import { fly } from 'svelte/transition';
 	import { Jumper } from 'svelte-loading-spinners';
 
-	export let user: UserType;
+	export let user: User;
 
 	let jobs: JobType[] = [];
 	let drawer_open = false;
 
 	const fetchJobs = async () => {
 		for await (const app of user.application) {
-			let record_id = app.job_id.split(':');
+			let record_id = app.jobid.split(':');
 			const url = `${base}/api/get_job/${record_id[1]}/${record_id[2]}`;
 			const response = await fetch(url);
 			const job: JobType = await response.json();
@@ -23,9 +23,9 @@
 
 	const getCoverLetterForJob = (job: JobType) => {
 		const application = user.application.find(
-			(n) => n.job_id == `job:${job.user_address}:${job.slot}`
+			(n) => n.jobid == `job:${job.useraddress}:${job.slot}`
 		);
-		return application!.cover_letter;
+		return application!.coverletter;
 	};
 </script>
 
@@ -38,10 +38,10 @@
 				<div class="container" in:fly={{ duration: 100 + 50 * index, x: 50 }}>
 					<div
 						class="header"
-						on:click={() => goto(`${base}/job/${job.user_address}/${job.slot}`)}
+						on:click={() => goto(`${base}/job/${job.useraddress}/${job.slot}`)}
 						on:keydown
 					>
-						<img class="job-image" src={job.image_url + '?tr=h-120,w-120'} alt="sdf" />
+						<img class="job-image" src={job.imageurl + '?tr=h-120,w-120'} alt="sdf" />
 						<div class="content">
 							<p>{job.title}</p>
 							<p class="yellow">{job.username}</p>

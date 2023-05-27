@@ -3,11 +3,13 @@
 	import { goto } from '$app/navigation';
 	import { Jumper } from 'svelte-loading-spinners';
 	import { Svrollbar } from 'svrollbar';
-	import { base } from '$app/paths';
-	import { userAddress, userState, userConnected } from '$lib/stores/Network';
+	import { userState, userConnected } from '$lib/stores/Network';
 	import { chosen_profile_tab } from '$lib/stores/State';
+	import { userAddress } from '$lib/stores/Network';
+	import { base } from '$app/paths';
+	import type { LayoutServerData } from '../$types';
 
-	export let data;
+	export let data: LayoutServerData;
 
 	let viewport: Element;
 	let contents: Element;
@@ -25,21 +27,21 @@
 	>
 		<div bind:this={contents} class="contents">
 			<div style="height:16px" />
-			{#if $userAddress.toLowerCase() == data.user.address.toLowerCase() && $userState > 0}
+			{#if $userState > 0 && data.user.address == $userAddress}
 				<section class="bar">
 					<div class="tabs">
 						<p
 							class={`tab link semibold ${
 								$chosen_profile_tab == 'profile' ? 'yellow' : 'light-60'
 							}`}
-							on:click={() => goto('/profile')}
+							on:click={() => goto(`${base}/profile`)}
 							on:keydown
 						>
 							profile
 						</p>
 						<p
 							class={`tab link semibold ${$chosen_profile_tab == 'skills' ? 'yellow' : 'light-60'}`}
-							on:click={() => goto('/profile/skills')}
+							on:click={() => goto(`${base}/profile/skills`)}
 							on:keydown
 						>
 							skills
@@ -48,7 +50,7 @@
 							class={`tab link semibold ${
 								$chosen_profile_tab == 'watchlist' ? 'yellow' : 'light-60'
 							}`}
-							on:click={() => goto('/profile/watchlist')}
+							on:click={() => goto(`${base}/profile/watchlist`)}
 							on:keydown
 						>
 							watchlist
@@ -57,7 +59,7 @@
 							class={`tab link semibold ${
 								$chosen_profile_tab == 'favorites' ? 'yellow' : 'light-60'
 							}`}
-							on:click={() => goto('/profile/favorites')}
+							on:click={() => goto(`${base}/profile/favorites`)}
 							on:keydown
 						>
 							favorites
@@ -66,7 +68,7 @@
 							class={`tab link semibold ${
 								$chosen_profile_tab == 'applications' ? 'yellow' : 'light-60'
 							}`}
-							on:click={() => goto('/profile/applications')}
+							on:click={() => goto(`${base}/profile/applications`)}
 							on:keydown
 						>
 							applications
@@ -75,7 +77,7 @@
 				</section>
 				<div style="height: 16px" />
 				<slot />
-			{:else if $userConnected && $userAddress.toLowerCase() != data.user.address.toLowerCase()}
+			{:else if data.user.address != $userAddress && $userConnected}
 				<div style="height: 16px" />
 				<section style="display:flex; flex-direction:column;">
 					<div class="gm">
@@ -113,10 +115,6 @@
 		width: 100%;
 		height: 100%;
 	}
-	img {
-		width: 188px;
-		height: 188px;
-	}
 	.input-fields {
 		display: flex;
 		flex-direction: column;
@@ -141,7 +139,6 @@
 		box-sizing: border-box;
 		padding: 8px;
 	}
-
 	main {
 		width: 100%;
 		height: 100%;
@@ -220,7 +217,6 @@
 		border-color: var(--color-light-20);
 		cursor: pointer;
 	}
-
 	.pseudo-file-input {
 		position: absolute;
 		left: 50%;
@@ -275,43 +271,33 @@
 		border-style: solid;
 		border-color: var(--color-light-20);
 	}
-
 	.wrapper {
 		position: relative;
 		-ms-overflow-style: none; /* for Internet Explorer, Edge */
 		scrollbar-width: none; /* for Firefox */
 		overflow-y: scroll;
 		--svrollbar-track-width: 1px;
-		/* --svrollbar-track-background: #85b4b9; */
 		--svrollbar-track-opacity: 1;
-
 		--svrollbar-thumb-width: 10px;
 		--svrollbar-thumb-background: #d9ab55;
 		--svrollbar-thumb-opacity: 1;
 	}
-
 	.viewport {
 		position: relative;
 		overflow: scroll;
 		box-sizing: border-box;
-
-		/* hide scrollbar */
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 	}
-
 	.viewport::-webkit-scrollbar {
-		/* hide scrollbar */
 		display: none;
 	}
-
 	.contents {
 		width: 520px;
 	}
-
 	.loader-container {
 		width: 100%;
 		display: flex;
@@ -322,9 +308,5 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-	}
-	.external-page img {
-		height: 16px;
-		width: 16px;
 	}
 </style>

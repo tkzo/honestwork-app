@@ -4,7 +4,7 @@
 	import { JobInput } from '$lib/stores/Validation';
 	import type { JobType, Network } from '$lib/stores/Types';
 	import { chains } from '$lib/stores/Constants';
-	import { placeholder_image, sticky_data } from '$lib/stores/Constants';
+	import { placeholder_image } from '$lib/stores/Constants';
 	import { chosen_job_slot, changes_made, submitting } from '$lib/stores/State';
 	import { shortcut } from '$lib/stores/Shortcut';
 	import { form_limitations } from '$lib/stores/Constants';
@@ -38,21 +38,20 @@
 	let content: string;
 	let total_chars = 0;
 	let signature: string;
-
 	let username: string = job.username;
 	let title = job.title;
 	let email = job.email;
 	let description = job.description;
 	let budget = job.budget;
-	let sticky_duration = job.sticky_duration;
+	let sticky_duration = job.stickyduration;
 	let links = job.links;
 	let tags = job.tags;
 	let timezone = job.timezone ?? 0;
 	let tokens_selected =
-		job.tokens_accepted?.map((n) => {
+		job.tokensaccepted?.map((n) => {
 			return { chain_id: n.id, token_address: n.tokens[0].address };
 		}) ?? [];
-	let image_url = job.image_url;
+	let image_url = job.imageurl;
 	onMount(() => {
 		changes_made.set(false);
 	});
@@ -62,11 +61,11 @@
 		title != job.title ||
 		email != job.email ||
 		description != job.description ||
-		image_url != job.image_url ||
+		image_url != job.imageurl ||
 		links != job.links ||
 		budget != job.budget ||
 		tags != job.tags ||
-		sticky_duration != job.sticky_duration ||
+		sticky_duration != job.stickyduration ||
 		timezone != job.timezone
 	) {
 		changes_made.set(true);
@@ -77,17 +76,17 @@
 	// todo: refactor with a single form reference
 	const handleSubmit = async (e: any) => {
 		if ($userConnected) {
-			const salt_res = await fetch(`${base}/api/auth/login/${$userAddress}`, {
+			const salt_result = await fetch(`${base}/api/salt/${$userAddress}`, {
 				method: 'POST'
 			});
-			let salt = await salt_res.json();
+			let salt_json = await salt_result.json();
+			let salt = salt_json.salt;
 			let message =
 				'HonestWork: Update Job Post\n' +
 				`${salt}\n` +
 				'\n' +
 				'For more info: https://docs.honestwork.app';
 			let signature = await $networkSigner.signMessage(message);
-
 			let tokens_accepted = [] as Network[];
 			for (let i = 0; i < tokens_selected.length; i++) {
 				let chain_id = tokens_selected[i].chain_id;
@@ -101,32 +100,34 @@
 					});
 				}
 			}
-
 			const input: JobInput = {
-				job_slot: $chosen_job_slot,
+				slot: $chosen_job_slot,
 				username: username,
 				title: title,
-				user_address: $userAddress,
+				useraddress: $userAddress,
 				email: email,
 				description: parseContent(content),
-				image_url: image_url,
+				imageurl: image_url,
 				budget: budget,
 				tags: tags,
 				links: links,
-				sticky_duration: sticky_duration,
-				tokens_accepted: tokens_accepted,
+				stickyduration: sticky_duration,
+				tokensaccepted: tokens_accepted,
 				timezone: timezone,
 				signature: signature
 			};
-
 			let parsed = JobInput.safeParse(input);
 			if (!parsed.success) {
-				console.log(parsed.error);
+				for (let i = 0; i < parsed.error.errors.length; i++) {
+					toast.push(
+						`<p class="light-60"><span style='color:var(--color-error)'>${parsed.error.errors[i].path}: </span>${parsed.error.errors[i].message}</p>`
+					);
+				}
 				return;
 			} else {
 				if (upload_url) {
 					uploadImage(e);
-					input.image_url = parsed_filename;
+					input.imageurl = parsed_filename;
 				}
 				input.description = content;
 				let stringified = JSON.stringify(input);
@@ -242,7 +243,7 @@
 </script>
 
 <main>
-	<form method="PATCH" on:submit|preventDefault={handleSubmit}>
+	<form method="POST" on:submit|preventDefault={handleSubmit}>
 		<div class="bar">
 			<div class="bar-left">
 				<div class="bar-item" on:click={() => (chosen_tab = 'applicants')} on:keydown>
@@ -280,11 +281,11 @@
 			>
 				<div bind:this={contents} class="contents">
 					{#if chosen_tab == 'applicants'}
-						{#if job.application}
-							{#each job.application as applicant, i}
+						{#if job.applications}
+							{#each job.applications as applicant, i}
 								<div style="height:8px;" />
 								<Applicant {applicant} />
-								{#if i == job.application.length - 1}
+								{#if i == job.applications.length - 1}
 									<div style="height:8px;" />
 								{/if}
 							{/each}

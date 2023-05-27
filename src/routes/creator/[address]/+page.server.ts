@@ -1,37 +1,36 @@
-import { error } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import type { PageServerLoad } from './$types';
-import type { UserType, SkillType } from '$lib/stores/Types';
+import { MongoClient } from 'mongodb';
+import { error } from '@sveltejs/kit';
 
+let cached_db: any = "" as any;
 export const load: PageServerLoad = (async ({ params }) => {
-	const apiUrl =
-		parseInt(env.PRODUCTION_ENV) == 1
-			? env.PRIVATE_HONESTWORK_API
-			: env.PRIVATE_LOCAL_HONESTWORK_API;
-	let url = `${apiUrl}/users/${params.address}`;
-	let response = await fetch(url, {
-		headers: new Headers({
-			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
-			'Content-Type': 'application/json'
-		})
-	});
-	if (response.status == 200) {
-		let user: UserType = await response.json();
-		url = `${apiUrl}/skills_published/${params.address}`;
-		response = await fetch(url, {
-			headers: {
-				Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
-				'Content-Type': 'application/json'
-			}
-		});
-
-		if (response.status == 200) {
-			let skills: SkillType[] = await response.json();
-			return {
-				user: user,
-				skills: skills
-			};
-		}
-	}
-	throw error(404, 'Not found');
+  let skills: any;
+  let user: any;
+  const uri =
+    parseInt(env.PRODUCTION_ENV) == 1
+      ? env.MONGODB_URI
+      : env.PRIVATE_MONGODB_URI;
+  try {
+    if (cached_db == "" as any) {
+      const client = new MongoClient(uri!);
+      await client.connect();
+      const database = client.db("honestwork-cluster");
+      cached_db = database;
+    }
+    let options = {
+      projection: {
+        _id: 0,
+        salt: 0,
+        email: 0,
+        applications: 0,
+        conversations: 0
+      }
+    }
+    user = await cached_db.collection('users').findOne({ address: params.address }, options);
+    skills = await cached_db.collection('skills').find({ useraddress: params.address }, { projection: { _id: 0 } }).toArray();
+  } catch (err) {
+    throw error(500, "Internal Server Error")
+  }
+  return { user: user, skills: skills };
 }) satisfies PageServerLoad;

@@ -9,113 +9,119 @@
 	"/api/(deal)/add_deal/[recruiter]/[creator]/[signature]": [
 		"src/routes/api/(deal)/add_deal/[recruiter]/[creator]/[signature]/+server.ts"
 	],
-	"/api/alchemy/[addr]/[id]": [
-		"src/routes/api/alchemy/[addr]/[id]/+server.ts"
-	],
-	"/api/auth/login/[address]": [
-		"src/routes/api/auth/login/[address]/+server.ts"
-	],
-	"/api/config": [
-		"src/routes/api/config/+server.ts"
+	"/api/(public)/alchemy/[addr]/[id]": [
+		"src/routes/api/(public)/alchemy/[addr]/[id]/+server.ts"
 	],
 	"/api/(conversation)/conversation_add/[address]": [
 		"src/routes/api/(conversation)/conversation_add/[address]/+server.ts"
 	],
-	"/api/(conversation)/conversation/[address]": [
-		"src/routes/api/(conversation)/conversation/[address]/+server.ts"
+	"/api/(conversation)/conversation": [
+		"src/routes/api/(conversation)/conversation/+server.ts"
 	],
-	"/api/ens/[address]": [
-		"src/routes/api/ens/[address]/+server.ts"
+	"/api/(public)/ens/[address]": [
+		"src/routes/api/(public)/ens/[address]/+server.ts"
 	],
 	"/api/(deal)/execute_deal/[recruiter]/[creator]/[signature]": [
 		"src/routes/api/(deal)/execute_deal/[recruiter]/[creator]/[signature]/+server.ts"
 	],
-	"/api/favorites/add": [
-		"src/routes/api/favorites/add/+server.ts"
+	"/api/(member)/(profile)/favorites/add": [
+		"src/routes/api/(member)/(profile)/favorites/add/+server.ts"
 	],
-	"/api/favorites/get/[address]": [
-		"src/routes/api/favorites/get/[address]/+server.ts"
+	"/api/(public)/favorites/get/[address]": [
+		"src/routes/api/(public)/favorites/get/[address]/+server.ts"
 	],
-	"/api/favorites/remove": [
-		"src/routes/api/favorites/remove/+server.ts"
+	"/api/(member)/(profile)/favorites/remove": [
+		"src/routes/api/(member)/(profile)/favorites/remove/+server.ts"
 	],
 	"/api/(deal)/get_deals/[recruiter]/[creator]": [
 		"src/routes/api/(deal)/get_deals/[recruiter]/[creator]/+server.ts"
 	],
-	"/api/(job)/get_jobs/[address]": [
-		"src/routes/api/(job)/get_jobs/[address]/+server.ts"
+	"/api/(public)/(job)/get_jobs/[address]": [
+		"src/routes/api/(public)/(job)/get_jobs/[address]/+server.ts"
 	],
-	"/api/(job)/get_job/[address]/[slot]": [
-		"src/routes/api/(job)/get_job/[address]/[slot]/+server.ts"
+	"/api/(public)/(job)/get_job/[address]/[slot]": [
+		"src/routes/api/(public)/(job)/get_job/[address]/[slot]/+server.ts"
 	],
-	"/api/(job)/job_apply/[address]/[slot]": [
-		"src/routes/api/(job)/job_apply/[address]/[slot]/+server.ts"
+	"/api/(member)/(profile)/get_skills": [
+		"src/routes/api/(member)/(profile)/get_skills/+server.ts"
 	],
-	"/api/(job)/job_submit": [
-		"src/routes/api/(job)/job_submit/+server.ts"
+	"/api/(public)/(skill)/get_skills/[sortby]/[limit]/[offset]/[order]": [
+		"src/routes/api/(public)/(skill)/get_skills/[sortby]/[limit]/[offset]/[order]/+server.ts"
 	],
-	"/api/(job)/job_update": [
-		"src/routes/api/(job)/job_update/+server.ts"
+	"/api/(member)/(job)/job_apply/[address]/[slot]": [
+		"src/routes/api/(member)/(job)/job_apply/[address]/[slot]/+server.ts"
 	],
-	"/api/(job)/job/[sort]/[order]": [
-		"src/routes/api/(job)/job/[sort]/[order]/+server.ts"
+	"/api/(guest)/(job)/job_submit": [
+		"src/routes/api/(guest)/(job)/job_submit/+server.ts"
 	],
-	"/api/membership/[address]": [
-		"src/routes/api/membership/[address]/+server.ts"
+	"/api/(guest)/(job)/job_update": [
+		"src/routes/api/(guest)/(job)/job_update/+server.ts"
 	],
-	"/api/nft/next-token-image": [
-		"src/routes/api/nft/next-token-image/+server.ts"
+	"/api/(public)/(job)/job/[sort]/[order]": [
+		"src/routes/api/(public)/(job)/job/[sort]/[order]/+server.ts"
 	],
-	"/api/nft/user-balance/[address]": [
-		"src/routes/api/nft/user-balance/[address]/+server.ts"
+	"/api/(public)/membership/[address]": [
+		"src/routes/api/(public)/membership/[address]/+server.ts"
 	],
-	"/api/nft/user-token-id/[address]": [
-		"src/routes/api/nft/user-token-id/[address]/+server.ts"
+	"/api/(public)/nft/next-token-image": [
+		"src/routes/api/(public)/nft/next-token-image/+server.ts"
 	],
-	"/api/nft/whitelist": [
-		"src/routes/api/nft/whitelist/+server.ts"
+	"/api/(public)/nft/user-balance/[address]": [
+		"src/routes/api/(public)/nft/user-balance/[address]/+server.ts"
 	],
-	"/api/(profile)/profile_update": [
-		"src/routes/api/(profile)/profile_update/+server.ts"
+	"/api/(public)/nft/user-token-id/[address]": [
+		"src/routes/api/(public)/nft/user-token-id/[address]/+server.ts"
 	],
-	"/api/rating/[address]": [
-		"src/routes/api/rating/[address]/+server.ts"
+	"/api/(public)/nft/whitelist": [
+		"src/routes/api/(public)/nft/whitelist/+server.ts"
 	],
-	"/api/search": [
-		"src/routes/api/search/+server.ts"
+	"/api/(member)/(profile)/profile_update": [
+		"src/routes/api/(member)/(profile)/profile_update/+server.ts"
 	],
-	"/api/(profile)/skill_add": [
-		"src/routes/api/(profile)/skill_add/+server.ts"
+	"/api/(public)/rating/[address]": [
+		"src/routes/api/(public)/rating/[address]/+server.ts"
 	],
-	"/api/(profile)/skill_update/[slot]": [
-		"src/routes/api/(profile)/skill_update/[slot]/+server.ts"
+	"/api/(public)/salt/[address]": [
+		"src/routes/api/(public)/salt/[address]/+server.ts"
 	],
-	"/api/skill/[sort]/[order]": [
-		"src/routes/api/skill/[sort]/[order]/+server.ts"
+	"/api/(public)/search/job/[input]": [
+		"src/routes/api/(public)/search/job/[input]/+server.ts"
 	],
-	"/api/(job)/update-job-url/[filename]/[address]/[slot]": [
-		"src/routes/api/(job)/update-job-url/[filename]/[address]/[slot]/+server.ts"
+	"/api/(public)/signup/[address]/[signature]": [
+		"src/routes/api/(public)/signup/[address]/[signature]/+server.ts"
 	],
-	"/api/(job)/upload-job-url/[filename]/[address]": [
-		"src/routes/api/(job)/upload-job-url/[filename]/[address]/+server.ts"
+	"/api/(member)/(profile)/skill_add": [
+		"src/routes/api/(member)/(profile)/skill_add/+server.ts"
 	],
-	"/api/upload-skill-url/[skill_slot]/[image_slot]/[filename]": [
-		"src/routes/api/upload-skill-url/[skill_slot]/[image_slot]/[filename]/+server.ts"
+	"/api/(member)/(profile)/skill_update/[slot]": [
+		"src/routes/api/(member)/(profile)/skill_update/[slot]/+server.ts"
 	],
-	"/api/upload-url/[filename]": [
-		"src/routes/api/upload-url/[filename]/+server.ts"
+	"/api/(guest)/update-job-url/[filename]/[address]/[slot]": [
+		"src/routes/api/(guest)/update-job-url/[filename]/[address]/[slot]/+server.ts"
 	],
-	"/api/user/[address]": [
-		"src/routes/api/user/[address]/+server.ts"
+	"/api/(public)/upload-job-url/[filename]/[address]": [
+		"src/routes/api/(public)/upload-job-url/[filename]/[address]/+server.ts"
 	],
-	"/api/watchlist/add": [
-		"src/routes/api/watchlist/add/+server.ts"
+	"/api/(member)/(profile)/upload-skill-url/[skill_slot]/[image_slot]/[filename]": [
+		"src/routes/api/(member)/(profile)/upload-skill-url/[skill_slot]/[image_slot]/[filename]/+server.ts"
 	],
-	"/api/watchlist/get/[address]": [
-		"src/routes/api/watchlist/get/[address]/+server.ts"
+	"/api/(member)/(profile)/upload-url/[filename]": [
+		"src/routes/api/(member)/(profile)/upload-url/[filename]/+server.ts"
 	],
-	"/api/watchlist/remove": [
-		"src/routes/api/watchlist/remove/+server.ts"
+	"/api/(public)/user/[address]": [
+		"src/routes/api/(public)/user/[address]/+server.ts"
+	],
+	"/api/(public)/verify/[address]/[signature]": [
+		"src/routes/api/(public)/verify/[address]/[signature]/+server.ts"
+	],
+	"/api/(member)/(profile)/watchlist/add": [
+		"src/routes/api/(member)/(profile)/watchlist/add/+server.ts"
+	],
+	"/api/(public)/watchlist/get/[address]": [
+		"src/routes/api/(public)/watchlist/get/[address]/+server.ts"
+	],
+	"/api/(member)/(profile)/watchlist/remove": [
+		"src/routes/api/(member)/(profile)/watchlist/remove/+server.ts"
 	],
 	"/auth": [
 		"src/routes/auth/+page.server.ts",
@@ -165,7 +171,6 @@
 		"src/routes/+layout.server.ts"
 	],
 	"/profile/skills": [
-		"src/routes/profile/skills/+page.server.ts",
 		"src/routes/profile/+layout.server.ts",
 		"src/routes/+layout.server.ts"
 	],

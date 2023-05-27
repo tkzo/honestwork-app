@@ -1,36 +1,40 @@
 import { error } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import type { PageServerLoad } from './$types';
+import { MongoClient, Db, type FindOptions } from 'mongodb';
 
-const apiUrl =
-	parseInt(env.PRODUCTION_ENV) == 1 ? env.PRIVATE_HONESTWORK_API : env.PRIVATE_LOCAL_HONESTWORK_API;
+let cached_db: Db = "" as any;
 
 export const load: PageServerLoad = (async ({ params }) => {
-	const jobsResponse = await getJobs(params.address);
-	const url = `${apiUrl}/job/${params.address}/${jobsResponse.length - 1}`;
-	let response = await fetch(url, {
-		headers: new Headers({
-			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
-			'Content-Type': 'application/json'
-		})
-	});
-	if (response.status == 200) {
-		let data = await response.json();
-		return {
-			job: data
-		};
-	}
-	throw error(404, 'Not found');
+  let jobs;
+  const uri =
+    parseInt(env.PRODUCTION_ENV) == 1
+      ? env.MONGODB_URI
+      : env.PRIVATE_MONGODB_URI;
+  try {
+    if (cached_db == "" as any) {
+      const client = new MongoClient(uri!);
+      await client.connect();
+      const database = client.db("honestwork-cluster");
+      cached_db = database;
+    }
+    let options: FindOptions = {
+      sort: { createdat: -1 },
+      limit: 1,
+      projection: {
+        _id: 0,
+      }
+    };
+    jobs = await cached_db.collection('jobs')
+      .find({ useraddress: params.address }, options)
+      .toArray();
+    if (!jobs) {
+      throw error(404, "Job not found");
+    }
+  } catch (err) {
+    throw error(500, "Mongo fetch err:" + err)
+  }
+  return {
+    job: jobs[0]
+  }
 }) satisfies PageServerLoad;
-
-const getJobs = async (address: string) => {
-	const url = `${apiUrl}/jobs/${address}`;
-	let response = await fetch(url, {
-		headers: new Headers({
-			Authorization: 'Basic ' + btoa(`${env.PRIVATE_CLIENT_KEY}:${env.PRIVATE_CLIENT_PASSWORD}`),
-			'Content-Type': 'application/json'
-		})
-	});
-	let json = await response.json();
-	return json;
-};

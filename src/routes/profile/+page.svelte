@@ -12,11 +12,11 @@
 	import { base } from '$app/paths';
 	import { ProfileInput } from '$lib/stores/Validation';
 	import { env } from '$env/dynamic/public';
+	import type { LayoutServerData } from './$types';
 
 	//todo: add non-gateway image resolver for alchemy fetch
-	//todo: type declaration of data
 
-	export let data: any;
+	export let data: LayoutServerData;
 
 	type InputSettings = {
 		title: string;
@@ -31,28 +31,27 @@
 	let link_0: string = data.user.links != null ? data.user.links[0] : '';
 	let link_1: string = data.user.links != null ? data.user.links[1] : '';
 	let link_2: string = data.user.links != null ? data.user.links[2] : '';
-	let image_url: string = data.user.image_url;
+	let image_url: string = data.user.imageurl;
 	let file_component: HTMLInputElement;
-	let chosenTab = $chosen_profile_tab;
 	let nft_image: string = placeholder_image;
 	let is_owner: boolean;
 	let username: string = data.user.username;
-	let show_nft: boolean = data.user.show_nft ?? true;
+	let show_nft: boolean = data.user.shownft ?? true;
 	let title: string = data.user.title;
 	let email: string = data.user.email;
-	let nft_id: number = data.user.nft_id;
-	let nft_address: string = data.user.nft_address;
+	let nft_id: number = data.user.nftid;
+	let nft_address: string = data.user.nftaddress;
 	let bio: string = data.user.bio;
-	let dms_open: boolean = data.user.dms_open ?? false;
+	let dms_open: boolean = data.user.dmsopen ?? false;
 	let fetching_image = true;
 	let infobox_show: boolean = false;
 	let infobox_previous_content: string;
 	let upload_url: Response;
 	let ens_name: string = '';
-	let show_ens: boolean = data.user.show_ens;
+	let show_ens: boolean = data.user.showens;
 	let ens_loading: boolean = false;
-	let file_url: string = data.user.image_url;
-	let local_file_url: string = data.user.image_url;
+	let file_url: string = data.user.imageurl;
+	let local_file_url: string = data.user.imageurl;
 	let username_input_element: HTMLInputElement;
 	let username_input_length: number = 0;
 	let username_input_limit = 50;
@@ -85,16 +84,16 @@
 		username != data.user.username ||
 		title != data.user.title ||
 		email != data.user.email ||
-		nft_id != data.user.nft_id ||
-		nft_address != data.user.nft_address ||
+		nft_id != data.user.nftid ||
+		nft_address != data.user.nftaddress ||
 		link_0 != (data.user.links ? data.user.links[0] : '') ||
 		link_1 != (data.user.links ? data.user.links[1] : '') ||
 		link_2 != (data.user.links ? data.user.links[2] : '') ||
 		bio != data.user.bio ||
-		image_url != data.user.image_url ||
-		show_nft != data.user.show_nft ||
-		show_ens != data.user.show_ens ||
-		dms_open != data.user.dms_open
+		image_url != data.user.imageurl ||
+		show_nft != data.user.shownft ||
+		show_ens != data.user.showens ||
+		dms_open != data.user.dmsopen
 	) {
 		changes_made.set(true);
 	} else {
@@ -222,23 +221,24 @@
 		}
 		const input: ProfileInput = {
 			username: username,
-			show_ens: show_ens,
-			ens_name: ens_name,
+			showens: show_ens,
+			ensname: ens_name,
 			title: title,
 			email: email,
 			bio: content,
-			image_url: cloud_url,
-			file_url: file_url,
-			nft_address: nft_address,
-			nft_id: nft_id.toString(),
-			nft_url: nft_image,
-			show_nft: show_nft,
-			dms_open: dms_open,
+			imageurl: cloud_url,
+			fileurl: file_url,
+			nftaddress: nft_address,
+			nftid: nft_id.toString(),
+			nfturl: nft_image,
+			shownft: show_nft,
+			dmsopen: dms_open,
 			timezone: 0,
 			links: [link_0, link_1, link_2]
 		};
 		let parsed = ProfileInput.safeParse(input);
 		if (!parsed.success) {
+			submitting.set(false);
 			for (let i = 0; i < parsed.error.errors.length; i++) {
 				toast.push(
 					`<p class="light-60"><span style='color:var(--color-error)'>${parsed.error.errors[i].path}: </span>${parsed.error.errors[i].message}</p>`
@@ -252,7 +252,6 @@
 			);
 			return;
 		}
-
 		if (file_component.files && file_component.files.length > 0) {
 			const file = file_component.files[0];
 			const { url, fields } = await upload_url.json();
@@ -342,7 +341,6 @@
 <form method="POST" on:submit|preventDefault={submitProfile} action="?/profile">
 	<input hidden name="ens_name" bind:value={ens_name} />
 	<input hidden name="bio" bind:value={content} />
-
 	<div style="height: 16px" />
 	<section
 		class="infobox"
@@ -365,7 +363,7 @@
 				<img
 					src={show_nft
 						? nft_image
-						: file_url == data.user.image_url
+						: file_url == data.user.imageurl
 						? file_url + '?tr=h-188,w-188'
 						: image_url}
 					alt="Profile"
@@ -419,7 +417,6 @@
 				</div>
 			</div>
 		</div>
-
 		<div style="width: 12px" />
 		<div class="input-fields">
 			<div class="input-field">
@@ -531,7 +528,7 @@
 					class="flex-input"
 					type="text"
 					bind:value={nft_address}
-					placeholder={data.user.nft_address}
+					placeholder={data.user.nftaddress}
 					on:focus={() => focusInput('nft_address')}
 					on:focusout={() => deFocusInput()}
 				/>
@@ -546,7 +543,7 @@
 					class={`flex-input no-spinner ${!fetching_image ? (is_owner ? 'success' : 'error') : ''}`}
 					type="number"
 					bind:value={nft_id}
-					placeholder={data.user.nft_id}
+					placeholder={data.user.nftid.toString()}
 					on:input={() => getNft()}
 					on:focus={() => focusInput('nft_id')}
 					on:focusout={() => deFocusInput()}

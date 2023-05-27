@@ -15,30 +15,31 @@
 
 	//todo: move images to img elements instead of div backgrounds (won't show ones with empty letter in its name)
 	export let skill: SkillInput;
+	$: console.log('Skill:', skill);
 
 	let description_chars = 2000;
 	let description_text = skill.description;
 	let title: string = skill.title;
-	let minimum: number = skill.minimum_price;
+	let minimum: number = skill.minimumprice;
 	let link_0: string = skill.links[0] || '';
 	let link_1: string = skill.links[1] || '';
 	let link_2: string = skill.links[2] || '';
-	let file_url_0: string = skill.image_urls[0];
-	let file_url_1: string = skill.image_urls[1];
-	let file_url_2: string = skill.image_urls[2];
-	let file_url_3: string = skill.image_urls[3];
-	let file_url_4: string = skill.image_urls[4];
-	let file_url_5: string = skill.image_urls[5];
-	let file_url_6: string = skill.image_urls[6];
-	let file_url_7: string = skill.image_urls[7];
-	let image_url_0: string = skill.image_urls[0];
-	let image_url_1: string = skill.image_urls[1];
-	let image_url_2: string = skill.image_urls[2];
-	let image_url_3: string = skill.image_urls[3];
-	let image_url_4: string = skill.image_urls[4];
-	let image_url_5: string = skill.image_urls[5];
-	let image_url_6: string = skill.image_urls[6];
-	let image_url_7: string = skill.image_urls[7];
+	let file_url_0: string = skill.imageurls[0];
+	let file_url_1: string = skill.imageurls[1];
+	let file_url_2: string = skill.imageurls[2];
+	let file_url_3: string = skill.imageurls[3];
+	let file_url_4: string = skill.imageurls[4];
+	let file_url_5: string = skill.imageurls[5];
+	let file_url_6: string = skill.imageurls[6];
+	let file_url_7: string = skill.imageurls[7];
+	let image_url_0: string = skill.imageurls[0];
+	let image_url_1: string = skill.imageurls[1];
+	let image_url_2: string = skill.imageurls[2];
+	let image_url_3: string = skill.imageurls[3];
+	let image_url_4: string = skill.imageurls[4];
+	let image_url_5: string = skill.imageurls[5];
+	let image_url_6: string = skill.imageurls[6];
+	let image_url_7: string = skill.imageurls[7];
 	let comp_0: HTMLInputElement;
 	let comp_1: HTMLInputElement;
 	let comp_2: HTMLInputElement;
@@ -64,15 +65,15 @@
 		link_1 != (skill.links ? skill.links[1] : '') ||
 		link_2 != (skill.links ? skill.links[2] : '') ||
 		description_text != skill.description ||
-		image_url_0 != (skill.image_urls ? skill.image_urls[0] : '') ||
-		image_url_1 != (skill.image_urls ? skill.image_urls[1] : '') ||
-		image_url_2 != (skill.image_urls ? skill.image_urls[2] : '') ||
-		image_url_3 != (skill.image_urls ? skill.image_urls[3] : '') ||
-		image_url_4 != (skill.image_urls ? skill.image_urls[4] : '') ||
-		image_url_5 != (skill.image_urls ? skill.image_urls[5] : '') ||
-		image_url_6 != (skill.image_urls ? skill.image_urls[6] : '') ||
-		image_url_7 != (skill.image_urls ? skill.image_urls[7] : '') ||
-		minimum != skill.minimum_price ||
+		image_url_0 != (skill.imageurls ? skill.imageurls[0] : '') ||
+		image_url_1 != (skill.imageurls ? skill.imageurls[1] : '') ||
+		image_url_2 != (skill.imageurls ? skill.imageurls[2] : '') ||
+		image_url_3 != (skill.imageurls ? skill.imageurls[3] : '') ||
+		image_url_4 != (skill.imageurls ? skill.imageurls[4] : '') ||
+		image_url_5 != (skill.imageurls ? skill.imageurls[5] : '') ||
+		image_url_6 != (skill.imageurls ? skill.imageurls[6] : '') ||
+		image_url_7 != (skill.imageurls ? skill.imageurls[7] : '') ||
+		minimum != skill.minimumprice ||
 		publish != skill.publish ||
 		tags != skill.tags
 	) {
@@ -126,95 +127,87 @@
 				  '/' +
 				  $userAddress +
 				  '/skill/' +
-				  '/' +
 				  $chosen_skill_slot +
 				  '/0/' +
 				  comp_0.files[0].name
-				: '';
+				: skill.imageurls[0] ?? '';
 		let cloud_url_1 =
 			comp_1.files && comp_1.files[0]
 				? env.PUBLIC_IMAGEKIT_URL +
 				  '/' +
 				  $userAddress +
 				  '/skill/' +
-				  '/' +
 				  $chosen_skill_slot +
 				  '/1/' +
 				  comp_1.files[0].name
-				: '';
+				: skill.imageurls[1] ?? '';
 		let cloud_url_2 =
 			comp_2.files && comp_2.files[0]
 				? env.PUBLIC_IMAGEKIT_URL +
 				  '/' +
 				  $userAddress +
 				  '/skill/' +
-				  '/' +
 				  $chosen_skill_slot +
 				  '/2/' +
 				  comp_2.files[0].name
-				: '';
+				: skill.imageurls[2] ?? '';
 		let cloud_url_3 =
 			comp_3.files && comp_3.files[0]
 				? env.PUBLIC_IMAGEKIT_URL +
 				  '/' +
 				  $userAddress +
 				  '/skill/' +
-				  '/' +
 				  $chosen_skill_slot +
 				  '/3/' +
 				  comp_3.files[0].name
-				: '';
+				: skill.imageurls[3] ?? '';
 		let cloud_url_4 =
 			comp_4.files && comp_4.files[0]
 				? env.PUBLIC_IMAGEKIT_URL +
 				  '/' +
 				  $userAddress +
 				  '/skill/' +
-				  '/' +
 				  $chosen_skill_slot +
 				  '/4/' +
 				  comp_4.files[0].name
-				: '';
+				: skill.imageurls[4] ?? '';
 		let cloud_url_5 =
 			comp_5.files && comp_5.files[0]
 				? env.PUBLIC_IMAGEKIT_URL +
 				  '/' +
 				  $userAddress +
 				  '/skill/' +
-				  '/' +
 				  $chosen_skill_slot +
 				  '/5/' +
 				  comp_5.files[0].name
-				: '';
+				: skill.imageurls[5] ?? '';
 		let cloud_url_6 =
 			comp_6.files && comp_6.files[0]
 				? env.PUBLIC_IMAGEKIT_URL +
 				  '/' +
 				  $userAddress +
 				  '/skill/' +
-				  '/' +
 				  $chosen_skill_slot +
 				  '/6/' +
 				  comp_6.files[0].name
-				: '';
+				: skill.imageurls[6] ?? '';
 		let cloud_url_7 =
 			comp_7.files && comp_7.files[0]
 				? env.PUBLIC_IMAGEKIT_URL +
 				  '/' +
 				  $userAddress +
 				  '/skill/' +
-				  '/' +
 				  $chosen_skill_slot +
 				  '/7/' +
 				  comp_7.files[0].name
-				: '';
+				: skill.imageurls[7] ?? '';
 		const input: SkillInput = {
-			user_address: $userAddress,
+			useraddress: $userAddress,
 			title: title,
 			description: content,
 			tags: tags,
 			links: [link_0, link_1, link_2],
-			image_urls: [
+			imageurls: [
 				cloud_url_0,
 				cloud_url_1,
 				cloud_url_2,
@@ -224,9 +217,10 @@
 				cloud_url_6,
 				cloud_url_7
 			],
-			minimum_price: minimum,
+			minimumprice: minimum,
 			publish: publish
 		};
+		console.log('Input:', input);
 		let parsed = SkillInput.safeParse(input);
 		if (!parsed.success) {
 			for (let i = 0; i < parsed.error.errors.length; i++) {
@@ -236,7 +230,6 @@
 			}
 			return;
 		}
-
 		let counter = 0;
 		for await (let t of file_components) {
 			if (t.files != null && t.files.length > 0) {
@@ -285,14 +278,15 @@
 				`<p class="light-60"><span style='color:var(--color-success)'>success: </span>Skill updated</p>`
 			);
 			changes_made.set(false);
+			submitting.set(false);
+			chosen_profile_tab.set('skills');
+			if (browser) window.location.reload();
 		} else {
 			toast.push(
 				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${response.status}</p>`
 			);
+			submitting.set(false);
 		}
-		submitting.set(false);
-		chosen_profile_tab.set('skills');
-		if (browser) window.location.reload();
 	};
 
 	const updateInputLengths = () => {
@@ -407,7 +401,7 @@
 	<div
 		class="image-card"
 		style={`background-image:url(${
-			file_url_0 == skill.image_urls[0]
+			file_url_0 == skill.imageurls[0]
 				? file_url_0 + '?tr=h-180,w-240'
 				: image_url_0 != ''
 				? image_url_0
@@ -434,7 +428,7 @@
 	<div
 		class="image-card"
 		style={`background-image:url('${
-			file_url_1 == skill.image_urls[1]
+			file_url_1 == skill.imageurls[1]
 				? file_url_1 + '?tr=h-180,w-240'
 				: image_url_1 != ''
 				? image_url_1
@@ -461,7 +455,7 @@
 	<div
 		class="image-card"
 		style={`background-image:url('${
-			file_url_2 == skill.image_urls[2]
+			file_url_2 == skill.imageurls[2]
 				? file_url_2 + '?tr=h-180,w-240'
 				: image_url_2 != ''
 				? image_url_2
@@ -488,7 +482,7 @@
 	<div
 		class="image-card"
 		style={`background-image:url('${
-			file_url_3 == skill.image_urls[3]
+			file_url_3 == skill.imageurls[3]
 				? file_url_3 + '?tr=h-180,w-240'
 				: image_url_3 != ''
 				? image_url_3
@@ -515,7 +509,7 @@
 	<div
 		class="image-card"
 		style={`background-image:url('${
-			file_url_4 == skill.image_urls[4]
+			file_url_4 == skill.imageurls[4]
 				? file_url_4 + '?tr=h-180,w-240'
 				: image_url_4 != ''
 				? image_url_4
@@ -542,7 +536,7 @@
 	<div
 		class="image-card"
 		style={`background-image:url('${
-			file_url_5 == skill.image_urls[5]
+			file_url_5 == skill.imageurls[5]
 				? file_url_5 + '?tr=h-180,w-240'
 				: image_url_5 != ''
 				? image_url_5
@@ -569,7 +563,7 @@
 	<div
 		class="image-card"
 		style={`background-image:url('${
-			file_url_6 == skill.image_urls[6]
+			file_url_6 == skill.imageurls[6]
 				? file_url_6 + '?tr=h-180,w-240'
 				: image_url_6 != ''
 				? image_url_6
@@ -596,7 +590,7 @@
 	<div
 		class="image-card"
 		style={`background-image:url('${
-			file_url_7 == skill.image_urls[7]
+			file_url_7 == skill.imageurls[7]
 				? file_url_7 + '?tr=h-180,w-240'
 				: image_url_7 != ''
 				? image_url_7

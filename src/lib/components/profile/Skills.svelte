@@ -4,40 +4,45 @@
 	import { chosen_skill_slot, skill_add } from '$lib/stores/State';
 	import { userState } from '$lib/stores/Network';
 
-	export let data: any;
+	export let skills: SkillType[];
+	$: console.log('Skls length', skills.length);
 	let allowed_skills = 0;
 	$: switch ($userState) {
 		case 1:
 			allowed_skills = 3;
 		case 2:
-			allowed_skills = 5;
+			allowed_skills = 6;
 		case 3:
 			allowed_skills = 8;
 	}
 
 	type SkillType = {
+		createdat: number;
+		useraddress: string;
 		slot: number;
 		title: string;
 		description: string;
 		tags: string[];
 		links: string[];
-		image_urls: string[];
-		minimum_price: number;
+		imageurls: string[];
+		minimumprice: number;
 		publish: boolean;
 	};
 	let empty_skill: SkillType = {
 		slot: 0,
+		createdat: 0,
+		useraddress: '',
 		title: '',
 		description: '',
 		tags: [],
 		links: [],
-		image_urls: [],
-		minimum_price: 0,
+		imageurls: [],
+		minimumprice: 0,
 		publish: false
 	};
 
 	const handleSkillAdd = () => {
-		chosen_skill_slot.set(data.skills.json?.length ?? 0);
+		chosen_skill_slot.set(skills.length ?? 0);
 		skill_add.set(true);
 	};
 	const handleSkillEdit = (slot: number) => {
@@ -47,30 +52,28 @@
 </script>
 
 {#if $chosen_skill_slot == -1}
-	{#if data.skills.json == undefined || data.skills.json?.length < allowed_skills}
+	{#if skills == undefined || skills.length < allowed_skills}
 		<div class="empty">
-			<p class="light-60">you can add {allowed_skills - data.skills.json?.length} more skill(s)</p>
+			<p class="light-60">you can add {allowed_skills - skills.length} more skill(s)</p>
 			<div style="height:12px" />
 			<section class="add-button" on:click={handleSkillAdd} on:keydown>
 				<p class="yellow">+add new skill</p>
 			</section>
 		</div>
+		<div style="height: 12px" />
 	{/if}
-	<div style="height: 12px" />
-	{#if data.skills.json}
-		{#each data.skills?.json as skill, i}
+	{#if skills}
+		{#each skills as skill, i}
 			<div on:click={() => handleSkillEdit(i)} on:keydown>
 				<Skill slot={i} {skill} />
 			</div>
-			{#if i < data.skills.json?.length - 1}
+			{#if i < skills.length - 1}
 				<div style="height: 12px" />
 			{/if}
 		{/each}
 	{/if}
 {:else}
-	<SkillEdit
-		skill={data.skills.json ? data.skills.json[$chosen_skill_slot] ?? empty_skill : empty_skill}
-	/>
+	<SkillEdit skill={skills ? skills[$chosen_skill_slot] ?? empty_skill : empty_skill} />
 {/if}
 
 <style>
