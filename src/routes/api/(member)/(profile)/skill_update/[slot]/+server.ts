@@ -49,8 +49,8 @@ export const POST: RequestHandler = async ({ request, params, cookies }) => {
       },
     };
     await cached_db.collection('skills').updateOne(query, updt, options);
-  } catch (err) {
-    throw error(400, "Bad Request");
+  } catch (err: any) {
+    throw error(500, err.message);
   }
   return json("success");
 }

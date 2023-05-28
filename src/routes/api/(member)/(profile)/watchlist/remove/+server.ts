@@ -45,8 +45,8 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
       }
     };
     await cached_db.collection('users').updateOne(filter, updateDoc);
-  } catch (err) {
-    throw error(401, "Unauthorized");
+  } catch (err: any) {
+    throw error(500, err.message);
   }
   return json("success");
 }

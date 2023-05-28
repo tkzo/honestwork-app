@@ -22,8 +22,8 @@ export const GET: RequestHandler = async ({ params }) => {
       .find({ useraddress: params.address })
       .sort({ createdat: -1 })
       .toArray();
-  } catch (err) {
-    throw error(500, "Mongo fetch err:" + err)
+  } catch (err: any) {
+    throw error(500, err.message);
   }
   return json(jobs);
 };

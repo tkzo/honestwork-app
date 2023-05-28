@@ -7,7 +7,6 @@ import { MongoClient, Db } from 'mongodb';
 import { json, error } from '@sveltejs/kit';
 
 // todo: multichain
-// todo: delete this comment
 
 let cached_db: Db = "" as any;
 

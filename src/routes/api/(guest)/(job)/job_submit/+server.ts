@@ -15,7 +15,6 @@ export const POST: RequestHandler = async ({ request }) => {
       ? env.MONGODB_URI
       : env.PRIVATE_MONGODB_URI;
   let data = await request.json();
-  console.log("Data:", data);
   let salt: any;
   if (cached_db == "" as any) {
     const client = new MongoClient(uri!);
@@ -88,7 +87,7 @@ export const POST: RequestHandler = async ({ request }) => {
       key: data.txhash,
     });
   } catch (err: any) {
-    throw error(400, "Bad Request");
+    throw error(500, err.message);
   }
   return json("success");
 }

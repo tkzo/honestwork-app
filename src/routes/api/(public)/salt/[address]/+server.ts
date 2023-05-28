@@ -22,7 +22,7 @@ export const POST: RequestHandler = async ({ params }) => {
     await cached_db.collection('salts').insertOne({ address: params.address, salt: salt });
     return json({ salt: salt });
   } catch (err) {
-    throw error(400, "Salt not found");
+    throw error(404, "Salt not found");
   }
 };
 

@@ -27,8 +27,8 @@ export const GET: RequestHandler = async ({ params }) => {
     for (let i = 0; i < jobs.length; i++) {
       jobs[i]._id = jobs[i]._id.toString();
     }
-  } catch (err) {
-    throw error(500, "Error:" + err)
+  } catch (err: any) {
+    throw error(500, err.message)
   }
   return json(jobs);
 };

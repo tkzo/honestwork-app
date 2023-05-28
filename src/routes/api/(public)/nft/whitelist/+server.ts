@@ -31,8 +31,8 @@ export const GET: RequestHandler = async ({ }) => {
     if (!recent_whitelist) {
       throw error(404, "Whitelist not found");
     }
-  } catch (err) {
-    throw error(500, "Mongo fetch err:" + err)
+  } catch (err: any) {
+    throw error(500, err.message);
   }
   return json(recent_whitelist[0].addresses)
 }

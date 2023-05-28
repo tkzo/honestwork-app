@@ -33,8 +33,8 @@ export const GET: RequestHandler = async ({ cookies }) => {
       throw error(401, "Unauthorized");
     }
     skills = await cached_db.collection('skills').find({ useraddress: userAddress }).sort("slot", 1).toArray();
-  } catch (err) {
-    console.log("Mongo fetch err:", err);
+  } catch (err: any) {
+    throw error(500, err.message);
   }
   return json(skills);
 };

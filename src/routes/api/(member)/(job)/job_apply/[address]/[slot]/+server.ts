@@ -40,14 +40,13 @@ export const POST: RequestHandler = async ({ request, cookies, params }) => {
     if (!job) {
       throw error(401, 'Unauthorized');
     }
-    console.log("Job:", job)
     if (job.dealid != -1) {
-      throw error(401, 'Unauthorized');
+      throw error(400, 'Bad Request');
     }
     if (job.applications && job.applications.length > 0) {
       for (let i = 0; i < job.applications.length; i++) {
         if (job.applications[i].useraddress == userAddress) {
-          throw error(401, 'Unauthorized');
+          throw error(400, 'Bad Request');
         }
       }
     }
@@ -63,7 +62,7 @@ export const POST: RequestHandler = async ({ request, cookies, params }) => {
     }).toArray();
     let limit = await getApplicationLimit(userAddress);
     if (recent_applications.length >= limit) {
-      throw error(401, 'Unauthorized');
+      throw error(400, 'Bad Request');
     }
     const filter = { useraddress: params.address };
     const updateDoc = {
@@ -76,8 +75,7 @@ export const POST: RequestHandler = async ({ request, cookies, params }) => {
         },
       }
     };
-    let result = await cached_db.collection('jobs').updateOne(filter, updateDoc);
-    console.log("Result:", result)
+    await cached_db.collection('jobs').updateOne(filter, updateDoc);
   } catch (err: any) {
     throw error(500, err)
   }

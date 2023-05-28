@@ -58,8 +58,8 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     if (parsed.data.imageurl !== "") {
       await cached_db.collection('users').updateOne(query, { $set: { imageurl: parsed.data.imageurl } });
     }
-  } catch (err) {
-    throw error(400, "Bad Request");
+  } catch (err: any) {
+    throw error(500, err.message);
   }
   return json("success");
 }

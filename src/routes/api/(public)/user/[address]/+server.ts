@@ -18,8 +18,8 @@ export const GET: RequestHandler = async ({ params }) => {
       cached_db = client.db("honestwork-cluster");
     }
     user = await cached_db.collection('users').findOne({ address: params.address });
-  } catch (err) {
-    throw error(400, "Error:" + err)
+  } catch (err: any) {
+    throw error(500, err.message);
   }
   return json(user);
 };

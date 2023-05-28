@@ -60,8 +60,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     };
     await cached_db.collection('users').updateOne(filter, updateDoc, options);
   } catch (err: any) {
-    console.log("Error:", err);
-    throw error(401, err.message);
+    throw error(500, err.message);
   }
   return json("success");
 }

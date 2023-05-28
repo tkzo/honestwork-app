@@ -1,5 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { json } from '@sveltejs/kit';
+import { json, error } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import { MongoClient, Db } from 'mongodb';
 
@@ -21,8 +21,8 @@ export const GET: RequestHandler = async ({ params }) => {
       projection: { _id: 0, favorites: 1 }
     }
     user = await cached_db.collection('users').findOne({ address: params.address }, options);
-  } catch (err) {
-    console.log("Mongo fetch err:", err);
+  } catch (err: any) {
+    throw error(500, err.message);
   }
   return json(user?.favorites);
 };
