@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/get_deals",
       "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/get_ratings",
+      "schedule": "*/5 * * * *"
     }
   ]
 }

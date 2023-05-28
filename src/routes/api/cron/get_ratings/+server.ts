@@ -27,26 +27,22 @@ export const GET: RequestHandler = async () => {
       await client.connect();
       cached_db = client.db("honestwork-cluster");
     }
-    const deals = await paymentContract.getDeals();
-    if (!deals) {
-      throw error(500, "No deals found.");
+    const listers = await cached_db.collection('jobs').find({}, { projection: { useraddress: 1 } }).toArray();
+    const members = await cached_db.collection('users').find({}, { projection: { address: 1 } }).toArray();
+    let addresses: string[] = [];
+    for (const member of members) {
+      addresses.push(member.address);
     }
-    for await (const id of deals) {
-      const deal = await paymentContract.getDeal(id);
-      const job = await cached_db.collection('jobs').findOne({ useraddress: deal.Recruiter, slot: deal.JobId });
-      if (!job) {
-        continue;
-      }
-      if (job.dealid == -1) {
-        await cached_db.collection('jobs').updateOne(
-          { useraddress: deal.Recruiter, slot: deal.JobId },
-          {
-            $set: {
-              dealid: id,
-              dealnetworkid: 42161
-            }
-          });
-      }
+    for (const lister of listers) {
+      addresses.push(lister.useraddress);
+    }
+    for (const addr of addresses) {
+      let rating = await paymentContract.getAggregatingRating(addr);
+      let precision = await paymentContract.getPrecision();
+      precision = parseInt(precision.toString());
+      rating = parseInt(rating.toString());
+      rating = rating / precision;
+      await cached_db.collection('users').updateOne({ address: addr }, { $set: { rating: rating } })
     }
   } catch (err: any) {
     throw error(500, err)
