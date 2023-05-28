@@ -4,7 +4,6 @@
 	import { Svrollbar } from 'svrollbar';
 	import type { SkillType } from '$lib/stores/Types';
 	import fuzzy from 'fuzzy';
-	import { browser } from '$app/environment';
 	import { fly } from 'svelte/transition';
 	import { base } from '$app/paths';
 
@@ -24,21 +23,21 @@
 	];
 	let show_sorting_options = false;
 	let chosen_sorting_option = 0;
+	let window_height: any;
 
-	let feedHeight = 0;
-	$: if (browser) feedHeight = window.innerHeight - 148;
-	$: filteredSkills =
-		search_input != ''
-			? fuzzy
-					.filter(search_input, data.json, {
-						extract: (skill: SkillType) => skill.description
-					})
-					.map((result: any) => result.original)
-			: data.json;
-
-	$: if (filteredSkills) {
-		active_skill = filteredSkills[0];
+	let filteredSkills = data.json;
+	$: if (search_input != '') {
+		search(search_input);
+	} else {
+		filteredSkills = data.json;
 	}
+	$: active_skill = filteredSkills[0];
+
+	const search = async (input: string) => {
+		const result = await fetch(`${base}/api/search/skill/${input}`);
+		const output = await result.json();
+		if (output.length > 0) filteredSkills = output;
+	};
 
 	const updateScrollState = () => {
 		if (ghost_component.getBoundingClientRect().y < 106) {
@@ -66,6 +65,8 @@
 	<title>HW | Skills</title>
 	<meta name="description" content="HonestWork Skills Page" />
 </svelte:head>
+
+<svelte:window bind:innerHeight={window_height} />
 
 <div style="height:16px" />
 <main>
@@ -146,7 +147,7 @@
 			<div
 				bind:this={viewport}
 				class="viewport"
-				style={`width:518px; height:${feedHeight.toString() + 'px'}`}
+				style={`width:518px; height:${window_height - 145}px`}
 			>
 				<div bind:this={contents} class="contents">
 					<div style="height:8px" />

@@ -18,6 +18,12 @@
 	"/api/(conversation)/conversation": [
 		"src/routes/api/(conversation)/conversation/+server.ts"
 	],
+	"/api/cron/get_deals": [
+		"src/routes/api/cron/get_deals/+server.ts"
+	],
+	"/api/cron/get_ratings": [
+		"src/routes/api/cron/get_ratings/+server.ts"
+	],
 	"/api/(public)/ens/[address]": [
 		"src/routes/api/(public)/ens/[address]/+server.ts"
 	],
@@ -86,6 +92,9 @@
 	],
 	"/api/(public)/search/job/[input]": [
 		"src/routes/api/(public)/search/job/[input]/+server.ts"
+	],
+	"/api/(public)/search/skill/[input]": [
+		"src/routes/api/(public)/search/skill/[input]/+server.ts"
 	],
 	"/api/(public)/signup/[address]/[signature]": [
 		"src/routes/api/(public)/signup/[address]/[signature]/+server.ts"

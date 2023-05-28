@@ -6,6 +6,7 @@
 	import fuzzy from 'fuzzy';
 	import { browser } from '$app/environment';
 	import { fly } from 'svelte/transition';
+	import { base } from '$app/paths';
 
 	export let data: any;
 	export let viewport: Element;
@@ -26,20 +27,30 @@
 	let feedHeight = 0;
 
 	$: if (browser) {
-		feedHeight = window.innerHeight - 147;
+		feedHeight = window.innerHeight - 145;
 	}
-	$: filteredJobs =
-		search_input != ''
-			? fuzzy
-					.filter(search_input, data.json, {
-						extract: (skill: SkillType) => skill.description
-					})
-					.map((result: any) => result.original)
-			: data.json;
+	// $: filteredJobs =
+	// 	search_input != ''
+	// 		? fuzzy
+	// 				.filter(search_input, data.json, {
+	// 					extract: (skill: SkillType) => skill.description
+	// 				})
+	// 				.map((result: any) => result.original)
+	// 		: data.json;
 
-	$: if (filteredJobs) {
-		active_job = filteredJobs[0];
+	let filteredJobs = data.json;
+	$: if (search_input != '') {
+		search(search_input);
+	} else {
+		filteredJobs = data.json;
 	}
+	$: active_job = filteredJobs[0];
+
+	const search = async (input: string) => {
+		const result = await fetch(`${base}/api/search/job/${input}`);
+		const output = await result.json();
+		if (output.length > 0) filteredJobs = output;
+	};
 
 	const updateScrollState = () => {
 		if (ghost_component.getBoundingClientRect().y < 106) {

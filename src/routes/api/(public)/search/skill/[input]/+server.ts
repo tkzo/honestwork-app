@@ -18,8 +18,8 @@ export const GET: RequestHandler = async ({ params }) => {
       const database = client.db("honestwork-cluster");
       cached_db = database;
     }
-    const query = { $text: { $search: `${params.input}` } };
-    jobs = await cached_db.collection('jobs').find(query).toArray();
+    const query = { $text: { $search: `${params.input}` }, publish: true };
+    jobs = await cached_db.collection('skills').find(query).toArray();
     if (!jobs) {
       throw error(404, "Job not found");
     }
