@@ -5,6 +5,7 @@
 	import type { SkillType } from '$lib/stores/Types';
 	import { fly } from 'svelte/transition';
 	import { base, assets } from '$app/paths';
+	import { shortcut } from '$lib/stores/Shortcut';
 
 	export let data: any;
 	export let viewport: Element;
@@ -23,15 +24,8 @@
 	let show_sorting_options = false;
 	let chosen_sorting_option = 0;
 	let window_height: any;
-
 	let filteredSkills = data.json;
-	// $: if (search_input != '') {
-	// 	setTimeout(() => {
-	// 		search(search_input);
-	// 	}, 500);
-	// } else {
-	// 	filteredSkills = data.json;
-	// }
+
 	$: active_skill = filteredSkills[0];
 
 	const search = async (event: any) => {
@@ -79,9 +73,7 @@
 	<title>HW | Skills</title>
 	<meta name="description" content="HonestWork Skills Page" />
 </svelte:head>
-
 <svelte:window bind:innerHeight={window_height} />
-
 <div style="height:16px" />
 <main>
 	<div class="feed">
@@ -106,7 +98,13 @@
 				/>
 				{#if search_input.length > 0}
 					<div class="top">
-						<img src={`${assets}/icons/close.svg`} alt="close" on:click={reset_search} on:keydown />
+						<img
+							src={`${assets}/icons/close.svg`}
+							alt="close"
+							on:click={reset_search}
+							on:keydown
+							use:shortcut={{ code: 'Escape' }}
+						/>
 					</div>
 				{:else if scroll_state}
 					<div

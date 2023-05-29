@@ -6,12 +6,12 @@
 	import { browser } from '$app/environment';
 	import { fly } from 'svelte/transition';
 	import { base, assets } from '$app/paths';
+	import { shortcut } from '$lib/stores/Shortcut';
 
 	export let data: any;
 	export let viewport: Element;
 	export let contents: Element;
 
-	let searching = false;
 	let ghost_component: any;
 	let scroll_state = false;
 	let search_input = '';
@@ -110,7 +110,13 @@
 				/>
 				{#if search_input.length > 0}
 					<div class="top">
-						<img src={`${assets}/icons/close.svg`} alt="close" on:click={reset_search} on:keydown />
+						<img
+							use:shortcut={{ code: 'Escape' }}
+							src={`${assets}/icons/close.svg`}
+							alt="close"
+							on:click={reset_search}
+							on:keydown
+						/>
 					</div>
 				{:else if scroll_state}
 					<div
@@ -284,7 +290,6 @@
 		scrollbar-width: none; /* for Firefox */
 		overflow-y: scroll;
 	}
-
 	.viewport {
 		position: relative;
 		overflow: scroll;
@@ -294,7 +299,6 @@
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}
-
 	.viewport::-webkit-scrollbar {
 		/* hide scrollbar */
 		display: none;
