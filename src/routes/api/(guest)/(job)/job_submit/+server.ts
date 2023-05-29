@@ -6,9 +6,9 @@ import { JobInput } from '$lib/stores/Validation';
 import { ethers } from 'ethers';
 import { parseContent } from '$lib/stores/Parser';
 import { calculatePayment, checkPayment } from '$lib/stores/Crypto';
+import { Client, EmbedBuilder, GatewayIntentBits, TextChannel } from 'discord.js';
 
 let cached_db: Db = "" as any;
-
 export const POST: RequestHandler = async ({ request }) => {
   const uri =
     parseInt(env.PRODUCTION_ENV) == 1
@@ -32,6 +32,18 @@ export const POST: RequestHandler = async ({ request }) => {
     throw error(401, "Unauthorized");
   }
   await cached_db.collection('salts').deleteMany({ address: data.useraddress });
+  const guild_id = env.PRIVATE_DISCORD_GUILD_CORETEAM!;
+  const bot_token = env.PRIVATE_DISCORD_BOT_TOKEN!;
+  const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+  let channel: any;
+  client.on('ready', () => {
+    const has_channel = client.channels.cache.has(guild_id);
+    if (!has_channel) {
+      throw error(500, "Internal Server Error");
+    }
+    channel = client.channels.cache.get(guild_id) as TextChannel;
+  });
+  await client.login(bot_token);
   let data_to_validate = JSON.parse(JSON.stringify(data));
   data_to_validate.description = parseContent(data.description);
   try {
@@ -41,7 +53,7 @@ export const POST: RequestHandler = async ({ request }) => {
       cached_db = client.db("honestwork-cluster");
     }
     const slot = await cached_db.collection('jobs').countDocuments({ useraddress: data.useraddress });
-    let cloud_url;
+    let cloud_url = "";
     if (data.imageurl != '') {
       cloud_url =
         env.PRIVATE_IMAGEKIT_URL + '/' + data.useraddress + '/job/' + slot + '/' + data.imageurl;
@@ -86,6 +98,38 @@ export const POST: RequestHandler = async ({ request }) => {
     await cached_db.collection('txs').insertOne({
       key: data.txhash,
     });
+    const embed = new EmbedBuilder()
+      .setTitle(data.title)
+      .setURL(`https://honestwork.app/job/${data.useraddress}/${slot}`)
+      .setColor(0xffd369)
+      .setDescription(`${parsed.data.description.slice(0, 200)}...`)
+      .setAuthor({
+        name: data.username,
+        iconURL: cloud_url,
+      }).setTimestamp(new Date())
+      .setFooter({
+        text: "HonestWork Job Alerts",
+        iconURL: "https://honestwork-userfiles.fra1.cdn.digitaloceanspaces.com/hw-icon.png",
+      })
+      .addFields(
+        { name: '🤑 Budget', value: `$${data.budget}`, inline: true },
+        { name: '🌍 Timezone', value: `GMT ${data.timezone}`, inline: true }
+      );
+    let keep_trying = true;
+    for (let i = 0; i < 5; i++) {
+      try {
+        if (channel && keep_trying) {
+          await channel.send({
+            embeds: [embed],
+          });
+          keep_trying = false;
+        } else {
+          await new Promise(r => setTimeout(r, 100));
+        }
+      } catch (err: any) {
+        await new Promise(r => setTimeout(r, 100));
+      }
+    }
   } catch (err: any) {
     throw error(500, err.message);
   }

@@ -5,6 +5,8 @@ import { error, json } from '@sveltejs/kit';
 import { SkillInput } from '$lib/stores/Validation';
 import { base } from '$app/paths';
 import { verifyMember } from '$lib/stores/Crypto';
+import { Client, EmbedBuilder, GatewayIntentBits, TextChannel } from 'discord.js';
+import { parseContent } from '$lib/stores/Parser';
 
 let cached_db: Db = "" as any;
 export const POST: RequestHandler = async ({ request, cookies, fetch }) => {
@@ -13,9 +15,24 @@ export const POST: RequestHandler = async ({ request, cookies, fetch }) => {
   if (!userAddress || !userSignature) {
     throw error(401, "Unauthorized");
   }
+  const guild_id = env.PRIVATE_DISCORD_GUILD_SKILLS!;
+  const bot_token = env.PRIVATE_DISCORD_BOT_TOKEN!;
+  const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+  let channel: any;
+  client.on('ready', () => {
+    const has_channel = client.channels.cache.has(guild_id);
+    if (!has_channel) {
+      console.log("No channel")
+      throw error(500, "Internal Server Error");
+    }
+    channel = client.channels.cache.get(guild_id) as TextChannel;
+  });
+  await client.login(bot_token);
   let skills: any;
   let data = await request.json();
-  let parsed = SkillInput.safeParse(data);
+  let data_to_validate = JSON.parse(JSON.stringify(data));
+  data_to_validate.description = parseContent(data.description);
+  let parsed = SkillInput.safeParse(data_to_validate);
   if (!parsed.success) {
     throw error(400, "Bad Request");
   }
@@ -37,7 +54,7 @@ export const POST: RequestHandler = async ({ request, cookies, fetch }) => {
     if (!verified) {
       throw error(401, "Unauthorized");
     }
-    const url = `${base}/api/membership/${parsed.data.useraddress}`;
+    const url = `${base}/api/membership/${data.useraddress}`;
     const res = await fetch(url);
     const membership = await res.json();
     if (membership != 1 && membership != 2 && membership != 3) {
@@ -52,20 +69,55 @@ export const POST: RequestHandler = async ({ request, cookies, fetch }) => {
     let options = { upsert: true };
     let updt = {
       $set: {
-        title: parsed.data.title,
+        title: data.title,
         slot: skills.length,
-        description: parsed.data.description,
-        tags: parsed.data.tags,
-        links: parsed.data.links,
-        imageurls: parsed.data.imageurls,
-        minimumprice: parsed.data.minimumprice,
-        publish: parsed.data.publish,
+        description: data.description,
+        tags: data.tags,
+        links: data.links,
+        imageurls: data.imageurls,
+        minimumprice: data.minimumprice,
+        publish: data.publish,
         createdat: new Date().getTime(),
       },
     };
     await cached_db.collection('skills').updateOne(query, updt, options);
+    let image_to_use = user.nfturl != "" ? user.nfturl : user.imageurl;
+    let title_to_use = user.showens ? user.ensname : user.username;
+    const embed = new EmbedBuilder()
+      .setTitle(data.title)
+      .setURL(`https://honestwork.app/skill/${data.useraddress}/${skills.length}`)
+      .setColor(0xffd369)
+      .setDescription(`${parsed.data.description.slice(0, 200)}...`)
+      .setAuthor({
+        name: `${title_to_use}`,
+        iconURL: `${image_to_use}`,
+      }).setTimestamp(new Date())
+      .setFooter({
+        text: `HonestWork Skill Alerts`,
+        iconURL: `https://honestwork-userfiles.fra1.cdn.digitaloceanspaces.com/hw-icon.png`,
+      })
+      .addFields(
+        { name: '🤑 Hourly rate', value: `$${data.minimumprice}`, inline: true }
+      );
+    let keep_trying = true;
+    for (let i = 0; i < 5; i++) {
+      try {
+        if (channel && keep_trying) {
+          await channel.send({
+            embeds: [embed],
+          });
+          keep_trying = false;
+        } else {
+          await new Promise(r => setTimeout(r, 100));
+        }
+      } catch (err: any) {
+        await new Promise(r => setTimeout(r, 100));
+      }
+    }
   } catch (err: any) {
+    console.log(err);
     throw error(500, err.message);
   }
   return json("success");
 }
+

@@ -40,6 +40,9 @@ declare module '$env/static/private' {
 	export const PRIVATE_ARBITRUM_RPC: string;
 	export const PRIVATE_OPENAI_KEY: string;
 	export const PRIVATE_MONGODB_URI: string;
+	export const PRIVATE_DISCORD_BOT_TOKEN: string;
+	export const PRIVATE_DISCORD_GUILD_SKILLS: string;
+	export const PRIVATE_DISCORD_GUILD_CORETEAM: string;
 	export const MANPATH: string;
 	export const NIX_PROFILES: string;
 	export const TERM_PROGRAM: string;
@@ -153,6 +156,9 @@ declare module '$env/dynamic/private' {
 		PRIVATE_ARBITRUM_RPC: string;
 		PRIVATE_OPENAI_KEY: string;
 		PRIVATE_MONGODB_URI: string;
+		PRIVATE_DISCORD_BOT_TOKEN: string;
+		PRIVATE_DISCORD_GUILD_SKILLS: string;
+		PRIVATE_DISCORD_GUILD_CORETEAM: string;
 		MANPATH: string;
 		NIX_PROFILES: string;
 		TERM_PROGRAM: string;
