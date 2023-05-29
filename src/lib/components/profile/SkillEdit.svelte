@@ -13,6 +13,7 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import { env } from '$env/dynamic/public';
 
+	// todo: delete this comment
 	//todo: move images to img elements instead of div backgrounds (won't show ones with empty letter in its name)
 	export let skill: SkillInput;
 	$: console.log('Skill:', skill);

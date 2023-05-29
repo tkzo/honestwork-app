@@ -42,6 +42,7 @@ declare module '$env/static/private' {
 	export const PRIVATE_MONGODB_URI: string;
 	export const PRIVATE_DISCORD_BOT_TOKEN: string;
 	export const PRIVATE_DISCORD_GUILD_SKILLS: string;
+	export const PRIVATE_DISCORD_GUILD_JOBS: string;
 	export const PRIVATE_DISCORD_GUILD_CORETEAM: string;
 	export const MANPATH: string;
 	export const NIX_PROFILES: string;
@@ -158,6 +159,7 @@ declare module '$env/dynamic/private' {
 		PRIVATE_MONGODB_URI: string;
 		PRIVATE_DISCORD_BOT_TOKEN: string;
 		PRIVATE_DISCORD_GUILD_SKILLS: string;
+		PRIVATE_DISCORD_GUILD_JOBS: string;
 		PRIVATE_DISCORD_GUILD_CORETEAM: string;
 		MANPATH: string;
 		NIX_PROFILES: string;

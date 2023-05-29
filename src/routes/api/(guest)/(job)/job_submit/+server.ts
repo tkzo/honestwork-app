@@ -32,7 +32,7 @@ export const POST: RequestHandler = async ({ request }) => {
     throw error(401, "Unauthorized");
   }
   await cached_db.collection('salts').deleteMany({ address: data.useraddress });
-  const guild_id = env.PRIVATE_DISCORD_GUILD_CORETEAM!;
+  const guild_id = env.PRIVATE_DISCORD_GUILD_JOBS!;
   const bot_token = env.PRIVATE_DISCORD_BOT_TOKEN!;
   const client = new Client({ intents: [GatewayIntentBits.Guilds] });
   let channel: any;

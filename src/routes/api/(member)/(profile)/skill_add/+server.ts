@@ -22,7 +22,6 @@ export const POST: RequestHandler = async ({ request, cookies, fetch }) => {
   client.on('ready', () => {
     const has_channel = client.channels.cache.has(guild_id);
     if (!has_channel) {
-      console.log("No channel")
       throw error(500, "Internal Server Error");
     }
     channel = client.channels.cache.get(guild_id) as TextChannel;
