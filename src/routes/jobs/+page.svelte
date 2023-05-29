@@ -2,16 +2,16 @@
 	import Job from '$lib/components/jobs/Job.svelte';
 	import JobPage from '$lib/components/jobs/JobPage.svelte';
 	import { Svrollbar } from 'svrollbar';
-	import type { SkillType, JobType } from '$lib/stores/Types';
-	import fuzzy from 'fuzzy';
+	import type { JobType } from '$lib/stores/Types';
 	import { browser } from '$app/environment';
 	import { fly } from 'svelte/transition';
-	import { base } from '$app/paths';
+	import { base, assets } from '$app/paths';
 
 	export let data: any;
 	export let viewport: Element;
 	export let contents: Element;
-	// temp
+
+	let searching = false;
 	let ghost_component: any;
 	let scroll_state = false;
 	let search_input = '';
@@ -29,14 +29,6 @@
 	$: if (browser) {
 		feedHeight = window.innerHeight - 145;
 	}
-	// $: filteredJobs =
-	// 	search_input != ''
-	// 		? fuzzy
-	// 				.filter(search_input, data.json, {
-	// 					extract: (skill: SkillType) => skill.description
-	// 				})
-	// 				.map((result: any) => result.original)
-	// 		: data.json;
 
 	let filteredJobs = data.json;
 	$: if (search_input != '') {
@@ -46,12 +38,21 @@
 	}
 	$: active_job = filteredJobs[0];
 
-	const search = async (input: string) => {
-		const result = await fetch(`${base}/api/search/job/${input}`);
+	const search = async (event: any) => {
+		if (event.target?.value == '') {
+			filteredJobs = data.json;
+			return;
+		}
+		const result = await fetch(`${base}/api/search/job/${event.target?.value}`);
 		const output = await result.json();
 		if (output.length > 0) filteredJobs = output;
 	};
-
+	const search_tag = async (event: any) => {
+		search_input = event.detail.text;
+		const result = await fetch(`${base}/api/search/job/${event.detail.text}`);
+		const output = await result.json();
+		if (output.length > 0) filteredJobs = output;
+	};
 	const updateScrollState = () => {
 		if (ghost_component.getBoundingClientRect().y < 106) {
 			scroll_state = true;
@@ -73,6 +74,10 @@
 		chosen_sorting_option = index;
 		show_sorting_options = false;
 		fetchSorting();
+	};
+	const reset_search = () => {
+		search_input = '';
+		filteredJobs = data.json;
 	};
 </script>
 
@@ -99,10 +104,15 @@
 					type="text"
 					placeholder="Search for jobs"
 					bind:value={search_input}
+					on:input={search}
 					on:focus={() => (input_active = true)}
 					on:focusout={() => (input_active = false)}
 				/>
-				{#if scroll_state}
+				{#if search_input.length > 0}
+					<div class="top">
+						<img src={`${assets}/icons/close.svg`} alt="close" on:click={reset_search} on:keydown />
+					</div>
+				{:else if scroll_state}
 					<div
 						class="top link"
 						on:click={scrollTop}
@@ -176,7 +186,7 @@
 								on:keydown
 								in:fly={{ duration: 100 + 50 * index, y: 10 + 5 * index }}
 							>
-								<Job chosen={job == active_job} {job} />
+								<Job chosen={job == active_job} {job} on:search={search_tag} />
 							</div>
 						{/each}
 					{/if}

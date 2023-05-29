@@ -3,9 +3,8 @@
 	import SkillPage from '$lib/components/skills/SkillPage.svelte';
 	import { Svrollbar } from 'svrollbar';
 	import type { SkillType } from '$lib/stores/Types';
-	import fuzzy from 'fuzzy';
 	import { fly } from 'svelte/transition';
-	import { base } from '$app/paths';
+	import { base, assets } from '$app/paths';
 
 	export let data: any;
 	export let viewport: Element;
@@ -26,19 +25,34 @@
 	let window_height: any;
 
 	let filteredSkills = data.json;
-	$: if (search_input != '') {
-		search(search_input);
-	} else {
-		filteredSkills = data.json;
-	}
+	// $: if (search_input != '') {
+	// 	setTimeout(() => {
+	// 		search(search_input);
+	// 	}, 500);
+	// } else {
+	// 	filteredSkills = data.json;
+	// }
 	$: active_skill = filteredSkills[0];
 
-	const search = async (input: string) => {
-		const result = await fetch(`${base}/api/search/skill/${input}`);
+	const search = async (event: any) => {
+		if (event.target?.value == '') {
+			filteredSkills = data.json;
+			return;
+		}
+		const result = await fetch(`${base}/api/search/skill/${event.target?.value}`);
 		const output = await result.json();
 		if (output.length > 0) filteredSkills = output;
 	};
-
+	const search_tag = async (event: any) => {
+		search_input = event.detail.text;
+		const result = await fetch(`${base}/api/search/skill/${event.detail.text}`);
+		const output = await result.json();
+		if (output.length > 0) filteredSkills = output;
+	};
+	const reset_search = () => {
+		search_input = '';
+		filteredSkills = data.json;
+	};
 	const updateScrollState = () => {
 		if (ghost_component.getBoundingClientRect().y < 106) {
 			scroll_state = true;
@@ -86,10 +100,15 @@
 					type="text"
 					placeholder="Search for skills"
 					bind:value={search_input}
+					on:input={search}
 					on:focus={() => (input_active = true)}
 					on:focusout={() => (input_active = false)}
 				/>
-				{#if scroll_state}
+				{#if search_input.length > 0}
+					<div class="top">
+						<img src={`${assets}/icons/close.svg`} alt="close" on:click={reset_search} on:keydown />
+					</div>
+				{:else if scroll_state}
 					<div
 						class="top link"
 						on:click={scrollTop}
@@ -102,8 +121,8 @@
 						<p class={hovering_scrolltop ? 'dark' : 'yellow'}>top</p>
 						<img
 							src={hovering_scrolltop
-								? 'icons/corner-right-up_active.svg'
-								: 'icons/corner-right-up_passive.svg'}
+								? `${assets}/icons/corner-right-up_active.svg`
+								: `${assets}/icons/corner-right-up_passive.svg`}
 							alt="go top"
 						/>
 					</div>
@@ -121,7 +140,9 @@
 						<p>{sorting_options[chosen_sorting_option].k}</p>
 					</div>
 					<img
-						src={show_sorting_options ? 'icons/chevron_active.svg' : 'icons/chevron_passive.svg'}
+						src={show_sorting_options
+							? `${assets}/icons/chevron_active.svg`
+							: `${assets}/icons/chevron_passive.svg`}
 						alt="chevron"
 					/>
 				</div>
@@ -134,7 +155,7 @@
 									<div style="width:8px" />
 									<p>{option.k}</p>
 									{#if chosen_sorting_option === index}
-										<img src="icons/check.svg" alt="check" />
+										<img src={`${assets}/icons/check.svg`} alt="check" />
 									{/if}
 								</div>
 							{/if}
@@ -163,7 +184,7 @@
 								on:keydown
 								in:fly={{ duration: 100 + 50 * index, y: 10 + 5 * index }}
 							>
-								<Skill chosen={skill == active_skill} {skill} />
+								<Skill chosen={skill == active_skill} {skill} on:search={search_tag} />
 							</div>
 						{/each}
 					{/if}

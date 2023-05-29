@@ -6,6 +6,9 @@
 	import { parseContent } from '$lib/stores/Parser';
 	import { base, assets } from '$app/paths';
 	import { onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
 
 	export let chosen: boolean;
 	export let job: JobType;
@@ -16,7 +19,9 @@
 	onMount(async () => {
 		await getUserTier();
 	});
-
+	const search = (tag: string) => {
+		dispatch('search', { text: tag });
+	};
 	const getUserTier = async () => {
 		try {
 			let res = await fetch(`${base}/api/membership/${job.useraddress}`);
@@ -91,7 +96,7 @@
 				{#if hashtags && hashtags.length > 0}
 					{#each hashtags as hashtag}
 						<div class="hashtag">
-							<p class="light-60">{hashtag}</p>
+							<p class="light-60" on:click={() => search(hashtag)} on:keydown>{hashtag}</p>
 						</div>
 						{#if hashtag != hashtags[hashtags.length - 1]}
 							<div style="width: 4px" />
@@ -176,6 +181,7 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
+		z-index: 99;
 	}
 	.hashtag {
 		padding: 4px 8px;

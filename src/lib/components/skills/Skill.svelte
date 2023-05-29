@@ -11,7 +11,9 @@
 	import { parseContent } from '$lib/stores/Parser';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
+	import { createEventDispatcher } from 'svelte';
 
+	const dispatch = createEventDispatcher();
 	export let chosen: boolean;
 	export let skill: SkillType;
 
@@ -28,7 +30,11 @@
 	$: if ($userConnected) {
 		getFavorites();
 	}
-
+	$: username_trimmed =
+		user?.username.length > 16 ? user?.username.slice(0, 16) + '...' : user?.username;
+	const search = (tag: string) => {
+		dispatch('search', { text: tag });
+	};
 	const handleAddToFavorites = async () => {
 		if ($userConnected) {
 			try {
@@ -163,8 +169,6 @@
 			}
 		}
 	};
-	$: username_trimmed =
-		user?.username.length > 16 ? user?.username.slice(0, 16) + '...' : user?.username;
 </script>
 
 <svelte:head>
@@ -208,12 +212,9 @@
 	<div class="tag-bar">
 		<div class="tags">
 			{#each skill.tags as tag}
-				<div class="tag">
-					<p class="link">#{tag}</p>
+				<div class="tag link">
+					<p on:click={() => search(tag)} on:keydown>#{tag}</p>
 				</div>
-				{#if tag != skill.tags[skill.tags.length - 1]}
-					<div style="width: 4px" />
-				{/if}
 			{/each}
 		</div>
 		<div class="actions">
@@ -291,6 +292,7 @@
 	.tags {
 		display: flex;
 		flex-direction: row;
+		z-index: 99;
 	}
 	.tag {
 		padding: 8px;
