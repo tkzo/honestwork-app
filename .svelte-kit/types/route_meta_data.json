@@ -15,8 +15,8 @@
 	"/api/(conversation)/conversation_add/[address]": [
 		"src/routes/api/(conversation)/conversation_add/[address]/+server.ts"
 	],
-	"/api/(conversation)/conversation": [
-		"src/routes/api/(conversation)/conversation/+server.ts"
+	"/api/(conversation)/conversation/[address]": [
+		"src/routes/api/(conversation)/conversation/[address]/+server.ts"
 	],
 	"/api/cron/get_deals": [
 		"src/routes/api/cron/get_deals/+server.ts"

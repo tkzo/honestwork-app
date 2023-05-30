@@ -34,6 +34,7 @@
 	const fetchUser = async () => {
 		const res = await fetch(`${base}/api/user/${skill.useraddress}`);
 		user = await res.json();
+		// todo: remove ens call from here
 		ens_name = user.ensname ?? (await $nodeProvider.lookupAddress(skill.useraddress));
 		await getNft();
 	};

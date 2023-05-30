@@ -63,10 +63,10 @@
 				const body: DealDB = {
 					status: '',
 					network: chosen_network,
-					token_address: chosen_token_address,
-					total_amount: ethers.utils.parseUnits(total_amount.toString(), decimals).toString(),
+					tokenaddress: chosen_token_address,
+					totalamount: ethers.utils.parseUnits(total_amount.toString(), decimals).toString(),
 					downpayment: ethers.utils.parseUnits(downpayment.toString(), decimals).toString(),
-					job_id: chosen_job_slot,
+					jobid: chosen_job_slot,
 					signature: ''
 				};
 				const response = await fetch(url, {

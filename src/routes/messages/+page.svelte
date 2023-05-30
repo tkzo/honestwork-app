@@ -1,12 +1,5 @@
 <script lang="ts">
-	//todo: add types
-	import {
-		userConnected,
-		xmtpClient,
-		userAddress,
-		xmtpConnected,
-		xmtpConnecting
-	} from '$lib/stores/Network';
+	import { userConnected, xmtpClient, userAddress } from '$lib/stores/Network';
 	import { browser } from '$app/environment';
 	import { shortcut } from '$lib/stores/Shortcut';
 	import { Svrollbar } from 'svrollbar';
@@ -19,12 +12,8 @@
 	import Agreements from '$lib/components/messages/Agreements.svelte';
 	import { fade } from 'svelte/transition';
 
-	//todo: move conversation into its own component
-	let viewport: Element;
-	let contents: Element;
 	let viewport_inbox: Element;
 	let contents_inbox: Element;
-
 	let conversations = new Array();
 	let last_messages = new Array();
 	let peers = new Array();
@@ -89,7 +78,7 @@
 			const url = `${base}/api/conversation/${$userAddress}`;
 			const response = await fetch(url);
 			const json = await response.json();
-
+			console.log('DB Convs:', json);
 			if ($new_conversation_metadata.address != '') {
 				await newConversation();
 				new_conversation_metadata.set({ title: '', address: '' });
@@ -103,16 +92,15 @@
 			if (conversations?.length > 0) {
 				conversations = conversations?.filter((convo) => {
 					return json?.find((j: any) => {
-						return j.matched_user == convo.peerAddress;
+						return j.matcheduser == convo.peerAddress;
 					});
 				});
-
 				conversations = conversations?.filter((convo) => {
 					return json.find((j: any) => {
 						return j.muted == false;
 					});
 				});
-
+				console.log('XMTP Convs:', conversations);
 				if (conversations?.length > 0) {
 					await fetchInbox(conversations);
 					for await (const conv of conversations) {
@@ -195,11 +183,11 @@
 		}
 	};
 	const fetchPeer = async (peer: string) => {
-		const result = await fetch(`/api/user/${peer}`);
+		const result = await fetch(`${base}/api/user/${peer}`);
 		let jason = await result.json();
-		if (jason.show_nft) {
-			let img_url = await getNft(jason.nft_address, jason.nft_id);
-			jason.nft_image_url = img_url;
+		if (jason.shownft) {
+			let img_url = await getNft(jason.nftaddress, jason.nftid);
+			jason.nfturl = img_url;
 		}
 		return jason;
 	};
@@ -213,7 +201,7 @@
 	};
 	const getNft = async (addr: string, id: number) => {
 		try {
-			const response = await fetch(`api/alchemy/${addr}/${id}`);
+			const response = await fetch(`${base}/api/alchemy/${addr}/${id}`);
 			if (response.ok) {
 				const data = await response.json();
 				return data.image;
@@ -243,7 +231,6 @@
 					<div bind:this={contents_inbox} class="contents inbox-contents">
 						{#if conversations && loaded}
 							<div style="height:8px" />
-
 							{#each conversations as convo, index}
 								<div
 									class={`inbox-item ${chosen_conversation == convo ? 'chosen-item' : ''}`}
@@ -252,19 +239,18 @@
 								>
 									<img
 										class="peer-image"
-										src={peers[index]?.show_nft
-											? peers[index]?.nft_image_url
-											: peers[index]?.image_url && peers[index]?.image_url != ''
-											? peers[index]?.image_url
+										src={peers[index]?.shownft
+											? peers[index]?.nfturl
+											: peers[index]?.imageurl && peers[index]?.imageurl != ''
+											? peers[index]?.imageurl
 											: placeholder_image}
 										alt="smth"
 									/>
-
 									<div style="width: 12px;" />
 									<div class="inbox-inner-contents">
 										<p>
-											{peers[index]?.show_ens
-												? peers[index]?.ens_name
+											{peers[index]?.showens
+												? peers[index]?.ensname
 												: peers[index]?.username && peers[index]?.username != ''
 												? peers[index].username
 												: 'anon'}

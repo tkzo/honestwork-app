@@ -148,7 +148,7 @@
 				goto('/messages');
 			} else {
 				toast.push(
-					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data}</p>`
+					`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${data.message}</p>`
 				);
 			}
 		} catch (err: any) {

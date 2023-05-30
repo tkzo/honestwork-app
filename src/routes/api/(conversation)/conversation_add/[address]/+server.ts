@@ -6,7 +6,6 @@ import { error, json } from '@sveltejs/kit';
 let cached_db: Db = "" as any;
 export const POST: RequestHandler = async ({ params, cookies }) => {
   const userAddress = cookies.get("honestwork_address");
-  let user: any;
   let existing: any;
   const uri =
     parseInt(env.PRODUCTION_ENV) == 1
@@ -22,31 +21,55 @@ export const POST: RequestHandler = async ({ params, cookies }) => {
       address: userAddress,
       conversations: {
         $elemMatch: {
-          matched_user: params.address
+          matcheduser: params.address
         }
       }
     });
-    if (existing) {
-      return json("Already added");
+    let updated: boolean = false;
+    if (!existing) {
+      const filter = { address: userAddress };
+      const updateDoc = {
+        $push: {
+          conversations: {
+            matcheduser: params.address,
+            createdat: new Date().getTime(),
+            lastmessageat: new Date().getTime(),
+            muted: false,
+          }
+        }
+      };
+      await cached_db.collection('users').updateOne(filter, updateDoc);
+      updated = true;
     }
-    const filter = { address: userAddress };
-    const updateDoc = {
-      $push: {
-        conversations: {
-          matcheduser: params.address,
-          createdat: new Date().getTime(),
-          lastmessageat: new Date().getTime(),
-          muted: false,
+    const existing2 = await cached_db.collection('users').findOne({
+      address: params.address,
+      conversations: {
+        $elemMatch: {
+          matcheduser: userAddress
         }
       }
-    };
-    await cached_db.collection('users').updateOne(filter, updateDoc);
-    let options = {
-      projection: { conversations: 1 }
+    });
+    let updated2: boolean = false;
+    if (!existing2) {
+      const filter2 = { address: params.address }
+      const updateDoc2 = {
+        $push: {
+          conversations: {
+            matcheduser: userAddress,
+            createdat: new Date().getTime(),
+            lastmessageat: new Date().getTime(),
+            muted: false,
+          }
+        }
+      };
+      await cached_db.collection('users').updateOne(filter2, updateDoc2);
+      updated2 = true;
     }
-    user = await cached_db.collection('users').updateOne({ address: userAddress }, options);
-  } catch (err) {
-    throw error(401, "Unauthorized");
+    if (!updated && !updated2) {
+      throw error(500, "Conversation already exists");
+    }
+  } catch (err: any) {
+    throw error(500, JSON.stringify(err));
   }
   return json("success");
 }

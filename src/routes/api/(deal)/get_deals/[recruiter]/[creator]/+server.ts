@@ -3,10 +3,8 @@ import { env } from '$env/dynamic/private';
 import { MongoClient, Db } from 'mongodb';
 import { error, json } from '@sveltejs/kit';
 
-// todo: test
-
 let cached_db: Db = "" as any;
-export const POST: RequestHandler = async ({ params }) => {
+export const GET: RequestHandler = async ({ params }) => {
   let deals: any;
   const uri =
     parseInt(env.PRODUCTION_ENV) == 1

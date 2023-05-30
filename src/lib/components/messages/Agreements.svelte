@@ -107,18 +107,22 @@
 							<p class="yellow">drafts</p>
 						</div>
 						<div style="height:12px" />
-						{#each deals.recruiter_deals as deal, i}
-							{#if deal.status == 'offered' || deal.status == 'accepted'}
-								<AgreementDB {conversation} role={'recruiter'} {deal} slot={i} />
-								<div style="height:24px" />
-							{/if}
-						{/each}
-						{#each deals.creator_deals as deal, j}
-							{#if deal.status == 'offered' || deal.status == 'accepted'}
-								<AgreementDB {conversation} role={'creator'} {deal} slot={j} />
-								<div style="height:24px" />
-							{/if}
-						{/each}
+						{#if deals.recruiter_deals.length > 0}
+							{#each deals.recruiter_deals as deal, i}
+								{#if deal.status == 'offered' || deal.status == 'accepted'}
+									<AgreementDB {conversation} role={'recruiter'} {deal} slot={i} />
+									<div style="height:24px" />
+								{/if}
+							{/each}
+						{/if}
+						{#if deals.creator_deals.length > 0}
+							{#each deals.creator_deals as deal, j}
+								{#if deal.status == 'offered' || deal.status == 'accepted'}
+									<AgreementDB {conversation} role={'creator'} {deal} slot={j} />
+									<div style="height:24px" />
+								{/if}
+							{/each}
+						{/if}
 					{/await}
 					<div style="height:28px" />
 					{#await fetchDealsChain() then deals}
@@ -128,9 +132,11 @@
 							<p class="yellow">ongoing deals</p>
 						</div>
 						<div style="height:12px" />
-						{#each Object.entries(deals) as [id, deal]}
-							<AgreementChain {conversation} {deal} {id} />
-						{/each}
+						{#if Object.entries(deals).length > 0}
+							{#each Object.entries(deals) as [id, deal]}
+								<AgreementChain {conversation} {deal} {id} />
+							{/each}
+						{/if}
 					{/await}
 				{/if}
 			</div>

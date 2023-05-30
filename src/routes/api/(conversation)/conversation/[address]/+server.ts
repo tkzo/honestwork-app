@@ -24,7 +24,7 @@ export const GET: RequestHandler = async ({ params }) => {
       conversations = await cached_db.collection('users').find({
         conversations: {
           $elemMatch: {
-            matched_user: params.address
+            matcheduser: params.address
           }
         }
       }).toArray();
@@ -32,6 +32,7 @@ export const GET: RequestHandler = async ({ params }) => {
     }
     conversations = user.conversations;
   } catch (err) {
+    console.log(err);
     throw error(500, "Error getting conversations");
   }
   return json(conversations);

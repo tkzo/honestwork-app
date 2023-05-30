@@ -44,7 +44,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     }
     job = await cached_db.collection('jobs').findOne({ useraddress: data.address, slot: data.slot });
     const filter = { address: userAddress };
-    const options = { upsert: true };
     const updateDoc = {
       $push: {
         watchlist: {
@@ -58,7 +57,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
         },
       }
     };
-    await cached_db.collection('users').updateOne(filter, updateDoc, options);
+    await cached_db.collection('users').updateOne(filter, updateDoc);
   } catch (err: any) {
     throw error(500, err.message);
   }

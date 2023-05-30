@@ -655,14 +655,6 @@
 		box-sizing: border-box;
 		padding: 8px;
 	}
-
-	main {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
 	.bar {
 		width: 520px;
 		flex-direction: row;
@@ -734,7 +726,6 @@
 		border-color: var(--color-light-20);
 		cursor: pointer;
 	}
-
 	.pseudo-file-input {
 		position: absolute;
 		left: 50%;
@@ -789,43 +780,33 @@
 		border-style: solid;
 		border-color: var(--color-light-20);
 	}
-
 	.wrapper {
 		position: relative;
 		-ms-overflow-style: none; /* for Internet Explorer, Edge */
 		scrollbar-width: none; /* for Firefox */
 		overflow-y: scroll;
 		--svrollbar-track-width: 1px;
-		/* --svrollbar-track-background: #85b4b9; */
 		--svrollbar-track-opacity: 1;
-
 		--svrollbar-thumb-width: 10px;
 		--svrollbar-thumb-background: #d9ab55;
 		--svrollbar-thumb-opacity: 1;
 	}
-
 	.viewport {
 		position: relative;
 		overflow: scroll;
 		box-sizing: border-box;
-
-		/* hide scrollbar */
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 	}
-
 	.viewport::-webkit-scrollbar {
-		/* hide scrollbar */
 		display: none;
 	}
-
 	.contents {
 		width: 520px;
 	}
-
 	.loader-container {
 		width: 100%;
 		display: flex;

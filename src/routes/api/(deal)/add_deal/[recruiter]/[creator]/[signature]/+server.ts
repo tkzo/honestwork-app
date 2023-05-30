@@ -19,7 +19,6 @@ export const POST: RequestHandler = async ({ request, params }) => {
       const database = client.db("honestwork-cluster");
       cached_db = database;
     }
-    let options = { upsert: true };
     let update_doc = {
       $push: {
         deals: {
@@ -34,7 +33,7 @@ export const POST: RequestHandler = async ({ request, params }) => {
         }
       }
     }
-    let result = await cached_db.collection('deals').updateOne({ recruiter: params.recruiter, creator: params.creator }, update_doc, options);
+    let result = await cached_db.collection('deals').updateOne({ recruiter: params.recruiter, creator: params.creator }, update_doc);
     console.log("Result: ", result)
   } catch (err: any) {
     throw error(500, err)

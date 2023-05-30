@@ -5,7 +5,7 @@
 	import { userAddress, networkProvider } from '$lib/stores/Network';
 	import { slide } from 'svelte/transition';
 	import { ethers } from 'ethers';
-  import { erc20_abi } from '$lib/stores/ABI';
+	import { erc20_abi } from '$lib/stores/ABI';
 
 	export let message: any;
 	export let index: number;
@@ -15,21 +15,23 @@
 	let parsed = false;
 	let ismeta = message.content.startsWith('Meta:');
 	let show_meta_dropdown = false;
-  let decimals: number;
+	let decimals: number;
 
 	$: if (ismeta) {
 		parseMeta(message.content);
-    fetchDecimals();
+		fetchDecimals();
 	}
 
-  const fetchDecimals = async () => {
+	const fetchDecimals = async () => {
 		try {
-			const Token = new ethers.Contract(meta_message.token, erc20_abi, $networkProvider);
-			decimals = await Token.decimals();
+			if (ethers.utils.isAddress(meta_message.token)) {
+				const Token = new ethers.Contract(meta_message.token, erc20_abi, $networkProvider);
+				decimals = await Token.decimals();
+			}
 		} catch (err) {
-      console.log(err)
-    }
-  }
+			console.log('Error fetching tokens:', err);
+		}
+	};
 	const parseDate = (d: string) => {
 		let date = new Date(d);
 		return date.toLocaleString();
@@ -40,7 +42,6 @@
 			meta_message = JSON.parse(stringified);
 			parsed = true;
 		} catch (e) {
-			// todo: propagate error to user
 			console.log('Error parsing meta message: ', e);
 		}
 	};
