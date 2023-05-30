@@ -7,7 +7,7 @@
 	import { Jumper } from 'svelte-loading-spinners';
 	import { onDestroy } from 'svelte';
 	import { new_conversation_metadata } from '$lib/stores/State';
-	import { onMount } from 'svelte';
+	import { onMount, afterUpdate } from 'svelte';
 	import { base } from '$app/paths';
 	import Agreements from '$lib/components/messages/Agreements.svelte';
 	import { fade } from 'svelte/transition';
@@ -29,6 +29,8 @@
 	let active_stream: any;
 	let all_streams: any;
 	let chosen_tab = 'messages';
+	let feedHeight = 0;
+	let inboxHeight = 0;
 
 	onDestroy(() => {
 		if (active_stream) {
@@ -41,18 +43,15 @@
 	onMount(async () => {
 		if (userConnected && !loaded) {
 			await fetchConversations();
-			if (chosen_tab == 'messages') {
-				scroll('auto');
-			}
 		}
 	});
-
-	$: if (chosen_tab == 'messages' && viewport_inbox && contents_inbox) {
-		scroll('auto');
-	}
-
-	let feedHeight = 0;
-	let inboxHeight = 0;
+	afterUpdate(() => {
+		if (chosen_tab == 'messages' && viewport_inbox && contents_inbox.clientHeight > 0) {
+			setTimeout(() => {
+				scroll('auto');
+			}, 100);
+		}
+	});
 
 	$: if (browser) {
 		feedHeight = window.innerHeight - 197;
@@ -78,7 +77,6 @@
 			const url = `${base}/api/conversation/${$userAddress}`;
 			const response = await fetch(url);
 			const json = await response.json();
-			console.log('DB Convs:', json);
 			if ($new_conversation_metadata.address != '') {
 				await newConversation();
 				new_conversation_metadata.set({ title: '', address: '' });
@@ -100,7 +98,6 @@
 						return j.muted == false;
 					});
 				});
-				console.log('XMTP Convs:', conversations);
 				if (conversations?.length > 0) {
 					await fetchInbox(conversations);
 					for await (const conv of conversations) {
@@ -112,6 +109,7 @@
 			}
 		}
 		loaded = true;
+		scroll('auto');
 	};
 	const fetchInbox = async (convos: any[]) => {
 		let c = 0;
@@ -154,7 +152,6 @@
 			return 'No messages yet...';
 		}
 		let msg = convo_messages[convo_messages.length - 1].content;
-		console.log(msg);
 		if (msg.startsWith('Meta:')) {
 			meta_message = JSON.parse(parseMeta(msg));
 			return `[${meta_message.type}]`;
@@ -211,6 +208,7 @@
 		}
 	};
 	const fakeTransition = (node: any) => fade(node, { duration: 0 });
+	$: console.log('Contents inbox:', contents_inbox);
 </script>
 
 <div style="height:16px" />
