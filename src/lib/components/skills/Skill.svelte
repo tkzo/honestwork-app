@@ -153,7 +153,7 @@
 			}
 		} catch (err: any) {
 			toast.push(
-				`<p class="light-60"><span style='color:var(--color-success)'>success: </span>${err.Error()}</p>`
+				`<p class="light-60"><span style='color:var(--color-error)'>error: </span>${err}</p>`
 			);
 		}
 	};

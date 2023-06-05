@@ -70,10 +70,9 @@ export const POST: RequestHandler = async ({ request, params, cookies }) => {
         [`deals.${data.slot}.signature`]: data.signature,
       }
     }
-    let result = await cached_db.collection('deals').updateOne({ recruiter: params.recruiter, creator: params.creator }, update_doc);
-    console.log("Result: ", result)
+    await cached_db.collection('deals').updateOne({ recruiter: params.recruiter, creator: params.creator }, update_doc);
   } catch (err: any) {
-    throw error(500, err)
+    throw error(500, err.body.message);
   }
   return json("success")
 }

@@ -114,8 +114,7 @@ export const POST: RequestHandler = async ({ request, cookies, fetch }) => {
       }
     }
   } catch (err: any) {
-    console.log(err);
-    throw error(500, err.message);
+    throw error(500, err.body.message);
   }
   return json("success");
 }

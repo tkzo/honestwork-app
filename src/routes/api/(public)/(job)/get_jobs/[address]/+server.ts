@@ -23,7 +23,7 @@ export const GET: RequestHandler = async ({ params }) => {
       .sort({ createdat: -1 })
       .toArray();
   } catch (err: any) {
-    throw error(500, err.message);
+    throw error(500, err.body.message);
   }
   return json(jobs);
 };

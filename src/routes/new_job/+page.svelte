@@ -249,11 +249,11 @@
 		return t ? true : false;
 	};
 	const getTokenBalance = async (token_address: string) => {
-		// todo: add decimal prop to tokens
 		if ($userConnected) {
 			try {
 				const ERC20 = new ethers.Contract(token_address, erc20_abi, $networkProvider);
-				return parseFloat(ethers.utils.formatUnits(await ERC20.balanceOf($userAddress), 6));
+				const decimals = await ERC20.decimals();
+				return parseFloat(ethers.utils.formatUnits(await ERC20.balanceOf($userAddress), decimals));
 			} catch (e) {
 				console.log(e);
 			}
@@ -330,7 +330,6 @@
 				userPaid = true;
 				tx_hash = 'notx';
 			}
-
 			userPaying = false;
 		}
 	};
@@ -346,13 +345,12 @@
 			<div style="height:16px" />
 			{#if $userConnected}
 				<form method="POST" on:submit|preventDefault={handleSubmit} autocomplete="off">
-					<input hidden type="number" name="job_slot" bind:value={$chosen_job_slot} />
-					<input hidden type="text" name="user_address" bind:value={$userAddress} />
+					<input hidden type="text" name="useraddress" bind:value={$userAddress} />
 					<input hidden type="text" name="signature" bind:value={signature} />
-					<input hidden type="text" name="sticky_duration" bind:value={sticky_duration} />
-					<input hidden type="text" name="tx_hash" bind:value={tx_hash} />
-					<input hidden type="text" name="token_paid" bind:value={chosen_payment_token.address} />
-					<input hidden type="text" name="file_url" bind:value={file_url} />
+					<input hidden type="text" name="stickyduration" bind:value={sticky_duration} />
+					<input hidden type="text" name="txhash" bind:value={tx_hash} />
+					<input hidden type="text" name="tokenpaid" bind:value={chosen_payment_token.address} />
+					<input hidden type="text" name="fileurl" bind:value={file_url} />
 					<input hidden type="text" name="description" bind:value={content} />
 					<div class="image-section">
 						<div

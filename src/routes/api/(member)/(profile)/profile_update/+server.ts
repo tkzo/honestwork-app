@@ -59,7 +59,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
       await cached_db.collection('users').updateOne(query, { $set: { imageurl: parsed.data.imageurl } });
     }
   } catch (err: any) {
-    throw error(500, err.message);
+    throw error(500, err.body.message);
   }
   return json("success");
 }

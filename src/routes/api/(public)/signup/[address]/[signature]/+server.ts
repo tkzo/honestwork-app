@@ -74,7 +74,7 @@ export const POST: RequestHandler = async ({ params, fetch }) => {
     await cached_db.collection('salts').deleteMany({ address: params.address });
     await cached_db.collection('users').updateOne(filter, updateDoc, options);
   } catch (err: any) {
-    throw error(500, err.message);
+    throw error(500, err.body.message);
   }
   return json("success");
 };

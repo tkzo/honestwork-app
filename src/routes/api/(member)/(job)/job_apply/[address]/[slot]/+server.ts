@@ -77,7 +77,7 @@ export const POST: RequestHandler = async ({ request, cookies, params }) => {
     };
     await cached_db.collection('jobs').updateOne(filter, updateDoc);
   } catch (err: any) {
-    throw error(500, err)
+    throw error(500, err.body.message);
   }
   return json("success");
 }

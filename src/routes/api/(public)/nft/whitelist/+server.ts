@@ -32,7 +32,7 @@ export const GET: RequestHandler = async ({ }) => {
       throw error(404, "Whitelist not found");
     }
   } catch (err: any) {
-    throw error(500, err.message);
+    throw error(500, err.body.message);
   }
   return json(recent_whitelist[0].addresses)
 }

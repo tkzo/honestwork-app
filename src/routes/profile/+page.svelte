@@ -28,9 +28,10 @@
 		infobox_distance: 0,
 		infobox_content: 'your username will be used to identify you on the platform.'
 	};
-	let link_0: string = data.user.links != null ? data.user.links[0] : '';
-	let link_1: string = data.user.links != null ? data.user.links[1] : '';
-	let link_2: string = data.user.links != null ? data.user.links[2] : '';
+	console.log('Data user links: ', data.user.links);
+	let link_0: string = data.user.links[0] ? data.user.links[0] : '';
+	let link_1: string = data.user.links[1] ? data.user.links[1] : '';
+	let link_2: string = data.user.links[2] ? data.user.links[2] : '';
 	let image_url: string = data.user.imageurl;
 	let file_component: HTMLInputElement;
 	let nft_image: string = placeholder_image;

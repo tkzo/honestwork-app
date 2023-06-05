@@ -69,7 +69,7 @@ export const POST: RequestHandler = async ({ request }) => {
     };
     await cached_db.collection('jobs').updateOne(query, updt, options);
   } catch (err: any) {
-    throw error(400, "Bad Request");
+    throw error(500, err.body.message);
   }
   return json("success");
 }

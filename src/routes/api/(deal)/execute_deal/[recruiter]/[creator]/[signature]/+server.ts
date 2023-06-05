@@ -54,7 +54,7 @@ export const POST: RequestHandler = async ({ request, params }) => {
       key: data.txhash,
     });
   } catch (err: any) {
-    throw error(500, err)
+    throw error(500, err.body.message);
   }
   return json("success")
 }

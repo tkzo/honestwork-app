@@ -69,6 +69,12 @@
 	"/api/(public)/membership/[address]": [
 		"src/routes/api/(public)/membership/[address]/+server.ts"
 	],
+	"/api/migrate": [
+		"src/routes/api/migrate/+server.ts"
+	],
+	"/api/(public)/nft/ambassador-whitelist": [
+		"src/routes/api/(public)/nft/ambassador-whitelist/+server.ts"
+	],
 	"/api/(public)/nft/next-token-image": [
 		"src/routes/api/(public)/nft/next-token-image/+server.ts"
 	],

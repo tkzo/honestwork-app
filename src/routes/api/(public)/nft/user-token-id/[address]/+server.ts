@@ -12,7 +12,7 @@ export const GET: RequestHandler = async ({ params }) => {
     const NFT = new ethers.Contract(env_pub.PUBLIC_NFT_ADDRESS, nft_abi, provider);
     token_id = await NFT.tokenOfOwnerByIndex(params.address, 0);
   } catch (err: any) {
-    throw error(500, err.message);
+    throw error(500, err.body.message);
   }
   return json({
     token_id: token_id.toString()

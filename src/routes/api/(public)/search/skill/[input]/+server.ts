@@ -23,8 +23,8 @@ export const GET: RequestHandler = async ({ params }) => {
     if (!jobs) {
       throw error(404, "Job not found");
     }
-  } catch (err) {
-    throw error(500, "Mongo fetch err:" + err)
+  } catch (err: any) {
+    throw error(500, err.body.message);
   }
   return json(jobs)
 }

@@ -11,8 +11,8 @@ export const GET: RequestHandler = async ({ params }) => {
     const provider = new ethers.providers.JsonRpcProvider(env_priv.PRIVATE_ETHEREUM_RPC);
     const contract = new ethers.Contract(env_pub.PUBLIC_NFT_ADDRESS, nft_abi, provider);
     state = await contract.getUserTier(params.address);
-  } catch (err) {
-    throw error(500, 'Error getting membership tier')
+  } catch (err: any) {
+    throw error(500, err.body.message);
   }
   return json(state.toNumber());
 };

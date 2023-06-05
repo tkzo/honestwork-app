@@ -14,7 +14,7 @@ export const GET: RequestHandler = async ({ }) => {
     next_id = parseInt(await contract._tokenIds()) + 1;
     image_url = `https://honestwork-userfiles.fra1.cdn.digitaloceanspaces.com/genesis-nft/${next_id}.png`;
   } catch (err: any) {
-    throw error(500, err.message);
+    throw error(500, err.body.message);
   }
   return json({
     image_url: image_url,

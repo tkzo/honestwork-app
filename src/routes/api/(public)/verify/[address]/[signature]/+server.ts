@@ -28,7 +28,7 @@ export const GET: RequestHandler = async ({ params }) => {
       throw error(401, "Unauthorized");
     }
   } catch (err: any) {
-    throw error(500, err.message);
+    throw error(500, err.body.message);
   }
   return json("success");
 };

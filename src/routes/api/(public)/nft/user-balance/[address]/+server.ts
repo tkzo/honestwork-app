@@ -12,7 +12,7 @@ export const GET: RequestHandler = async ({ params }) => {
     const contract = new ethers.Contract(env_pub.PUBLIC_MAINNET_DAI_ADDRESS, erc20_abi, provider);
     balance = await contract.balanceOf(params.address);
   } catch (err: any) {
-    throw error(500, err.message);
+    throw error(500, err.body.message);
   }
   return json({
     balance: balance

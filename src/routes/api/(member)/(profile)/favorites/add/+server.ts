@@ -53,7 +53,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     };
     await cached_db.collection('users').updateOne(filter, updateDoc);
   } catch (err: any) {
-    throw error(500, err.message);
+    throw error(500, err.body.message);
   }
   return json("success");
 }

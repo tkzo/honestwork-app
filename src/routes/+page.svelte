@@ -10,6 +10,7 @@
 	let viewport: Element;
 	let contents: Element;
 
+	// todo: find other way to preload
 	let preload_images = [
 		`${assets}/assets/landing/employer_1.webp`,
 		`${assets}/assets/landing/employer_2.webp`,

@@ -1,11 +1,12 @@
 import type { RequestHandler } from './$types';
 import { env } from '$env/dynamic/private';
-import { MongoClient, Db } from 'mongodb';
+import { MongoClient, Db, type FindOptions } from 'mongodb';
 import { error, json } from '@sveltejs/kit';
 
 let cached_db: Db = "" as any;
-export const GET: RequestHandler = async ({ params }) => {
-  let deals: any;
+
+export const GET: RequestHandler = async ({ }) => {
+  let recent_whitelist: any;
   const uri =
     parseInt(env.PRODUCTION_ENV) == 1
       ? env.MONGODB_URI
@@ -17,20 +18,21 @@ export const GET: RequestHandler = async ({ params }) => {
       const database = client.db("honestwork-cluster");
       cached_db = database;
     }
-    let query = {
-      recruiter: params.recruiter,
-      creator: params.creator,
-    }
-    deals = await cached_db.collection('deals').findOne(query);
-    if (!deals) {
-      deals = {
-        recruiter: params.recruiter,
-        creator: params.creator,
-        deals: []
+    let options: FindOptions = {
+      sort: { createdat: -1 },
+      limit: 1,
+      projection: {
+        _id: 0,
       }
+    };
+    recent_whitelist = await cached_db.collection('ambassador-whitelists')
+      .find({}, options)
+      .toArray();
+    if (recent_whitelist.length == 0) {
+      json([])
     }
   } catch (err: any) {
     throw error(500, err.body.message);
   }
-  return json(deals)
+  return json(recent_whitelist[0].addresses)
 }

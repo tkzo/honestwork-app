@@ -34,8 +34,6 @@ declare module '$env/static/private' {
 	export const PRIVATE_SPACES_BUCKETNAME: string;
 	export const PRIVATE_SPACES_REGION_URL: string;
 	export const PRIVATE_IMAGEKIT_URL: string;
-	export const PRIVATE_IMAGEKIT_PUBLIC_KEY: string;
-	export const PRIVATE_IMAGEKIT_PRIVATE_KEY: string;
 	export const PRIVATE_ETHEREUM_RPC: string;
 	export const PRIVATE_ARBITRUM_RPC: string;
 	export const PRIVATE_OPENAI_KEY: string;
@@ -43,7 +41,7 @@ declare module '$env/static/private' {
 	export const PRIVATE_DISCORD_BOT_TOKEN: string;
 	export const PRIVATE_DISCORD_GUILD_SKILLS: string;
 	export const PRIVATE_DISCORD_GUILD_JOBS: string;
-	export const PRIVATE_DISCORD_GUILD_CORETEAM: string;
+	export const PRIVATE_DISCORD_GUILD_TEST: string;
 	export const MANPATH: string;
 	export const NIX_PROFILES: string;
 	export const TERM_PROGRAM: string;
@@ -119,6 +117,7 @@ declare module '$env/static/private' {
  */
 declare module '$env/static/public' {
 	export const PUBLIC_NFT_ADDRESS: string;
+	export const PUBLIC_STARTER_NFT_ADDRESS: string;
 	export const PUBLIC_LISTING_ADDRESS: string;
 	export const PUBLIC_ESCROW_ADDRESS: string;
 	export const PUBLIC_REGISTRY_ADDRESS: string;
@@ -126,7 +125,6 @@ declare module '$env/static/public' {
 	export const PUBLIC_ARBITRUM_USDC_ADDRESS: string;
 	export const PUBLIC_IMAGEKIT_URL: string;
 	export const PUBLIC_MARKPROMPT_PRODUCTION_KEY: string;
-	export const PUBLIC_ETHEREUM_RPC: string;
 }
 
 /**
@@ -151,8 +149,6 @@ declare module '$env/dynamic/private' {
 		PRIVATE_SPACES_BUCKETNAME: string;
 		PRIVATE_SPACES_REGION_URL: string;
 		PRIVATE_IMAGEKIT_URL: string;
-		PRIVATE_IMAGEKIT_PUBLIC_KEY: string;
-		PRIVATE_IMAGEKIT_PRIVATE_KEY: string;
 		PRIVATE_ETHEREUM_RPC: string;
 		PRIVATE_ARBITRUM_RPC: string;
 		PRIVATE_OPENAI_KEY: string;
@@ -160,7 +156,7 @@ declare module '$env/dynamic/private' {
 		PRIVATE_DISCORD_BOT_TOKEN: string;
 		PRIVATE_DISCORD_GUILD_SKILLS: string;
 		PRIVATE_DISCORD_GUILD_JOBS: string;
-		PRIVATE_DISCORD_GUILD_CORETEAM: string;
+		PRIVATE_DISCORD_GUILD_TEST: string;
 		MANPATH: string;
 		NIX_PROFILES: string;
 		TERM_PROGRAM: string;
@@ -241,6 +237,7 @@ declare module '$env/dynamic/private' {
 declare module '$env/dynamic/public' {
 	export const env: {
 		PUBLIC_NFT_ADDRESS: string;
+		PUBLIC_STARTER_NFT_ADDRESS: string;
 		PUBLIC_LISTING_ADDRESS: string;
 		PUBLIC_ESCROW_ADDRESS: string;
 		PUBLIC_REGISTRY_ADDRESS: string;
@@ -248,7 +245,6 @@ declare module '$env/dynamic/public' {
 		PUBLIC_ARBITRUM_USDC_ADDRESS: string;
 		PUBLIC_IMAGEKIT_URL: string;
 		PUBLIC_MARKPROMPT_PRODUCTION_KEY: string;
-		PUBLIC_ETHEREUM_RPC: string;
 		[key: `PUBLIC_${string}`]: string | undefined;
 	}
 }

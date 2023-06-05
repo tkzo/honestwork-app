@@ -2,7 +2,6 @@
 	import type { SkillType, User } from '$lib/stores/Types';
 	import { Svrollbar } from 'svrollbar';
 	import Skeleton from '$lib/components/common/Skeleton.svelte';
-	import { nodeProvider } from '$lib/stores/Network';
 	import { browser } from '$app/environment';
 	import { base, assets } from '$app/paths';
 	import { placeholder_image } from '$lib/stores/Constants';
@@ -34,8 +33,7 @@
 	const fetchUser = async () => {
 		const res = await fetch(`${base}/api/user/${skill.useraddress}`);
 		user = await res.json();
-		// todo: remove ens call from here
-		ens_name = user.ensname ?? (await $nodeProvider.lookupAddress(skill.useraddress));
+		ens_name = user.showens ? user.ensname : user.username;
 		await getNft();
 	};
 	const nextImage = () => {

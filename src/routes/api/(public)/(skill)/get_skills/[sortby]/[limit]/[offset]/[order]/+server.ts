@@ -30,7 +30,7 @@ export const GET: RequestHandler = async ({ params }) => {
       .limit(limit)
       .toArray();
   } catch (err: any) {
-    throw error(500, err.message);
+    throw error(500, err.body.message)
   }
   return json(skills);
 };

@@ -34,7 +34,7 @@ export const GET: RequestHandler = async ({ cookies }) => {
     }
     skills = await cached_db.collection('skills').find({ useraddress: userAddress }).sort("slot", 1).toArray();
   } catch (err: any) {
-    throw error(500, err.message);
+    throw error(500, err.body.message);
   }
   return json(skills);
 };

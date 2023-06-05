@@ -69,7 +69,7 @@ export const POST: RequestHandler = async ({ params, cookies }) => {
       throw error(500, "Conversation already exists");
     }
   } catch (err: any) {
-    throw error(500, JSON.stringify(err));
+    throw error(500, err.body.message);
   }
   return json("success");
 }

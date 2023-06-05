@@ -19,7 +19,7 @@ export const GET: RequestHandler = async ({ params }) => {
     }
     job = await cached_db.collection('jobs').findOne({ address: params.address, slot: params.slot });
   } catch (err: any) {
-    throw error(500, err.message);
+    throw error(500, err.body.message);
   }
   return json(job);
 };
