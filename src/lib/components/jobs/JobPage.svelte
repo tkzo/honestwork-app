@@ -474,10 +474,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		align-items: center;
-		flex: 1;
-		flex-wrap: wrap;
-		align-content: center;
 	}
 	@media (max-width: 600px) {
 		.profile-bar {
@@ -487,6 +483,10 @@
 			flex-direction: row;
 			gap: 4px;
 			padding: 12px;
+			align-items: center;
+			flex: 1;
+			flex-wrap: wrap;
+			align-content: center;
 		}
 	}
 </style>
