@@ -74,7 +74,7 @@
 	<meta name="description" content="HonestWork Skills Page" />
 </svelte:head>
 <svelte:window bind:innerHeight={window_height} />
-<div style="height:16px" />
+<div class="offset-divider" style="height:16px" />
 <main>
 	<div class="feed">
 		<div
@@ -163,11 +163,7 @@
 			</div>
 		</div>
 		<div class="wrapper">
-			<div
-				bind:this={viewport}
-				class="viewport"
-				style={`width:518px; height:${window_height - 145}px`}
-			>
+			<div bind:this={viewport} class="viewport" style={`height:${window_height - 145}px`}>
 				<div bind:this={contents} class="contents">
 					<div style="height:8px" />
 					{#if filteredSkills && filteredSkills.length > 0}
@@ -191,7 +187,7 @@
 			<Svrollbar {viewport} {contents} on:show={updateScrollState} />
 		</div>
 	</div>
-	<div style="width:12px" />
+	<div class="section-divider" style="width:12px" />
 	<div class="skill">
 		{#if active_skill != null}
 			<SkillPage skill={active_skill} />
@@ -206,15 +202,12 @@
 		justify-content: space-between;
 	}
 	.feed {
-		width: 520px;
+		max-width: 100vw;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
 		border-color: var(--color-light-20);
 		overflow-y: hidden;
 		box-sizing: border-box;
-	}
-	.skill {
-		width: 520px;
 	}
 	.search-bar {
 		border-width: 0px 0px 1px 0px;
@@ -308,5 +301,13 @@
 		border-style: solid;
 		border-color: var(--color-light-20);
 		flex: 1;
+	}
+	@media only screen and (max-width: 600px) {
+		.skill,
+		.section-divider,
+		.sorting-dropdown,
+		.offset-divider {
+			display: none;
+		}
 	}
 </style>

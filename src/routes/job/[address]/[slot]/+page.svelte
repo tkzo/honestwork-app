@@ -142,21 +142,16 @@
 		scrollbar-width: none; /* for Firefox */
 		overflow-y: scroll;
 		--svrollbar-track-width: 1px;
-		/* --svrollbar-track-background: #85b4b9; */
 		--svrollbar-track-opacity: 1;
-
 		--svrollbar-thumb-width: 10px;
 		--svrollbar-thumb-background: #d9ab55;
 		--svrollbar-thumb-opacity: 1;
 		width: 100%;
 	}
-
 	.viewport {
 		position: relative;
 		overflow: scroll;
 		box-sizing: border-box;
-
-		/* hide scrollbar */
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 		width: 100%;
@@ -164,12 +159,15 @@
 		flex-direction: column;
 		align-items: center;
 	}
-
 	.viewport::-webkit-scrollbar {
-		/* hide scrollbar */
 		display: none;
 	}
 	.contents {
 		width: 520px;
+	}
+	@media (max-width: 600px) {
+		.cover-letter {
+			display: none;
+		}
 	}
 </style>

@@ -75,8 +75,6 @@
 	{#if $page.route.id !== '/'}
 		<Navigation />
 		<div style="height:32px;" />
-		<!-- {:else}
-		<ToastHandler /> -->
 	{/if}
 	<NotificationHandler />
 	<slot />

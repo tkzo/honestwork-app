@@ -433,12 +433,10 @@ button:active {
 
 #nprogress .bar {
   background: #ffd369;
-
   position: fixed;
   z-index: 1031;
   top: 0;
   left: 0;
-
   width: 100%;
   height: 1px;
 }
@@ -452,7 +450,6 @@ button:active {
   height: 100%;
   box-shadow: 0 0 10px #ffd369, 0 0 5px #ffd369;
   opacity: 1.0;
-
   -webkit-transform: rotate(3deg) translate(0px, -4px);
       -ms-transform: rotate(3deg) translate(0px, -4px);
           transform: rotate(3deg) translate(0px, -4px);
@@ -471,12 +468,10 @@ button:active {
   width: 18px;
   height: 18px;
   box-sizing: border-box;
-
   border: solid 2px transparent;
   border-top-color: #ffd369;
   border-left-color: #ffd369;
   border-radius: 50%;
-
   -webkit-animation: nprogress-spinner 400ms linear infinite;
           animation: nprogress-spinner 400ms linear infinite;
 }
@@ -498,5 +493,17 @@ button:active {
 @keyframes nprogress-spinner {
   0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+@media only screen and (max-width: 600px) {
+  p {
+    font-size: 12px;
+  }
+  .body-text {
+    font-size: 12px;
+    line-height: 16px;
+  }
+  input {
+    font-size: 12px;
+  }
 }
 

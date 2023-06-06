@@ -21,6 +21,8 @@ export const getMemberTokenID = async (address: string) => {
   return await genesis.tokenOfOwnerByIndex(address, 0);
 }
 
+
+
 export const checkMembership = async (address: string) => {
   let state: BigNumber = BigNumber.from(0);
   try {

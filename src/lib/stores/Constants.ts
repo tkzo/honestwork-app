@@ -151,7 +151,7 @@ export const notifications = {
   },
   mint: {
     bodytext: 'grab an nft to get airdrop tokens from your activities!',
-    cta: 'mint and start accumulating',
+    cta: 'mint now',
     icon: '/icons/trending.svg'
   },
   upgrade: {

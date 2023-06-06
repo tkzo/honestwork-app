@@ -134,4 +134,11 @@
 		align-items: center;
 		padding: 0px 8px;
 	}
+	@media only screen and (max-width: 600px) {
+		.logo-section,
+		.right-section,
+		.wallet-section {
+			display: none;
+		}
+	}
 </style>

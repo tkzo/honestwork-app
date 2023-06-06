@@ -49,4 +49,14 @@
 		flex-direction: row;
 		align-items: center;
 	}
+	@media (max-width: 600px) {
+		.post-link {
+			justify-content: flex-end;
+			text-align: right;
+		}
+		.post-link > p {
+			width: 100%;
+			white-space: nowrap;
+		}
+	}
 </style>

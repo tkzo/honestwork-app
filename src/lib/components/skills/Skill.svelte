@@ -194,6 +194,7 @@
 					{parseContent(skill.description).slice(0, 140) + '...'}
 				</div>
 			</div>
+			<div style="height: 12px" />
 			<div class="sub">
 				<p class="yellow">{username_trimmed}</p>
 				{#await getRating()}
@@ -246,7 +247,7 @@
 
 <style>
 	section {
-		width: 518px;
+		max-width: 100%;
 		flex-direction: column;
 		cursor: pointer;
 		border-width: 1px 0px 1px 0px;
@@ -320,5 +321,12 @@
 	}
 	.chosen {
 		background-color: var(--color-light-2);
+	}
+	@media only screen and (max-width: 600px) {
+		.thumbnail,
+		.preview-image {
+			height: 60px;
+			width: 80px;
+		}
 	}
 </style>

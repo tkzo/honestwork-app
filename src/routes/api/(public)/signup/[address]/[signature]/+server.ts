@@ -56,7 +56,7 @@ export const POST: RequestHandler = async ({ params, fetch }) => {
           bio: "",
           imageurl: "",
           nfturl: token_image,
-          nftaddress: env_pub.PUBLIC_NFT_ADDRESS,
+          nftaddress: env_pub.PUBLIC_NFT_ADDRESS, // todo: check which nft user has
           nftid: token_id.toString(),
           timezone: 0,
           links: ["", "", ""],

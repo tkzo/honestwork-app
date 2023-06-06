@@ -7,11 +7,13 @@
 	import { fly } from 'svelte/transition';
 	import { base, assets } from '$app/paths';
 	import { shortcut } from '$lib/stores/Shortcut';
+	import { goto } from '$app/navigation';
 
 	export let data: any;
 	export let viewport: Element;
 	export let contents: Element;
 
+	let window_width: number;
 	let ghost_component: any;
 	let scroll_state = false;
 	let search_input = '';
@@ -86,7 +88,7 @@
 	<meta name="description" content="HonestWork Jobs Page" />
 </svelte:head>
 
-<div style="height:16px" />
+<div class="offset-divider" style="height:16px" />
 <main>
 	<div class="feed" style={`height:${feedHeight + 32}px;`}>
 		<div
@@ -173,11 +175,7 @@
 			</div>
 		</div>
 		<div class="wrapper">
-			<div
-				bind:this={viewport}
-				class="viewport"
-				style={`width:518px; height:${feedHeight.toString() + 'px'}`}
-			>
+			<div bind:this={viewport} class="viewport" style={`height:${feedHeight.toString() + 'px'}`}>
 				<div bind:this={contents} class="contents">
 					<div style="height:8px" />
 					{#if filteredJobs && filteredJobs.length > 0}
@@ -188,6 +186,9 @@
 							<div
 								on:click={() => {
 									active_job = job;
+									if (window_width < 600) {
+										goto(`${base}/job/${job.useraddress}/${job.slot}`);
+									}
 								}}
 								on:keydown
 								in:fly={{ duration: 100 + 50 * index, y: 10 + 5 * index }}
@@ -201,13 +202,15 @@
 			<Svrollbar {viewport} {contents} on:show={updateScrollState} />
 		</div>
 	</div>
-	<div style="width:12px" />
+	<div class="section-divider" style="width:12px" />
 	<div class="job">
 		{#if active_job != null}
 			<JobPage job={active_job} />
 		{/if}
 	</div>
 </main>
+
+<svelte:window bind:outerWidth={window_width} />
 
 <style>
 	main {
@@ -217,16 +220,13 @@
 		overflow-y: hidden;
 	}
 	.feed {
-		width: 520px;
+		max-width: 100vw;
 		border-width: 1px 1px 0px 1px;
 		border-style: solid;
 		border-color: var(--color-light-20);
 		overflow-y: hidden;
 		height: auto;
 		box-sizing: border-box;
-	}
-	.job {
-		width: 520px;
 	}
 	.search-bar {
 		border-width: 0px 0px 1px 0px;
@@ -238,7 +238,7 @@
 		box-sizing: border-box;
 	}
 	.input-container {
-		width: 320px;
+		width: 100%;
 		padding: 0px 8px;
 		display: flex;
 		flex-direction: row;
@@ -251,7 +251,7 @@
 	}
 	input {
 		border: none;
-		width: 240px;
+		max-width: 240px;
 	}
 	::placeholder {
 		color: var(--color-light-80);
@@ -294,13 +294,10 @@
 		position: relative;
 		overflow: scroll;
 		box-sizing: border-box;
-
-		/* hide scrollbar */
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}
 	.viewport::-webkit-scrollbar {
-		/* hide scrollbar */
 		display: none;
 	}
 	.sorting-dropdown {
@@ -324,5 +321,13 @@
 		border-style: solid;
 		border-color: var(--color-light-20);
 		flex: 1;
+	}
+	@media only screen and (max-width: 600px) {
+		.job,
+		.section-divider,
+		.sorting-dropdown,
+		.offset-divider {
+			display: none;
+		}
 	}
 </style>

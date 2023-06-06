@@ -68,15 +68,13 @@
 		</div>
 		<div class="status-tag">
 			{#if job.dealid == -1}
-				<p style="color:var(--color-success)">active</p>
+				<p style="color:var(--color-success)" class="active-tag">active</p>
 				<div style="width: 4px" />
 				<img src={`${assets}/icons/check.svg`} alt="arrow" />
-				<div style="width: 8px" />
 			{:else}
 				<p style="color:var(--color-error)">taken</p>
 				<div style="width: 4px" />
 				<img src={`${assets}/icons/calendar-remove.svg`} alt="arrow" />
-				<div style="width: 8px" />
 			{/if}
 		</div>
 	</div>
@@ -122,7 +120,7 @@
 
 <style>
 	section {
-		width: 518px;
+		max-width: 100%;
 		flex-direction: column;
 		cursor: pointer;
 		border-width: 1px 0px 1px 0px;
@@ -199,5 +197,13 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		justify-content: center;
+		padding: 8px;
+	}
+
+	@media only screen and (max-width: 600px) {
+		.active-tag {
+			display: none;
+		}
 	}
 </style>

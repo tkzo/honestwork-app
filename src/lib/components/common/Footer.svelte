@@ -2,11 +2,6 @@
 	import { chainName } from '$lib/stores/Network';
 	import { xmtpConnected, xmtpConnecting, userAddress, userState } from '$lib/stores/Network';
 	import { assets } from '$app/paths';
-	let pages = [
-		{ name: 'docs', path: 'https://docs.honestwork.app' },
-		{ name: 'terms', path: '/' },
-		{ name: 'privacy', path: '/' }
-	];
 </script>
 
 <main>
@@ -15,15 +10,6 @@
 			<a href="https://decoded-labs.com" target="_blank" rel="noreferrer">
 				<p class="light-40 semibold">ⓒ <span class="link">decoded</span></p>
 			</a>
-		</div>
-
-		<div class="sitemap-section">
-			{#each pages as page}
-				<a href={page.path}>
-					<p class="light-40 link">{page.name}</p>
-				</a>
-				<div style="width:8px" />
-			{/each}
 		</div>
 		<div class="social-section">
 			<a href="https://github.com/honestworkdao" target="_blank" rel="noreferrer">
@@ -67,7 +53,6 @@
 				<img src={`${assets}/icons/loader.svg`} alt="loading" class="rotating" />
 			{/if}
 		</div>
-
 		<div class="network-section">
 			<p class="light-40">membership</p>
 			<div style="width:4px" />
@@ -79,7 +64,7 @@
 				{$userState > 0 ? 'tier ' + $userState : 'n/a'}
 			</p>
 		</div>
-		<div class="network-section">
+		<div class="address-section">
 			<p class="light-40">account</p>
 			<div style="width:4px" />
 			<p
@@ -130,21 +115,8 @@
 	}
 	.social-section {
 		height: 30px;
-
 		display: flex;
 		flex-direction: row;
-		padding: 8px 12px;
-		border-width: 0px 1px 0px 0px;
-		border-style: solid;
-		border-color: var(--color-light-20);
-		box-sizing: border-box;
-	}
-	.sitemap-section {
-		height: 30px;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: flex-end;
 		padding: 8px 12px;
 		border-width: 0px 1px 0px 0px;
 		border-style: solid;
@@ -152,6 +124,18 @@
 		box-sizing: border-box;
 	}
 	.network-section {
+		height: 30px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-end;
+		padding: 8px 12px;
+		border-width: 0px 0px 0px 1px;
+		border-style: solid;
+		border-color: var(--color-light-20);
+		box-sizing: border-box;
+	}
+	.address-section {
 		height: 30px;
 		display: flex;
 		flex-direction: row;
@@ -172,5 +156,11 @@
 		display: flex;
 		flex-direction: row-reverse;
 		align-items: center;
+	}
+	@media only screen and (max-width: 600px) {
+		.network-section,
+		.brand-section {
+			display: none;
+		}
 	}
 </style>
