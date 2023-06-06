@@ -76,7 +76,7 @@
 	<meta name="description" content="HonestWork Job Page" />
 </svelte:head>
 
-<div style="height:16px" />
+<div class="offset-divider" style="height:16px" />
 <main>
 	<JobPage job={data.job} show_tags={true} />
 	<div class="section-divider" style="width:12px" />
@@ -164,7 +164,8 @@
 	}
 	@media (max-width: 600px) {
 		.cover-letter,
-		.section-divider {
+		.section-divider,
+		.offset-divider {
 			display: none;
 		}
 	}
