@@ -79,7 +79,7 @@
 <div style="height:16px" />
 <main>
 	<JobPage job={data.job} show_tags={true} />
-	<div style="width:12px" />
+	<div class="section-divider" style="width:12px" />
 	<div class="cover-letter">
 		<div class="cover-head">
 			<div class="left">
@@ -162,11 +162,9 @@
 	.viewport::-webkit-scrollbar {
 		display: none;
 	}
-	.contents {
-		width: 520px;
-	}
 	@media (max-width: 600px) {
-		.cover-letter {
+		.cover-letter,
+		.section-divider {
 			display: none;
 		}
 	}

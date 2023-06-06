@@ -253,7 +253,9 @@
 														{getTokenSymbol(network.id, token.address)}
 													</p>
 													<div class="address">
-														<p class={i % 2 == 0 ? '' : 'light-60'}>{token.address}</p>
+														<p class={i % 2 == 0 ? '' : 'light-60'}>
+															{token.address.slice(0, 12) + '...'}
+														</p>
 														<div style="width:4px;" />
 														<img
 															src={`${assets}/icons/external.svg`}
@@ -299,7 +301,8 @@
 
 <style>
 	main {
-		width: 520px;
+		max-width: 520px;
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 	}
@@ -312,6 +315,8 @@
 		border-style: solid;
 		border-color: var(--color-light-20);
 		padding: 12px;
+		box-sizing: border-box;
+		width: 100%;
 	}
 	.left-section {
 		display: flex;
@@ -410,11 +415,13 @@
 		border-style: solid;
 		border-color: var(--color-light-20);
 		padding: 12px;
+		box-sizing: border-box;
 	}
 	.token-tabs {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		justify-content: space-between;
 	}
 	.token-wrapper {
 		border-width: 0px 0px 1px 0px;
@@ -462,5 +469,19 @@
 		border-color: var(--color-light-10);
 		padding: 4px 8px;
 		box-sizing: border-box;
+	}
+	.right-section {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		flex: 1;
+	}
+	@media (max-width: 600px) {
+		.profile-bar {
+			flex-direction: column;
+		}
+		.right-section {
+			flex-direction: row;
+		}
 	}
 </style>
