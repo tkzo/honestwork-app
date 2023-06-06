@@ -369,7 +369,7 @@
 		display: none;
 	}
 	.button {
-		width: 172px;
+		max-width: 172px;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -474,8 +474,10 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+		align-items: center;
 		flex: 1;
 		flex-wrap: wrap;
+		align-content: center;
 	}
 	@media (max-width: 600px) {
 		.profile-bar {
@@ -483,6 +485,8 @@
 		}
 		.right-section {
 			flex-direction: row;
+			gap: 4px;
+			padding: 12px;
 		}
 	}
 </style>
