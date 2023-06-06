@@ -163,7 +163,8 @@
 
 <style>
 	main {
-		width: 520px;
+		max-width: 520px;
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 	}
@@ -190,7 +191,8 @@
 		height: 40px;
 	}
 	.gallery {
-		width: 518px;
+		max-width: 518px;
+		width: 100%;
 		border-width: 1px 1px 1px 1px;
 		border-style: solid;
 		border-color: var(--color-light-20);
@@ -199,8 +201,8 @@
 	}
 	.gallery-images {
 		width: 100%;
-		height: 388px;
 		border-width: 0px 0px 1px 0px;
+		aspect-ratio: 4 / 3;
 		border-style: solid;
 		border-color: var(--color-light-20);
 	}
@@ -249,19 +251,14 @@
 		scrollbar-width: none; /* for Firefox */
 		overflow-y: scroll;
 	}
-
 	.viewport {
 		position: relative;
 		overflow: scroll;
 		box-sizing: border-box;
-
-		/* hide scrollbar */
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}
-
 	.viewport::-webkit-scrollbar {
-		/* hide scrollbar */
 		display: none;
 	}
 	.skeleton-container {
@@ -270,5 +267,10 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
+	}
+	@media (max-width: 600px) {
+		.gallery-images {
+			aspect-ratio: 4/3;
+		}
 	}
 </style>

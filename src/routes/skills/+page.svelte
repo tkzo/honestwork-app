@@ -6,11 +6,13 @@
 	import { fly } from 'svelte/transition';
 	import { base, assets } from '$app/paths';
 	import { shortcut } from '$lib/stores/Shortcut';
+	import { goto } from '$app/navigation';
 
 	export let data: any;
 	export let viewport: Element;
 	export let contents: Element;
 
+	let window_width: number;
 	let ghost_component: any;
 	let scroll_state = false;
 	let search_input = '';
@@ -23,7 +25,7 @@
 	];
 	let show_sorting_options = false;
 	let chosen_sorting_option = 0;
-	let window_height: any;
+	let window_height: number;
 	let filteredSkills = data.json;
 
 	$: active_skill = filteredSkills[0];
@@ -73,7 +75,7 @@
 	<title>HW | Skills</title>
 	<meta name="description" content="HonestWork Skills Page" />
 </svelte:head>
-<svelte:window bind:innerHeight={window_height} />
+<svelte:window bind:outerWidth={window_width} bind:innerHeight={window_height} />
 <div class="offset-divider" style="height:16px" />
 <main>
 	<div class="feed">
@@ -174,6 +176,9 @@
 							<div
 								on:click={() => {
 									active_skill = skill;
+									if (window_width < 600) {
+										goto(`${base}/skill/${skill.useraddress}/${skill.slot}`);
+									}
 								}}
 								on:keydown
 								in:fly={{ duration: 100 + 50 * index, y: 10 + 5 * index }}

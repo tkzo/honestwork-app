@@ -196,5 +196,9 @@
 	"/skills": [
 		"src/routes/skills/+page.server.ts",
 		"src/routes/+layout.server.ts"
+	],
+	"/skill/[address]/[slot]": [
+		"src/routes/skill/[address]/[slot]/+page.server.ts",
+		"src/routes/+layout.server.ts"
 	]
 }
