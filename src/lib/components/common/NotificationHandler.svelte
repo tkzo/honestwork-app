@@ -16,7 +16,7 @@
 	<a href={`${base}/new_job`}>
 		<Notification notification={notifications.postjob} />
 	</a>
-{:else if $page.route.id == '/new_job' || $page.route.id == '/messages' || $page.route.id == '/auth' || trimmedRoute == 'job' || trimmedRoute == 'creator' || trimmedRoute == 'skill'}
+{:else if $page.route.id == '/new_job' || $page.route.id == '/messages' || $page.route.id == '/auth' || trimmedRoute == 'creator' || trimmedRoute == 'skill'}
 	<a href={`${base}/mint`}>
 		<Notification notification={notifications.mint} />
 	</a>
