@@ -285,7 +285,7 @@
 								<p class="placeholder light-40">link</p>
 								<div style="width:8px;" />
 								<a href={link} target="_blank" rel="noopener noreferrer">
-									<p class="light-80">{link}</p>
+									<p class="light-80">{link.length > 40 ? link.slice(0, 32) + '...' : link}</p>
 								</a>
 							</div>
 							<div style="height:8px;" />
@@ -475,6 +475,7 @@
 		flex-direction: column;
 		justify-content: space-between;
 		flex: 1;
+		flex-wrap: wrap;
 	}
 	@media (max-width: 600px) {
 		.profile-bar {
