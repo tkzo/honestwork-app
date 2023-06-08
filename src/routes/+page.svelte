@@ -104,10 +104,10 @@
 				</div>
 			</div>
 			<div style="height: 120px;" />
+			<BenefitsCards />
+			<div style="height: 120px;" />
 			<FeaturesCards />
 			<div style="height: 120px;" />
-			<BenefitsCards />
-			<div style="height: 160px;" />
 			<div class="faq">
 				<AI />
 			</div>

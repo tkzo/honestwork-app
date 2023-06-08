@@ -1,15 +1,13 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
-import { env as env_pub } from '$env/dynamic/public';
 import { MongoClient, Db } from 'mongodb';
 import { error } from '@sveltejs/kit';
-import { verifyMember, checkMembership, getMemberTokenID } from '$lib/stores/Crypto';
-import { base } from '$app/paths';
+import { verifyMember, checkMembership, getInitialNFT } from '$lib/stores/Crypto';
 
 let cached_db: Db = "" as any;
 
-export const POST: RequestHandler = async ({ params, fetch }) => {
+export const POST: RequestHandler = async ({ params }) => {
   const uri =
     parseInt(env.PRODUCTION_ENV) == 1
       ? env.MONGODB_URI
@@ -31,10 +29,10 @@ export const POST: RequestHandler = async ({ params, fetch }) => {
     if (!verifyMember(salt.salt, params.address as string, params.signature as string)) {
       throw error(401, "Unauthorized");
     }
-    const token_id = await getMemberTokenID(params.address as string)
-    const token_data = await fetch(`${base}/api/alchemy/${env_pub.PUBLIC_NFT_ADDRESS}/${parseInt(token_id)}`);
-    const token_json = await token_data.json();
-    const token_image = token_json.image;
+    const token = await getInitialNFT(params.address as string);
+    if (token.nftid == -1) {
+      throw error(401, "Unauthorized");
+    }
     const user = await cached_db.collection('users').findOne({ address: params.address });
     let updateDoc = {};
     if (user != null) {
@@ -55,9 +53,9 @@ export const POST: RequestHandler = async ({ params, fetch }) => {
           title: "",
           bio: "",
           imageurl: "",
-          nfturl: token_image,
-          nftaddress: env_pub.PUBLIC_NFT_ADDRESS, // todo: check which nft user has
-          nftid: token_id.toString(),
+          nfturl: token.nfturl,
+          nftaddress: token.nftaddress,
+          nftid: token.nftid,
           timezone: 0,
           links: ["", "", ""],
           rating: 0,

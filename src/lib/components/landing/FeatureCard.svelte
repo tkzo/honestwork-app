@@ -81,13 +81,13 @@
 		<img src={card.imgsrc} alt={card.imgalt} class="featured-image" />
 	</div>
 </main>
+<div style="height:120px" />
 
 <style>
 	main {
 		display: flex;
 		align-items: center;
 		gap: 57px;
-		/* background: var(--color-dark); */
 		width: 100%;
 		justify-content: space-between;
 	}

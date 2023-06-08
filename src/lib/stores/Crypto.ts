@@ -1,7 +1,8 @@
 import { BigNumber, ethers } from 'ethers';
 import { env as env_priv } from '$env/dynamic/private';
 import { env as env_pub } from '$env/dynamic/public';
-import { listing_abi, nft_abi } from '$lib/stores/ABI';
+import { listing_abi, nft_abi, starter_abi } from '$lib/stores/ABI';
+import { base } from '$app/paths';
 
 export const verifyMember = (salt: string, address: string, signature: string) => {
   const msg_raw = "HonestWork: Login\n" +
@@ -16,26 +17,62 @@ export const verifyMember = (salt: string, address: string, signature: string) =
 }
 
 export const getMemberTokenID = async (address: string) => {
-  const provider = new ethers.providers.JsonRpcProvider(env_priv.PRIVATE_ETHEREUM_RPC);
-  const genesis = new ethers.Contract(env_pub.PUBLIC_NFT_ADDRESS, nft_abi, provider);
-  return await genesis.tokenOfOwnerByIndex(address, 0);
-}
-
-
-
-export const checkMembership = async (address: string) => {
-  let state: BigNumber = BigNumber.from(0);
   try {
-    // todo: add starter nft
     const provider = new ethers.providers.JsonRpcProvider(env_priv.PRIVATE_ETHEREUM_RPC);
     const genesis = new ethers.Contract(env_pub.PUBLIC_NFT_ADDRESS, nft_abi, provider);
-    state = await genesis.getUserTier(address);
+    return await genesis.tokenOfOwnerByIndex(address, 0);
   } catch (err) {
-    return false;
-  } finally {
-    if (state.toNumber() > 0) {
-      return true;
+    return -1;
+  }
+}
+
+export const getStarterTokenID = async (address: string) => {
+  try {
+    const provider = new ethers.providers.JsonRpcProvider(env_priv.PRIVATE_ETHEREUM_RPC);
+    const starter = new ethers.Contract(env_pub.PUBLIC_STARTER_NFT_ADDRESS, starter_abi, provider);
+    return await starter.tokenOfOwnerByIndex(address, 0);
+  } catch (err) {
+    return -1;
+  }
+}
+
+export const getInitialNFT = async (address: string) => {
+  const member_id = await getMemberTokenID(address);
+  const starter_id = await getStarterTokenID(address);
+  if (member_id != -1) {
+    const token_data = await fetch(`${base}/api/alchemy/${env_pub.PUBLIC_NFT_ADDRESS}/${parseInt(member_id)}`);
+    const token_json = await token_data.json();
+    const token_image = token_json.image;
+    return {
+      nfturl: token_image,
+      nftid: member_id.toString(),
+      nftaddress: env_pub.PUBLIC_NFT_ADDRESS,
     }
+  } else if (starter_id != -1) {
+    const token_data = await fetch(`${base}/api/alchemy/${env_pub.PUBLIC_STARTER_NFT_ADDRESS}/${parseInt(starter_id)}`);
+    const token_json = await token_data.json();
+    const token_image = token_json.image;
+    return {
+      nfturl: token_image,
+      nftid: starter_id.toString(),
+      nftaddress: env_pub.PUBLIC_STARTER_NFT_ADDRESS,
+    }
+  } else {
+    return {
+      nfturl: "",
+      nftid: -1,
+      nftaddress: "",
+    }
+  }
+}
+
+export const checkMembership = async (address: string) => {
+  let member_id = await getMemberTokenID(address);
+  let starter_id = await getStarterTokenID(address);
+  if (member_id != -1) {
+    return true;
+  } else if (starter_id != -1) {
+    return true;
   }
   return false;
 }
@@ -62,9 +99,33 @@ export const getApplicationLimit = async (address: string) => {
   } else if (tier == 3) {
     return 5;
   } else {
-    return 0;
+    const starter_id = await getStarterTokenID(address);
+    if (starter_id != -1) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 }
+
+export const getSkillLimit = async (address: string) => {
+  const tier = await getGenesisTier(address);
+  if (tier == 1) {
+    return 3;
+  } else if (tier == 2) {
+    return 6;
+  } else if (tier == 3) {
+    return 8;
+  } else {
+    const starter_id = await getStarterTokenID(address);
+    if (starter_id != -1) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+}
+
 
 export const checkPayment = async (user_address: string, token_address: string, amount: BigNumber, tx_hash: string) => {
   try {

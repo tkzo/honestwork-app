@@ -4,7 +4,7 @@ import { MongoClient, Db } from 'mongodb';
 import { error, json } from '@sveltejs/kit';
 import { SkillInput } from '$lib/stores/Validation';
 import { base } from '$app/paths';
-import { verifyMember } from '$lib/stores/Crypto';
+import { getSkillLimit, verifyMember } from '$lib/stores/Crypto';
 import { Client, EmbedBuilder, GatewayIntentBits, TextChannel } from 'discord.js';
 import { parseContent } from '$lib/stores/Parser';
 
@@ -53,13 +53,7 @@ export const POST: RequestHandler = async ({ request, cookies, fetch }) => {
     if (!verified) {
       throw error(401, "Unauthorized");
     }
-    const url = `${base}/api/membership/${data.useraddress}`;
-    const res = await fetch(url);
-    const membership = await res.json();
-    if (membership != 1 && membership != 2 && membership != 3) {
-      throw error(400, "Bad Request");
-    }
-    let allowed = membership == 1 ? 3 : membership == 2 ? 6 : 8;
+    let allowed = await getSkillLimit(userAddress);
     skills = await cached_db.collection('skills').find({ useraddress: data.useraddress }).toArray();
     if (skills.length >= allowed) {
       throw error(400, "Membership limit reached");
@@ -98,7 +92,7 @@ export const POST: RequestHandler = async ({ request, cookies, fetch }) => {
       .addFields(
         { name: '🤑 Hourly rate', value: `$${data.minimumprice}`, inline: true }
       );
-    let keep_trying = true;
+    let keep_trying = data.publish;
     for (let i = 0; i < 5; i++) {
       try {
         if (channel && keep_trying) {

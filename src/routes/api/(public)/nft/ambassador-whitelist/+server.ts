@@ -29,7 +29,7 @@ export const GET: RequestHandler = async ({ }) => {
       .find({}, options)
       .toArray();
     if (recent_whitelist.length == 0) {
-      json([])
+      return json([])
     }
   } catch (err: any) {
     throw error(500, err.body.message);
