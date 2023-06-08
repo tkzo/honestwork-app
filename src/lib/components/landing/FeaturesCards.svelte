@@ -22,7 +22,9 @@
 <div class="container" style={`background-image:url(${base}/assets/gridlock.webp)`}>
 	{#each featureCards as card, index}
 		{#if chosen_tab == card.type}
-			<FeatureCard {card} {index} />
+			<div style="width:80%">
+				<FeatureCard {card} {index} />
+			</div>
 		{/if}
 	{/each}
 	<div style="height:120px" />
@@ -49,13 +51,19 @@
 		flex-direction: column;
 		justify-content: space-between;
 		align-items: center;
-		width: 80vw;
+		width: 100vw;
 		max-width: 960px;
 		padding-bottom: 120px;
 		background-size: contain;
 		background-position: top;
 		background-position-y: 120px;
 		background-repeat: no-repeat;
+	}
+	@media (max-width: 600px) {
+		.container {
+			background-size: cover;
+			background-position-y: 0px;
+		}
 	}
 	.button {
 		display: flex;

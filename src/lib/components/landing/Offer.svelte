@@ -254,13 +254,14 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		width: 90%;
+		width: 100%;
 		max-width: 600px;
 		text-align: center;
 		padding: 48px;
 		border: 1px solid var(--color-primary);
 		box-shadow: 0px 0px 250px rgba(255, 211, 105, 0.18);
 		background-color: var(--color-dark);
+		box-sizing: border-box;
 	}
 	.mint {
 		display: flex;
