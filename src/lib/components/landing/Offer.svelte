@@ -262,6 +262,7 @@
 		box-shadow: 0px 0px 250px rgba(255, 211, 105, 0.18);
 		background-color: var(--color-dark);
 		box-sizing: border-box;
+		z-index: 99;
 	}
 	.mint {
 		display: flex;
