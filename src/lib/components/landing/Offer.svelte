@@ -198,14 +198,15 @@
 		<p class="light-40">amount:<span class="light-80">$10</span></p>
 	</div>
 </div>
-<div style="height:16px" />
-<p class="light-60">
-	Interested in becoming an ambassador? <span class="yellow link">fill the form</span>
-</p>
+<!-- <div style="height:16px" /> -->
+<!-- <p class="light-60"> -->
+<!-- 	Interested in becoming an ambassador? <span class="yellow link">fill the form</span> -->
 
+<!-- </p> -->
 <style>
 	.ambassador {
-		width: 480px;
+		max-width: 480px;
+		width: 100%;
 	}
 	.buttons {
 		display: flex;
@@ -213,6 +214,19 @@
 		justify-content: center;
 		align-items: center;
 		width: 480px;
+	}
+	@media (max-width: 600px) {
+		.buttons {
+			flex-direction: column;
+			width: 100%;
+			gap: 8px;
+			align-items: center;
+		}
+		.mint,
+		.buy-usdc {
+			width: 100%;
+			box-sizing: border-box;
+		}
 	}
 	.buttons > a {
 		flex: 1;
