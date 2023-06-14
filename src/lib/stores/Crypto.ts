@@ -36,7 +36,7 @@ export const getStarterTokenID = async (address: string) => {
   }
 }
 
-export const getInitialNFT = async (address: string) => {
+export const getInitialNFT = async (address: string, fetch: any) => {
   const member_id = await getMemberTokenID(address);
   const starter_id = await getStarterTokenID(address);
   if (member_id != -1) {

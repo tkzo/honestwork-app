@@ -16,12 +16,20 @@
 	import { inject } from '@vercel/analytics';
 	import { navigating } from '$app/stores';
 
+	export let data: LayoutServerData;
+	globalThis.Buffer = Buffer;
+
 	inject({ mode: dev ? 'development' : 'production' });
 	onMount(() => {
 		if ($page.route.id !== '/') connectIfCached();
 		nProgress.configure({ showSpinner: false });
 	});
 
+	user_signed_in.set(data.signed!);
+	LogRocket.init('2wdgml/honestwork');
+	$: if ($userAddress && $userAddress != '') {
+		logrocketIdentify();
+	}
 	$: {
 		if ($navigating) {
 			nProgress.start();
@@ -29,15 +37,6 @@
 		if (!$navigating) {
 			nProgress.done();
 		}
-	}
-
-	export let data: LayoutServerData;
-	user_signed_in.set(data.signed!);
-
-	// trackers
-	LogRocket.init('2wdgml/honestwork');
-	$: if ($userAddress && $userAddress != '') {
-		logrocketIdentify();
 	}
 	const logrocketIdentify = async () => {
 		const res = await fetch(`/api/user/${$userAddress}`);
@@ -49,7 +48,6 @@
 			});
 		}
 	};
-	globalThis.Buffer = Buffer;
 </script>
 
 <svelte:head>
@@ -61,7 +59,6 @@
 				window.dataLayer.push(arguments);
 			}
 			gtag('js', new Date());
-
 			gtag('config', 'G-3X3Y5X23HN');
 		}
 	</script>

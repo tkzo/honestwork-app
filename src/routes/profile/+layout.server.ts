@@ -8,8 +8,6 @@ export const load = (async ({ cookies, fetch, parent }) => {
   let user: User = {} as any;
   let skills: SkillType[];
   const userAddress = cookies.get('honestwork_address')!;
-  const userSignature = cookies.get('honestwork_signature')!;
-  // todo: verify sig
   if (signed) {
     user = await getUser(userAddress, fetch);
     skills = await getSkills(fetch);

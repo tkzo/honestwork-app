@@ -51,9 +51,6 @@
 	"/api/(member)/(profile)/get_skills": [
 		"src/routes/api/(member)/(profile)/get_skills/+server.ts"
 	],
-	"/api/(public)/(skill)/get_skills/[sortby]/[limit]/[offset]/[order]": [
-		"src/routes/api/(public)/(skill)/get_skills/[sortby]/[limit]/[offset]/[order]/+server.ts"
-	],
 	"/api/(member)/(job)/job_apply/[address]/[slot]": [
 		"src/routes/api/(member)/(job)/job_apply/[address]/[slot]/+server.ts"
 	],
@@ -110,6 +107,9 @@
 	],
 	"/api/(member)/(profile)/skill_update/[slot]": [
 		"src/routes/api/(member)/(profile)/skill_update/[slot]/+server.ts"
+	],
+	"/api/(public)/(skill)/skills/[sortby]/[limit]/[offset]/[order]": [
+		"src/routes/api/(public)/(skill)/skills/[sortby]/[limit]/[offset]/[order]/+server.ts"
 	],
 	"/api/(guest)/update-job-url/[filename]/[address]/[slot]": [
 		"src/routes/api/(guest)/update-job-url/[filename]/[address]/[slot]/+server.ts"

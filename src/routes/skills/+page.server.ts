@@ -3,7 +3,6 @@ import { env } from '$env/dynamic/private';
 import { MongoClient, Db } from 'mongodb';
 
 let cached_db: Db = "" as any;
-
 export const load: PageServerLoad = async ({ }) => {
   let skills: any;
   const uri =
@@ -12,7 +11,7 @@ export const load: PageServerLoad = async ({ }) => {
       : env.PRIVATE_MONGODB_URI;
   try {
     if (cached_db) {
-      skills = await cached_db.collection('skills').find({ "publish": true }).sort("createdat", -1).limit(10).toArray();
+      skills = await cached_db.collection('skills').find({ "publish": true }).sort("createdat", -1).limit(20).toArray();
       for (let i = 0; i < skills.length; i++) {
         skills[i]._id = skills[i]._id.toString();
       }
@@ -22,7 +21,7 @@ export const load: PageServerLoad = async ({ }) => {
     await client.connect();
     const database = client.db("honestwork-cluster");
     cached_db = database;
-    skills = await cached_db.collection('skills').find({ "publish": true }).sort("createdat", -1).toArray();
+    skills = await cached_db.collection('skills').find({ "publish": true }).sort("createdat", -1).limit(20).toArray();
     for (let i = 0; i < skills.length; i++) {
       skills[i]._id = skills[i]._id.toString();
     }
