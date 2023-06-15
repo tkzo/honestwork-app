@@ -60,8 +60,8 @@
 				<div class="header">
 					<h1>A platform for all your web3 freelancing needs</h1>
 					<p class="about">
-						HonestWork helps you find the best Web3 freelance job offers and hire quality talents
-						for your Web3 projects.
+						Find the best Web3 freelance job offers and hire quality talents
+						for your Web3 projects
 					</p>
 					<div style="height: 12px;" />
 					<div class="button-container">
@@ -305,7 +305,7 @@
 	}
 	.icon {
 		cursor: pointer;
-		opacity: 0.2;
+		opacity: 0.3;
 		height: 20px;
 		width: 20px;
 	}
