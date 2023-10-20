@@ -27,7 +27,7 @@ export const load: PageServerLoad = async ({ }) => {
       jobs[i]._id = jobs[i]._id.toString();
     }
   } catch (err) {
-    console.log("Mongo fetch err:", err);
+    throw err;
   }
   return { json: jobs };
 };
